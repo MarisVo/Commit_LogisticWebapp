@@ -9,9 +9,9 @@ dotenv.config()
 /**
  * Connect MongoDB
  */
-// mongoose.connect(process.env.MONGO_URI, () => {
-//     console.log('Connect MongoDB successfully.')
-// }).catch(error => console.log(error.reason))
+mongoose.connect(process.env.MONGO_URI, () => {
+    console.log('Connect MongoDB successfully.')
+}).catch(error => console.log(error.reason))
 
 const PORT = process.env.PORT || 8000
 const app = express()
