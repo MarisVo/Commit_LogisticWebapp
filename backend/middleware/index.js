@@ -27,18 +27,19 @@ export const verifyToken = async (req, res, next) => {
         const { payload } = jwt.verify(token, process.env.JWT_SECRET_KEY, {
             complete: true
         })
-        const user = await User.findById(payload.user.id)
         
-        //  Forbidden
-        if(!user) return sendError(res, "Unauthorized.", 401)
+        if(!payload.user) return sendError(res, "Unauthorized.", 401)
 
-        req.userId = user._id
-        req.user_type = user.user_type
-        req.name = user.name
+        req.user = payload.user
         next()
 
     } catch (error) {
-        console.log(error)
         return sendServerError(res)
     }
+}
+
+export const verifyAdmin = async (req, res, next) => {
+    if (req.user.role.staff_type !== 'admin')
+        sendError(res, 'Unauthorized.',401)
+    next()    
 }

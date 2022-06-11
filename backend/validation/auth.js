@@ -1,10 +1,22 @@
 import Error from "../helper/error.js"
 
-export const userRegisterValidate = data => {
+export const staffRegisterValidate = data => {
     const error = new Error()
 
     error.isRequired(data.name, "name")
     .isRequired(data.email, "email")
+    .isRequired(data.phone, 'phone')
+    .isRequired(data.password, "password")
+
+    return error.get()
+}
+
+export const customerRegisterValidate = data => {
+    const error = new Error()
+
+    error.isRequired(data.name, "name")
+    .isRequired(data.email, "email")
+    .isRequired(data.phone, 'phone')
     .isRequired(data.password, "password")
     .isRequired(data.verify_password, "verify_password")
     
@@ -18,7 +30,7 @@ export const userRegisterValidate = data => {
 export const userLoginValidate = data => {
     const error = new Error()
 
-    error.isRequired(data.email, "email")
+    error.isOnlyRequiredOneOf([{field:data.email, name:'email'},{field:data.phone, name:'phone'}])
     .isRequired(data.password, "password")
     return error.get()
 }

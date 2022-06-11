@@ -13,3 +13,42 @@ const storage = multer.diskStorage({
     }
 })
 export const upload = multer({storage})
+
+export const UTYPE = {
+    STAFF: 'staff',
+    CUSTOMER: 'customer'
+}
+
+export const STAFF = {
+    ADMIN: 'admin',
+    DRIVER: 'driver',
+    SHIPPER: 'shipper',
+    STAFF: 'staff'
+}
+
+export const CUSTOMER = {
+    BUSINESS: 'business',
+    PASSERS: 'passers',
+    INTERMEDIARY: 'intermediary'
+}
+
+export const CUSTOMER_RANK = {
+    TITAN: 'titan',
+    GOLD: 'gold',
+    SILVER: 'silver',
+    BRONZE: 'bronze',
+    UNRANK: 'unrank'
+}
+
+export const PRODUCT_UNIT = {
+    KG: 'kg',
+    TON: 'ton',
+    M3: 'm3'
+}
+
+export const RETURN_ZONE = {
+    A: 'provincial',
+    B: '<100Km',
+    C: '100-300Km',
+    D: '>300Km'
+}

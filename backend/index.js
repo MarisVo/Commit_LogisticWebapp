@@ -4,6 +4,7 @@ import mongoose from "mongoose"
 import cors from "cors"
 
 import authRoute from "./router/auth.js"
+import adminRoute from "./router/admin.js"
 dotenv.config()
 
 /**
@@ -20,6 +21,7 @@ app.use(express.json())
 app.use(express.static('public'))
 app.use(cors())
 
+app.use('/api/admin', adminRoute)
 app.use('/api/auth', authRoute)
 
 app.listen(PORT, () => {
