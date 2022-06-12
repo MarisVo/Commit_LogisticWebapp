@@ -1,4 +1,5 @@
 import { curly } from "node-libcurl"
+import NodeMailer from "nodemailer"
 
 export const sendSuccess = (res, message, data = null) => {
     let responseJson = {
@@ -38,4 +39,21 @@ export const sendRequest = async (url, method, headers = [], postData = {}) => {
     }
     const { statusCode, data } = await curly(url, config)
     return { statusCode, data }
+}
+
+export const sendAutoMail = async (options) => {
+    const transport = NodeMailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'rairaikiri@gmail.com',
+            pass: 'xftkimgubilbnycn'
+        }
+    })
+    try {
+        await transport.sendMail(options)
+        return true
+    } catch (error) {
+        console.log(error)
+        return false
+    }
 }

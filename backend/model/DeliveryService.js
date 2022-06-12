@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 const { Schema } = mongoose
+import Price from './Price.js'
 
 const DeliveryServiceSchema = new Schema(
     {
@@ -66,5 +67,10 @@ const DeliveryServiceSchema = new Schema(
     },
     { timestamps: true }
 )
+
+DeliveryServiceSchema.pre('deleteOne', (next)=>{
+    Price.remove({_id: this.price}).exec()
+    next()
+})
 
 export default mongoose.model('delivery_services', DeliveryServiceSchema)

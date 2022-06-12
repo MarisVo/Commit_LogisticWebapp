@@ -39,7 +39,7 @@ adminRoute.post('/auth/register',
 
             password = await argon2.hash(password)
             await User.create({
-                name, email, password, phone, role: newStaff._id
+                name, email, password, phone, role: newStaff._id, isActive: true
             })
         } catch (error) {
             return sendServerError(res)

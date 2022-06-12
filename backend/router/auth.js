@@ -2,10 +2,12 @@ import express from "express"
 import jwt from "jsonwebtoken"
 import argon2 from "argon2"
 import User from "../model/User.js"
-import { userLoginValidate, customerRegisterValidate } from "../validation/auth.js"
-import { sendError, sendServerError, sendSuccess } from "../helper/client.js"
+import { userLoginValidate, customerRegisterValidate, userVerifyOTP, userUpdateOTP } from "../validation/auth.js"
+import { sendError, sendServerError, sendSuccess, sendAutoMail } from "../helper/client.js"
 import Customer from "../model/Customer.js"
 import Staff from "../model/Staff.js"
+import CustomerVerifyOTP from '../model/CustomerVerifyOTP.js'
+import { createOTP, updateOTP } from '../constant.js'
 
 const authRoute = express.Router()
 
@@ -38,7 +40,7 @@ authRoute.post('/register', async (req, res) => {
     if (errors)
         return sendError(res, errors)
 
-    let { name, email, password, phone, address, discription, customer_type } = req.body
+    let { name, email, password, phone, address, discription, customer_type, verify_op } = req.body
 
     try {
         const isExist = await User.exists({
@@ -49,7 +51,26 @@ authRoute.post('/register', async (req, res) => {
         })
         if (isExist)
             return sendError(res, 'user is exist')
-        
+
+        let otp = await createOTP()
+        if (otp == null) {
+            return sendServerError(res)
+        }
+
+        if (verify_op === 'email') {
+            const options = {
+                from: 'rairaikiri@gmail.com',
+                to: email,
+                subject: '[noreply-Logistics Webapp] Xác thực email',
+                html: `<p>Nhập mã OTP để hoàn tất đăng ký: <i><b>${otp}</b></i></p>`
+            }
+            const sendMailSuccess = await sendAutoMail(options)
+            if (!sendMailSuccess) return sendError(res, 'send OTP failed.')
+        }
+
+        password = await argon2.hash(password)
+        otp = await argon2.hash(otp)
+
         const newCustomer = await Customer.create({
             name,
             address,
@@ -57,15 +78,87 @@ authRoute.post('/register', async (req, res) => {
             customer_type
         })
 
-        password = await argon2.hash(password)
-        await User.create({
+        const newUser = await User.create({
             name, email, password, phone, role: newCustomer._id
         })
+
+        const customerVerifyOTP = await CustomerVerifyOTP.create({
+            otp_code: otp,
+            user: newUser._id
+        })
+        return sendSuccess(res, 'send otp code successfully.', { userId: customerVerifyOTP.user })
     } catch (error) {
         console.log(error)
         return sendServerError(res)
     }
-    return sendSuccess(res, 'user registered successfully.')
+})
+
+/**
+ * @route POST /api/auth/verify-otp
+ * @description customer verify otp
+ * @access public
+ */
+authRoute.post('/verify-otp', async (req, res) => {
+    const errors = userVerifyOTP(req.body)
+    if (errors)
+        return sendError(res, errors)
+
+    const { userId, otp } = req.body
+
+    try {
+        const verifyOTP = await CustomerVerifyOTP.findOne({
+            user: userId,
+            updatedAt: {
+                $gt: Date.now() - 60000
+            }
+        })
+        if (!verifyOTP)
+            return sendError(res, 'validate failed.')
+        else if(await argon2.verify(verifyOTP.otp_code, otp))
+        
+        await User.findByIdAndUpdate(userId, { isActive: true })
+        await CustomerVerifyOTP.remove({_id: verifyOTP._id})
+        return sendSuccess(res, 'user registered successfully.')
+    } catch (error) {
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
+/**
+ * @route POST /api/auth/update-otp
+ * @description customer update otp
+ * @access public
+ */
+ authRoute.post('/update-otp', async (req, res) => {
+    const errors = userUpdateOTP(req.body)
+    if (errors)
+        return sendError(res, errors)
+
+    let { userId, verify_op } = req.body
+
+    try {
+        const otp = await updateOTP(userId)
+        if (otp == null) {
+            return sendServerError(res)
+        }
+
+        if (verify_op === 'email') {
+            const user = await User.findById(userId)
+            const options = {
+                from: 'rairaikiri@gmail.com',
+                to: user.email,
+                subject: '[noreply-Logistics Webapp] Xác thực email',
+                html: `<p>Nhập mã OTP để hoàn tất đăng ký: <i><b>${otp}</b></i></p>`
+            }
+            const sendMailSuccess = await sendAutoMail(options)
+            if (!sendMailSuccess) return sendError(res, 'send OTP failed.')
+        }
+        return sendSuccess(res, 'update OTP successfully.')
+    } catch (error) {
+        console.log(error)
+        return sendServerError(res)
+    }
 })
 
 /**
@@ -84,11 +177,12 @@ authRoute.post('/login', async (req, res) => {
             $or: [
                 { email },
                 { phone }
-            ]
-        }).populate({path: 'role', model: Customer})
+            ],
+            isActive: true
+        }).populate({ path: 'role', model: Customer })
         let success = true
         if (!user) success = false
-        else if(!user.role)
+        else if (!user.role)
             return sendError(res, 'your role is not valid. access denied.', 403)
         else {
             const passwordValid = await argon2.verify(user.password, password)
@@ -96,7 +190,7 @@ authRoute.post('/login', async (req, res) => {
         }
 
         if (!success)
-            return sendError(res, 'email/phone or password is wrong.', 400)
+            return sendError(res, 'email/phone or password is wrong.')
 
         const userData = {
             id: user._id,
@@ -128,7 +222,7 @@ authRoute.post('/login', async (req, res) => {
  * @description staff login
  * @access public
  */
- authRoute.post('/staff-login', async (req, res) => {
+authRoute.post('/staff-login', async (req, res) => {
     const errors = userLoginValidate(req.body)
     if (errors)
         return sendError(res, errors)
@@ -140,10 +234,10 @@ authRoute.post('/login', async (req, res) => {
                 { email },
                 { phone }
             ]
-        }).populate({path: 'role', model: Staff})
+        }).populate({ path: 'role', model: Staff })
         let success = true
         if (!user) success = false
-        else if(!user.role)
+        else if (!user.role)
             return sendError(res, 'your role is not valid. access denied.', 403)
         else {
             const passwordValid = await argon2.verify(user.password, password)
@@ -169,7 +263,7 @@ authRoute.post('/login', async (req, res) => {
             }
         )
 
-        return sendSuccess(res, 'Login successfully.', {
+        return sendSuccess(res, 'login successfully.', {
             token: accessToken,
             user: userData
         })
