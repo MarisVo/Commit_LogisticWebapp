@@ -42,11 +42,12 @@ export const sendRequest = async (url, method, headers = [], postData = {}) => {
 }
 
 export const sendAutoMail = async (options) => {
+    const service = process.env.MAIL_SERVICE || 'gmail'
     const transport = NodeMailer.createTransport({
-        service: 'gmail',
+        service: service,
         auth: {
-            user: 'rairaikiri@gmail.com',
-            pass: 'xftkimgubilbnycn'
+            user: process.env.MAIL_HOST,
+            pass: process.env.PASS_MAIL_HOST
         }
     })
     try {

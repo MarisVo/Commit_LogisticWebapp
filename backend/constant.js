@@ -67,13 +67,17 @@ export const clearOTP = async () => {
     try {
         await CustomerVerifyOTP.deleteMany({
             updatedAt: {
-                $lt: Date.now() - 60000
+                $lt: Date.now() - OTP_EXPIRED
             }
         })
     } catch (error) {
         console.log(error)
     }
 }
+
+export const OTP_EXPIRED = 60000 // unit: milisecond
+
+export const JWT_EXPIRED = '24h'
 
 export const UTYPE = {
     STAFF: 'staff',

@@ -7,7 +7,7 @@ import { sendError, sendServerError, sendSuccess, sendAutoMail } from "../helper
 import Customer from "../model/Customer.js"
 import Staff from "../model/Staff.js"
 import CustomerVerifyOTP from '../model/CustomerVerifyOTP.js'
-import { createOTP, updateOTP } from '../constant.js'
+import { createOTP, JWT_EXPIRED, OTP_EXPIRED, updateOTP, VERIFY_OP } from '../constant.js'
 
 const authRoute = express.Router()
 
@@ -57,9 +57,9 @@ authRoute.post('/register', async (req, res) => {
             return sendServerError(res)
         }
 
-        if (verify_op === 'email') {
+        if (verify_op === VERIFY_OP.email) {
             const options = {
-                from: 'rairaikiri@gmail.com',
+                from: process.env.MAIL_HOST,
                 to: email,
                 subject: '[noreply-Logistics Webapp] Xác thực email',
                 html: `<p>Nhập mã OTP để hoàn tất đăng ký: <i><b>${otp}</b></i></p>`
@@ -109,7 +109,7 @@ authRoute.post('/verify-otp', async (req, res) => {
         const verifyOTP = await CustomerVerifyOTP.findOne({
             user: userId,
             updatedAt: {
-                $gt: Date.now() - 60000
+                $gt: Date.now() - OTP_EXPIRED
             }
         })
         if (!verifyOTP)
@@ -143,10 +143,10 @@ authRoute.post('/verify-otp', async (req, res) => {
             return sendServerError(res)
         }
 
-        if (verify_op === 'email') {
+        if (verify_op === VERIFY_OP.email) {
             const user = await User.findById(userId)
             const options = {
-                from: 'rairaikiri@gmail.com',
+                from: process.env.MAIL_HOST,
                 to: user.email,
                 subject: '[noreply-Logistics Webapp] Xác thực email',
                 html: `<p>Nhập mã OTP để hoàn tất đăng ký: <i><b>${otp}</b></i></p>`
@@ -204,7 +204,7 @@ authRoute.post('/login', async (req, res) => {
             },
             process.env.JWT_SECRET_KEY,
             {
-                expiresIn: "24h"
+                expiresIn: JWT_EXPIRED
             }
         )
 
@@ -259,7 +259,7 @@ authRoute.post('/staff-login', async (req, res) => {
             },
             process.env.JWT_SECRET_KEY,
             {
-                expiresIn: "24h"
+                expiresIn: JWT_EXPIRED
             }
         )
 
