@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken"
 import argon2 from "argon2"
 import User from "../model/User.js"
 import { userLoginValidate, customerRegisterValidate, userVerifyOTP, userUpdateOTP } from "../validation/auth.js"
-import { sendError, sendServerError, sendSuccess, sendAutoMail } from "../helper/client.js"
+import { sendError, sendServerError, sendSuccess, sendAutoMail, sendAutoSMS } from "../helper/client.js"
 import Customer from "../model/Customer.js"
 import Staff from "../model/Staff.js"
 import CustomerVerifyOTP from '../model/CustomerVerifyOTP.js'
@@ -66,6 +66,15 @@ authRoute.post('/register', async (req, res) => {
             }
             const sendMailSuccess = await sendAutoMail(options)
             if (!sendMailSuccess) return sendError(res, 'send OTP failed.')
+        }
+        else if(verify_op === VERIFY_OP.phone){
+            const options = {
+                from: process.env.PHONE_NUMBER,
+                to: phone,
+                body: `Nhập mã OTP để hoàn tất đăng ký: ${otp}`
+            }
+            const sendSMSSuccess = await sendAutoSMS(options)
+            if(!sendSMSSuccess) return sendError(res, 'send OTP failed.')
         }
 
         password = await argon2.hash(password)
@@ -153,6 +162,16 @@ authRoute.post('/verify-otp', async (req, res) => {
             }
             const sendMailSuccess = await sendAutoMail(options)
             if (!sendMailSuccess) return sendError(res, 'send OTP failed.')
+        }
+        else if(verify_op === VERIFY_OP.phone){
+            const user = await User.findById(userId)
+            const options = {
+                from: process.env.PHONE_NUMBER,
+                to: user.phone,
+                body: `Nhập mã OTP để hoàn tất đăng ký: ${otp}`
+            }
+            const sendSMSSuccess = await sendAutoSMS(options)
+            if(!sendSMSSuccess) return sendError(res, 'send OTP failed.')
         }
         return sendSuccess(res, 'update OTP successfully.')
     } catch (error) {

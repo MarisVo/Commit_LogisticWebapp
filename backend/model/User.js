@@ -11,13 +11,11 @@ const UserSchema = new Schema(
         },
         email: {
             type: String,
-            required: true,
             unique: true
         },
         phone: {
             type: String,
-            unique: true,
-            required: true
+            unique: true
         },
         role: {
             type: Schema.Types.ObjectId,
@@ -32,9 +30,17 @@ const UserSchema = new Schema(
     { timestamps: true }
 )
 
-UserSchema.pre('deleteOne', (next)=>{
-    Customer.remove({_id: this.role}).exec()
-    Staff.remove({_id: this.role}).exec()
+UserSchema.pre('validate', function (next) {
+    let hasProvider = false;
+    if ((this.email && this.email.length > 0) || (this.phone && this.phone.length > 0)){
+        hasProvider = true
+    }
+    return (hasProvider) ? next() : next(new Error('No Provider provided'));
+});
+
+UserSchema.pre('deleteOne', (next) => {
+    Customer.remove({ _id: this.role }).exec()
+    Staff.remove({ _id: this.role }).exec()
     next()
 })
 

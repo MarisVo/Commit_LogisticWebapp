@@ -16,8 +16,7 @@ export const customerRegisterValidate = data => {
     const error = new Error()
 
     error.isRequired(data.name, "name")
-    .isRequired(data.email, "email")
-    .isRequired(data.phone, 'phone')
+    .isOnlyRequiredOneOf([{field:data.email, name:'email'},{field:data.phone, name:'phone'}])
     .isRequired(data.password, "password")
     .isRequired(data.verify_password, "verify_password")
     .isRequired(data.verify_op, 'verify_op')
