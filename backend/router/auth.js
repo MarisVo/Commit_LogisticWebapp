@@ -45,8 +45,9 @@ authRoute.post('/register', async (req, res) => {
     try {
         const isExist = await User.exists({
             $or: [
-                { email },
-                { phone }
+                { email, phone },
+                { email, phone: null },
+                { phone, email: null }
             ]
         })
         if (isExist)
@@ -67,14 +68,14 @@ authRoute.post('/register', async (req, res) => {
             const sendMailSuccess = await sendAutoMail(options)
             if (!sendMailSuccess) return sendError(res, 'send OTP failed.')
         }
-        else if(verify_op === VERIFY_OP.phone){
+        else if (verify_op === VERIFY_OP.phone) {
             const options = {
                 from: process.env.PHONE_NUMBER,
                 to: phone,
                 body: `Nhập mã OTP để hoàn tất đăng ký: ${otp}`
             }
             const sendSMSSuccess = await sendAutoSMS(options)
-            if(!sendSMSSuccess) return sendError(res, 'send OTP failed.')
+            if (!sendSMSSuccess) return sendError(res, 'send OTP failed.')
         }
 
         password = await argon2.hash(password)
@@ -123,10 +124,10 @@ authRoute.post('/verify-otp', async (req, res) => {
         })
         if (!verifyOTP)
             return sendError(res, 'validate failed.')
-        else if(await argon2.verify(verifyOTP.otp_code, otp))
-        
-        await User.findByIdAndUpdate(userId, { isActive: true })
-        await CustomerVerifyOTP.remove({_id: verifyOTP._id})
+        else if (await argon2.verify(verifyOTP.otp_code, otp))
+
+            await User.findByIdAndUpdate(userId, { isActive: true })
+        await CustomerVerifyOTP.remove({ _id: verifyOTP._id })
         return sendSuccess(res, 'user registered successfully.')
     } catch (error) {
         console.log(error)
@@ -139,7 +140,7 @@ authRoute.post('/verify-otp', async (req, res) => {
  * @description customer update otp
  * @access public
  */
- authRoute.post('/update-otp', async (req, res) => {
+authRoute.post('/update-otp', async (req, res) => {
     const errors = userUpdateOTP(req.body)
     if (errors)
         return sendError(res, errors)
@@ -163,7 +164,7 @@ authRoute.post('/verify-otp', async (req, res) => {
             const sendMailSuccess = await sendAutoMail(options)
             if (!sendMailSuccess) return sendError(res, 'send OTP failed.')
         }
-        else if(verify_op === VERIFY_OP.phone){
+        else if (verify_op === VERIFY_OP.phone) {
             const user = await User.findById(userId)
             const options = {
                 from: process.env.PHONE_NUMBER,
@@ -171,7 +172,7 @@ authRoute.post('/verify-otp', async (req, res) => {
                 body: `Nhập mã OTP để hoàn tất đăng ký: ${otp}`
             }
             const sendSMSSuccess = await sendAutoSMS(options)
-            if(!sendSMSSuccess) return sendError(res, 'send OTP failed.')
+            if (!sendSMSSuccess) return sendError(res, 'send OTP failed.')
         }
         return sendSuccess(res, 'update OTP successfully.')
     } catch (error) {

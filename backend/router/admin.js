@@ -25,8 +25,9 @@ adminRoute.post('/auth/register',
         try {
             const isExist = await User.exists({
                 $or: [
-                    { email },
-                    { phone }
+                    { email, phone },
+                    { email, phone: null },
+                    { phone, email: null }
                 ]
             })
             if (isExist)

@@ -15,7 +15,7 @@ const PriceSchema = new Schema(
                 },
                 // prices is an array include 4 elements, which is corresponding with price of each RETURN_ZONE
                 prices: [{
-                    type: String,
+                    type: Number,
                     required: true
                 }]
             }]
@@ -32,7 +32,7 @@ const PriceSchema = new Schema(
                 },
                 // prices is an array include 4 elements, which is corresponding with price of each RETURN_ZONE
                 prices: [{
-                    type: String,
+                    type: Number,
                     required: true
                 }]
             }]
@@ -49,7 +49,7 @@ const PriceSchema = new Schema(
                 },
                 // prices is an array include 4 elements, which is corresponding with price of each RETURN_ZONE
                 prices: [{
-                    type: String,
+                    type: Number,
                     required: true
                 }]
             }]

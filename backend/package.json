@@ -1,7 +1,7 @@
 {
   "name": "back-end",
   "version": "1.0.0",
-  "description": "Rest API for web app sport manager",
+  "description": "Rest API for web app logistics manager",
   "main": "index.js",
   "type": "module",
   "scripts": {
