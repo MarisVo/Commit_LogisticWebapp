@@ -1,14 +1,14 @@
 import mongoose from "mongoose"
-import { RETURN_ZONE } from "../constant"
+import { RETURN_ZONE } from "../constant.js"
 const { Schema } = mongoose
 
 const DistanceSchema = new Schema(
     {
-        provinceA: {
+        fromProvince: {
             type: String,
             required: true
         },
-        provinceB: {
+        toProvince: {
             type: String,
             required: true
         },

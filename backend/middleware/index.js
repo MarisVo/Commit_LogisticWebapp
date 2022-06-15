@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken"
-import User from "../model/User.js"
 import { mkdir } from "fs"
 import { sendError, sendServerError } from "../helper/client.js"
 
@@ -21,9 +20,11 @@ export const createUploadDir = (req, res, next) => {
  * Authorised : Bearer token
  */
 export const verifyToken = async (req, res, next) => {
-    const data = req.headers['authorization']
-    const token = data?.split(" ")[1];
     try {
+        const data = req.headers['authorization']
+        const token = data?.split(" ")[1];
+        if(!token) return sendError(res, 'jwt must be provided.', 401)
+        
         const { payload } = jwt.verify(token, process.env.JWT_SECRET_KEY, {
             complete: true
         })
@@ -34,6 +35,7 @@ export const verifyToken = async (req, res, next) => {
         next()
 
     } catch (error) {
+        console.log(error)
         return sendServerError(res)
     }
 }

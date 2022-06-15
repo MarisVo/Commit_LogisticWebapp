@@ -17,9 +17,9 @@ const PriceSchema = new Schema(
                 prices: [{
                     type: Number,
                     required: true
-                }]
-            },
-            { _id: false }
+                }],
+                _id: false
+            }
             ]
         },
         uM3: {
@@ -36,7 +36,8 @@ const PriceSchema = new Schema(
                 prices: [{
                     type: Number,
                     required: true
-                }]
+                }],
+                _id: false
             }]
         },
         uTON: {
@@ -53,7 +54,8 @@ const PriceSchema = new Schema(
                 prices: [{
                     type: Number,
                     required: true
-                }]
+                }],
+                _id: false
             }]
         }
     },

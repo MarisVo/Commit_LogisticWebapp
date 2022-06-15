@@ -7,8 +7,9 @@ import Staff from "../model/Staff.js"
 import { verifyAdmin, verifyToken } from "../middleware/index.js"
 import { RETURN_ZONE } from "../constant.js"
 import Price from "../model/Price.js"
-import { createPriceValidate, createServiceValidate } from "../validation/service.js"
+import { createDistanceValidate, createPriceValidate, createServiceValidate } from "../validation/service.js"
 import DeliveryService from "../model/DeliveryService.js"
+import Distance from '../model/Distance.js'
 
 const adminRoute = express.Router()
 
@@ -89,6 +90,39 @@ adminRoute.post('/service/:serviceId/price/create',
             return sendSuccess(res, 'create price table successfully.')
         }
         catch (error) {
+            return sendServerError(res)
+        }
+    })
+
+/**
+ * @route POST /api/admin/service/:serviceId/distance/create
+ * @description create delivery road for delivery service
+ * @access private
+ */
+adminRoute.post('/service/:serviceId/distance/create',
+    verifyToken,
+    verifyAdmin,
+    async (req, res) => {
+        const errors = createDistanceValidate(req.body)
+        if (errors)
+            return sendError(res, errors)
+
+        const { fromProvince, toProvince, zonecode } = req.body
+
+        try {
+            const service = await DeliveryService.exists({ _id: req.params.serviceId })
+            if (service) {
+                const distance = await Distance.create({
+                    fromProvince,
+                    toProvince,
+                    zonecode
+                })
+                await DeliveryService.findOneAndUpdate({ _id: service._id }, { $push: { distances: distance } })
+            }
+            return sendSuccess(res, 'create distance successfully.')
+        }
+        catch (error) {
+            console.log(error)
             return sendServerError(res)
         }
     })

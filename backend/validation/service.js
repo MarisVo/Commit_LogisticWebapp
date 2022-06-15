@@ -19,3 +19,13 @@ export const createServiceValidate = data => {
     
     return error.get()
 }
+
+export const createDistanceValidate = data => {
+    const error = new Error()
+
+    error.isRequired(data.fromProvince, 'fromProvince')
+    .isRequired(data.toProvince, 'toProvince')
+    .isRequired(data.zonecode, 'zonecode')
+    
+    return error.get()
+}
