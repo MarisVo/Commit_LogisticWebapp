@@ -16,6 +16,10 @@ export default class Error
         return this
     }
 
+    /**
+     * @param lstFieldAndName : list of objects include field and name key
+     * @returns this
+     */
     isOnlyRequiredOneOf(lstFieldAndName){
         if(!lstFieldAndName.some(ele=>ele.field != null)){
             let errorlog = ''
@@ -29,6 +33,11 @@ export default class Error
         return this
     }
 
+    /**
+     * @param field: field to validate
+     * @param range: range of values which field belong to
+     * @returns this
+     */    
     isInRange(field, range) {
         if(!Object.values(range).includes(field))
             this.errors.push(`system do not understand value of ${field}.`)

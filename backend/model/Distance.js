@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import { RETURN_ZONE } from "../constant"
 const { Schema } = mongoose
 
 const DistanceSchema = new Schema(
@@ -13,7 +14,7 @@ const DistanceSchema = new Schema(
         },
         zonecode: {
             type: String,
-            enum: ['A', 'B', 'C', 'F'],
+            enum: Object.keys(RETURN_ZONE),
             required: true
         },
         distance: {

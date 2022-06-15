@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import { CUSTOMER, CUSTOMER_RANK } from "../constant.js"
 const { Schema } = mongoose
 
 const CustomerSchema = new Schema(
@@ -17,8 +18,8 @@ const CustomerSchema = new Schema(
         },
         customer_type: {
             type: String,
-            enum: ['business', 'passers', 'intermediary'],
-            default: 'passers',
+            enum: Object.values(CUSTOMER),
+            default: CUSTOMER.PASSERS,
             required: true
         },
         rank_passers: {
@@ -26,12 +27,12 @@ const CustomerSchema = new Schema(
                 point: Number,
                 level: {
                     type: String,
-                    enum: ['titan', 'gold', 'silver', 'bronze', 'unrank']
+                    enum: Object.values(CUSTOMER_RANK)
                 }
             },
             default: {
                 point: 0,
-                level: 'unrank'
+                level: CUSTOMER_RANK.UNRANK
             }
         },
         companyTaxcode_business: {

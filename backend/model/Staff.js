@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import { STAFF } from "../constant.js"
 const { Schema } = mongoose
 
 const StaffSchema = new Schema(
@@ -9,9 +10,9 @@ const StaffSchema = new Schema(
         },
         staff_type: {
             type: String,
-            enum: ['admin', 'driver', 'shipper', 'staff'],
+            enum: Object.values(STAFF),
             required: true,
-            default: 'staff'
+            default: STAFF.STAFF
         }
     },
     { timestamps: true }

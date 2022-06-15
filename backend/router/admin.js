@@ -5,8 +5,13 @@ import { staffRegisterValidate } from "../validation/auth.js"
 import { sendError, sendServerError, sendSuccess } from "../helper/client.js"
 import Staff from "../model/Staff.js"
 import { verifyAdmin, verifyToken } from "../middleware/index.js"
+import { RETURN_ZONE } from "../constant.js"
+import Price from "../model/Price.js"
+import { createPriceValidate, createServiceValidate } from "../validation/service.js"
+import DeliveryService from "../model/DeliveryService.js"
 
 const adminRoute = express.Router()
+
 /**
  * @route POST /api/admin/auth/register
  * @description register staff account
@@ -46,6 +51,74 @@ adminRoute.post('/auth/register',
             return sendServerError(res)
         }
         return sendSuccess(res, 'user registered successfully.')
+    })
+
+/**
+ * @route POST /api/admin/service/:serviceId/price/create
+ * @description create price table for delivery service
+ * @access private
+ */
+adminRoute.post('/service/:serviceId/price/create',
+    verifyToken,
+    verifyAdmin,
+    async (req, res) => {
+        const errors = createPriceValidate(req.body)
+        if (errors)
+            return sendError(res, errors)
+
+        const validateTypesOfData = Object.values(req.body).every(value => {
+            return Array.isArray(value) && value.every(v => {
+                return v.hasOwnProperty('next') && v.hasOwnProperty('sidestep') && v.hasOwnProperty('prices') && Array.isArray(v.prices) && v.prices.length === Object.keys(RETURN_ZONE).length
+            })
+        })
+        if (!validateTypesOfData)
+            return sendError(res, 'request\'s body is incorrect.')
+
+        const { kg, ton, m3 } = req.body
+
+        try {
+            const service = await DeliveryService.exists({ _id: req.params.serviceId })
+            if (service) {
+                const price = await Price.create({
+                    uKG: kg,
+                    uM3: m3,
+                    uTON: ton
+                })
+                await DeliveryService.findOneAndUpdate({ _id: service._id }, { price: price._id })
+            }
+            return sendSuccess(res, 'create price table successfully.')
+        }
+        catch (error) {
+            return sendServerError(res)
+        }
+    })
+
+/**
+ * @route POST /api/admin/service/create
+ * @description create new delivery service
+ * @access private
+ */
+adminRoute.post('/service/create',
+    verifyToken,
+    verifyAdmin,
+    async (req, res) => {
+        const errors = createServiceValidate(req.body)
+        if (errors)
+            return sendError(res, errors)
+
+        const { name, subDetail, target } = req.body
+
+        try {
+            await DeliveryService.create({
+                name,
+                sub_detail: subDetail,
+                target
+            })
+            return sendSuccess(res, 'create new service successfully.')
+        }
+        catch (error) {
+            return sendServerError(res)
+        }
     })
 
 export default adminRoute

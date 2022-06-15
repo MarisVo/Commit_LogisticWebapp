@@ -7,7 +7,7 @@ const PriceSchema = new Schema(
             type: [{
                 next: {
                     type: Boolean,
-                    default: false
+                    required: true
                 },
                 sidestep: {
                     type: Number,
@@ -18,7 +18,9 @@ const PriceSchema = new Schema(
                     type: Number,
                     required: true
                 }]
-            }]
+            },
+            { _id: false }
+            ]
         },
         uM3: {
             type: [{

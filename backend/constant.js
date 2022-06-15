@@ -115,7 +115,7 @@ export const RETURN_ZONE = {
     A: 'provincial',
     B: '<100Km',
     C: '100-300Km',
-    D: '>300Km'
+    F: '>300Km'
 }
 
 export const VERIFY_OP = {

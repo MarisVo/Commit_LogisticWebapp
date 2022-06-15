@@ -6,7 +6,8 @@ const DeliveryServiceSchema = new Schema(
     {
         name: {
             type: String,
-            required: true
+            required: true,
+            unique: true
         },
         sub_detail: {
             type: String,
@@ -56,7 +57,7 @@ const DeliveryServiceSchema = new Schema(
         ],
         price: {
             type: Schema.Types.ObjectId,
-            ref: 'prices'
+            ref: 'prices',
         },
         distances: [
             {
