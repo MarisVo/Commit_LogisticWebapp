@@ -79,7 +79,7 @@ trackingRoute.get('/order/:lstOrderId', async (req, res) => {
 })
 
 /**
- * @route GET /api/warehouse
+ * @route GET /api/tracking/warehouse
  * @description get list of warehouses by province and district query
  * @access public
  */
@@ -91,6 +91,27 @@ trackingRoute.get('/warehouse', async (req, res) => {
             district
         })
         return sendSuccess(res, 'request successfully', warehouses)
+    } catch (error) {
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
+/**
+ * @route GET /api/tracking/service/:serviceId
+ * @description get pricelist of service by province
+ * @access public
+ */
+trackingRoute.get('/service/:serviceId', async (req, res) => {
+    const { province } = req.query
+    const serviceId = req.params.serviceId
+    try {
+        const service = await DeliveryService.aggregate([
+            { $project: {  price_files: { $arrayElemAt: ['$price_files', -1] } } },
+            { $match: { 'price_files.province': province } }
+        ])
+        if (!service) return sendError(res, 'not exist.')
+        return sendSuccess(res, 'request successfully', service)
     } catch (error) {
         console.log(error)
         return sendServerError(res)

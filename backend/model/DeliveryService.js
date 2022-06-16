@@ -64,6 +64,15 @@ const DeliveryServiceSchema = new Schema(
                 type: Schema.Types.ObjectId,
                 ref: 'distances'
             }
+        ],
+        price_files: [
+            {
+                province: {
+                    type: String,
+                    required: true
+                },
+                file: String,
+            }
         ]
     },
     { timestamps: true }

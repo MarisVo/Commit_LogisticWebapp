@@ -29,3 +29,11 @@ export const createDistanceValidate = data => {
     
     return error.get()
 }
+
+export const uploadPricelistValidate = data => {
+    const error = new Error()
+
+    error.isRequired(data.province, 'province')
+    
+    return error.get()
+}

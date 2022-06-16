@@ -4,14 +4,15 @@ import User from "../model/User.js"
 import { staffRegisterValidate } from "../validation/auth.js"
 import { sendError, sendRequest, sendServerError, sendSuccess } from "../helper/client.js"
 import Staff from "../model/Staff.js"
-import { verifyAdmin, verifyToken } from "../middleware/index.js"
-import { RETURN_ZONE } from "../constant.js"
+import { createUploadDir, verifyAdmin, verifyToken } from "../middleware/index.js"
+import { handleFilePath, RETURN_ZONE, upload } from "../constant.js"
 import Price from "../model/Price.js"
-import { createDistanceValidate, createPriceValidate, createServiceValidate } from "../validation/service.js"
+import { createDistanceValidate, createPriceValidate, createServiceValidate, uploadPricelistValidate } from "../validation/service.js"
 import DeliveryService from "../model/DeliveryService.js"
 import Distance from '../model/Distance.js'
 import { createWarehouseValidate } from "../validation/warehouse.js"
 import Warehouse from "../model/Warehouse.js"
+import { unlinkSync } from "fs"
 
 const adminRoute = express.Router()
 
@@ -97,6 +98,45 @@ adminRoute.post('/service/:serviceId/price/create',
     })
 
 /**
+ * @route POST /api/admin/service/:serviceId/pricelist
+ * @description upload price files for service
+ * @access private
+ */
+adminRoute.post('/service/:serviceId/pricelist',
+    //  verifyToken,
+    //  verifyAdmin,
+    createUploadDir,
+    upload.single('pricelist'),
+    async (req, res) => {
+        const errors = uploadPricelistValidate(req.body)
+        if (errors) {
+            if (req.file) unlinkSync(req.file.path)
+            return sendError(res, errors)
+        }
+        const file = handleFilePath(req.file)
+
+        const { province } = req.body
+
+        try {
+            const isExist = await DeliveryService.exists({ _id: req.params.serviceId })
+            if(isExist){
+                await DeliveryService.updateOne({
+                    _id: isExist._id
+                },
+                {
+                    $push: { price_files: {province, file} }
+                })
+                return sendSuccess(res, 'upload pricelist file successfully')
+            }
+            if (req.file) unlinkSync(req.file.path)
+            return sendError(res, "product's name had existed.")
+        } catch (error) {
+            if (req.file) unlinkSync(req.file.path)
+            return sendServerError(res)
+        }
+    })
+
+/**
  * @route POST /api/admin/service/:serviceId/distance/create
  * @description create delivery road for delivery service
  * @access private
@@ -164,8 +204,8 @@ adminRoute.post('/service/create',
  * @access private
  */
 adminRoute.post('/warehouse/create',
-     verifyToken,
-     verifyAdmin,
+    verifyToken,
+    verifyAdmin,
     async (req, res) => {
         const errors = createWarehouseValidate(req.body)
         if (errors)
@@ -174,13 +214,13 @@ adminRoute.post('/warehouse/create',
         const { name, phone, street, ward, district, province } = req.body
 
         try {
-            const isExist = await Warehouse.exists({name})
-            if(isExist) return sendError(res, 'the warehouse\'s name is existed.')
+            const isExist = await Warehouse.exists({ name })
+            if (isExist) return sendError(res, 'the warehouse\'s name is existed.')
 
             const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${street},${ward},${district},${province}`
             const result = await sendRequest(url, 'GET')
-            if(result.status === 200 && result.data.length > 0){
-                const {lon, lat} = result.data[0]
+            if (result.status === 200 && result.data.length > 0) {
+                const { lon, lat } = result.data[0]
                 await Warehouse.create({
                     name, phone, street, ward, district, province, lon, lat
                 })
