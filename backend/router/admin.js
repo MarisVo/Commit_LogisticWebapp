@@ -2,7 +2,7 @@ import express from "express"
 import argon2 from "argon2"
 import User from "../model/User.js"
 import { staffRegisterValidate } from "../validation/auth.js"
-import { sendError, sendServerError, sendSuccess } from "../helper/client.js"
+import { sendError, sendRequest, sendServerError, sendSuccess } from "../helper/client.js"
 import Staff from "../model/Staff.js"
 import { verifyAdmin, verifyToken } from "../middleware/index.js"
 import { RETURN_ZONE } from "../constant.js"
@@ -10,6 +10,8 @@ import Price from "../model/Price.js"
 import { createDistanceValidate, createPriceValidate, createServiceValidate } from "../validation/service.js"
 import DeliveryService from "../model/DeliveryService.js"
 import Distance from '../model/Distance.js'
+import { createWarehouseValidate } from "../validation/warehouse.js"
+import Warehouse from "../model/Warehouse.js"
 
 const adminRoute = express.Router()
 
@@ -151,8 +153,46 @@ adminRoute.post('/service/create',
             return sendSuccess(res, 'create new service successfully.')
         }
         catch (error) {
+            console.log(error)
             return sendServerError(res)
         }
     })
+
+/**
+ * @route POST /api/admin/warehouse/create
+ * @description create new warehouse
+ * @access private
+ */
+adminRoute.post('/warehouse/create',
+     verifyToken,
+     verifyAdmin,
+    async (req, res) => {
+        const errors = createWarehouseValidate(req.body)
+        if (errors)
+            return sendError(res, errors)
+
+        const { name, phone, street, ward, district, province } = req.body
+
+        try {
+            const isExist = await Warehouse.exists({name})
+            if(isExist) return sendError(res, 'the warehouse\'s name is existed.')
+
+            const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${street},${ward},${district},${province}`
+            const result = await sendRequest(url, 'GET')
+            if(result.status === 200 && result.data.length > 0){
+                const {lon, lat} = result.data[0]
+                await Warehouse.create({
+                    name, phone, street, ward, district, province, lon, lat
+                })
+                return sendSuccess(res, 'create new warehouse successfully.')
+            }
+            return sendError(res, 'supplied address does not exist.')
+        }
+        catch (error) {
+            console.log(error)
+            return sendServerError(res)
+        }
+    })
+
 
 export default adminRoute

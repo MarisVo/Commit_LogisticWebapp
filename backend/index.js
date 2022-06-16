@@ -5,7 +5,8 @@ import cors from "cors"
 
 import authRoute from "./router/auth.js"
 import adminRoute from "./router/admin.js"
-import lookupRoute from "./router/lookup.js"
+import trackingRoute from "./router/tracking.js"
+import orderRoute from "./router/order.js"
 dotenv.config()
 
 /**
@@ -24,7 +25,8 @@ app.use(cors())
 
 app.use('/api/admin', adminRoute)
 app.use('/api/auth', authRoute)
-app.use('/api/look-up', lookupRoute)
+app.use('/api/tracking', trackingRoute)
+app.use('/api/order', orderRoute)
 
 app.listen(PORT, () => {
     console.log(`Server start at port: ${PORT}`)

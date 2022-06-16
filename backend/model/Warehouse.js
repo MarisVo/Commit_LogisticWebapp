@@ -10,12 +10,29 @@ const WarehouseSchema = new Schema(
         },
         phone: {
             type: String,
-            required: true,
-            unique: true
+            required: true
         },
-        address: {
+        street: {
             type: String,
             required: true
+        },
+        ward: {
+            type: String,
+            required: true
+        },
+        district: {
+            type: String,
+            required: true
+        },
+        province: {
+            type: String,
+            required: true
+        },
+        lon: {
+            type: String,
+        },
+        lat: {
+            type: String,
         }
     },
     { timestamps: true }

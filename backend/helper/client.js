@@ -1,6 +1,6 @@
-import { curly } from "node-libcurl"
 import NodeMailer from "nodemailer"
 import twilio from 'twilio'
+import axios from 'axios'
 
 export const sendSuccess = (res, message, data = null) => {
     let responseJson = {
@@ -33,13 +33,15 @@ export const sendServerError = res =>
  */
 export const sendRequest = async (url, method, headers = [], postData = {}) => {
     const dataJSON = JSON.stringify(postData)
+    const encodedURI = encodeURI(url);
     const config = {
-        customRequest: method,
-        httpHeader: headers,
-        postFields: dataJSON
+        url: encodedURI,
+        method: method,
+        headers: headers,
+        data: dataJSON
     }
-    const { statusCode, data } = await curly(url, config)
-    return { statusCode, data }
+    const { status, data } = await axios(config)
+    return { status, data }
 }
 
 export const sendAutoMail = async (options) => {

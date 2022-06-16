@@ -1,9 +1,14 @@
 import mongoose from "mongoose"
-import { PRODUCT_UNIT } from "../constant"
+import { PRODUCT_UNIT } from "../constant.js"
 const { Schema } = mongoose
 
 const OrderSchema = new Schema(
     {
+        orderId: {
+            type: String,
+            unique: true,
+            required: true
+        },
         service: {
             type: Schema.Types.ObjectId,
             ref: 'delivery_services'

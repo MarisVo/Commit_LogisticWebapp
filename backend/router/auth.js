@@ -7,7 +7,8 @@ import { sendError, sendServerError, sendSuccess, sendAutoMail, sendAutoSMS } fr
 import Customer from "../model/Customer.js"
 import Staff from "../model/Staff.js"
 import CustomerVerifyOTP from '../model/CustomerVerifyOTP.js'
-import { createOTP, JWT_EXPIRED, OTP_EXPIRED, updateOTP, VERIFY_OP } from '../constant.js'
+import { JWT_EXPIRED, OTP_EXPIRED, VERIFY_OP } from '../constant.js'
+import { createOTP, updateOTP } from '../service/otp.js'
 
 const authRoute = express.Router()
 
