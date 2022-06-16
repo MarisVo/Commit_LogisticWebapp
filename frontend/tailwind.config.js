@@ -4,10 +4,33 @@ module.exports = {
   ],
   theme: {
     extend: {
-      screens:{
+      screens: {
         'custom-screen': '1415px',
       }
     },
   },
-  plugins: [],
+  corePlugins: {
+    container: false
+  },
+  plugins: [
+    function ({ addComponents }) {
+      addComponents({
+        '.container': {
+          maxWidth: '100%',
+          '@media (min-width: 640px)': {
+            maxWidth: '640px',
+          },
+          '@media (min-width: 768px)': {
+            maxWidth: '768px',
+          },
+          '@media (min-width: 1024px)': {
+            maxWidth: '960px',
+          },
+          '@media (min-width: 1280px)': {
+            maxWidth: '1140px',
+          },
+        }
+      })
+    }
+  ],
 }
