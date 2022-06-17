@@ -126,7 +126,6 @@ authRoute.post('/verify-otp', async (req, res) => {
         if (!verifyOTP)
             return sendError(res, 'validate failed.')
         else if (await argon2.verify(verifyOTP.otp_code, otp))
-
             await User.findByIdAndUpdate(userId, { isActive: true })
         await CustomerVerifyOTP.remove({ _id: verifyOTP._id })
         return sendSuccess(res, 'user registered successfully.')
@@ -193,15 +192,20 @@ authRoute.post('/login', async (req, res) => {
         return sendError(res, errors)
 
     let { email, phone, password } = req.body
+    console.log(req.body)
     try {
-        const user = await User.findOne({
-            $or: [
-                { email },
-                { phone }
-            ],
+        let user = await User.findOne({
+            email,
             isActive: true
         }).populate({ path: 'role', model: Customer })
+        if(!user){
+            user = await User.findOne({
+                phone,
+                isActive: true
+            }).populate({ path: 'role', model: Customer })
+        }
         let success = true
+        console.log(user)
         if (!user) success = false
         else if (!user.role)
             return sendError(res, 'your role is not valid. access denied.', 403)
@@ -234,6 +238,7 @@ authRoute.post('/login', async (req, res) => {
             user: userData
         })
     } catch (error) {
+        console.log(error)
         return sendServerError(res)
     }
 })
@@ -250,12 +255,16 @@ authRoute.post('/staff-login', async (req, res) => {
 
     let { email, phone, password } = req.body
     try {
-        const user = await User.findOne({
-            $or: [
-                { email },
-                { phone }
-            ]
+        let user = await User.findOne({
+            email,
+            isActive: true
         }).populate({ path: 'role', model: Staff })
+        if(!user){
+            user = await User.findOne({
+                phone,
+                isActive: true
+            }).populate({ path: 'role', model: Staff })
+        }
         let success = true
         if (!user) success = false
         else if (!user.role)

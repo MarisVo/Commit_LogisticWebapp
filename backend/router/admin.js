@@ -13,6 +13,7 @@ import Distance from '../model/Distance.js'
 import { createWarehouseValidate } from "../validation/warehouse.js"
 import Warehouse from "../model/Warehouse.js"
 import { unlinkSync } from "fs"
+import Customer from "../model/Customer.js"
 
 const adminRoute = express.Router()
 
@@ -55,6 +56,47 @@ adminRoute.post('/auth/register',
             return sendServerError(res)
         }
         return sendSuccess(res, 'user registered successfully.')
+    })
+
+/**
+ * @route POST /api/admin/auth/unaccepted-register
+ * @description get list of unaccepted registers of business account
+ * @access private
+ */
+adminRoute.get('/auth/unaccepted-register',
+    verifyToken,
+    verifyAdmin,
+    async (req, res) => {
+        try {
+            const businesses = await User.find({ isActive: true })
+                .populate({ path: 'role', model: Customer })
+            const result = businesses.filter(value => {
+                return value.role && value.role.customer_type === 'business'
+            })
+            return sendSuccess(res, 'success', result)
+        } catch (error) {
+            console.log(error)
+            return sendServerError(res)
+        }
+    })
+
+/**
+ * @route POST /api/admin/auth/accept-register/:customerId
+ * @description accept active the business's register
+ * @access private
+ */
+adminRoute.post('/auth/accept-register/:customerId',
+    verifyToken,
+    verifyAdmin,
+    async (req, res) => {
+        try {
+            const business = await Customer.findOneAndUpdate({ _id: req.params.customerId, accepted_business: false }, { accepted_business: true })
+            if (!business) return sendError(res, 'this customer does not exist or is accepted register.')
+            sendSuccess(res, 'request successfully.')
+        } catch (error) {
+            console.log(error)
+            return sendServerError(res)
+        }
     })
 
 /**
@@ -103,8 +145,8 @@ adminRoute.post('/service/:serviceId/price/create',
  * @access private
  */
 adminRoute.post('/service/:serviceId/pricelist',
-    //  verifyToken,
-    //  verifyAdmin,
+    verifyToken,
+    verifyAdmin,
     createUploadDir,
     upload.single('pricelist'),
     async (req, res) => {
@@ -119,13 +161,13 @@ adminRoute.post('/service/:serviceId/pricelist',
 
         try {
             const isExist = await DeliveryService.exists({ _id: req.params.serviceId })
-            if(isExist){
+            if (isExist) {
                 await DeliveryService.updateOne({
                     _id: isExist._id
                 },
-                {
-                    $push: { price_files: {province, file} }
-                })
+                    {
+                        $push: { price_files: { province, file } }
+                    })
                 return sendSuccess(res, 'upload pricelist file successfully')
             }
             if (req.file) unlinkSync(req.file.path)
