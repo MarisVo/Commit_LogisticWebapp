@@ -1,11 +1,27 @@
 import React from "react";
 import "./App.css";
 import "react-router-dom";
-import Home from './pages/home/Home'
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import { Home, About, Commit, Tracking, Service, StandardService, FastService } from "./pages/pageExport"
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 const App = () => {
   return (
-    <Home />
+    <Router>
+      <div className="wrapper">
+        <Header />
+        <Route path="/" exact component={Home} />
+        <Route path="/about" component={About} />
+        <Route path="/commit" component={Commit} />
+        <Route path="/tracking" component={Tracking} />
+        <Route path="/service" component={Service} />
+        <Route path="/standard-service" component={StandardService} />
+        <Route path="/fast-service" component={FastService} />
+
+        <Footer />
+      </div>
+    </Router>
   )
 }
 
