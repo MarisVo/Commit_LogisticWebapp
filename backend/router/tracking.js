@@ -103,15 +103,12 @@ trackingRoute.get('/warehouse', async (req, res) => {
  * @access public
  */
 trackingRoute.get('/service/:serviceId', async (req, res) => {
-    const { province } = req.query
     const serviceId = req.params.serviceId
     try {
-        const service = await DeliveryService.aggregate([
-            { $project: {  price_files: { $arrayElemAt: ['$price_files', -1] } } },
-            { $match: { 'price_files.province': province } }
-        ])
-        if (!service) return sendError(res, 'not exist.')
-        return sendSuccess(res, 'request successfully', service)
+        const service = await DeliveryService.findById(serviceId).select({ _id: 1, name: 1, sub_detail: 1, price_files: 1 })
+        if (!service || service.price_files.length === 0) return sendError(res, 'not exist.')
+        const serviceWithUniquePriceFiles = [...new Map(service.price_files.map(item => [item.province, item])).values()]
+        return sendSuccess(res, 'request successfully', serviceWithUniquePriceFiles)
     } catch (error) {
         console.log(error)
         return sendServerError(res)
