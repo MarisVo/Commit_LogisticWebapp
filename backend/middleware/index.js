@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken"
-import User from "../model/User.js"
 import { mkdir } from "fs"
 import { sendError, sendServerError } from "../helper/client.js"
 
@@ -21,24 +20,28 @@ export const createUploadDir = (req, res, next) => {
  * Authorised : Bearer token
  */
 export const verifyToken = async (req, res, next) => {
-    const data = req.headers['authorization']
-    const token = data?.split(" ")[1];
     try {
+        const data = req.headers['authorization']
+        const token = data?.split(" ")[1];
+        if(!token) return sendError(res, 'jwt must be provided.', 401)
+        
         const { payload } = jwt.verify(token, process.env.JWT_SECRET_KEY, {
             complete: true
         })
-        const user = await User.findById(payload.user.id)
         
-        //  Forbidden
-        if(!user) return sendError(res, "Unauthorized.", 401)
+        if(!payload.user) return sendError(res, "Unauthorized.", 401)
 
-        req.userId = user._id
-        req.user_type = user.user_type
-        req.name = user.name
+        req.user = payload.user
         next()
 
     } catch (error) {
         console.log(error)
         return sendServerError(res)
     }
+}
+
+export const verifyAdmin = async (req, res, next) => {
+    if (req.user.role.staff_type !== 'admin')
+        sendError(res, 'Unauthorized.',401)
+    next()    
 }
