@@ -6,7 +6,7 @@ const apiDemo = [
         title: 'Lịch sự khi tiếp đón khách hàng, phục vụ văn minh, tuân thủ nghiêm ngặt đạo đức nghề nghiệp, phục vụ chu đáo, kinh doanh trung thực, không lừa dối khách hàng.'
     },
     {
-        url: 'https://jtexpress.vn/themes/jtexpress/assets/images/camket1.png',
+        url: 'https://jtexpress.vn/themes/jtexpress/assets/images/camket2.png',
         head: 'phạm vi giao nhận',
         title: 'Phạm vi phục vụ thực tế phù hợp với phạm vi phục vụ mà Tổng Công ty quy định. Công ty khuyến khích phạm vi chuyển phát thực tế rộng hơn phạm vi quy định, nhưng tuyệt đối không cho phép nhỏ hơn phạm quy Tổng Công ty quy định.'
     },
