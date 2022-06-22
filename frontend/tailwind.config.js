@@ -2,12 +2,20 @@ module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
+  important: true
+  ,
   theme: {
     extend: {
       screens: {
         'custom-screen': '1415px',
+      },
+      colors: {
+        'primary': '#F0B90B',
+        'border_color': '#fcd535',
+        'button_color': '#e5a663'
       }
     },
+
   },
   corePlugins: {
     container: false
@@ -31,6 +39,7 @@ module.exports = {
           },
         }
       })
-    }
+    },
+    require('@tailwindcss/line-clamp'),
   ],
 }

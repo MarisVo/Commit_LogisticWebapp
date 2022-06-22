@@ -41,11 +41,11 @@ function Commit() {
             <div className="flex flex-col lg:flex-row mx-4 lg:mx-0 gap-x-4 my-10">
                 <div className='flex-1'>
                     <img src="https://jtexpress.vn/themes/jtexpress/assets/images/dd-about-us.png" className='w-[76px] h-[63px] hidden lg:block' />
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-y-10 gap-x-4 mt-8 mb-4">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-y-10 gap-x-4 mt-8 mb-4 rounded-2xl">
                         {apiDemo.map((api, key) => (
-                            <div key={key}className="">
+                            <div key={key} className="p-3 bg-primary even:bg-opacity-40 lg:min-h-[350px] rounded-xl">
                                 <img src={api.url} className="mb-7" />
-                                <div className="uppercase text-lg font-black my-3">{api.head}</div>
+                                <div className="uppercase text-lg font-black my-3 text-blue-800 ">{api.head}</div>
                                 <div>{api.title}</div>
                             </div>)
                         )}
@@ -56,7 +56,7 @@ function Commit() {
                         <img src="https://jtexpress.vn/themes/jtexpress/assets/images/dd-about-us.png" className='w-[76px] h-[63px] hidden lg:block rotate-180' />
                     </div>
                 </div>
-                <a href="#" className="  lg:w-[240px]">
+                <a href="#" className=" flex  items-center lg:w-[240px]">
                     <img src="https://jtexpress.vn/storage/app/uploads/public/626/a18/377/626a183772daf645215340.png" className='w-full h-auto object-cover ' />
                 </a>
             </div>

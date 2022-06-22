@@ -1,6 +1,5 @@
 import logoJT from '../assets/icons/logo-J&T.svg'
 import { FaChevronDown, FaBars } from 'react-icons/fa'
-import styled from 'styled-components'
 import { Link } from "react-router-dom"
 import { useState } from 'react'
 import { Menu } from 'antd'
@@ -14,7 +13,7 @@ function getItem(label, key, children) {
     };
 }
 const items = [
-    getItem(<Link to="/">Trang chủ</Link>, 'sub1'),
+    getItem(<Link to="/">Trang chủ</Link>, '1'),
     getItem(<Link to="about">Giới thiệu</Link>, 'sub2', [
         getItem(<Link to="about">Về chúng tôi</Link>, '2'),
         getItem(<Link to="commit">Cam kết</Link>, '3'),
@@ -56,7 +55,7 @@ const items = [
 const rootSubmenuKeys = ['sub1', 'sub2', 'sub3', 'sub4', 'sub5', 'sub6'];
 
 const Header = () => {
-    const [openKeys, setOpenKeys] = useState(['sub1']);
+    const [openKeys, setOpenKeys] = useState(['sub2']);
     //Logic mobile-navigation --- Còn lỗi
     const onOpenChange = (keys) => {
         const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
@@ -66,16 +65,6 @@ const Header = () => {
             setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
         }
     };
-    // 
-    //Đè lên style ant design
-    const All = styled.div`  
-    .ant-menu{
-    width:75% !important;
-    }`
-    const SubMenu = styled.li`
-    &:hover ul {
-        display:block !important
-    } `
     const [isOpen, setIsOpen] = useState(false)
     const removeMobileMenu = (e) => {
         if (!e.target.closest('.ant-menu') || e.target.closest('a')) {
@@ -84,7 +73,7 @@ const Header = () => {
     }
 
     return (
-        <All className="fixed bg-white inset-x-0 h-[65px] z-10 shadow-xl">
+        <div className="fixed bg-white inset-x-0 h-[65px] z-10 shadow-xl">
             <div className=" flex justify-between items-center h-full px-4 lg:px-0 container mx-auto text-sm ">
                 <div className="bt lg:hidden"
                     onClick={() => setIsOpen(!isOpen)}
@@ -98,11 +87,11 @@ const Header = () => {
                     <li >
                         <Link to="/" className=" flex items-center px-4 py-2 rounded-lg hover:bg-gray-200">Trang chủ</Link>
                     </li>
-                    <SubMenu>
+                    <div className='group'>
                         <Link to="about" className="inline-flex items-center px-4 py-2">Giới thiệu
                             <FaChevronDown className="h-4 w-4 pl-[6px]" />
                         </Link>
-                        <ul className="hidden absolute bg-white rounded-lg z-10 border shadow-lg">
+                        <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg">
                             <li>
                                 <Link to="about" className="flex px-4 py-2 w-auto rounded-lg hover:bg-[#F5F5F5]">Về Chúng tôi</Link>
                             </li>
@@ -110,24 +99,24 @@ const Header = () => {
                                 <Link to="commit" className="flex px-4 py-2 w-auto rounded-lg hover:bg-[#F5F5F5]">Cam kết</Link>
                             </li>
                         </ul>
-                    </SubMenu>
-                    <SubMenu>
+                    </div>
+                    <div className='group'>
                         <Link to="tracking" className="inline-flex items-center  px-4 py-2">Tra cứu
                             <FaChevronDown className="h-4 w-4 pl-[6px]" />
                         </Link>
-                        <ul className="hidden absolute bg-white rounded-lg z-10 border shadow-lg">
+                        <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg">
                             <li><Link to="/" className="flex px-4 py-2 w-auto rounded-lg hover:bg-[#F5F5F5]">Cước vận chuyển</Link></li>
                             <li><Link to="/" className="flex px-4 py-2 w-auto rounded-lg hover:bg-[#F5F5F5]">Bưu cục gần đây</Link></li>
                             <li><Link to="/" className="flex px-4 py-2 w-auto rounded-lg hover:bg-[#F5F5F5]">Vận đơn</Link></li>
                             <li><Link to="/" className="flex px-4 py-2 w-auto rounded-lg hover:bg-[#F5F5F5]">Bảng giá</Link></li>
                             <li><Link to="/" className="flex px-4 py-2 w-auto rounded-lg hover:bg-[#F5F5F5]">Hàng cấm gửi</Link></li>
                         </ul>
-                    </SubMenu>
-                    <SubMenu>
+                    </div >
+                    <div className='group'>
                         <Link to="service" className="inline-flex items-center px-4 py-2">Dịch vụ
                             <FaChevronDown className="h-4 w-4 pl-[6px]" />
                         </Link>
-                        <ul className="hidden absolute bg-white rounded-lg z-10 border shadow-lg">
+                        <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg">
                             <li>
                                 <Link to="standard-service" className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-[#F5F5F5]">
                                     <span>Dịch vụ chuyển phát tiêu chuẩn</span>
@@ -154,27 +143,27 @@ const Header = () => {
                             </li>
 
                         </ul>
-                    </SubMenu>
-                    <SubMenu>
+                    </div>
+                    <div className='group'>
                         <Link to="career" className="inline-flex items-center px-4 py-2">Tuyển dụng
                             <FaChevronDown className="h-4 w-4 pl-[6px]" />
                         </Link>
-                        <ul className="hidden absolute bg-white rounded-lg z-10 border shadow-lg">
+                        <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg">
                             <li><Link to="career" className="flex px-4 py-2 w-auto rounded-lg hover:bg-[#F5F5F5] ">Cơ hội nghề nghiệp</Link></li>
                             <li><Link to="cuoc-song-jnt" className="flex px-4 py-2 w-auto rounded-lg hover:bg-[#F5F5F5]">Cuộc sống J&T Epress</Link></li>
                         </ul>
-                    </SubMenu>
-                    <SubMenu>
+                    </div>
+                    <div className='group'>
                         <Link to="consultant" className="inline-flex items-center pl-4 py-2">Tư vấn
                             <FaChevronDown className="h-4 w-4 pl-[6px]" />
                         </Link>
-                        <ul className="hidden absolute bg-white rounded-lg z-10 border shadow-lg">
+                        <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg">
                             <li><Link to="contact" className="flex px-4 py-2 w-auto rounded-lg hover:bg-[#F5F5F5] ">Liên hệ</Link></li>
                             <li><Link to="consultant" className="flex px-4 py-2 w-auto rounded-lg hover:bg-[#F5F5F5]">Đăng kí tư vấn</Link></li>
                         </ul>
-                    </SubMenu>
+                    </div>
                 </ul>
-                <div className="px-4 py-2 bg-yellow-500 hover:bg-opacity-70 rounded-md text-sm ">
+                <div className="px-4 py-2 bg-button_color hover:bg-opacity-70 rounded-md text-sm ">
                     <a href="#" className="font-semibold">Đăng nhập</a>
                 </div>
             </div >
@@ -184,14 +173,15 @@ const Header = () => {
                 onClick={(removeMobileMenu)}
             >
                 <Menu
-                    className="w-2/3 h-full"
+                    className="h-full"
+                    style={{'width':'75%',}}
                     mode="inline"
                     openKeys={openKeys}
                     onOpenChange={onOpenChange}
                     items={items}
                 />
             </div >
-        </All >
+        </div >
     )
 }
 export default Header
