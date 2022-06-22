@@ -4,8 +4,8 @@ import User from "../model/User.js"
 import { staffRegisterValidate } from "../validation/auth.js"
 import { sendError, sendRequest, sendServerError, sendSuccess } from "../helper/client.js"
 import Staff from "../model/Staff.js"
-import { createUploadDir, verifyAdmin, verifyToken } from "../middleware/index.js"
-import { handleFilePath, RETURN_ZONE, upload } from "../constant.js"
+import { createAssetsDir, createLogoDir, createUploadDir, verifyAdmin, verifyToken } from "../middleware/index.js"
+import { handleFilePath, RETURN_ZONE, upload, uploadResources } from "../constant.js"
 import Price from "../model/Price.js"
 import { createDistanceValidate, createPriceValidate, createServiceValidate, uploadPricelistValidate } from "../validation/service.js"
 import DeliveryService from "../model/DeliveryService.js"
@@ -14,6 +14,9 @@ import { createWarehouseValidate } from "../validation/warehouse.js"
 import Warehouse from "../model/Warehouse.js"
 import { unlinkSync } from "fs"
 import Customer from "../model/Customer.js"
+import About from "../model/About.js"
+import Contact from "../model/Contact.js"
+import { createOrUpdateContactUsValidate } from '../validation/contactUs.js'
 
 const adminRoute = express.Router()
 
@@ -271,6 +274,105 @@ adminRoute.post('/warehouse/create',
             return sendError(res, 'supplied address does not exist.')
         }
         catch (error) {
+            console.log(error)
+            return sendServerError(res)
+        }
+    })
+
+/**
+ * @route POST /api/admin/about/banners
+ * @description create/update aboutus banners
+ * @access private
+ */
+adminRoute.post('/about/banners',
+    verifyToken,
+    verifyAdmin,
+    createAssetsDir,
+    uploadResources.array('banners'),
+    async (req, res) => {
+        const files = req.files.map(file => handleFilePath(file))
+        try {
+            const isExist = await About.exists({})
+            if (isExist) {
+                await About.findOneAndUpdate({}, { banners: files })
+            }
+            else await About.create({ banners: files })
+            return sendSuccess(res, 'upload banners successfully.')
+        } catch (error) {
+            if (req.file) unlinkSync(req.file.path)
+            return sendServerError(res)
+        }
+    })
+
+/**
+ * @route POST /api/admin/about/logo
+ * @description create/update aboutus logo
+ * @access private
+ */
+adminRoute.post('/about/logo',
+    verifyToken,
+    verifyAdmin,
+    createLogoDir,
+    uploadResources.single('logo'),
+    async (req, res) => {
+        const file = handleFilePath(req.file)
+        try {
+            const isExist = await About.exists({})
+            if (isExist) {
+                await About.findOneAndUpdate({}, { logo: file })
+            }
+            else await About.create({ logo: file })
+            return sendSuccess(res, 'upload logo successfully.')
+        } catch (error) {
+            if (req.file) unlinkSync(req.file.path)
+            return sendServerError(res)
+        }
+    })
+
+/**
+ * @route POST /api/admin/about
+ * @description create/update aboutus info
+ * @access private
+ */
+adminRoute.post('/about',
+    verifyToken,
+    verifyAdmin,
+    async (req, res) => {
+        const { description, vision, values } = req.body
+        try {
+            const isExist = await About.exists({})
+            if (isExist) {
+                await About.findOneAndUpdate({}, { description, vision, values })
+            }
+            else await About.create({ description, vision, values })
+            return sendSuccess(res, 'set about-us information successfully.')
+        } catch (error) {
+            return sendServerError(res)
+        }
+    })
+
+/**
+ * @route POST /api/admin/contactus
+ * @description create/update contactus info
+ * @access private
+ */
+adminRoute.post('/contactus',
+    verifyToken,
+    verifyAdmin,
+    async (req, res) => {
+        const error = createOrUpdateContactUsValidate(req.body)
+        if (error)
+            return sendError(res, error)
+
+        const { address, phone, email, facebook, instagram, tiktok, youtube } = req.body
+        try {
+            const isExist = await Contact.exists({})
+            if (isExist) {
+                await Contact.findOneAndUpdate({}, { address, phone, email, facebook, instagram, tiktok, youtube })
+            }
+            else await Contact.create({ address, phone, email, facebook, instagram, tiktok, youtube })
+            return sendSuccess(res, 'set contact-us information successfully.')
+        } catch (error) {
             console.log(error)
             return sendServerError(res)
         }

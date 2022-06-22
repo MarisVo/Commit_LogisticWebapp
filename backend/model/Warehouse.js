@@ -33,7 +33,13 @@ const WarehouseSchema = new Schema(
         },
         lat: {
             type: String,
-        }
+        },
+        inventory_products: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'products'
+            }
+        ]
     },
     { timestamps: true }
 )

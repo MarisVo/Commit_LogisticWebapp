@@ -14,7 +14,7 @@ const orderRoute = express.Router()
  * @access public
  */
 orderRoute.post('/create',
-    // verifyToken,
+    verifyToken,
     async (req, res) => {
         const errors = createOrderValidate(req.body)
         if (errors) return sendError(res, errors)

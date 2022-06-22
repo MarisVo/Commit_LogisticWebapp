@@ -14,6 +14,20 @@ const storage = multer.diskStorage({
 })
 export const upload = multer({ storage })
 
+const storageResources = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, `./public/${req.dirName}/`)
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now()
+        const filename = file.originalname  // name.jpg
+        const part = filename.split(".")
+        part[part.length - 2] += uniqueSuffix   // name+uniqeSuffix.jpg
+        cb(null, part.join("."))
+    }
+})
+export const uploadResources = multer({ storage: storageResources })
+
 export const handleFilePath = req_file => {
     if (process.platform === 'win32')
         return req_file ? req_file.path.split("\\").slice(1).join("/") : null
@@ -55,6 +69,7 @@ export const STAFF = {
     ADMIN: 'admin',
     DRIVER: 'driver',
     SHIPPER: 'shipper',
+    STOREKEEPER: 'storekeeper',
     STAFF: 'staff'
 }
 
@@ -79,10 +94,10 @@ export const PRODUCT_UNIT = {
 }
 
 export const RETURN_ZONE = {
-    A: 'provincial',
-    B: '<100Km',
-    C: '100-300Km',
-    F: '>300Km'
+    A: 'A', // 'provincial'
+    B: 'B', // '<100Km'
+    C: 'C', // '100-300Km'
+    F: 'F' // '>300Km'
 }
 
 export const VERIFY_OP = {

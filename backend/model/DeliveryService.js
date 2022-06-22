@@ -33,22 +33,12 @@ const DeliveryServiceSchema = new Schema(
             type: String,
             default: null
         },
-        features: {
-            type: [{
-                fea_logo: {
-                    type: String,
-                    default: null
-                },
-                fea_name: {
-                    type: String,
-                    required: true
-                },
-                fea_detail: {
-                    type: String,
-                    default: null
-                }
-            }]
-        },
+        features: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'features'
+            }
+        ],
         participants: [
             {
                 type: Schema.Types.ObjectId,
