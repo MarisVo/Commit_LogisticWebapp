@@ -3,7 +3,7 @@ const { Schema } = mongoose
 
 const AboutSchema = new Schema(
     {
-        discription: {
+        description: {
             type: String
         },
         vision: {
@@ -16,10 +16,7 @@ const AboutSchema = new Schema(
             type: String,
             default: null
         },
-        banners: {
-            type:[{type:String}],
-            default: []
-        }
+        banners: [String]
     },
     { timestamps: true }
 )

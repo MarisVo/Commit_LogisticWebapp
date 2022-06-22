@@ -1,9 +1,9 @@
 import mongoose from "mongoose"
 const { Schema } = mongoose
 
-const ContactSchema = new Schema(
+const ReceiverSchema = new Schema(
     {
-        address: {
+        name: {
             type: String,
             required: true
         },
@@ -11,24 +11,29 @@ const ContactSchema = new Schema(
             type: String,
             required: true
         },
-        email: {
+        identity: {
+            type: String,
+            required: true,
+            unique: true
+        },
+        street: {
             type: String,
             required: true
         },
-        facebook: {
-            type: String
-        },
-        instagram: {
+        ward: {
             type: String,
+            required: true
         },
-        tiktok: {
+        district: {
             type: String,
+            required: true
         },
-        youtube: {
+        province: {
             type: String,
+            required: true
         }
     },
     { timestamps: true }
 )
 
-export default mongoose.model('contactus', ContactSchema)
+export default mongoose.model('receivers', ReceiverSchema)

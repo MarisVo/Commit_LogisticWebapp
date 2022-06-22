@@ -13,16 +13,12 @@ const OrderSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'delivery_services'
         },
-        products: [{
-            type: {
-                product_name: String,
-                quantity: Number,
-                unit: {
-                    type: String,
-                    enum: Object.values(PRODUCT_UNIT)
-                }
+        products: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'products'
             }
-        }],
+        ],
         customer: {
             type: Schema.Types.ObjectId,
             ref: 'customers'
@@ -34,11 +30,8 @@ const OrderSchema = new Schema(
             }
         ],
         receiver: {
-            type: {
-                name: String,
-                phone: String,
-                identity: String
-            }
+            type: Schema.Types.ObjectId,
+            ref: 'receivers'
         },
         total_price: {
             type: Number,

@@ -1,23 +1,23 @@
 import mongoose from "mongoose"
 const { Schema } = mongoose
 
-const ParticipantSchema = new Schema(
+const FeatureSchema = new Schema(
     {
         name: {
             type: String,
             required: true,
             unique: true
         },
-        banner: {
-            type: String,
+        logo: {
+            type :String,
             default: null
         },
-        description: {
+        detail: {
             type: String,
-            required: true
+            default: null
         }
     },
     { timestamps: true }
 )
 
-export default mongoose.model('participants', ParticipantSchema)
+export default mongoose.model('features', FeatureSchema)

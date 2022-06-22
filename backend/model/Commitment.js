@@ -3,7 +3,7 @@ const { Schema } = mongoose
 
 const CommitmentSchema = new Schema(
     {
-        commitment: {
+        heading: {
             type: String,
             required: true,
             unique: true

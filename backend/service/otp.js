@@ -1,5 +1,6 @@
 import CustomerVerifyOTP from "../model/CustomerVerifyOTP.js"
 import argon2 from "argon2"
+import { OTP_EXPIRED } from "../constant.js"
 
 export const genarateOTP = () => Math.floor(100000 + Math.random() * 900000).toString()
 
