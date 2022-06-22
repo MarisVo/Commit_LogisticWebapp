@@ -19,7 +19,7 @@ export const createAssetsDir = (req, res, next) => {
     mkdir(`public/assets`, { recursive: true }, (err) => {
         if(err) return sendError(res, 'Cannot upload file.')
     })
-    req.assetsDirName = 'assets'
+    req.dirName = 'assets'
     next()
 }
 
@@ -27,7 +27,7 @@ export const createLogoDir = (req, res, next) => {
     mkdir(`public/logo`, { recursive: true }, (err) => {
         if(err) return sendError(res, 'Cannot upload file.')
     })
-    req.logoDirName = 'logo'
+    req.dirName = 'logo'
     next()
 }
 

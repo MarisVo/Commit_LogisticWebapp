@@ -9,11 +9,11 @@ const contactUsRoute = express.Router()
  * @description get contact info
  * @access public
  */
- contactUsRoute.get('',
+contactUsRoute.get('',
     async (req, res) => {
         try {
             const contact = await Contact.findOne({})
-            if(contact)
+            if (contact)
                 return sendSuccess(res, 'get contact information successfully.', contact)
             return sendError(res, 'contact information is not found.')
         } catch (error) {

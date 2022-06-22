@@ -5,7 +5,7 @@ import { staffRegisterValidate } from "../validation/auth.js"
 import { sendError, sendRequest, sendServerError, sendSuccess } from "../helper/client.js"
 import Staff from "../model/Staff.js"
 import { createAssetsDir, createLogoDir, createUploadDir, verifyAdmin, verifyToken } from "../middleware/index.js"
-import { handleFilePath, RETURN_ZONE, upload, uploadAssets, uploadLogo } from "../constant.js"
+import { handleFilePath, RETURN_ZONE, upload, uploadResources } from "../constant.js"
 import Price from "../model/Price.js"
 import { createDistanceValidate, createPriceValidate, createServiceValidate, uploadPricelistValidate } from "../validation/service.js"
 import DeliveryService from "../model/DeliveryService.js"
@@ -288,7 +288,7 @@ adminRoute.post('/about/banners',
     verifyToken,
     verifyAdmin,
     createAssetsDir,
-    uploadAssets.array('banners'),
+    uploadResources.array('banners'),
     async (req, res) => {
         const files = req.files.map(file => handleFilePath(file))
         try {
@@ -313,7 +313,7 @@ adminRoute.post('/about/logo',
     verifyToken,
     verifyAdmin,
     createLogoDir,
-    uploadLogo.single('logo'),
+    uploadResources.single('logo'),
     async (req, res) => {
         const file = handleFilePath(req.file)
         try {

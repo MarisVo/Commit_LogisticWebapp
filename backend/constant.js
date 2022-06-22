@@ -14,9 +14,9 @@ const storage = multer.diskStorage({
 })
 export const upload = multer({ storage })
 
-const storageAssets = multer.diskStorage({
+const storageResources = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, `./public/${req.assetsDirName}/`)
+        cb(null, `./public/${req.dirName}/`)
     },
     filename: (req, file, cb) => {
         const uniqueSuffix = Date.now()
@@ -26,21 +26,7 @@ const storageAssets = multer.diskStorage({
         cb(null, part.join("."))
     }
 })
-export const uploadAssets = multer({ storage: storageAssets })
-
-const storageLogo = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, `./public/${req.logoDirName}/`)
-    },
-    filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now()
-        const filename = file.originalname  // name.jpg
-        const part = filename.split(".")
-        part[part.length - 2] += uniqueSuffix   // name+uniqeSuffix.jpg
-        cb(null, part.join("."))
-    }
-})
-export const uploadLogo = multer({ storage: storageLogo })
+export const uploadResources = multer({ storage: storageResources })
 
 export const handleFilePath = req_file => {
     if (process.platform === 'win32')
