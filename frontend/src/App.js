@@ -1,12 +1,16 @@
-import React from "react";
-import "./App.css";
-import "react-router-dom";
-import Home from './pages/home/Home'
+import React from 'react';
+import './App.css';
+import 'react-router-dom';
 
+
+import Track from './pages/track/Track';
+import Advice from './pages/advice/Advice';
 const App = () => {
-  return (
-    <Home />
-  )
-}
+	return (
+	
+		<Track/>
+		// <Advice />
+	);
+};
 
 export default App;

@@ -1,16 +1,15 @@
 module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
       screens: {
-        'custom-screen': '1415px',
-      }
+
+        "custom-screen": "1415px",
+      },
+      zIndex: {
+        100: "100",
+      },
     },
-  },
-  corePlugins: {
-    container: false
   },
   plugins: [
     function ({ addComponents }) {
@@ -31,6 +30,14 @@ module.exports = {
           },
         }
       })
-    }
-  ],
+}],
+  important: true,
+ 
+
+
+  corePlugins: {
+    container: false
+  },
+
 }
+
