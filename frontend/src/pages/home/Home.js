@@ -161,21 +161,21 @@ const Home = () => {
                 <div>
                     <a href="">
                         <img src="https://jtexpress.vn/storage/app/uploads/public/629/6bd/ca2/6296bdca297c7512128382.jpg"
-                            className="w-full h-[143px] lg:h-[550px] object-cover"
+                            className="w-full h-[200px] md:h-[300px] lg:h-[550px] object-cover"
                             alt="pic" />
                     </a>
                 </div>
                 <div>
                     <a href="">
                         <img src="https://jtexpress.vn/storage/app/uploads/public/629/6ce/a24/6296cea2443e2392069160.jpg"
-                            className="w-full h-[143px] lg:h-[550px] object-cover"
+                            className="w-full h-[200px] md:h-[300px] lg:h-[550px] object-cover"
                             alt="pic" />
                     </a>
                 </div>
                 <div>
                     <a href="">
                         <img src="https://jtexpress.vn/storage/app/uploads/public/629/5ed/e5b/6295ede5b2956262118810.jpg"
-                            className="w-full h-[143px] lg:h-[550px] object-cover"
+                            className="w-full h-[200px] md:h-[300px] lg:h-[550px] object-cover"
                             alt="pic" />
                     </a>
                 </div>
@@ -246,16 +246,16 @@ const Home = () => {
 
             </div>
 
-            <div className="flex flex-col lg:flex-row my-6">
-                <div className="flex flex-col items-center justify-center text-center gap-y-3 w-full lg:w-2/5  py-6 px-3 bg-primary rounded-r-xl">
-                    <span className="text-4xl font-black container text-blue-600">VỀ CHÚNG TÔI</span>
-                    <span className="text-base container">
+            <div className="flex flex-col lg:flex-row ">
+                <div className="flex flex-col items-center justify-center text-justify gap-y-7 w-full lg:max-w-[500px] py-6 px-3 bg-primary rounded-r-xl">
+                    <span className="text-4xl font-black container text-white">VỀ CHÚNG TÔI</span>
+                    <span className=" text-base container tracking-wide px-4 lg:px-6 w-full">
                         J&T Express là thương hiệu chuyển phát nhanh dựa trên sự phát triển của công nghệ và Internet.
                         Chúng tôi sở hữu mạng lưới rộng khắp nhằm hỗ trợ các hoạt động giao nhận hàng hóa nhanh chóng không chỉ ở nội thành
                         mà còn ở ngoại thành và các vùng xa của các tỉnh thành trong cả nước Việt Nam.
                     </span>
                 </div>
-                <div className="grid grid-cols-2 mx-auto gap-y-2 bg-yellow-100">
+                <div className="grid grid-cols-2 mx-auto gap-y-2 px-6 bg-yellow-100 rounded-l-2xl w-full">
                     <div className="flex flex-col items-center text-center py-4">
                         <img src='https://jtexpress.vn/themes/jtexpress/assets/images/63tinh-thanh.png' alt="63-tinh-thanh-pic" />
                         <span className="text-xl font-extrabold">63 TỈNH THÀNH</span>

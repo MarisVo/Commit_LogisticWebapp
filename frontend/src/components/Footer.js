@@ -6,7 +6,6 @@ import { FaFacebook, FaInstagram, FaTiktok, FaYoutubeSquare } from 'react-icons/
 import { IoMailOutline, IoCallOutline, IoLocationOutline } from 'react-icons/io5'
 
 const Footer = () => {
-
     return (
         <footer className="bg-[#e0e3e7]">
             <div className=" grid grid-cols-1 gap-x-[70px] lg:grid-cols-3 pt-[35px] mx-auto px-4 lg:px-0 container ">
@@ -137,7 +136,7 @@ const Footer = () => {
                     <FaYoutubeSquare className="mx-2 w-6 h-6" />
                 </a>
                 <a href="https://oa.zalo.me/1837464433417511317">
-                    <img src={zaloIcon} className="mx-2 w-6" alt="zalo-icon"></img>
+                    <img src={zaloIcon} className="mx-2 w-6 " alt="zalo-icon"></img>
                 </a>
             </div>
             <div className="flex justify-center items-center text-center flex-col lg:flex-row text-xs lg:text-sm pb-6">
