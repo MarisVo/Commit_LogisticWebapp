@@ -4,12 +4,13 @@ import mongoose from "mongoose"
 import cors from "cors"
 
 import authRoute from "./router/auth.js"
-import adminRoute from "./router/admin.js"
+import adminRoute from "./router/admin/index.js"
 import trackingRoute from "./router/tracking.js"
 import orderRoute from "./router/order.js"
 import aboutRoute from "./router/about.js"
 import publicRoute from "./router/public.js"
 import contactUsRoute from "./router/contactUs.js"
+import { verifyAdmin, verifyToken } from "./middleware/index.js"
 dotenv.config()
 
 /**
@@ -27,12 +28,12 @@ app.use(express.static('public'))
 app.use(cors())
 
 app.use('/public', publicRoute)
-app.use('/api/admin', adminRoute)
-app.use('/api/auth', authRoute)
-app.use('/api/tracking', trackingRoute)
-app.use('/api/order', orderRoute)
-app.use('/api/about', aboutRoute)
-app.use('/api/contactus', contactUsRoute)
+    .use('/api/admin', verifyToken, verifyAdmin, adminRoute)
+    .use('/api/auth', authRoute)
+    .use('/api/tracking', trackingRoute)
+    .use('/api/order', orderRoute)
+    .use('/api/about', aboutRoute)
+    .use('/api/contactus', contactUsRoute)
 
 app.listen(PORT, () => {
     console.log(`Server start at port: ${PORT}`)

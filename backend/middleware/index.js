@@ -52,7 +52,7 @@ export const verifyToken = async (req, res, next) => {
 
     } catch (error) {
         console.log(error)
-        return sendServerError(res)
+        return sendError(res, error.message)
     }
 }
 
