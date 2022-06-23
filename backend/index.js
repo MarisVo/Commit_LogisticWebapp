@@ -10,6 +10,7 @@ import orderRoute from "./router/order.js"
 import aboutRoute from "./router/about.js"
 import publicRoute from "./router/public.js"
 import contactUsRoute from "./router/contactUs.js"
+import commitmentRoute from "./router/commitment.js"
 import { verifyAdmin, verifyToken } from "./middleware/index.js"
 dotenv.config()
 
@@ -34,6 +35,7 @@ app.use('/public', publicRoute)
     .use('/api/order', orderRoute)
     .use('/api/about', aboutRoute)
     .use('/api/contactus', contactUsRoute)
+    .use('/api/commitment', commitmentRoute)
 
 app.listen(PORT, () => {
     console.log(`Server start at port: ${PORT}`)
