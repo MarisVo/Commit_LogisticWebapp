@@ -18,23 +18,23 @@ export default function Track() {
                     <img className='h-full' src="https://jtexpress.vn/storage/app/uploads/public/628/5cf/ebd/6285cfebd1130135260962.jpg" alt="" />
                 </a>
             </div>
-            <div className='custom-tab shadow-[#000000] container mx-auto relative bottom-65 ' 
-            style={{maxWidth:"1200px"}} >
-                <Tabs onChange={onChange} type="card"  >
-                    <TabPane tab="Cước vận chuyển " key="1" >
-                        <CuocVanChuyen/>
+            <div className='custom-tab shadow-[#000000] container mx-auto text-xl '
+                style={{ maxWidth: "1200px" }} >
+                <Tabs defaultActiveKey="1" centered size='large' tabPosition='top'type='line' className='p-3' tabBarStyle={{color:"#fcd535"}} >
+                    <TabPane tab="Cước vận chuyển" key="1" >
+                        <CuocVanChuyen />
                     </TabPane>
-                    <TabPane tab="Vận đơn" key="2" >
-                        <VanDon/>
-                    </TabPane> 
-                    <TabPane tab="Bưu cục" key="3" >
-                        <BuuCuc/>
+                    <TabPane tab="Vận đơn" key="2">
+                        <VanDon />
+                    </TabPane>
+                    <TabPane tab="Bưu cục" key="3">
+                        <BuuCuc />
                     </TabPane>
                     <TabPane tab="Bảng giá" key="4">
-                        <BangGia/>
+                        <BangGia />
                     </TabPane>
-                    <TabPane tab="Hàng cấm gửi" key="5" >
-                       <HangCamGui/>
+                    <TabPane tab="Hàng cấm gửi" key="5">
+                        <HangCamGui />
                     </TabPane>
                 </Tabs>
             </div>

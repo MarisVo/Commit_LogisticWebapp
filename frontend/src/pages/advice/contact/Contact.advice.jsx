@@ -1,8 +1,30 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPhone, faEnvelope, faLocationDot } from '@fortawesome/free-solid-svg-icons'
-import {FormContainer} from "../../../UI/adviceStyle/adviceStyle"
+
 export default function ContactAdvice() {
+  const [fullName, setFullName] = useState(null);
+  const [phone, setPhone] = useState(null);
+  const [email, setEmail] = useState(null)
+  const [massage, setMassage] = useState(null)
+  const [isValid, setIsValid] = useState(false);
+  const handleClick = () => {
+    if (
+
+      !fullName ||
+      !phone ||
+      !email ||
+      !massage
+    ) {
+      setIsValid(false);
+      alert('Vui lòng nhập đầy đủ thông tin');
+      return;
+    } else {
+      alert("liên hệ thành công")
+    }
+
+    setIsValid(true);
+  }
   return (
     <div className='layoutContactAdvice'>
       <div className="thumbAdvice">
@@ -11,7 +33,7 @@ export default function ContactAdvice() {
         </a>
       </div>
       <div className="w-full lg:w-[1111px] lg:translate-y-[-130px] mx-auto lg:rounded-[10px] bg-white" >
-        <FormContainer>
+
         <div className="flex flex-col  lg:flex-row shadow-xl lg:rounded-[10px]">
           <div className="p-4 lg:p-12 basis-1/2 ">
             <h5 className="text-[24px] text-center lg:text-left lg:text-[56px] font-bold">Liên hệ</h5>
@@ -28,27 +50,32 @@ export default function ContactAdvice() {
                     <span className="mb-2 text-base ">
                       Họ và tên <span className="text-red-500 inline-block">*</span>
                     </span>
-                    <input id="name" placeholder="Họ và tên" className="custom_input name_input text-base ml-1" type="text" name="name" />
+                    <input id="name" placeholder="Họ và tên" className="custom_input name_input text-base ml-1" type="text" name="name"
+                      onChange={(e) => setFullName(e.target.value)}
+                    />
                   </div>
                   <div className="flex flex-col mb-6">
                     <span className="mb-2 text-base">
                       Email <span className="text-red-500 inline-block">*</span>
                     </span>
-                    <input placeholder="Email" name="email" className="custom_input name_input text-base ml-1" type="text" />
+                    <input placeholder="Email" name="email" className="custom_input name_input text-base ml-1" type="text"
+                      onChange={(e) => setEmail(e.target.value)} />
                   </div>
                   <div className="flex flex-col mb-6">
                     <span className="mb-2 text-base">
                       Số điện thoại <span className="text-red-500 inline-block">*</span>
                     </span>
-                    <input placeholder="Số điện thoại" name="cellphone" className="custom_input name_input text-base ml-1" type="text" />
+                    <input placeholder="Số điện thoại" name="cellphone" className="custom_input name_input text-base ml-1" type="text"
+                      onChange={(e) => setPhone(e.target.value)} />
                   </div>
                   <div className="flex flex-col mb-6">
                     <span className="mb-2 text-base">
                       Message <span className="text-red-500 inline-block">*</span>
                     </span>
-                    <textarea placeholder="Message" name="content" className="custom_textarea pt-2 name_select name_input text-base ml-1" />
+                    <textarea placeholder="Message" name="content" className="custom_textarea pt-2 name_select name_input text-base ml-1"
+                      onChange={(e) => setMassage(e.target.value)} />
                   </div>
-                  <button type="button" className="rounded-[2px] bg-[#FF0000] text-white h-[55px] w-full mt-6 text-xl" id="btnSubmit">
+                  <button type="button" className="rounded-[2px] bg-[#FF0000] text-white h-[55px] w-full mt-6 text-xl" id="btnSubmit" onClick={handleClick}>
                     Gửi
                   </button>
                 </div>
@@ -114,7 +141,7 @@ export default function ContactAdvice() {
             </div>
           </div>
         </div>
-        </FormContainer>
+
 
       </div>
     </div>

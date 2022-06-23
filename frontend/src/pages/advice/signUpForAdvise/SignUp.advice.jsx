@@ -26,6 +26,11 @@ export default function SignUpForAdvice() {
 
 	const [fullName, setFullName] = useState(null);
 	const [phone, setPhone] = useState(null);
+	const [email, setEmail] = useState(null)
+	const [address, setAddress] = useState(null)
+	const [prodName, setProdName] = useState(null)
+	const [prodQuantity, setProdQuantity] = useState(null)
+
 
 	const [isValid, setIsValid] = useState(false);
 
@@ -52,11 +57,17 @@ export default function SignUpForAdvice() {
 			!districtCodeTo ||
 			!wardCodeTo ||
 			!fullName ||
-			!phone
+			!phone ||
+			!email ||
+			!address ||
+			!prodName ||
+			!prodQuantity
 		) {
 			setIsValid(false);
 			alert('Vui lòng nhập đầy đủ thông tin');
 			return;
+		} else {
+			alert("đăng kí tư vấn thành công")
 		}
 
 		setIsValid(true);
@@ -181,6 +192,7 @@ export default function SignUpForAdvice() {
 												placeholder="Email"
 												autoComplete="off"
 												type="email"
+												onChange={(e) => setEmail(e.target.value)}
 											/>
 										</div>
 									</div>
@@ -316,6 +328,7 @@ export default function SignUpForAdvice() {
 											name="address"
 											placeholder="Địa chỉ đầy đủ"
 											type="text"
+											onChange={(e) => setAddress(e.target.value)}
 										/>
 									</div>
 								</div>
@@ -342,6 +355,7 @@ export default function SignUpForAdvice() {
 											type="text"
 											name="goods_name"
 											placeholder="Tên hàng hóa"
+											onChange={(e) => setProdName(e.target.value)}
 										/>
 									</div>
 								</div>
@@ -357,6 +371,7 @@ export default function SignUpForAdvice() {
 											type="number"
 											name="goods_amount"
 											placeholder="Số lượng hàng hóa/tháng"
+											onChange={(e) => setProdQuantity(e.target.value)}
 										/>
 									</div>
 								</div>

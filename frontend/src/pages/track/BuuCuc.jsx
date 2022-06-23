@@ -107,7 +107,7 @@ export default function BuuCuc() {
 					)}
 				</div>
 				<div className="text-center w-full lg:w-1/3" onClick={handleSubmit}>
-					<button className="text-white bg-[#FF0000] rounded-[2px] min-h-[44px] w-full font-semibold">
+					<button className="text-white bg-[#e5a663] rounded-[2px] min-h-[44px] w-full font-semibold">
 						Tìm kiếm bưu cục
 					</button>
 				</div>

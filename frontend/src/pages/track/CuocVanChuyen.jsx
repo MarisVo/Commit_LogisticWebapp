@@ -82,7 +82,7 @@ export default function CuocVanChuyen() {
 
 	return (
 		<div className="p-7 shadow shadow-zinc-200">
-			<span className="mb-4 inline-block font-bold text-xl">
+			<span className="mb-4 inline-block font-bold text-xl text-[#F0B90B]">
 				Gửi từ: <span className="text-red-500"> * </span>
 			</span>
 			<p />
@@ -207,13 +207,13 @@ export default function CuocVanChuyen() {
 			</div>
 			<div>
 				<div className="tabs_inside_title flex items-center mb-[30px]">
-					<div className="tabs_inside_title__active">
+					<div className="tabs_inside_title__active border-[#fcd535] border-b-4 text-lg">
 						Gửi hàng trong Việt Nam
 					</div>
 				</div>
 				<div className>
 					<div>
-						<span className="mb-[16px] inline-block  font-bold text-xl">
+						<span className="mb-[16px] inline-block  font-bold text-xl text-[#F0B90B]">
 							Gửi đến:
 							<span className="text-red-500">*</span>
 						</span>
@@ -384,7 +384,7 @@ export default function CuocVanChuyen() {
 						</div>
 						<div className="grid grid-cols-1 lg:grid-cols-3 gap-[24px] mt-[48px]">
 							<div>
-								<span className="block mb-[8px] text-[#333438] font-bold text-xl mt-5">
+								<span className="block mb-[8px] text-[#F0B90B] font-bold text-xl mt-5 ">
 									Weight
 									<span className="text-red-500">*</span>
 								</span>
@@ -405,8 +405,8 @@ export default function CuocVanChuyen() {
 											Chọn đơn vị
 										</option>
 										<option value="kg">Kg</option>
-										<option value="tan">Tấn</option>
-										<option value="m3">m³</option>
+										<option value="tan">Ton(Tấn)</option>
+										<option value="m3">M³</option>
 									</select>
 								</div>
 							</div>
@@ -416,7 +416,7 @@ export default function CuocVanChuyen() {
 			</div>
 			<div className="text-center mt-[56px]">
 				<button
-					className="text-white bg-[#FF0000] rounded-[2px] min-h-[55px] w-full"
+					className="text-black tracking-wide bg-[#e5a663] rounded-[2px] min-h-[55px] w-full text-lg "
 					style={{ fontWeight: 600 }}
 					data-toggle={isValid && 'collapse'}
 					data-target="#bill"
@@ -440,3 +440,4 @@ export default function CuocVanChuyen() {
 		</div>
 	);
 }
+
