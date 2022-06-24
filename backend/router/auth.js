@@ -7,8 +7,9 @@ import { sendError, sendServerError, sendSuccess, sendAutoMail, sendAutoSMS } fr
 import Customer from "../model/Customer.js"
 import Staff from "../model/Staff.js"
 import CustomerVerifyOTP from '../model/CustomerVerifyOTP.js'
-import { JWT_EXPIRED, OTP_EXPIRED, VERIFY_OP } from '../constant.js'
+import { JWT_EXPIRED, JWT_REFRESH_EXPIRED, OTP_EXPIRED, VERIFY_OP } from '../constant.js'
 import { createOTP, updateOTP } from '../service/otp.js'
+import { TOKEN_LIST } from "../index.js"
 
 const authRoute = express.Router()
 
@@ -18,16 +19,42 @@ const authRoute = express.Router()
  * @access public
  */
 authRoute.post('/verify-token', (req, res) => {
-    const { token } = req.body
+    const { accessToken, refreshToken } = req.body
     try {
-        const { payload } = jwt.verify(token, process.env.JWT_SECRET_KEY, {
+        const { payload } = jwt.verify(accessToken, process.env.JWT_SECRET_KEY, {
             complete: true
         })
         return sendSuccess(res, "Verify token successfully.", {
             user: payload.user
         })
-    } catch (error) {
-        return sendError(res, "Unauthorzied.", 401)
+    }
+    catch (error) {
+        if (refreshToken && refreshToken in TOKEN_LIST && TOKEN_LIST[refreshToken].accessToken === accessToken) {
+            try {
+                const { payload } = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET_KEY, {
+                    complete: true
+                })
+                const newAccessToken = jwt.sign(
+                    {
+                        user: payload.user
+                    },
+                    process.env.JWT_SECRET_KEY,
+                    {
+                        expiresIn: JWT_EXPIRED
+                    }
+                )
+                TOKEN_LIST[refreshToken].accessToken = newAccessToken
+
+                return sendSuccess(res, "Verify token successfully.", {
+                    accessToken: newAccessToken,
+                    user: payload.user
+                })
+            } 
+            catch (error) {
+                return sendError(res, "Unauthorzied.", 401)
+            }
+        }
+        else return sendError(res, "Unauthorzied.", 401)
     }
 })
 
@@ -198,7 +225,7 @@ authRoute.post('/login', async (req, res) => {
             email,
             isActive: true
         }).populate({ path: 'role', model: Customer })
-        if(!user){
+        if (!user) {
             user = await User.findOne({
                 phone,
                 isActive: true
@@ -233,8 +260,26 @@ authRoute.post('/login', async (req, res) => {
             }
         )
 
+        const refreshToken = jwt.sign(
+            {
+                user: userData
+            },
+            process.env.JWT_REFRESH_SECRET_KEY,
+            {
+                expiresIn: JWT_REFRESH_EXPIRED
+            }
+        )
+
+        const response = {
+            accessToken,
+            refreshToken
+        }
+
+        TOKEN_LIST[refreshToken] = response
+
         return sendSuccess(res, 'Login successfully.', {
-            token: accessToken,
+            accessToken,
+            refreshToken,
             user: userData
         })
     } catch (error) {
@@ -259,7 +304,7 @@ authRoute.post('/staff-login', async (req, res) => {
             email,
             isActive: true
         }).populate({ path: 'role', model: Staff })
-        if(!user){
+        if (!user) {
             user = await User.findOne({
                 phone,
                 isActive: true
@@ -293,8 +338,26 @@ authRoute.post('/staff-login', async (req, res) => {
             }
         )
 
+        const refreshToken = jwt.sign(
+            {
+                user: userData
+            },
+            process.env.JWT_REFRESH_SECRET_KEY,
+            {
+                expiresIn: JWT_REFRESH_EXPIRED
+            }
+        )
+
+        const response = {
+            accessToken,
+            refreshToken
+        }
+
+        TOKEN_LIST[refreshToken] = response
+
         return sendSuccess(res, 'login successfully.', {
-            token: accessToken,
+            accessToken,
+            refreshToken,
             user: userData
         })
     } catch (error) {

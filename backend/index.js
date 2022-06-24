@@ -21,6 +21,7 @@ mongoose.connect(process.env.MONGO_URI, () => {
 }).catch(error => console.log(error.reason))
 
 const PORT = process.env.PORT || 8000
+export const TOKEN_LIST = {}
 const app = express()
 
 app.use(express.json())

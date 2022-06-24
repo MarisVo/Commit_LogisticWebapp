@@ -59,7 +59,7 @@ authAdminRoute.get('/unaccepted-register',
             const businesses = await User.find({ isActive: true })
                 .populate({ path: 'role', model: Customer })
             const result = businesses.filter(value => {
-                return value.role && value.role.customer_type === 'business'
+                return value.role && value.role.customer_type === 'business' && value.role.accepted_business === false
             })
             return sendSuccess(res, 'success', result)
         } catch (error) {
