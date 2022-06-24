@@ -1,29 +1,35 @@
-import React,{useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import "react-router-dom";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import { Home, About, Commit,Tracking, Service, StandardService, FastService } from "./pages/pageExport"
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-
+// import Header from "./components/Header";
+// import Footer from "./components/Footer";
+import { Home, About, Commit, Track, VanDon, Adivce, SignUpAdvice, Contact, PageNotFound, Layer } from "./pages/pageExport"
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 const App = () => {
 
   return (
-    <Router>
+    <BrowserRouter>
       <div className="wrapper">
-        <Header />
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/about" component={About} />
-          <Route path="/commit" component={Commit} />
-          <Route path="/tracking" component={Tracking} />
-          <Route path="/service" component={Service} />
-          <Route path="/standard-service" component={StandardService} />
-          <Route path="/fast-service" component={FastService} />
-        </Switch>
-        <Footer />
+        <Routes>
+          <Route path="/" element={<Layer />}>
+            <Route index element={<Home />} ></Route>
+            <Route path="about" element={<About />} />
+            <Route path="commit" element={<Commit />} />
+            <Route path="track" element={<Track />} >
+              <Route path="cuoc-van-chuyen" element={<Track number={"1"} />} />
+              <Route path="van-don" element={<Track number={"2"} />} />
+              <Route path="buu-cuc" element={<Track number={"3"} />} />
+              <Route path="bang-gia" element={<Track number={"4"} />} />
+              <Route path="hang-cam-gui" element={<Track number={"5"} />} />
+            </Route>          
+            <Route path="dang-ki-tu-van" element={<SignUpAdvice />} />
+            <Route path="contact" element={<Contact />} />
+          </Route>
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
       </div>
-    </Router>
+
+    </BrowserRouter>
   )
 }
 

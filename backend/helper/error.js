@@ -12,7 +12,35 @@ export default class Error
      */
     isRequired(field, name) {
         if(field == null) this.errors.push(`${name} field is required.`)
-        if(this.checkRequire)   this.checkRequire = false
+        // if(this.checkRequire)   this.checkRequire = false
+        return this
+    }
+
+    /**
+     * @param lstFieldAndName : list of objects include field and name key
+     * @returns this
+     */
+    isOnlyRequiredOneOf(lstFieldAndName){
+        if(!lstFieldAndName.some(ele=>ele.field != null)){
+            let errorlog = ''
+            lstFieldAndName.forEach((ele, idx)=>{
+                if(idx < lstFieldAndName.length-1)
+                    errorlog += ele.name + ' or '
+                else errorlog += ele.name
+            })
+            this.errors.push(`${errorlog} is requied`)
+        }
+        return this
+    }
+
+    /**
+     * @param field: field to validate
+     * @param range: range of values which field belong to
+     * @returns this
+     */    
+    isInRange(field, range) {
+        if(!Object.values(range).includes(field))
+            this.errors.push(`system do not understand value of ${field}.`)
         return this
     }
 

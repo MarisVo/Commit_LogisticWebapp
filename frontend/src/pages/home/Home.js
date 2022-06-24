@@ -208,7 +208,7 @@ const Home = () => {
                                 placeholder="Tỉnh/Thành Phố"
                                 onSelect={(key) => handleSelect(key)}
                             >
-                                {dataProvices.map((city, key) => <Option key={key} value={city.code} onSelect={()=>handleSelect(city.code)} >{city.name} </Option>)}
+                                {dataProvices.map((city, key) => <Option key={key} value={city.code} >{city.name} </Option>)}
 
                             </Select>
                             <Select
@@ -220,13 +220,13 @@ const Home = () => {
                                 {dataDistricts.map((distr) => <Option key={distr.code} value={distr.name}>{distr.name}</Option>)}
                             </Select>
                             <button
-                                type='submit'
-                                class="text-white bg-yellow-500 hover:bg-yellow-400 focus:ring-4  focus:ring-red-500 font-medium rounded-lg text-lg w-full lg:w-44 lg:ml-2 px-5 py-2.5 text-center "
-                            >Tìm kiếm
-                            </button>
+                                    type='submit'
+                                    class="text-white bg-yellow-500 hover:bg-yellow-400 focus:ring-4  focus:ring-red-500 font-medium rounded-lg text-lg w-full lg:w-44 lg:ml-2 px-5 py-2.5 text-center "
+                                >Tìm kiếm
+                                </button>
                         </form>
                     </TabPane>
-                    <TabPane tab={<Link to="tracking" className="text-lg h-[30px]">Bảng giá</Link>} key="3">
+                    <TabPane tab={<Link to="track/bang-gia" className="text-lg h-[30px]">Bảng giá</Link>} key="3">
                     </TabPane>
                 </Tabs>
             </div>
@@ -351,7 +351,7 @@ const Home = () => {
                                 {
                                     coops.map((coop) => (
                                         <div className='flex flex-col items-center text-center' key={coop.id} onClick={() => showPerson(coop.id)}>
-                                            <div className='w-[134px] h-[134px]'>
+                                            <div className='w-[100px] h-[100px] sm:w-[134px] sm:h-[134px]'>
                                                 <img src={coop.image} className='h-full w-full rounded-full object-cover' alt='' />
                                             </div>
                                             <span className='font-bold'>{coop.name}</span>

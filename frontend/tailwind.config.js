@@ -9,16 +9,19 @@ module.exports = {
       screens: {
         'custom-screen': '1415px',
       },
+      zIndex: {
+        100: "100",
+      },
       colors: {
         'primary': '#F0B90B',
         'border_color': '#fcd535',
         'button_color': '#e5a663'
+      },
+      backgroundImage:{
+        'history':"url('/src/assets/images/map-world-in-mobile.png')"
       }
     },
 
-  },
-  corePlugins: {
-    container: false
   },
   plugins: [
     function ({ addComponents }) {
@@ -43,3 +46,4 @@ module.exports = {
     require('@tailwindcss/line-clamp'),
   ],
 }
+
