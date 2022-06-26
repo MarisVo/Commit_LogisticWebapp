@@ -13,6 +13,14 @@ schemes:
 tags:
 - name: "auth"
   description: "Endpoint Authentication"
+- name: "about"
+  description: "Endpoint AboutUs"
+- name: "contactUs"
+  description: "Endpoint ContactUs"
+- name: "tracking"
+  description: "Tracking feature"
+- name: "public"
+  description: "Public assets of web service"
 paths:
   /auth/verify-token:
     post:
@@ -228,5 +236,218 @@ paths:
           description: email/phone or password is wrong.
         403:
           description: your role is not valid. access denied.
+  /about:
+    get:
+      tags:
+        - about
+      summary: get aboutUs information
+      produces:
+        - application/json
+      responses:
+        200:
+          description: get about information successfully.
+          schema:
+            type: object
+            example: {
+              "description": "string",
+              "vision": "string",
+              "values": "string",
+              "logo": "path",
+              "banners": ["path1", "path2"],
+            }
+        400:
+          description: about information is not found.
+  /contactUs:
+    get:
+      tags:
+        - contactUs
+      summary: get contactUs information
+      produces:
+        - application/json
+      responses:
+        200:
+          description: get contact information successfully.
+          schema:
+            type: object
+            example: {
+              "address":"string",
+              "phone":"phone",
+              "email":"email",
+              "facebook":"url",
+              "instagram":"url",
+              "tiktok":"url",
+              "youtube":"url",
+            }
+        400:
+          description: contact information is not found.
+  /tracking/postage:
+    post:
+      tags:
+        - tracking
+      summary: customer look up a postage
+      produces:
+        - application/json
+      consumes:
+        - application/json
+        - multipart/form-data
+      parameters:
+      - in: body
+        name: information
+        required: true
+        schema:
+          type: object
+          properties:
+            formProvince:
+              type: string
+            fromDistrict:
+              type: string
+            fromWard:
+              type: string
+            toProvince:
+              type: string
+            toDistrict:
+              type: string
+            toWard:
+              type: string
+            unit:
+              type: string
+              enum: ['kg','m3','ton']
+            quantity:
+              type: number
+            serviceId:
+              type: string
+            serviceName:
+              type: string
+      responses:
+        200:
+          description: calculate shipment fee successfully.
+          schema:
+            type: object
+            example: {
+              "result": 400000,
+            }
+        400:
+          description: the service is not exist. / the service don't support this road.
+  /tracking/order/{lstOrderId}:
+    get:
+      tags:
+        - tracking
+      summary: get list of order
+      produces:
+        - application/json
+      parameters:
+      - in: path
+        name: lstOrderId
+        type: string
+        required: true
+        description: string of list of OrderIDs, which seperate by '&'
+      responses:
+        200:
+          description: request successfully
+          schema:
+            type: object
+            example: {
+              "orders": ["order1", "order2"],
+              "success": 5,
+              "failure": 2,
+            }
+  /tracking/warehouse:
+    get:
+      tags:
+        - tracking
+      summary: get list of warehouses by province and district query
+      produces:
+        - application/json
+      parameters:
+      - in: query
+        name: province
+        type: string
+        required: true
+      - in: query
+        name: district
+        type: string
+        required: true
+      responses:
+        200:
+          description: request successfully
+          schema:
+            type: object
+            example: {
+              "warehouses": ['warehouse1', 'warehouse2']
+            }
+  /tracking/service/{serviceId}:
+    get:
+      tags:
+        - tracking
+      summary: get pricelist of service
+      produces:
+        - application/json
+      parameters:
+      - in: path
+        name: serviceId
+        type: string
+        required: true
+        description: serviceId of request service
+      responses:
+        200:
+          description: request successfully
+          schema:
+            type: object
+            example: {
+              "serviceWithUniquePriceFiles": ["pricelist1","pricelist2"]
+            }
+        400:
+          description: not exist.
+  /public/uploads/{dirName}/{fileName}:
+    get:
+      tags:
+        - public
+      summary: get uploaded resource
+      parameters:
+      - in: path
+        name: dirName
+        type: string
+        required: true
+        description: directory name of request file
+      - in: path
+        name: fileName
+        type: string
+        required: true
+        description: file name of request file
+      responses:
+        200:
+          description: resource file downloaded
+          schema:
+            type: file
+  /public/{dirName}/{fileName}:
+    get:
+      tags:
+        - public
+      summary: get public assets
+      parameters:
+      - in: path
+        name: dirName
+        type: string
+        required: true
+        description: directory name of request file
+      - in: path
+        name: fileName
+        type: string
+        required: true
+        description: file name of request file
+      responses:
+        200:
+          description: resource file downloaded
+          schema:
+            type: file
+
+
+
+
+
+
+
+
+
 
       
