@@ -2,6 +2,7 @@ import express from "express"
 import dotenv from "dotenv"
 import mongoose from "mongoose"
 import cors from "cors"
+import YAML from 'yamljs'
 
 import authRoute from "./router/auth.js"
 import adminRoute from "./router/admin/index.js"
@@ -11,8 +12,13 @@ import aboutRoute from "./router/about.js"
 import publicRoute from "./router/public.js"
 import contactUsRoute from "./router/contactUs.js"
 import commitmentRoute from "./router/commitment.js"
-import partnerRoute from "./router/partner.js"
-import quoteRoute from "./router/quote.js"
+// import partnerRoute from "./router/partner.js"
+// import quoteRoute from "./router/quote.js"
+
+
+// swagger setup
+import swaggerUi from 'swagger-ui-express'
+const swaggerDocument = YAML.load('./swagger.yaml')
 
 import { verifyAdmin, verifyToken } from "./middleware/index.js"
 dotenv.config()
@@ -32,7 +38,8 @@ app.use(express.json())
 app.use(express.static('public'))
 app.use(cors())
 
-app.use('/public', publicRoute)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+    .use('/public', publicRoute)
     .use('/api/admin', verifyToken, verifyAdmin, adminRoute)
     .use('/api/auth', authRoute)
     .use('/api/tracking', trackingRoute)
@@ -40,8 +47,8 @@ app.use('/public', publicRoute)
     .use('/api/about', aboutRoute)
     .use('/api/contactus', contactUsRoute)
     .use('/api/commitment', commitmentRoute)
-    .use('/api/partner', partnerRoute)
-    .use('/api/quote', quoteRoute)
+    // .use('/api/partner', partnerRoute)
+    // .use('/api/quote', quoteRoute)
 
 app.listen(PORT, () => {
     console.log(`Server start at port: ${PORT}`)

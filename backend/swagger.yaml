@@ -1,0 +1,232 @@
+swagger: "2.0"
+info:
+  description: "APIs of Logistic Web Service"
+  version: "1.0.0"
+  title: "Logistic Web Service"
+  contact:
+    email: "d.bed11@gptgdt.net"
+host: "localhost:8000"
+basePath: "/api"
+schemes:
+- "https"
+- "http"
+tags:
+- name: "auth"
+  description: "Endpoint Authentication"
+paths:
+  /auth/verify-token:
+    post:
+      tags:
+      - "auth"
+      summary: "Verify the post token, if it's expired, refresh token"
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+      - in: body
+        name: token
+        required: true
+        schema:
+          type: object
+          properties:
+            accessToken:
+              type: string
+            refreshToken:
+              type: string
+      responses:
+        200:
+          description: Verify token successfully.
+          schema:
+            type: object
+            example: {
+              "accessToken":"123456",
+              "user":{
+                "id":"userId",
+                "email":"email",
+                "phone":"phone",
+                "role":"role",
+              }
+            }
+        401:
+          description: Unauthorized.
+  /auth/register:
+    post:
+      tags:
+      - "auth"
+      summary: "Register customer"
+      produces:
+        - application/json
+      consumes:
+        - application/json
+        - multipart/form-data
+      parameters:
+      - in: body
+        name: customer
+        required: true
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+            email:
+              type: string
+            phone:
+              type: string
+            password:
+              type: string
+            address:
+              type: string
+            description:
+              type: string
+            customer_type:
+              type: string
+              enum: ['business', 'passers', 'intermediary']
+            verify_op:
+              type: string
+              enum: ['email', 'phone']
+      responses:
+        200:
+          description: send otp code successfully.
+          schema:
+            type: object
+            example: {
+              "userId":"verifyId",
+            }
+        400:
+          description: Send OTP failed.
+  /auth/verify-otp:
+    post:
+      tags:
+        - "auth"
+      summary: Verify OTP send through email/phone number.
+      consumes:
+        - application/json
+      parameters:
+      - in: body
+        name: otp
+        required: true
+        schema:
+          type: object
+          properties:
+            userId:
+              type: string
+            otp:
+              type: string
+      responses:
+        200:
+          description: user registered successfully.
+        400:
+          description: validate failed.
+  /auth/update-otp:
+    post:
+      tags:
+        - "auth"
+      summary: Update OTP send through email/phone number.
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+      - in: body
+        name: otp
+        required: true
+        schema:
+          type: object
+          properties:
+            userId:
+              type: string
+            verify_op:
+              type: string
+              enum: ['email','phone']
+      responses:
+        200:
+          description: update otp successfully.
+        400:
+          description: Send OTP failed.
+  /auth/login:
+    post:
+      tags:
+        - "auth"
+      summary: Customer login with email/phone and password.
+      produces:
+        - application/json
+      consumes:
+        - application/json
+        - multipart/form-data
+      parameters:
+      - in: body
+        name: user
+        required: true
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+            phone:
+              type: string
+            password:
+              type: string
+      responses:
+        200:
+          description: Login successfully.
+          schema:
+            type: object
+            example: {
+              "accessToken":"string",
+              "refreshToken":"string",
+              "user": {
+                "id":"string",
+                "email":"string",
+                "phone":"string",
+                "role":{},
+              }
+            }
+        400:
+          description: email/phone or password is wrong.
+        403:
+          description: your role is not valid. access denied.
+  /auth/staff-login:
+    post:
+      tags:
+        - "auth"
+      summary: Staff login with email/phone and password.
+      produces:
+        - application/json
+      consumes:
+        - application/json
+        - multipart/form-data
+      parameters:
+      - in: body
+        name: user
+        required: true
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+            phone:
+              type: string
+            password:
+              type: string
+      responses:
+        200:
+          description: Login successfully.
+          schema:
+            type: object
+            example: {
+              "accessToken":"string",
+              "refreshToken":"string",
+              "user": {
+                "id":"string",
+                "email":"string",
+                "phone":"string",
+                "role":{},
+              }
+            }
+        400:
+          description: email/phone or password is wrong.
+        403:
+          description: your role is not valid. access denied.
+
+      
