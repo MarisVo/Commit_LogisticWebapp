@@ -12,7 +12,7 @@ import aboutRoute from "./router/about.js"
 import publicRoute from "./router/public.js"
 import contactUsRoute from "./router/contactUs.js"
 import commitmentRoute from "./router/commitment.js"
-// import partnerRoute from "./router/partner.js"
+import partnerRoute from "./router/partner.js"
 // import quoteRoute from "./router/quote.js"
 
 
@@ -47,7 +47,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/about', aboutRoute)
     .use('/api/contactus', contactUsRoute)
     .use('/api/commitment', commitmentRoute)
-    // .use('/api/partner', partnerRoute)
+    .use('/api/partner', partnerRoute)
     // .use('/api/quote', quoteRoute)
 
 app.listen(PORT, () => {

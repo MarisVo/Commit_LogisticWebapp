@@ -5,6 +5,7 @@ import warehouseAdminRoute from "./warehouse.js"
 import aboutAdminRoute from "./about.js"
 import contactUsAdminRoute from "./contactUs.js"
 import commitmentAdminRoute from "./commitment.js"
+import partnerAdminRoute from "./partner.js"
 
 const adminRoute = express.Router()
 
@@ -14,5 +15,6 @@ adminRoute.use('/auth', authAdminRoute)
     .use('/about', aboutAdminRoute)
     .use('/contactus', contactUsAdminRoute)
     .use('/commitment', commitmentAdminRoute)
+    .use('/partner', partnerAdminRoute)
 
 export default adminRoute

@@ -43,4 +43,24 @@ commitmentRoute.get('/:commitmentId', async (req, res) => {
 })
 
 
+/**
+ * @route GET /api/commitment/count/:num
+ * @description get "num" number of latest commitments
+ * @access public
+ */
+commitmentRoute.get('/count/:num',
+    async(req, res) => {
+        try {
+            const {num} = req.params
+            const commitments = await Commitment.find({}).limit(num).sort('-updatedAt')
+            if (commitments) return sendSuccess(res, "get commitment successful.", commitments)
+            return sendError(res, "not information found.")
+        } catch(error){
+            console.log(error)
+            return sendServerError(res)
+        }
+    }
+)
+
+
 export default commitmentRoute
