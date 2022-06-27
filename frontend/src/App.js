@@ -1,16 +1,19 @@
-import React from 'react';
-import './App.css';
-import 'react-router-dom';
+import React from "react";
+import "./App.css";
+import "react-router-dom";
 
+import CareerOpportunities from "./pages/CareerOpportunities/CareerOpportunities";
+import Life from "./pages/Life/Life";
+import RecruitmentDetails from "./pages/RecruitmentDetails/RecruitmentDetails";
 
-import Track from './pages/track/Track';
-import Advice from './pages/advice/Advice';
 const App = () => {
-	return (
-	
-		<Track/>
-		// <Advice />
-	);
+  return (
+    <>
+      <CareerOpportunities />
+      <Life />
+      <RecruitmentDetails />
+    </>
+  );
 };
 
 export default App;
