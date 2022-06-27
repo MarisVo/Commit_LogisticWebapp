@@ -1,15 +1,27 @@
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+  ],
+  important: true
+  ,
   theme: {
     extend: {
       screens: {
-
-        "custom-screen": "1415px",
+        'custom-screen': '1415px',
       },
       zIndex: {
         100: "100",
       },
+      colors: {
+        'primary': '#F0B90B',
+        'border_color': '#fcd535',
+        'button_color': '#e5a663'
+      },
+      backgroundImage:{
+        'history':"url('/src/assets/images/map-world-in-mobile.png')"
+      }
     },
+
   },
   plugins: [
     function ({ addComponents }) {
@@ -30,14 +42,8 @@ module.exports = {
           },
         }
       })
-}],
-  important: true,
- 
-
-
-  corePlugins: {
-    container: false
-  },
-
+    },
+    require('@tailwindcss/line-clamp'),
+  ],
 }
 
