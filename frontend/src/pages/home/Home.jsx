@@ -143,8 +143,8 @@ const Home = () => {
         setProvince(dataProv)
     }, [])
     const [person, setPerson] = useState(1)
-    const handleSelect = (cityCode) => {
-        const dataDist = getDistrictsByProvinceCode(cityCode)
+    const handleSelect = (e) => {
+        const dataDist = getDistrictsByProvinceCode(e.target.key).toString()
         setDistricts(dataDist)
     }
     console.log(dataDistricts)
@@ -206,9 +206,9 @@ const Home = () => {
                                 allowClear
                                 className="w-full lg:w-2/5"
                                 placeholder="Tỉnh/Thành Phố"
-                                onSelect={(key) => handleSelect(key)}
+                                onChange={ handleSelect}
                             >
-                                {dataProvices.map((city, key) => <Option key={key} value={city.code} >{city.name} </Option>)}
+                                {dataProvices.map((city) => <Option key={city.code} value={city.name} >{city.name} </Option>)}
 
                             </Select>
                             <Select
@@ -327,7 +327,7 @@ const Home = () => {
                 </div>
             </div>
             <div className='container mx-auto px-2 lg:px-0  my-10'>
-                <span className="text-4xl font-black">ĐỐI TÁC NÓI VỀ CHÚNG TÔI</span>
+                <span className="block text-2xl sm:text-4xl lg:text-4xl font-black my-6 lg:my-0">ĐỐI TÁC NÓI VỀ CHÚNG TÔI</span>
                 <div className='grid grid-cols-1 lg:grid-cols-[60%_35%] gap-x-10 '>
                     <div className="flex flex-col justify-center items-center  ">
                         <span >
@@ -369,8 +369,8 @@ const Home = () => {
                             </div>
                             <span className='text-xl font-bold pt-4'>{coops[person - 1].name}</span>
                             <span>{coops[person - 1].job}</span>
-                            <div className=''>
-                                <span className='py-6 line-clamp-6'>{coops[person - 1].comment}</span>
+                            <div className='mx-3 sm:mx-10 lg:mx-0'>
+                                <span className='py-6 line-clamp-6 text-justify'>{coops[person - 1].comment}</span>
                             </div>
                         </div>
                     </div>

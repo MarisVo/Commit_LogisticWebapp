@@ -1,5 +1,25 @@
+import axios from "axios";
+import {useState, useEffect} from 'react'
+
+
 function About() {
-    console.log('about')
+const [data,setData]=useState({})
+useEffect(()=>{
+    const fetchApi = async ()=>{
+        try {
+            const {data:response} = await axios.get('http://localhost:8000/api/about')
+            setData(response.data)
+            console.log(response.data)
+        }
+        catch (error){
+            console.error(error.message)
+        }
+    }
+    fetchApi()
+},[])
+
+    console.log('data is',data.banners)
+    
     return (
         <div className='pt-[65px]'>
             <a href="">
@@ -10,11 +30,12 @@ function About() {
                     <span className='block text-2xl text-center font-black my-6 py-4 lg:text-6xl lg:text-left lg:text-red-600 '>J&T EXPRESS</span>
                     <div className='text-justify w-full xl:w-[525px] border-4 border-border_color p-8 text-base rounded-2xl lg:bg-yellow-100 opacity-95'>
                         <span>
-                            J&T Express là thương hiệu chuyển phát nhanh dựa trên sự phát triển của công nghệ và Internet.
+                            {/* J&T Express là thương hiệu chuyển phát nhanh dựa trên sự phát triển của công nghệ và Internet.
                             Chúng tôi sở hữu một mạng lưới rộng khắp nhằm hỗ trợ các hoạt động giao nhận hàng hóa nhanh chóng
                             không chỉ ở nội thành mà còn ở ngoại thành và các vùng xa của các tỉnh thành trong cả nước Việt Nam.
                             <br />
-                            Đồng thời, hiện tại, J&T Express định hướng mở rộng phạm vi cung cấp các dịch vụ chuyển phát nhanh ra quốc tế.
+                            Đồng thời, hiện tại, J&T Express định hướng mở rộng phạm vi cung cấp các dịch vụ chuyển phát nhanh ra quốc tế. */}
+                            {data.description}
                         </span>
                         <div className='w-20 h-[2px] bg-red-500 mt-8'></div>
                     </div>
@@ -44,7 +65,7 @@ function About() {
                     <span className='text-2xl font-black uppercase'>Tấm nhìn</span>
                     <span className='text-base'>J&T Express là thương hiệu chuyển phát nhanh uy tín và bền vững tại Việt Nam.</span>
                     <div className='w-20 h-[2px] bg-primary'></div>
-                    <span className='text-2xl font-black uppercase'>Gía trị cốt lõi</span>
+                    <span className='text-2xl font-black uppercase'>Giá trị cốt lõi</span>
                     <span className='text-base'>
                         <span className='font-bold'>Bổn phận, Chia sẻ, Phục vụ, Trách nhiệm, Hướng đến kết quả </span>
                         là năm giá trị cơ bản của J&T Express nhằm mang đến chất lượng dịch vụ giao hàng tốt nhất cho khách hàng.
@@ -61,7 +82,7 @@ function About() {
                     <div className='xl:max-w-[400px]'>
                         <div className='text-3xl xl:text-5xl text-center xl:text-left font-black my-4 text-primary '>LỊCH SỬ</div>
                         <div className='p-8 mb-2 border-[3px] border-border_color rounded-2xl bg-yellow-100 shadow-2xl opacity-95'>
-                            <span className='text-base font-semibold'>
+                            <span className='text-base font-semibold text-justify'>
                                 Được thành lập vào năm 2015 tại Indonesia, J&T Express là công ty chuyển phát nhanh
                                 dựa trên công nghệ thông tin và theo xu hướng của ngành thương mại điện tử.
                                 <br />
