@@ -6,23 +6,24 @@ function About() {
                 <img src='https://jtexpress.vn/storage/app/uploads/public/628/598/69c/62859869c9723182554168.jpg' alt="banner" className='w-full h-[143px] lg:h-[550px] object-cover' />
             </a>
             <div className="flex flex-col xl:flex-row justify-between  container mx-auto my-4 lg:mt-[-210px]">
-                <div className="backdrop-blur-[2px]">
-                    <span className='block text-2xl text-center font-black my-6 py-4 lg:text-6xl lg:text-left lg:text-red-600 '>J&T EXPRESS</span>
+                <div >
+                    <span className='block text-2xl text-center font-black my-6 py-4 lg:text-6xl lg:text-left lg:text-primary '>J&T EXPRESS</span>
                     <div className='text-justify w-full xl:w-[525px] border-4 border-border_color p-8 text-base rounded-2xl lg:bg-yellow-100 opacity-95'>
-                        <span>
+                        <span className="text-align">
                             J&T Express là thương hiệu chuyển phát nhanh dựa trên sự phát triển của công nghệ và Internet.
                             Chúng tôi sở hữu một mạng lưới rộng khắp nhằm hỗ trợ các hoạt động giao nhận hàng hóa nhanh chóng
                             không chỉ ở nội thành mà còn ở ngoại thành và các vùng xa của các tỉnh thành trong cả nước Việt Nam.
                             <br />
                             Đồng thời, hiện tại, J&T Express định hướng mở rộng phạm vi cung cấp các dịch vụ chuyển phát nhanh ra quốc tế.
                         </span>
-                        <div className='w-20 h-[2px] bg-red-500 mt-8'></div>
+                        <div className='w-20 h-[2px] bg-[#f0b90c] mt-8'></div>
                     </div>
                 </div>
                 <div className='flex flex-col lg:flex-row items-center justify-around mt-16 gap-8 font-extrabold '>
                     <div className="flex flex-col items-center text-center px-3 gap-y-3 ">
                         <img src='https://jtexpress.vn/themes/jtexpress/assets/images/1000xe.png' alt="vehicle-pic" className='shadow-xl rounded-full' />
                         <span className="text-3xl text-primary">850+</span>
+                        <span x-data="{ show: false }" x-show="show" x-init="setTimeout(() => show = true, 3000)"></span>
                         <span className="text-xl uppercase">phương tiện</span>
                     </div>
                     <div className="flex flex-col items-center text-center px-3 gap-y-3">
@@ -60,8 +61,8 @@ function About() {
                 <div className="w-auto flex flex-col xl:flex-row items-center ">
                     <div className='xl:max-w-[400px]'>
                         <div className='text-3xl xl:text-5xl text-center xl:text-left font-black my-4 text-primary '>LỊCH SỬ</div>
-                        <div className='p-8 mb-2 border-[3px] border-border_color rounded-2xl bg-yellow-100 shadow-2xl opacity-95'>
-                            <span className='text-base font-semibold'>
+                        <div className='p-8 mb-2 border-[3px] border-border_color rounded-2xl bg-yellow-100 shadow-2xl opacity-95 text-align'>
+                            <span className='text-base font-bold text-align'>
                                 Được thành lập vào năm 2015 tại Indonesia, J&T Express là công ty chuyển phát nhanh
                                 dựa trên công nghệ thông tin và theo xu hướng của ngành thương mại điện tử.
                                 <br />

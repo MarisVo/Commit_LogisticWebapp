@@ -95,10 +95,10 @@ const handleSubmit = () => {
 					>
 						<div className=" lg:border-t-2 border-[#F2F2F2] lg:pb-10 lg:pt-6">
 							<div className="flex flex-col items-start">
-								<span className="font-bold text-[#D60009] uppercase hidden lg:block text-xl">
+								<span className="font-bold text-[#fcd535] uppercase hidden lg:block text-xl">
 									Dịch vụ J&amp;T
 								</span>
-								<span className=" text-[#161D25] text-[16px] lg:text-[#8A8E92] lg:w-[350px] lg:text-[14px] block my-4 lg:my-0 text-lg">
+								<span className=" text-[#161D25] text-lg lg:text-[#8A8E92] lg:w-[350px] lg:text-[14px] block my-4 lg:my-0 ">
 									Chọn một trong các dịch vụ J&amp;T Express đang cung cấp
 								</span>
 							</div>
@@ -136,7 +136,7 @@ const handleSubmit = () => {
 						</div>
 						<div className=" lg:border-t-2 border-[#F2F2F2] lg:pb-10 lg:pt-6">
 							<div className="flex flex-col">
-								<span className="font-bold text-[#D60009] uppercase block mb-3 lg:mb-0 text-xl">
+								<span className="font-bold text-[#fcd535] uppercase block mb-3 lg:mb-0 text-xl">
 									Thông tin người gửi
 								</span>
 								<span className="text-[#8A8E92] w-[280px] text-[14px] hidden lg:block text-lg">
@@ -201,7 +201,7 @@ const handleSubmit = () => {
 						</div>
 						<div className=" lg:border-t-2 border-[#F2F2F2] lg:pb-10 lg:pt-6">
 							<div className="flex flex-col">
-								<span className="font-bold text-[#D60009] uppercase block mb-3 lg:mb-0 text-xl ">
+								<span className="font-bold text-[#fcd535] uppercase block mb-3 lg:mb-0 text-xl ">
 									Địa chỉ người gửi
 								</span>
 								<span className="text-[#8A8E92] w-[280px] text-[14px] hidden lg:block text-lg">
@@ -336,10 +336,10 @@ const handleSubmit = () => {
 						</div>
 						<div className=" lg:border-t-2 border-[#F2F2F2] lg:pb-8 lg:pt-6">
 							<div className="flex flex-col">
-								<span className="font-bold text-[#D60009] uppercase block mb-3 lg:mb-0 text-xl">
+								<span className="font-bold text-[#fcd535] uppercase block mb-3 lg:mb-0 text-xl">
 									Thông tin hàng hóa gửi đi
 								</span>
-								<span className="text-[#8A8E92] w-[220px] text-[14px] hidden lg:block text-lg">
+								<span className="text-[#8A8E92] w-[280px] text-[14px] hidden lg:block text-lg">
 									Nhập thông tin chi tiết hàng hóa được gửi đi
 								</span>
 							</div>
@@ -382,7 +382,7 @@ const handleSubmit = () => {
 							<div className="w-full">
 								<button
 									type="button"
-									className="flex items-center justify-center text-white font-bold bg-[#FF0000] h-[55px] w-full text-center"
+									className="flex items-center justify-center text-white font-bold bg-[#e5a663] h-[55px] w-full text-center"
 								>
 									<FontAwesomeIcon icon={faPaperPlane} />
 									<span className="ml-2">Đăng ký tư vấn</span>
