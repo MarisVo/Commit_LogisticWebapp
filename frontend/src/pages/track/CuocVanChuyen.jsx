@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import {
 	getProvincesWithDetail,
@@ -5,6 +6,7 @@ import {
 	getWardsByDistrictCode,
 	getDistrictsByProvinceCode,
 } from 'sub-vn';
+import { END_POINT } from '../../utils/constant';
 export default function CuocVanChuyen() {
 	// ================== FROM STATE =======================
 	const [provincesFrom, setProvincesFrom] = useState([]);
@@ -26,6 +28,8 @@ export default function CuocVanChuyen() {
 
 	// weight
 	const [weight, setWeight] = useState(null);
+	const [unit, setUnit] = useState('kg');
+	const [price, setPrice] = useState(0);
 
 	const [isValid, setIsValid] = useState(false);
 
@@ -61,7 +65,7 @@ export default function CuocVanChuyen() {
 		setWardsTo(getWardsByDistrictCode(districtCodeTo));
 	}, [districtCodeTo]);
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		// check empty field
 		if (
 			!provinceCodeFrom ||
@@ -76,6 +80,31 @@ export default function CuocVanChuyen() {
 			alert('Vui lòng nhập đầy đủ thông tin');
 			return;
 		}
+
+		const provinceFrom = provincesFrom.find(prov => prov.code === provinceCodeFrom);
+		const provinceTo = provincesTo.find(prov => prov.code === provinceCodeTo);
+
+		try {
+			
+			const { data } = await axios.post(`${END_POINT}/tracking/postage`, {
+				fromProvince: provinceFrom.name,
+				toProvince: provinceTo.name,
+				unit,
+				quantity: +weight,
+				serviceName: 'express',
+			})
+	
+			setPrice(data.data.result);
+	
+			console.log(data);
+	
+			if (data.success === false) {
+				alert(data.message || 'Có lỗi xảy ra');
+			}
+		} catch (error) {
+			alert(error.response.data.message || 'Có lỗi xảy ra');			
+		}
+
 
 		setIsValid(true);
 	};
@@ -400,13 +429,13 @@ export default function CuocVanChuyen() {
 									/>
 								</div>
 								<div>
-									<select className="w-full h-full" defaultValue="kg">
+									<select className="w-full h-full" defaultValue="kg" onChange={(e) => setUnit(e.target.value)}>
 										<option value="" disabled>
 											Chọn đơn vị
 										</option>
 										<option value="kg">Kg</option>
-										<option value="tan">Ton(Tấn)</option>
 										<option value="m3">M³</option>
+										<option value="ton">Ton(Tấn)</option>
 									</select>
 								</div>
 							</div>
@@ -418,24 +447,29 @@ export default function CuocVanChuyen() {
 				<button
 					className="text-black tracking-wide bg-[#e5a663] rounded-[2px] min-h-[55px] w-full text-lg "
 					style={{ fontWeight: 600 }}
-					data-toggle={isValid && 'collapse'}
+					// data-toggle={isValid && 'collapse'}
 					data-target="#bill"
 					onClick={handleSubmit}
 				>
 					Get a Quote
 				</button>
-				<div id="bill" className="collapse px-4 lg:px-0">
-					<div className="mt-14 bg-[#FFF2F4] min-h-[215px] rounded-[10px] flex flex-col items-center justify-center">
-						<span className="uppercase text-[#161D25] SFProDisplayBold">
-							tổng tiền cước vận chuyển
-						</span>
-						<span className="py-3 text-[#FF0000] text-[54px]">65,417 VNĐ</span>
-						<span className="text-[#161D25] text-center lg:text-left">
-							Giá trên đã bao gồm phụ phí nhiên liệu, phí vùng sâu vùng xa và
-							10% thuế VAT
-						</span>
+				{/* <div id="bill" className="collapse px-4 lg:px-0"> */}
+				{
+					isValid && price && (
+					<div id="bill" className="px-4 lg:px-0">
+						<div className="mt-14 bg-[#FFF2F4] min-h-[215px] rounded-[10px] flex flex-col items-center justify-center">
+							<span className="uppercase text-[#161D25] SFProDisplayBold">
+								tổng tiền cước vận chuyển
+							</span>
+							<span className="py-3 text-[#FF0000] text-[54px]">{price} VNĐ</span>
+							<span className="text-[#161D25] text-center lg:text-left">
+								Giá trên đã bao gồm phụ phí nhiên liệu, phí vùng sâu vùng xa và
+								10% thuế VAT
+							</span>
+						</div>
 					</div>
-				</div>
+					)
+				}
 			</div>
 		</div>
 	);

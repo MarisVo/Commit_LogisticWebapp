@@ -75,7 +75,7 @@ export default function ContactAdvice() {
                     <textarea placeholder="Message" name="content" className="custom_textarea pt-2 name_select name_input text-base ml-1"
                       onChange={(e) => setMassage(e.target.value)} />
                   </div>
-                  <button type="button" className="rounded-[2px] bg-[#FF0000] text-white h-[55px] w-full mt-6 text-xl" id="btnSubmit" onClick={handleClick}>
+                  <button type="button" className="rounded-[2px] bg-[#e5a663] text-white h-[55px] w-full mt-6 text-xl" id="btnSubmit" onClick={handleClick}>
                     Gửi
                   </button>
                 </div>
