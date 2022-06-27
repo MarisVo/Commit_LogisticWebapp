@@ -1,16 +1,14 @@
-import React from 'react';
-import './App.css';
-import 'react-router-dom';
+import React from "react";
+import "./App.css";
+import "react-router-dom";
 
+import Profile from "./pages/profile/Profile";
+import Order from "./pages/Order/Order";
+import Notification from "./pages/notification/Notification";
+import PurchaseState from "./pages/purchaseStage/PurchaseState";
 
-import Track from './pages/track/Track';
-import Advice from './pages/advice/Advice';
 const App = () => {
-	return (
-	
-		<Track/>
-		// <Advice />
-	);
+  return <Order />;
 };
 
 export default App;
