@@ -8,11 +8,21 @@ const ProductSchema = new Schema(
             type: String,
             required: true
         },
-        quantity: Number,
+        quantity: {
+            type: Number,
+            required: true
+        },
         unit: {
             type: String,
-            enum: Object.values(PRODUCT_UNIT)
-        }
+            enum: Object.values(PRODUCT_UNIT),
+            required: true
+        },
+        product_shipments: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'product_shipments'
+            }
+        ]
     },
     { timestamps: true }
 )
