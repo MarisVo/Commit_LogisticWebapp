@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { RightOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 const NewJob = () => {
   const newJob = [
@@ -43,13 +44,15 @@ const NewJob = () => {
               <FontAwesomeIcon icon={faLocationDot} className=" pr-[16px]" />
               {job.location}
             </p>
-            <a
-              className="text-[14px] text-[#e5a663] font-bold tracking-wider flex items-center gap-2 "
-              href="#"
-            >
-              <RightOutlined />
-              XEM CHI TIẾT
-            </a>
+            <Link to="/chi-tiet-viec-lam-moi">
+              <a
+                className="text-[14px] text-[#e5a663] font-bold tracking-wider flex items-center gap-2 "
+                href="#"
+              >
+                <RightOutlined />
+                XEM CHI TIẾT
+              </a>
+            </Link>
           </div>
         );
       })}

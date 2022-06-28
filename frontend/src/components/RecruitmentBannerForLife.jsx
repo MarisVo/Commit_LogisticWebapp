@@ -16,7 +16,7 @@ const RecruitmentBannerForLife = () => {
             icon={faQuoteLeft}
             className="text-[#e5a663] text-[60px] hidden lg:block"
           />
-          <h2 className="text-[14px] lg:text-3xl">
+          <h2 className="text-[14px] lg:text-3xl text-white">
             "8h01p không phải 8h" là một trong những phong cách làm việc làm cho
             tôi ấn tượng ngay ngày đầu tiên. Tính "kỷ luật" chính là yếu tố mang
             lại cho tôi một định nghĩa mới về sự "chuyên nghiệp".

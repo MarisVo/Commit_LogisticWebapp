@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Tabs } from 'antd';
 import CuocVanChuyen from './CuocVanChuyen';
 import HangCamGui from './HangCamGui';
 import VanDon from './VanDon';
 import BuuCuc from './BuuCuc';
 import BangGia from './BangGia';
+import { Outlet, useNavigate } from 'react-router-dom';
 const { TabPane } = Tabs;
 
-export default function Track() {
+export default function Track({ number }) {
     const onChange = (key) => {
         console.log(key);
     };
+    const navigate = useNavigate()
+    const [defaultService, setDefaultService] = useState("cước vận chuyển")
+    function callback(dichVu) {
+        setDefaultService(dichVu);
+        navigate(`/track?type=${dichVu}`)   
+    }
     return (
         <>
             <div className='carousel'>
@@ -20,24 +27,25 @@ export default function Track() {
             </div>
             <div className='custom-tab shadow-[#000000] container mx-auto text-xl '
                 style={{ maxWidth: "1200px" }} >
-                <Tabs defaultActiveKey="1" centered size='large' tabPosition='top'type='line' className='p-3' tabBarStyle={{color:"#fcd535"}} >
-                    <TabPane tab="Cước vận chuyển" key="1" >
+                <Tabs defaultActiveKey='cước vận chuyển' onChange={callback} centered size='large' tabPosition='top' type='line' className='p-3' tabBarStyle={{ color: "#fcd535" }} >
+                    <TabPane tab="Cước vận chuyển" key="cước vận chuyển" >
                         <CuocVanChuyen />
                     </TabPane>
-                    <TabPane tab="Vận đơn" key="2">
+                    <TabPane tab="Vận đơn" key="vận đơn">
                         <VanDon />
                     </TabPane>
-                    <TabPane tab="Bưu cục" key="3">
+                    <TabPane tab="Bưu cục" key="bưu cục">
                         <BuuCuc />
                     </TabPane>
-                    <TabPane tab="Bảng giá" key="4">
+                    <TabPane tab="Bảng giá" key="bảng giá">
                         <BangGia />
                     </TabPane>
-                    <TabPane tab="Hàng cấm gửi" key="5">
+                    <TabPane tab="Hàng cấm gửi" key="hàng cấm gửi">
                         <HangCamGui />
                     </TabPane>
                 </Tabs>
             </div>
+            <Outlet />
         </>
     )
 }

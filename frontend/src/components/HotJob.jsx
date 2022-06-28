@@ -1,6 +1,7 @@
 import { RightOutlined } from "@ant-design/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 const HotJob = () => {
   const hotJob = [
     {
@@ -43,13 +44,13 @@ const HotJob = () => {
               <FontAwesomeIcon icon={faLocationDot} className=" pr-[16px]" />
               {job.location}
             </p>
-            <a
+            <Link to="/chi-tiet-viec-lam-noi-bat"><a
               className="text-[14px] text-[#e5a663] tracking-wider flex items-center gap-2 font-bold"
               href="#"
             >
               <RightOutlined />
               XEM CHI TIẾT
-            </a>
+            </a></Link>
           </div>
         );
       })}
