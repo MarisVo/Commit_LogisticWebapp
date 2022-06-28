@@ -9,13 +9,14 @@ const partnerRoute = express.Router()
 
 /**
  * @route GET /api/partner/
- * @description get all logo partner 
+ * @description get all logo partner or limit
  * @access public
  */
 partnerRoute.get('/',
     async(req, res) => {
+        const {limit} = req.query
         try {
-            const partners = await Partner.find({})
+            const partners = await Partner.find({}).limit(limit).sort('-updatedAt')
             if (partners) return sendSuccess(res, "Get partner successful.", partners)
             return sendError(res, "Not information found.")
         } catch(error){
@@ -43,25 +44,5 @@ partnerRoute.get('/:id',
         }
     }
 )
-
-/**
- * @route GET /api/partner/count/:num
- * @description get "num" number of latest partners
- * @access public
- */
-partnerRoute.get('/count/:num',
-    async(req, res) => {
-        try {
-            const {num} = req.params
-            const partners = await Partner.find({}).limit(num).sort('-updatedAt')
-            if (partners) return sendSuccess(res, "get partner successful.", partners)
-            return sendError(res, "not information found.")
-        } catch(error){
-            console.log(error)
-            return sendServerError(res)
-        }
-    }
-)
-
 
 export default partnerRoute

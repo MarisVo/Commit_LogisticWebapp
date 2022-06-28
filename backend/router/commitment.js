@@ -12,17 +12,20 @@ const commitmentRoute = express.Router()
  * @description get all commitments
  * @access public
  */
-commitmentRoute.get('/', async (req, res) => {
-    try {
-        const commits = await Commitment.find({})
-        if (commits)
-            return sendSuccess(res, 'get commitment information successfully.', commits)
-        return sendError(res, 'commitment information is not found.')
-    } catch (error) {
-        console.log(error)
-        return sendServerError(res)
+
+commitmentRoute.get('/',
+    async(req, res) => {
+        const {limit} = req.query
+        try {
+            const commits = await Commitment.find({}).limit(limit).sort('-updatedAt')
+            if (commits) return sendSuccess(res, "Get commitment successful.", commits)
+            return sendError(res, "Not information found.")
+        } catch(error){
+            console.log(error)
+            return sendServerError(res)
+        }
     }
-})
+)
 
 /**
  * @route GET /api/commitment/:commitmentId
@@ -41,26 +44,5 @@ commitmentRoute.get('/:commitmentId', async (req, res) => {
         return sendServerError(res)
     }
 })
-
-
-/**
- * @route GET /api/commitment/count/:num
- * @description get "num" number of latest commitments
- * @access public
- */
-commitmentRoute.get('/count/:num',
-    async(req, res) => {
-        try {
-            const {num} = req.params
-            const commitments = await Commitment.find({}).limit(num).sort('-updatedAt')
-            if (commitments) return sendSuccess(res, "get commitment successful.", commitments)
-            return sendError(res, "not information found.")
-        } catch(error){
-            console.log(error)
-            return sendServerError(res)
-        }
-    }
-)
-
 
 export default commitmentRoute

@@ -452,6 +452,11 @@ paths:
       summary: get commitments
       produces:
         - application/json
+      parameters:
+        - in: query
+          name: limit
+          type: string
+          description: limit number of commitment
       responses:
         200:
           description: get commitments successfully.
@@ -477,31 +482,6 @@ paths:
           type: string
           required: true
           description: Id of a commitment 
-      responses:
-        200:
-          description: get commitment successfully.
-          schema:
-            type: object
-            example: {
-              "heading": "string",
-              "logo": "path",
-              "detail": "string",              
-            }
-        400:
-          description: commitment is not found.
-  /commitment/count/{num}:
-    get:
-      tags:
-        - "commitment"
-      summary: get num number of commitments
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          name: num
-          type: string
-          required: true
-          description: number of commitment is required 
       responses:
         200:
           description: get commitment successfully.
@@ -654,6 +634,11 @@ paths:
       summary: get partners
       produces:
         - application/json
+      parameters:
+        - in: query
+          name: limit
+          type: string
+          description: limit number of partners 
       responses:
         200:
           description: get partners successfully.
@@ -678,30 +663,6 @@ paths:
           type: string
           required: true
           description: Id of a partner 
-      responses:
-        200:
-          description: get partner successfully.
-          schema:
-            type: object
-            example: {
-              "name": "string",
-              "logo": "path",
-            }
-        400:
-          description: partnerId is not found.
-  /partner/count/{num}:
-    get:
-      tags:
-        - "partner"
-      summary: get partner by id
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          name: num
-          type: string
-          required: true
-          description: Number of partners is required
       responses:
         200:
           description: get partner successfully.
