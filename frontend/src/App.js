@@ -14,18 +14,18 @@ import {
   BuuCuc,
   BangGia,
   HangCamGui,
-  CarerrOpportunity,
+  CareerOpportunities,
   Life,
+  Purchase,
+  PurchaseStage,
+  Profile,
+  Notification,
   DefaultLayout,
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HotJob from "./components/HotJob";
 import NewJob from "./components/NewJob";
 import { MainProvider } from "./context/MainContext";
-import Notification from "./pages/Notification/Notification";
-import Purchase from "./pages/Purchase/Purchase";
-import Profile from "./pages/Profile/Profile";
-import PurchaseState from "./pages/PurchaseStage/PurchaseState";
 
 const App = () => {
   return (
@@ -46,18 +46,35 @@ const App = () => {
                 <Route path="hang-cam-gui" element={<HangCamGui />} />
               </Route>
               {/* ------------------------Tuyển dụng------------------- */}
-              <Route path="tuyen-dung" element={<CarerrOpportunity />}>
+              <Route path="tuyen-dung" element={<CareerOpportunities />}>
                 <Route path="chi-tiet-viec-lam-noi-bat" element={<HotJob />} />
                 <Route path="chi-tiet-viec-lam-moi" element={<NewJob />} />
               </Route>
               <Route path="cuoc-song" element={<Life />} />
-
               {/* -----------------------Tư vấn----------------------- */}
               <Route path="advice/contact" element={<Contact />} />
               <Route path="advice/dang-ki-tu-van" element={<SignUpAdvice />} />
-              <Route path="*" element={<PageNotFound />} />
-              {/* ----------------Trang cá nhân user----------------- */}
+              {/* ----------------------Profile------------------ */}
               <Route path="user/account/profile" element={<Profile />} />
+              <Route path="user/purchase" element={<Purchase />} />
+              <Route
+                path="user/purchase/order/:id"
+                element={<PurchaseStage />}
+              />
+              <Route
+                path="user/notifications/order"
+                element={<Notification />}
+              />
+
+              <Route path="*" element={<PageNotFound />} />
+            </Route>
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </MainProvider>
+  );
+};
+/*   <Route path="user/account/profile" element={<Profile />} />
               <Route path="user/purchase" element={<Purchase />} />
               <Route
                 path="user/purchase/order/:id"
@@ -66,13 +83,6 @@ const App = () => {
               <Route
                 path="user/notifications/order"
                 element={<Notification />}
-              />
-            </Route>
-          </Routes>
-        </div>
-      </BrowserRouter>
-    </MainProvider>
-  );
-};
+              /> */
 
 export default App;
