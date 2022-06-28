@@ -1,7 +1,7 @@
 import express from "express"
 import Partner from "../../model/Partner.js"
-import {createLogoDir, verifyAdmin, verifyToken} from "../../middleware/index.js"
-import {handleFilePath, upload, uploadResources } from "../../constant.js"
+import {createLogoDir} from "../../middleware/index.js"
+import {handleFilePath, uploadResources } from "../../constant.js"
 import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
 import { unlinkSync } from "fs"
 

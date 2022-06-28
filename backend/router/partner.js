@@ -1,9 +1,6 @@
 import express from "express"
 import Partner from "../model/Partner.js"
-import {createAssetsDir, verifyAdmin, verifyToken} from "../middleware/index.js"
-import {handleFilePath, upload, uploadResources } from "../constant.js"
 import { sendError, sendServerError, sendSuccess } from "../helper/client.js"
-import { unlinkSync } from "fs"
 
 const partnerRoute = express.Router()
 
