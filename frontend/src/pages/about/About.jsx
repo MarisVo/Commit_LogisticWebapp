@@ -1,40 +1,34 @@
 import axios from "axios";
-import {useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
 
 
 function About() {
-const [data,setData]=useState({})
-useEffect(()=>{
-    const fetchApi = async ()=>{
-        try {
-            const {data:response} = await axios.get('http://localhost:8000/api/about')
-            setData(response.data)
-            console.log(response.data)
+    const [data, setData] = useState({})
+    const [banners, setBanners] = useState([])
+    useEffect(() => {
+        const fetchApi = async () => {
+            try {
+                const {data:response} = await axios.get('http://localhost:8000/api/about')
+                setData(response.data)
+                setBanners(response.data.banners)
+            }
+            catch (error) {
+                console.error(error.message)
+            }
         }
-        catch (error){
-            console.error(error.message)
-        }
-    }
-    fetchApi()
-},[])
+        fetchApi()
+    }, [])
 
-    console.log('data is',data.banners)
-    
     return (
         <div className='pt-[65px]'>
             <a href="">
-                <img src='https://jtexpress.vn/storage/app/uploads/public/628/598/69c/62859869c9723182554168.jpg' alt="banner" className='w-full h-[143px] lg:h-[550px] object-cover' />
+                <img src={banners[0]} alt="banner" className='w-full h-[143px] lg:h-[550px] object-cover' />
             </a>
             <div className="flex flex-col xl:flex-row justify-between  container mx-auto my-4 lg:mt-[-210px]">
                 <div className="backdrop-blur-[2px]">
                     <span className='block text-2xl text-center font-black my-6 py-4 lg:text-6xl lg:text-left lg:text-red-600 '>J&T EXPRESS</span>
                     <div className='text-justify w-full xl:w-[525px] border-4 border-border_color p-8 text-base rounded-2xl lg:bg-yellow-100 opacity-95'>
-                        <span>
-                            {/* J&T Express là thương hiệu chuyển phát nhanh dựa trên sự phát triển của công nghệ và Internet.
-                            Chúng tôi sở hữu một mạng lưới rộng khắp nhằm hỗ trợ các hoạt động giao nhận hàng hóa nhanh chóng
-                            không chỉ ở nội thành mà còn ở ngoại thành và các vùng xa của các tỉnh thành trong cả nước Việt Nam.
-                            <br />
-                            Đồng thời, hiện tại, J&T Express định hướng mở rộng phạm vi cung cấp các dịch vụ chuyển phát nhanh ra quốc tế. */}
+                        <span className="whitespace-pre-line">
                             {data.description}
                         </span>
                         <div className='w-20 h-[2px] bg-red-500 mt-8'></div>
@@ -63,18 +57,13 @@ useEffect(()=>{
                 <div className='flex flex-col gap-y-6 xl:order-2'>
                     <img src="https://jtexpress.vn/themes/jtexpress/assets/images/dd-about-us.png" className='w-[76px] h-[63px]' />
                     <span className='text-2xl font-black uppercase'>Tấm nhìn</span>
-                    <span className='text-base'>J&T Express là thương hiệu chuyển phát nhanh uy tín và bền vững tại Việt Nam.</span>
+                    <span className='text-base'>{data.vision}</span>
                     <div className='w-20 h-[2px] bg-primary'></div>
                     <span className='text-2xl font-black uppercase'>Giá trị cốt lõi</span>
-                    <span className='text-base'>
-                        <span className='font-bold'>Bổn phận, Chia sẻ, Phục vụ, Trách nhiệm, Hướng đến kết quả </span>
-                        là năm giá trị cơ bản của J&T Express nhằm mang đến chất lượng dịch vụ giao hàng tốt nhất cho khách hàng.
-                        <br />
-                        Chúng tôi cam kết phục vụ một cách trung thực và có trách nhiệm đối với từng đơn hàng của khách hàng.
-                    </span>
+                    <span className='text-base whitespace-pre-line '>{data.value}</span>
                 </div>
                 <div className="lg:w-[525px] mx-auto xl:order-1">
-                    <img src="https://jtexpress.vn/storage/app/uploads/public/626/a0a/d78/626a0ad786e44084325377.png" className=' w-full h-full  object-cover' />
+                    <img src={data.logo} className=' w-full h-full  object-cover' />
                 </div >
             </div>
             <div className=' container mx-auto my-10 bg-history'>
@@ -91,7 +80,7 @@ useEffect(()=>{
                             </span>
                         </div>
                     </div>
-                   
+
                     <div className=' scale-[0.55] sm:scale-100 flex flex-row xl:gap-x-3 justify-center xl:h-full mt-6 xl:mt-0'>
                         <div className='inline-flex flex-col items-center gap-y-1 '>
                             <span class=" relative flex h-3 w-3">
@@ -156,7 +145,7 @@ useEffect(()=>{
                             </div>
                         </div>
                         <div className='flex flex-col justify-center gap-y-12 '>
-                        <div className='inline-flex flex-col items-center gap-y-1 '>
+                            <div className='inline-flex flex-col items-center gap-y-1 '>
                                 <span class=" relative flex h-3 w-3">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ff0000] opacity-75"></span>
                                     <span className="inline-flex rounded-full h-3 w-3 bg-[#ff0000]"></span>

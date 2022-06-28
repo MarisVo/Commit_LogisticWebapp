@@ -1,11 +1,13 @@
-import React, {useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import 'antd/dist/antd.css'
 import { Carousel, Tabs, Select } from 'antd';
 import { Link } from 'react-router-dom';
 import appStore from '../../assets/images/appStore.png'
 import ggPlay from '../../assets/images/ggPlay.png'
-import {getDistrictsByProvinceCode, getProvinces } from "sub-vn";
-
+import { getDistrictsByProvinceCode, getProvinces } from "sub-vn";
+import { IoLocationOutline } from 'react-icons/io5'
+import { FiMap } from 'react-icons/fi'
+import axios from 'axios'
 
 const { TabPane } = Tabs
 const { Option } = Select
@@ -135,26 +137,55 @@ const coops = [
 ]
 
 const Home = () => {
-    const [dataProvices, setProvince] = useState([])
-    const [dataDistricts, setDistricts] = useState([])
+    const [listProvinces, setListProvince] = useState([])
+    const [listDistricts, setListDistricts] = useState([])
+    const [currentProvince, setCurrentProvince] = useState('')
+    const [currentDistrict, setCurrentDistrict] = useState('')
+    const [person, setPerson] = useState(1)
+    const [warehouses, setWarehouse] = useState([])
+
+
+    const fetchApi = async () => {
+        try {
+            const { data: response } = await axios.get('http://localhost:8000/api/tracking/warehouse',
+                {
+                    params: {
+                        province: currentProvince,
+                        district: currentDistrict
+                    }
+                })
+            setWarehouse(response.data)
+        }
+        catch (error) {
+            console.log(error.message)
+        }
+
+    }
+    console.log(warehouses)
+
     useEffect(() => {
         const dataProv = getProvinces()
-        console.log(dataProv)
-        setProvince(dataProv)
+        setListProvince(dataProv)
     }, [])
-    const [person, setPerson] = useState(1)
-    const handleSelect = (e) => {
-        const dataDist = getDistrictsByProvinceCode(e.target.key).toString()
-        setDistricts(dataDist)
+    const handleSelectProvince = (provinceNameSelected) => {
+        const provinceCode = listProvinces.find(province => province.name === provinceNameSelected).code
+        const dataDistricts = getDistrictsByProvinceCode(provinceCode)
+        setCurrentProvince(provinceNameSelected)
+        setCurrentDistrict(null)
+        setListDistricts(dataDistricts)
     }
-    console.log(dataDistricts)
+    const handleSelectDistrict = (districtNameSelected) => {
+        setCurrentDistrict(districtNameSelected)
 
-
+    }
     const showPerson = (id) => {
         const numberId = coops.find(coop => coop.id === id).id
         setPerson(numberId)
     }
-
+    console.log(`
+        province: ${currentProvince}
+        district: ${currentDistrict}
+    `)
     return (
         <div className="pt-[65px]">
             <Carousel autoplay autoplaySpeed={2000} effect="fade">
@@ -200,15 +231,15 @@ const Home = () => {
                         </div>
                     </TabPane>
                     <TabPane tab={<div className="text-lg h-[30px]">Tra cứu bưu cục</div>} key="2">
-                        <form className="flex flex-col items-center lg:flex-row">
+                        <div className="flex flex-col items-center lg:flex-row">
                             <Select
                                 showSearch
                                 allowClear
                                 className="w-full lg:w-2/5"
                                 placeholder="Tỉnh/Thành Phố"
-                                onChange={ handleSelect}
+                                onChange={value => handleSelectProvince(value)}
                             >
-                                {dataProvices.map((city) => <Option key={city.code} value={city.name} >{city.name} </Option>)}
+                                {listProvinces.map((city) => <Option key={city.code} value={city.name} >{city.name} </Option>)}
 
                             </Select>
                             <Select
@@ -216,22 +247,47 @@ const Home = () => {
                                 allowClear
                                 className="w-full lg:w-2/5"
                                 placeholder="Quận/Huyện"
+                                onChange={value => handleSelectDistrict(value)}
                             >
-                                {dataDistricts.map((distr) => <Option key={distr.code} value={distr.name}>{distr.name}</Option>)}
+                                {listDistricts.map((distr) => <Option key={distr.code} value={distr.name}>{distr.name}</Option>)}
                             </Select>
                             <button
-                                    type='submit'
-                                    class="text-white bg-yellow-500 hover:bg-yellow-400 focus:ring-4  focus:ring-red-500 font-medium rounded-lg text-lg w-full lg:w-44 lg:ml-2 px-5 py-2.5 text-center "
-                                >Tìm kiếm
-                                </button>
-                        </form>
+                                onClick={fetchApi}
+                                class="text-white bg-yellow-500 hover:bg-yellow-400 focus:ring-4  focus:ring-red-500 font-medium rounded-lg text-lg w-full lg:w-44 lg:ml-2 px-5 py-2.5 text-center "
+                            >Tìm kiếm
+                            </button>
+                        </div>
                     </TabPane>
                     <TabPane tab={<Link to="track/bang-gia" className="text-lg h-[30px]">Bảng giá</Link>} key="3">
                     </TabPane>
                 </Tabs>
             </div>
 
-            <div className='flex flex-col justify-center items-center py-4'>
+            {/* Test searching */}
+
+            <div className=' container mt-4 grid grid-cols-1 lg:grid-cols-2 mx-auto gap-y-3 gap-x-6'>
+                {warehouses.map((warehouse, key) => (
+                    <div className='flex flex-col bg-yellow-200 p-4 rounded-xl gap-y-2'>
+                        <div className='flex flex-row justify-between'>
+                            <span className='text-xl font-extrabold text-red-700'>{warehouse.name}</span>
+                            <a className='flex items-center text-red-500'>
+                                <FiMap className="w-4 h-4 inline-block mr-2" />
+                                <span className=' text-lg text-inherit'>Tìm đường đi</span>
+                            </a>
+                        </div>
+                        <div className='flex items-stretch'>
+                            <IoLocationOutline className="w-4 h-4 inline-block mr-2" />
+                            <span className='font-semibold'>{warehouse.street}</span>
+                        </div>
+                    </div>
+                ))}
+
+
+
+            </div>
+            {/* Test searching */}
+
+            <div className='flex flex-col justify-center items-center py-4 mt-6'>
                 <span className='uppercase text-xl font-black'>mạng lưới phủ sóng các nước</span>
                 <span className='text-sm'>J&T Express tự hào đã & đang mở rộng mạng lưới quốc tế để mang đến trải nghiệm tốt nhất</span>
             </div>
