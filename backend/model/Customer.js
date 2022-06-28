@@ -12,7 +12,7 @@ const CustomerSchema = new Schema(
             type: String,
             default: null
         },
-        discription: {
+        description: {
             type: String,
             default: null
         },

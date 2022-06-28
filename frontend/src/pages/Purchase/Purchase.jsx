@@ -86,7 +86,7 @@ const Purchase = () => {
                     className=" text-[10px] font-medium  sm:mr-4 sm:text-sm  hover:translate-y-[-1px] transition-all hover:text-yellow-500  cursor-pointer "
                     to="/user/purchase/order/2323"
                   >
-                    Giao hàng thành công{" "}
+                    Giao hàng thành công
                   </Link>
                 </div>
               </div>

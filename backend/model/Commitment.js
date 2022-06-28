@@ -13,7 +13,8 @@ const CommitmentSchema = new Schema(
             default: null
         },
         detail: {
-            type: String
+            type: String,
+            default: null
         }
     },
     { timestamps: true }

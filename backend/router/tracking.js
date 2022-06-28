@@ -10,7 +10,7 @@ import Warehouse from '../model/Warehouse.js'
 const trackingRoute = express.Router()
 
 /**
- * @route POST /api/look-up/postage
+ * @route POST /api/tracking/postage
  * @description customer look up a postage
  * @access public
  */
@@ -61,7 +61,7 @@ trackingRoute.post('/postage', async (req, res) => {
 })
 
 /**
- * @route GET /api/order/:lstOrderId
+ * @route GET /api/tracking/order/:lstOrderId
  * @description get list of order
  * @access public
  */
