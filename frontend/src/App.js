@@ -18,9 +18,12 @@ import {
   Life,
   Purchase,
   PurchaseStage,
-  Profile,
-  Notification,
+  /*Profile,
+  Notification,*/
   DefaultLayout,
+  Login,
+  Register,
+  ForgetPass
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HotJob from "./components/HotJob";
@@ -65,6 +68,10 @@ const App = () => {
                 path="user/notifications/order"
                 element={<Notification />}
               />
+              {/* -----------------------Đăng nhập----------------------- */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />              
+              <Route path="/forgetpass" element={<ForgetPass />} />   
 
               <Route path="*" element={<PageNotFound />} />
             </Route>

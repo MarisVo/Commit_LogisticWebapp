@@ -17,7 +17,8 @@ const LoginForm = styled.div`
     }
     justify-content: center;
     align-items: center;
-    padding: 10px;
+    padding-top: 100px;
+    padding-bottom: 50px;
     background-color: #FBAB7E;
     background-image: linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%);
     overflow:auto;
@@ -151,7 +152,7 @@ function Login() {
                 <Form.Item wrapperCol={{ span: 24 }}>
                     <div className='sign'>
                         Bạn chưa có tài khoản?  
-                        <Link to="/register">
+                        <Link to="/register" className="font-semibold text-blue-700">
                             Đăng ký tài khoản
                         </Link>
                     </div>
@@ -159,7 +160,7 @@ function Login() {
 
                 <Form.Item wrapperCol={{ span: 24 }}>
                     <div className='sign'>
-                        <Link to="/forgetpassword">
+                        <Link to="/forgetpass" className="font-semibold text-blue-700">
                             Quên mật khẩu
                         </Link>
                     </div>

@@ -173,10 +173,10 @@ const Header = () => {
                     </div>
                 </ul>
                 <div className="px-4 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
-                    <a href="#" className="font-semibold text-white">Đăng nhập</a>
+                    <Link to="/Login" className="font-semibold text-white">Đăng nhập</Link>
                 </div>
                 <div className="px-6 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
-                    <a href="#" className="font-semibold text-white">Đăng kí</a>
+                    <Link to="/Register" className="font-semibold text-white">Đăng ký</Link>
                 </div>
             </div >
 
