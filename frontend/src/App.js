@@ -23,7 +23,9 @@ import {
   DefaultLayout,
   Login,
   Register,
-  ForgetPass
+  ForgetPass,
+  Profile,
+  Notification,
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HotJob from "./components/HotJob";
@@ -70,8 +72,8 @@ const App = () => {
               />
               {/* -----------------------Đăng nhập----------------------- */}
               <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />              
-              <Route path="/forgetpass" element={<ForgetPass />} />   
+              <Route path="/register" element={<Register />} />
+              <Route path="/forgetpass" element={<ForgetPass />} />
 
               <Route path="*" element={<PageNotFound />} />
             </Route>
@@ -81,15 +83,5 @@ const App = () => {
     </MainProvider>
   );
 };
-/*   <Route path="user/account/profile" element={<Profile />} />
-              <Route path="user/purchase" element={<Purchase />} />
-              <Route
-                path="user/purchase/order/:id"
-                element={<PurchaseState />}
-              />
-              <Route
-                path="user/notifications/order"
-                element={<Notification />}
-              /> */
 
 export default App;

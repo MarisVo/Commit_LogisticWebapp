@@ -10,9 +10,13 @@ const { Step } = Steps;
 
 function PurchaseStage() {
   const [open, setOpen] = useState(false);
+  const [stage, setStage] = useState(0);
   const handleOpen = () => {
     setOpen(!open);
     console.log(open);
+  };
+  const newStage = () => {
+    setStage(stage + 1);
   };
   return (
     <div className="pt-[72px]">
@@ -26,25 +30,34 @@ function PurchaseStage() {
             />
           </span>
         </div>
-        <div className=" sm:mx-6 lg:mx-32 pb-4 pt-2 mx-2">
-          <div className=" bg-gray-white  bg-white  rounded-sm ">
+        <div className=" sm:mx-6 lg:mx-32 pb-4 pt-2 mx-2 ">
+          <div className=" bg-gray-white  bg-white  rounded-sm shadow-xl">
             <div className="flex items-center justify-between cursor-pointer ml-2 mr-3 ">
               <Link
                 className="flex items-center justify-start mt-1  hover:translate-y-[-1px] transition-all hover:text-yellow-500  "
                 to="/user/account/profile"
               >
-                <LeftOutlined />
-                <span className=" text-sm font-medium   cursor-pointer ">
+                <LeftOutlined className="text-[12px] sm:text-xs" />
+                <span className="  font-medium sm:mt-1   cursor-pointer text-[12px] sm:text-xs">
                   Trở lại
                 </span>
               </Link>
-              <div className="flex items-center text-yellow-500">
-                ID ĐƠN HÀNG. 2202092MBR2HBG
+              <div className="flex items-center text-yellow-500 flex-column sm:flex-row">
+                <div className="flex items-center text-yellow-500 text-[12px] sm:text-sm">
+                  ID ĐƠN HÀNG. 2202092MBR2HBG
+                </div>
+                <div className=" sm:border-l-[1px]  sm:pl-1 sm:ml-2 sm:text-sm  border-gray-200 flex items-center text-yellow-500">
+                  Đơn hàng đã giao{" "}
+                </div>
               </div>
             </div>
             <div className=" flex md:block  justify-center  items-center m-4">
               <div className="  ">
-                <Steps status="process" current="1" labelPlacement="vertical">
+                <Steps
+                  status="process"
+                  current={stage}
+                  labelPlacement="vertical"
+                >
                   <Step title="Đợi xác nhận" />
                   <Step title="Chấp thuận" />
                   <Step title="Đang giao" />
@@ -52,15 +65,18 @@ function PurchaseStage() {
                 </Steps>
               </div>
             </div>
-            <div className="flex items-center justify-evenly md:justify-right mb-4 ">
-              <button className="p-2 sm:px-4  sm:min-w-[100px] hover:translate-y-[-1px] transition-all font-semibold text-[#00003B] bg-yellow-500 rounded-sm">
-                Mua lại
+            <div className="flex items-end justify-evenly md:justify-right mb-4 ">
+              <button
+                onClick={newStage}
+                className="px-4 py-2 sm:px-4  sm:min-w-[100px] hover:translate-y-[-1px] transition-all font-semibold text-[#00003B] bg-yellow-500 rounded-sm"
+              >
+                Hủy
               </button>
               <button className="p-2 sm:px-4 sm:min-w-[100px]  hover:translate-y-[-1px] transition-all font-semibold bg-yellow-500 rounded-sm text-[#00003B]">
-                Liên hệ người bán
+                Liên hệ tài xế
               </button>
             </div>
-            <div className="grid grid-cols-3  mx-2  ">
+            <div className="grid grid-cols-3  mx-2  my-3 ">
               <div className="col-span-3 sm:col-span-1 justify-self-center mb-2 ml-4 md:ml-6 ">
                 <div className="text-xl font-semibold text-[#00003B] ">
                   Địa Chỉ Nhận Hàng
@@ -74,10 +90,12 @@ function PurchaseStage() {
                   </div>
                 </div>
               </div>
-              <div className=" col-span-3 sm:col-span-2  px-4 py-2 justify-self-center  border-t-[1px] border-gray-300 sm:border-l-[1px] sm:border-t-[0px]">
-                <div className="text-right">Nhanh - Shopee Xpress</div>
+              <div className=" col-span-3 sm:col-span-2  px-4 my-3 justify-self-center  border-t-[1px] border-gray-300 sm:border-l-[1px] sm:border-t-[0px]">
+                <div className="text-right text-sm sm:text-base font-semibold text-[#00003B] ">
+                  Tổng: 36km
+                </div>
                 <div className="flex flex-col-reverse">
-                  <Steps progressDot current={1} direction="vertical ">
+                  <Steps progressDot current={3} direction="vertical ">
                     <Step
                       title="16:34 10-02-2022"
                       description="Lấy hàng thành công"
@@ -104,7 +122,7 @@ function PurchaseStage() {
             </div>
           </div>
 
-          <div className="flex flex-column mt-2 bg-white rounded-sm">
+          <div className="flex flex-column mt-2 bg-white rounded-sm shadow-lg">
             <div className="  overflow-auto mb-3">
               <div className="flex justify-between items-center border-gray-300 border-b-[1px] py-2 ">
                 <div className="flex flex-nowrap items-center mx-2">
@@ -114,13 +132,16 @@ function PurchaseStage() {
                   </button>
                 </div>
                 <div className=" flex flex-nowrap items-center mx-2 flex-row">
-                  <FaTruckMoving className="mr-[2px] sm:mr-2" />
-                  <div className="  text-[10px] font-medium  sm:mr-4 sm:text-sm  hover:translate-y-[-1px] transition-all hover:text-yellow-500  cursor-pointer ">
-                    Giao hàng thành công
-                  </div>
+                  <FaTruckMoving className=" sm:mr-2 mr-[3px]" />
+                  <Link
+                    className=" text-[10px] font-medium  sm:mr-4 sm:text-sm  hover:translate-y-[-1px] transition-all hover:text-yellow-500  cursor-pointer "
+                    to="/user/purchase/order/2323"
+                  >
+                    Đang xử lý
+                  </Link>
                 </div>
               </div>
-              <div className="flex items-center py-2 border-gray-300 border-b-[1px]">
+              <div className="flex items-center py-2 ">
                 <div className="ml-2 flex ">
                   <img
                     className="w-16 h-16 mr-6 sm:w-24 sm:h-24 sm:mr-8"
@@ -137,11 +158,52 @@ function PurchaseStage() {
                   </div>
                 </div>
               </div>
-              <div className="flex justify-end items-center mb-2 mt-2 mr-4">
-                <div className="md:text-base text-center">Tổng số tiền:</div>
-                <div className="text-yellow-500 text-lg">199.000 đ</div>
+              <div className="">
+                <div className="grid grid-cols-5  px-1 border-t-[1px] border-gray-300">
+                  <div className="col-span-3 sm:col-span-3 flex items-center justify-end mr-2 py-[6px]">
+                    <div className="md:text-base font-semibold ">
+                      Tổng tiền hàng
+                    </div>
+                  </div>
+                  <div className="col-span-2 sm:col-span-2 flex items-center justify-end border-l-[1px] border-gray-300 py-[6px]">
+                    <div className=" md:text-base mr-1">660.000 đ</div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-5  px-1 border-t-[1px] border-gray-300">
+                  <div className="col-span-3 sm:col-span-3 flex items-center justify-end mr-2 py-[6px]">
+                    <div className="md:text-base font-semibold">
+                      Phí vận chuyển
+                    </div>
+                  </div>
+                  <div className="col-span-2 sm:col-span-2 flex items-center justify-end border-l-[1px] border-gray-300 py-[6px]">
+                    <div className=" md:text-base mr-1">20.700 đ</div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-5  px-1 border-t-[1px] border-gray-300">
+                  <div className="col-span-3 sm:col-span-3 flex items-center justify-end mr-2 py-[6px]">
+                    <div className="md:text-base font-semibold">
+                      Voucher shop
+                    </div>
+                  </div>
+                  <div className="col-span-2 sm:col-span-2 flex items-center justify-end border-l-[1px] border-gray-300 py-[6px]">
+                    <div className=" md:text-base mr-1">100.000 đ</div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-5  px-1 border-t-[1px]  border-b-[1px] border-gray-300">
+                  <div className="col-span-3 sm:col-span-3 flex items-center justify-end mr-2 py-[6px]">
+                    <div className="md:text-base font-semibold">
+                      Tổng số tiền:
+                    </div>
+                  </div>
+                  <div className="col-span-2 sm:col-span-2 flex items-center justify-end border-l-[1px] border-gray-300 py-[6px]">
+                    <div className="text-yellow-500 text-xl mr-1">
+                      580.000 đ
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="flex justify-end mr-4 mb-3">
+
+              <div className="flex justify-end mt-2 mr-4  ">
                 <button className="p-2 font-semibold bg-yellow-500  hover:translate-y-[-1px] transition-all text-[#00003B] rounded-sm">
                   Mua lại
                 </button>
