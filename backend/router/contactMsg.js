@@ -18,8 +18,8 @@ contactMsgRoute.post('/',
             const {name, email, phone, message} = req.body
             const optionsToCS = {
                 from: process.env.MAIL_HOST,
-                to: process.env.MAIL_CS,
-                subject: "Tin nhắn liên hệ từ trang web",
+                to: process.env.MAIL_HOST,
+                subject: "Tin nhắn liên hệ từ Logistics-Webapp",
                 html: `<p>Họ và tên: <b>${name}</b></p>
                 <p>Email: ${email}</p>
                 <p>Số điện thoại: ${phone}</p>
