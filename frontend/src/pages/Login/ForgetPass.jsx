@@ -17,7 +17,8 @@ const ForgetForm = styled.div`
     }
     justify-content: center;
     align-items: center;
-    padding: 10px;
+    padding-top: 100px;
+    padding-bottom: 50px;
     background-color: #FBAB7E;
     background-image: linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%);
     overflow:auto;
@@ -46,6 +47,9 @@ const ForgetForm = styled.div`
 }
 .sign{
     text-align:right;
+}
+a {
+  color: #348ceb;
 }`
 
 const ButtonContainer = styled.div`
@@ -130,7 +134,11 @@ function ForgetPass() {
 
                 <Form.Item wrapperCol={{ span: 24 }}>
                     <div className='sign'>
+<<<<<<< HEAD
                         <Link to="/dang-ki">
+=======
+                        <Link to="/register" className="font-semibold text-blue-700">
+>>>>>>> 00100bd4e54260dc71d548952f07c9dd3f2d4d54
                             Đăng ký tài khoản
                         </Link>
                     </div>
