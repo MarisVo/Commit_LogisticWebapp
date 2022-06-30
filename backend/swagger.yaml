@@ -25,7 +25,8 @@ tags:
   description: "Endpoint Commitment"
 - name: "partner"
   description: "Endpoint Partner"
-
+- name: "consultancy"
+  description: "Endpoint Consultancy"
 paths:
   /auth/verify-token:
     post:
@@ -794,6 +795,155 @@ paths:
                     description: Success message
         400:
           description: Update partner failed.
-  
+  /admin/consultancy:
+    get:
+      tags:
+        - "consultancy"
+      summary: get consultancy
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: page
+          type: string
+          description: num of page
+        - in: query
+          name: pageSize
+          type: string
+          description: number of consultancy in a page  
+      responses:
+        200:
+          description: get consultancy successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "email": "string",
+              "phone": "string",
+              "service" : "string",
+              "fulladdress" : "string",
+              "parcel": "string",
+              "quantity": "string",    
+            }
+        400:
+          description: consultancy is not found.  
+  /admin/consultancy/{consultancyId}:
+    get:
+      tags:
+        - "consultancy"
+      summary: get consultancy by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: consultancyId
+          type: string
+          required: true
+          description: Id of a consultancy 
+      responses:
+        200:
+          description: get consultancy successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "email": "string",
+              "phone": "string",
+              "service" : "string",
+              "fulladdress" : "string",
+              "parcel": "string",
+              "quantity": "string",    
+            }          
+        400:
+          description: consultancy is not found.    
+    put:
+      tags:
+        - "consultancy"
+      summary: "Update a existing consultancy"
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: consultancyId
+          schema: 
+            type: string
+          required: true
+          description: consultancy id
+        - in: body
+          name: consultancy
+          description: a existing consultancy.
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              email:
+                type: string 
+              phone: 
+                type: string
+              service:
+                type: string 
+              fulladdress:
+                type: string 
+              parcel: 
+                type: string
+              quantity:
+                type: string 
+              
+      responses:
+        200:
+          description: Update consultancy successfully.
+        400:
+          description: Update consultancy failed.
+    delete:
+      tags:
+        - "consultancy"
+      summary: "Delete a existing consultancy"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: consultancyId
+          type: string
+          required: true
+          description: Id of a consultancy 
+      responses:
+        200:
+          description: Delete consultancy successfully.
+        400:
+          description: Update consultancy failed.
+  /consultancy:
+    post:
+      tags:
+        - "consultancy"
+      summary: "Create a new consultancy"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: consultancy
+          description: a new consultancy.
+          schema:
+            type: object            
+            properties:
+              service:
+                type: string
+              name:
+                type: string               
+              email:
+                type: string 
+              phone: 
+                type: string
+              fulladdress:
+                type: string 
+              parcel: 
+                type: string
+              quantity:
+                type: string 
+      responses:
+        200:
+          description: Send consultancy successfully.
+        400:
+          description: Create consultancy failed.   
       
       
