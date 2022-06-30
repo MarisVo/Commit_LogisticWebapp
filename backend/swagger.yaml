@@ -241,6 +241,64 @@ paths:
           description: email/phone or password is wrong.
         403:
           description: your role is not valid. access denied.
+  /auth/forgot-pw:
+    post:
+      tags:
+        - auth
+      summary: help users renew their password
+      produces:
+        - application/json
+      consumes:
+        - application/json
+        - multipart/form-data
+      parameters:
+      - in: body
+        name: info
+        required: true
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+            phone:
+              type: string
+      responses:
+        200:
+          description: generate new password successfully.
+        400:
+          description: send new password failed.
+        404:
+          description: email/phone doesn't exist.
+  /auth/change-pw:
+    put:
+      tags:
+        - auth
+      summary: user change current password
+      produces:
+        - application/json
+      consumes:
+        - application/json
+        - multipart/form-data
+      parameters:
+      - in: body
+        name: info
+        required: true
+        schema:
+          type: object
+          properties:
+            oldPw:
+              type: string
+            newPw:
+              type: string
+            verify_password:
+              type: string
+      responses:
+        200:
+          description: change your password successfully.
+        400:
+          description: current password isn't correct.
+      security:
+        - bearerAuth: []
   /about:
     get:
       tags:
@@ -794,6 +852,8 @@ paths:
                     description: Success message
         400:
           description: Update partner failed.
-  
-      
-      
+securityDefinitions:
+  bearerAuth:
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"

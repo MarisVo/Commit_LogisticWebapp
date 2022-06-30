@@ -8,7 +8,8 @@ install:
 run:
     - dev: 
         nodemon
+        yarn run dev
 
     - product:
-        npm start
+        yarn start
         node index.js
