@@ -6,20 +6,21 @@ import styled from 'styled-components';
 
 const RegisForm = styled.div`
 .Regis{
-    height: 120vh;
+    height: 150vh;
     display: flex;
     flex-direction:row;
     @media (max-width: 768px) {
       flex-direction: column;
-      height: 100vh;
+      height: 140vh;
     }
     @media (max-height: 628px) {
       flex-direction: column;
-      height: 100vh;
+      height: 140vh;
     }
     justify-content: center;
     align-items: center;
-    padding: 10px;
+    padding-top: 100px;
+    padding-bottom: 50px;
     background-color: #FBAB7E;
     background-image: linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%);
 }
@@ -242,7 +243,11 @@ function Register() {
                 <Form.Item wrapperCol={{ span: 24 }}>
                     <div className='sign'>
                         Bạn đã có tài khoản?  
+<<<<<<< HEAD
                         <Link to="/dang-nhap">
+=======
+                        <Link to="/login" className="font-semibold text-blue-700">
+>>>>>>> 00100bd4e54260dc71d548952f07c9dd3f2d4d54
                             Đăng nhập
                         </Link>
                     </div>
