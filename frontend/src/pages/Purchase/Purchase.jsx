@@ -8,11 +8,11 @@ import {
   AiOutlineUser,
   AiTwotoneCalendar,
 } from "react-icons/ai";
+
 import { BiTargetLock } from "react-icons/bi";
 
 import { MdOutlineEditCalendar } from "react-icons/md";
 import { TiDeleteOutline } from "react-icons/ti";
-import Footer from "../../components/Footer";
 import { Link } from "react-router-dom";
 const Purchase = () => {
   const [open, setOpen] = useState(false);
@@ -33,7 +33,7 @@ const Purchase = () => {
             />
           </span>
         </div>
-        <div className=" sm:mx-16 lg:mx-48 py-4 bg-gray-white mx-2  ">
+        <div className=" sm:mx-16 lg:mx-52 py-4 bg-gray-white mx-2  ">
           <div className="flex  justify-between sm:justify-evenly align-center m-w-[100%] scrollbar rounded-sm sm:border-gray-400 sm:border-b-[1px] bg-white sm:pb-1 flex-nowrap overflow-x-auto scroll-smooth scrollbar">
             <a className="preventselect m-w-[70px] mx-2 p-1 flex-shrink-0 ">
               <span className=" font-semibold text-base md:text-base text text-black hover:text-yellow-500 ">
@@ -99,33 +99,35 @@ const Purchase = () => {
               <div className="flex items-center py-2 border-gray-300 border-b-[1px]">
                 <div className="ml-3 flex flex-col ">
                   <div className="ml-2 flex items-center py-1">
-                    <AiOutlineGift className="mr-1 w-5 h-5" />
-                    <div className="text-base">Máy bơm nước</div>
+                    <AiOutlineGift className="mr-1 w-5 h-5  md:w-7 md:h-7 " />
+                    <div className="text-base md:text-lg mr-1">Đơn hàng:</div>
+                    <div className="text-base md:text-lg">Điện thoại Oppo</div>
                   </div>
                   <div className="ml-2 flex items-center py-1">
-                    <AiOutlineUser className="mr-1 w-5 h-5" />
-                    <div className="text-base">Nguyễn Văn Trí</div>
-                  </div>
-                  <div className="ml-2 flex items-center py-1">
-                    <div>
-                      <AiTwotoneCalendar className="mr-1 w-5 h-5" />
+                    <AiOutlineUser className="mr-1 w-5 h-5  md:w-7 md:h-7 " />
+                    <div className="text-base md:text-lg mr-1">
+                      Tên người nhận:
                     </div>
-                    <div className="text-base">1/7/2020</div>
+                    <div className="text-base md:text-lg">Nguyễn Văn Trí</div>
+                  </div>
+                  <div className="ml-2 flex items-center py-1">
+                    <AiTwotoneCalendar className="mr-1 w-5 h-5  md:w-7 md:h-7 " />
+                    <div className="text-base md:text-lg mr-1">
+                      Ngày tạo đơn:
+                    </div>
+                    <div className="text-base md:text-lg">1/7/2020</div>
                   </div>
                 </div>
               </div>
-              {/*  <div className="flex justify-end items-center mb-2 mt-2 mr-4">
-                <div className="md:text-base text-center">Tổng số tiền:</div>
-                <div className="text-yellow-500 text-lg">199.000 đ</div>
-              </div> */}
-              <div className="flex justify-end  sm:mr-4 mb-3 mt-5">
+
+              <div className="flex justify-end  sm:mr-4 mb-1 mt-5">
                 {/*                 <div className="flex justify-end mb-2 mr-2">
                   <button className="p-2 max-w-[100px] ml-3 flex items-center placeholder:font-semibold bg-yellow-500  border-button_color border-2  hover:translate-y-[-1px] transition-all  rounded-sm">
                     <TiDeleteOutline />
                     <div className="text-[#00003B] text-sm">Hủy đơn</div>
                   </button>
                 </div> */}
-                <div className="flex justify-end mb-2 mr-2">
+                <div className="flex justify-end mb-1 mr-2">
                   <Link className=" " to="/user/purchase/order/2323">
                     <button className="p-2 ml-3 items-center max-w-[140px] flex font-semibold bg-yellow-500  border-button_color border-2  hover:translate-y-[-1px] transition-all text-[#00003B] rounded-sm">
                       <BiTargetLock />
@@ -133,11 +135,13 @@ const Purchase = () => {
                     </button>
                   </Link>
                 </div>
-                <div className="flex justify-end mb-2 mr-2">
-                  <button className="p-2 ml-3 max-w-[140px] items-center flex font-semibold bg-yellow-500  border-button_color border-2  hover:translate-y-[-1px] transition-all text-[#00003B] rounded-sm">
-                    <MdOutlineEditCalendar className="mr-1" />
-                    <div> Sửa vận đơn</div>
-                  </button>
+                <div className="flex justify-end mb-1 mr-2">
+                  <Link className=" " to="/user/purchase/232">
+                    <button className="p-2 ml-3 max-w-[140px] items-center flex font-semibold bg-yellow-500  border-button_color border-2  hover:translate-y-[-1px] transition-all text-[#00003B] rounded-sm">
+                      <MdOutlineEditCalendar className="mr-1" />
+                      <div> Chi tiết đơn</div>
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>

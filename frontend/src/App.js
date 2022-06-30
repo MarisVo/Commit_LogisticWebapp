@@ -18,14 +18,13 @@ import {
   Life,
   Purchase,
   PurchaseStage,
-  /*Profile,
-  Notification,*/
   DefaultLayout,
   Login,
   Register,
   ForgetPass,
   Profile,
   Notification,
+  PurchaseDetail,
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HotJob from "./components/HotJob";
@@ -62,6 +61,7 @@ const App = () => {
               {/* ----------------------Profile------------------ */}
               <Route path="user/account/profile" element={<Profile />} />
               <Route path="user/purchase" element={<Purchase />} />
+              <Route path="user/purchase/:id" element={<PurchaseDetail />} />
               <Route
                 path="user/purchase/order/:id"
                 element={<PurchaseStage />}

@@ -59,6 +59,33 @@ function Notification() {
                   </div>
                 </div>
               </div>
+              <div className="bg-white  mb-3 ">
+                <div className="flex items-center mt-1 sm:mt-2  justify-evenly sm:justify-between  sm:mx-3 md:mx-4 pb-4 md:pb-6 ">
+                  <div className=" sm:ml-2 flex ">
+                    <img
+                      className="w-14 h-14 mr-3  sm:w-24 sm:h-24 sm:mr-8"
+                      alt="#"
+                      src="https://images.squarespace-cdn.com/content/v1/56001a27e4b08aa6c7fa74e1/1560511769633-THRKK2P2TKYE2ZNOLSY9/Notify_Red.png"
+                    ></img>
+                    <div>
+                      <div className="font-medium text-base sm:text-lg">
+                        Đơn hàng đã hoàn tất
+                      </div>
+                      <div className="font-light text-sm sm:text-base sm:mb-2">
+                        Đơn hàng 2322312 đã hoàn thành
+                      </div>
+                      <div className="md:text-base">21.06.2021</div>
+                    </div>
+                  </div>
+                  <div className="flex flex-shrink-0">
+                    <Link to="/user/purchase/order/2323">
+                      <button className="mr-1 px-[6px] py-[4px] text-[#00003B]  hover:translate-y-[-1px] transition-all sm:p-2 shrink-0 font-semibold bg-yellow-500 rounded-sm ">
+                        Chi tiết
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
