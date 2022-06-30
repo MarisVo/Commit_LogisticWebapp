@@ -97,12 +97,13 @@ export default function CuocVanChuyen() {
 			setPrice(data.data.result);
 	
 			console.log(data);
+			
 	
 			if (data.success === false) {
 				alert(data.message || 'Có lỗi xảy ra');
 			}
 		} catch (error) {
-			alert(error.response.data.message || 'Có lỗi xảy ra');			
+			alert(error?.response?.data?.message || 'Có lỗi xảy ra');			
 		}
 
 

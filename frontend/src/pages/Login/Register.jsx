@@ -201,12 +201,6 @@ function Register() {
                   <Input placeholder="Nhập địa chỉ" />
                 </Form.Item>
 
-                <Form.Item
-                  name="description"
-                  label="Mô tả"
-                >
-                  <Input placeholder="Nhập mô tả" />
-                </Form.Item>
 
                 <Form.Item 
                   name="customerType" 
@@ -248,7 +242,7 @@ function Register() {
                 <Form.Item wrapperCol={{ span: 24 }}>
                     <div className='sign'>
                         Bạn đã có tài khoản?  
-                        <Link to="/login">
+                        <Link to="/dang-nhap">
                             Đăng nhập
                         </Link>
                     </div>

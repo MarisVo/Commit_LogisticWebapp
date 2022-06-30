@@ -130,7 +130,7 @@ function ForgetPass() {
 
                 <Form.Item wrapperCol={{ span: 24 }}>
                     <div className='sign'>
-                        <Link to="/register">
+                        <Link to="/dang-ki">
                             Đăng ký tài khoản
                         </Link>
                     </div>
