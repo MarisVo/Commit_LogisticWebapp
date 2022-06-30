@@ -25,7 +25,8 @@ tags:
   description: "Endpoint Commitment"
 - name: "partner"
   description: "Endpoint Partner"
-
+- name: "message"
+  description: "Endpoint Message"
 paths:
   /auth/verify-token:
     post:
@@ -685,6 +686,7 @@ paths:
                     description: Success message
         400:
           description: Update commitment failed.
+  
   /partner:
     get:
       tags:
@@ -852,6 +854,140 @@ paths:
                     description: Success message
         400:
           description: Update partner failed.
+  /admin/message:
+    get:
+      tags:
+        - "message"
+      summary: get message
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: page
+          type: string
+          description: num of page
+        - in: query
+          name: pageSize
+          type: string
+          description: number of message in a page  
+      responses:
+        200:
+          description: get message successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "email": "string",
+              "phone": "string",    
+              "message": "string",          
+            }
+        400:
+          description: commitment is not found.  
+  /admin/message/{messageId}:
+    get:
+      tags:
+        - "message"
+      summary: get message by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: messageId
+          type: string
+          required: true
+          description: Id of a message 
+      responses:
+        200:
+          description: get message successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "email": "string",
+              "phone": "string",    
+              "message": "string",          
+            }          
+        400:
+          description: message is not found.    
+    put:
+      tags:
+        - "message"
+      summary: "Update a existing message"
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: messageId
+          schema: 
+            type: string
+          required: true
+          description: message id
+        - in: body
+          name: message
+          description: a existing message.
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              email:
+                type: string 
+              phone: 
+                type: string
+              message:
+                type: string 
+      responses:
+        200:
+          description: Update message successfully.
+        400:
+          description: Update message failed.
+    delete:
+      tags:
+        - "message"
+      summary: "Delete a existing message"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: messageId
+          type: string
+          required: true
+          description: Id of a message 
+      responses:
+        200:
+          description: Delete message successfully.
+        400:
+          description: Update message failed.
+  /message:
+    post:
+      tags:
+        - "message"
+      summary: "Create a new message"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: message
+          description: a new message.
+          schema:
+            type: object
+            required:
+              - name, email, phone, message
+            properties:
+              name:
+                type: string
+              email:
+                type: string 
+              phone: 
+                type: string
+              message:
+                type: string 
+      responses:
+        200:
+          description: Send message successfully.
+        400:
+          description: Create message failed.   
+
 securityDefinitions:
   bearerAuth:
     type: "apiKey"
