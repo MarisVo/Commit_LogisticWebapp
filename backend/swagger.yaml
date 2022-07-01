@@ -21,6 +21,12 @@ tags:
   description: "Tracking feature"
 - name: "public"
   description: "Public assets of web service"
+- name: "commitment"
+  description: "Endpoint Commitment"
+- name: "partner"
+  description: "Endpoint Partner"
+- name: "message"
+  description: "Endpoint Message"
 paths:
   /auth/verify-token:
     post:
@@ -236,6 +242,64 @@ paths:
           description: email/phone or password is wrong.
         403:
           description: your role is not valid. access denied.
+  /auth/forgot-pw:
+    post:
+      tags:
+        - auth
+      summary: help users renew their password
+      produces:
+        - application/json
+      consumes:
+        - application/json
+        - multipart/form-data
+      parameters:
+      - in: body
+        name: info
+        required: true
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+            phone:
+              type: string
+      responses:
+        200:
+          description: generate new password successfully.
+        400:
+          description: send new password failed.
+        404:
+          description: email/phone doesn't exist.
+  /auth/change-pw:
+    put:
+      tags:
+        - auth
+      summary: user change current password
+      produces:
+        - application/json
+      consumes:
+        - application/json
+        - multipart/form-data
+      parameters:
+      - in: body
+        name: info
+        required: true
+        schema:
+          type: object
+          properties:
+            oldPw:
+              type: string
+            newPw:
+              type: string
+            verify_password:
+              type: string
+      responses:
+        200:
+          description: change your password successfully.
+        400:
+          description: current password isn't correct.
+      security:
+        - bearerAuth: []
   /about:
     get:
       tags:
@@ -440,14 +504,492 @@ paths:
           description: resource file downloaded
           schema:
             type: file
+  /commitment:
+    get:
+      tags:
+        - "commitment"
+      summary: get commitments
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: limit
+          type: string
+          description: limit number of commitment
+      responses:
+        200:
+          description: get commitments successfully.
+          schema:
+            type: object
+            example: {
+              "heading": "string",
+              "logo": "path",
+              "detail": "string",              
+            }
+        400:
+          description: commitment is not found.
+  /commitment/{commitmentId}:
+    get:
+      tags:
+        - "commitment"
+      summary: get commitment by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: commitmentId
+          type: string
+          required: true
+          description: Id of a commitment 
+      responses:
+        200:
+          description: get commitment successfully.
+          schema:
+            type: object
+            example: {
+              "heading": "string",
+              "logo": "path",
+              "detail": "string",              
+            }
+        400:
+          description: commitment is not found.
+  /admin/commitment:
+    post:
+      tags:
+        - "commitment"
+      summary: "Create a new commitment"
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: body
+          name: commitment
+          description: a new commitment.
+          schema:
+            type: object
+            required:
+              - heading
+            properties:
+              heading:
+                type: string
+              detail:
+                type: string  
+        - in: formData
+          name: logo
+          description: a logo commitment.
+          type: file
+      requestBody:
+        content: 
+          application/json:
+            schema:            
+              type: object
+              properties:      
+                name:           
+                  type: string
+                logo: 
+                  type: string
+                  format: base64
+                detail:   
+                  type: string
+      responses:
+        200:
+          description: Create commitment successfully.
+          schema:
+            type: object
+            example: {
+              "heading": "string",
+              "logo": "path",
+              "detail": "string",
+            }
+        400:
+          description: Create commitment failed.
+  /admin/commitment/{commitmentId}:
+    put:
+      tags:
+        - "commitment"
+      summary: "Update a existing commitment"
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: commitmentId
+          schema: 
+            type: string
+          required: true
+          description: commitment id
+        - in: body
+          name: commitment
+          description: a existing commitment.
+          schema:
+            type: object
+            required:
+              - heading
+            properties:
+              heading:
+                type: string
+              detail:
+                type: string
+        - in: formData
+          name: logo
+          description: a logo commitment.
+          type: file
+      requestBody:
+        content:
+          application/json:
+            schema:
+              schema:
+            type: object
+            required:
+              - heading
+            properties:
+              name:
+                type: string
+              logo:
+                type: string
+                format: base64 
+              detail:
+                type: string
+      responses:
+        200:
+          description: Update commitment successfully.
+          schema:
+            type: object
+            example: {
+              "heading": "string",
+              "logo": "path",
+              "detail": "string",
+            }
+        400:
+          description: Update commitment failed.
 
+    delete:
+      tags:
+        - "commitment"
+      summary: "Delete a existing commitment"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: commitmentId
+          type: string
+          required: true
+          description: Id of a commitment 
+      responses:
+        200:
+          description: Delete commitment successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+        400:
+          description: Update commitment failed.
+  
+  /partner:
+    get:
+      tags:
+        - "partner"
+      summary: get partners
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: limit
+          type: string
+          description: limit number of partners 
+      responses:
+        200:
+          description: get partners successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "logo": "path",
+            }
+        400:
+          description: partner is not found.
+  /partner/{partnerId}:
+    get:
+      tags:
+        - "partner"
+      summary: get partner by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: partnerId
+          type: string
+          required: true
+          description: Id of a partner 
+      responses:
+        200:
+          description: get partner successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "logo": "path",
+            }
+        400:
+          description: partnerId is not found.
+  /admin/partner:
+    post:
+      tags:
+        - "partner"
+      summary: "Create a new partner"
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: body
+          name: partner
+          description: a new partner.
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+        - in: formData
+          name: logo
+          description: a logo commitment.
+          type: file  
+      requestBody:
+        content: 
+          multipart/form-data: 
+            schema:            
+              type: object
+              properties:      
+                name:           
+                  type: string
+                logo: 
+                  type: string
+                  format: base64
+      responses:
+        200:
+          description: Create partner successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "logo": "path",
+            }
+        400:
+          description: Create partner failed.
+  /admin/partner/{partnerId}:
+    put:
+      tags:
+        - "partner"
+      summary: "Update a existing commitment"
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: partnerId
+          schema: 
+            type: string
+          required: true
+          description: partner id
+        - in: body
+          name: partner
+          description: a existing partner.
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+        - in: formData
+          name: logo
+          description: a logo commitment.
+          type: file
+      requestBody:
+        content: 
+          multipart/form-data: 
+            schema:            
+              type: object
+              properties:      
+                name:           
+                  type: string
+                logo: 
+                  type: string
+                  format: base64
+      responses:
+        200:
+          description: Update partner successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "logo": "path",
+            }
+        400:
+          description: Update partner failed.
 
+    delete:
+      tags:
+        - "partner"
+      summary: "Delete a existing partner"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: partnerId
+          type: string
+          required: true
+          description: partner Id
+      responses:
+        200:
+          description: Delete partner successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+        400:
+          description: Update partner failed.
+  /admin/message:
+    get:
+      tags:
+        - "message"
+      summary: get message
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: page
+          type: string
+          description: num of page
+        - in: query
+          name: pageSize
+          type: string
+          description: number of message in a page  
+      responses:
+        200:
+          description: get message successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "email": "string",
+              "phone": "string",    
+              "message": "string",          
+            }
+        400:
+          description: commitment is not found.  
+  /admin/message/{messageId}:
+    get:
+      tags:
+        - "message"
+      summary: get message by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: messageId
+          type: string
+          required: true
+          description: Id of a message 
+      responses:
+        200:
+          description: get message successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "email": "string",
+              "phone": "string",    
+              "message": "string",          
+            }          
+        400:
+          description: message is not found.    
+    put:
+      tags:
+        - "message"
+      summary: "Update a existing message"
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: messageId
+          schema: 
+            type: string
+          required: true
+          description: message id
+        - in: body
+          name: message
+          description: a existing message.
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              email:
+                type: string 
+              phone: 
+                type: string
+              message:
+                type: string 
+      responses:
+        200:
+          description: Update message successfully.
+        400:
+          description: Update message failed.
+    delete:
+      tags:
+        - "message"
+      summary: "Delete a existing message"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: messageId
+          type: string
+          required: true
+          description: Id of a message 
+      responses:
+        200:
+          description: Delete message successfully.
+        400:
+          description: Update message failed.
+  /message:
+    post:
+      tags:
+        - "message"
+      summary: "Create a new message"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: message
+          description: a new message.
+          schema:
+            type: object
+            required:
+              - name, email, phone, message
+            properties:
+              name:
+                type: string
+              email:
+                type: string 
+              phone: 
+                type: string
+              message:
+                type: string 
+      responses:
+        200:
+          description: Send message successfully.
+        400:
+          description: Create message failed.   
 
-
-
-
-
-
-
-
-      
+securityDefinitions:
+  bearerAuth:
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
