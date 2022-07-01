@@ -1,7 +1,7 @@
 import express from "express"
 import { sendError, sendServerError,sendAutoMail, sendSuccess } from "../../helper/client.js"
 import Consultancy from "../../model/Consultancy.js"
-
+import DeliveryService from "../../model/DeliveryService.js"
 const consultancyAdminRoute = express.Router()
 
 
@@ -25,14 +25,14 @@ consultancyAdminRoute.get('/', async (req, res) => {
 })
 
 /**
- * @route GET /api/admin/consultancy/:consultancyId
+ * @route GET /api/admin/consultancy/:id
  * @description get a consultancy by id
  * @access 
  */
 consultancyAdminRoute.get('/:id', async (req, res) => {
     try {
-        const {consultancyId} = req.params;
-        const consultancy = await Consultancy.findById(consultancyId)
+        const {id} = req.params;
+        const consultancy = await Consultancy.findById(id)
         if (consultancy)
             return sendSuccess(res, 'get consultancy information successfully.', consultancy)
         return sendError(res, 'consultancy information is not found.')
@@ -51,11 +51,20 @@ consultancyAdminRoute.put('/:id',
     async (req, res) => {
         try{
             const {id} = req.params
-            const {service, name, email, phone, fulladdress, parcel, quantity} = req.body
+            const {service, serviceName, serviceId , name, email, phone, district, province, ward, fulladdress, parcel, quantity} = req.body
             const isExist = await Consultancy.exists({_id: id})
             if (! isExist) return sendError(res, "This consultancy is not existed.")
-            await Consultancy.findByIdAndUpdate(id,{service, name, email, phone, fulladdress, parcel, quantity})
-            return sendSuccess(res, "Update consultancy successfully", {service, name, email, phone, fulladdress, parcel, quantity})            
+            if (serviceName || serviceId){
+                const service = await DeliveryService.findOne({
+                    $or: [
+                        { _id: serviceId },
+                        { name: serviceName }
+                    ]
+                })
+                if (!service) return sendError(res, 'the service is not exist.')    
+            }
+            await Consultancy.findByIdAndUpdate(id,{$set: {service, name, email, phone,  district, province, ward, fulladdress, parcel, quantity}})
+            return sendSuccess(res, "Update consultancy successfully",  {service, name, email, phone,  district, province, ward, fulladdress, parcel, quantity})            
         } catch (error) {
             console.log(error)
             return sendServerError(res)

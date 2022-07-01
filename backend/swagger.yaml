@@ -823,7 +823,7 @@ paths:
               "service" : "string",
               "fulladdress" : "string",
               "parcel": "string",
-              "quantity": "string",    
+              "quantity": number,    
             }
         400:
           description: consultancy is not found.  
@@ -875,6 +875,8 @@ paths:
           schema:
             type: object
             properties:
+              serviceName:
+                type: string
               name:
                 type: string
               email:
@@ -888,7 +890,7 @@ paths:
               parcel: 
                 type: string
               quantity:
-                type: string 
+                type: number 
               
       responses:
         200:
@@ -926,7 +928,7 @@ paths:
           schema:
             type: object            
             properties:
-              service:
+              serviceName:
                 type: string
               name:
                 type: string               
@@ -939,7 +941,7 @@ paths:
               parcel: 
                 type: string
               quantity:
-                type: string 
+                type: number 
       responses:
         200:
           description: Send consultancy successfully.

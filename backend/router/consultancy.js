@@ -3,6 +3,7 @@ import { sendError, sendServerError,sendAutoMail, sendSuccess } from "../helper/
 import { createConsultancyValidate } from "../validation/consultancy.js"
 const consultancyRoute = express.Router()
 import Consultancy from "../model/Consultancy.js"
+import DeliveryService from "../model/DeliveryService.js"
 
 /**
  * @route POST /api/consultant
@@ -14,7 +15,15 @@ consultancyRoute.post('/',
         const err = createConsultancyValidate(req.body)
         if(err) return sendError(res, err)
         try{
-            const {service, name, email, phone, district, province, ward, fulladdress, parcel, quantity} = req.body
+            const {serviceName, serviceId , name, email, phone, district, province, ward, fulladdress, parcel, quantity} = req.body
+            const service = await DeliveryService.findOne({
+                $or: [
+                    { _id: serviceId },
+                    { name: serviceName }
+                ]
+            })
+            if (!service) return sendError(res, 'the service is not exist.')
+
             const optionsToCS = {
                 from: process.env.MAIL_HOST,
                 to: process.env.MAIL_HOST,
@@ -23,7 +32,7 @@ consultancyRoute.post('/',
                 <p>Email: ${email}</p>
                 <p>Số điện thoại: ${phone}</p>
                 <p>Địa chỉ: ${fulladdress}</p>
-                <p>Dịch vụ vận chuyển: ${service}</p>
+                <p>Dịch vụ vận chuyển: ${service.name}</p>
                 <p>Thông tin kiện hàng: </br>
                     Tên hàng: <b>${parcel}</b>
                     Số lượng: <b>${quantity}</b
