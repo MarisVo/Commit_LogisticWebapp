@@ -26,7 +26,7 @@ function Commit() {
                     <img src="https://jtexpress.vn/themes/jtexpress/assets/images/dd-about-us.png" className='w-[76px] h-[63px] hidden lg:block' />
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-y-10 gap-x-4 mt-8 mb-4 rounded-2xl">
                         {data.map((api, key) => (
-                            <div key={key} className="p-3 bg-primary even:bg-opacity-40 lg:min-h-[350px] rounded-xl">
+                            <div key={key} className="p-3 bg-[#F0B90B] even:bg-opacity-40 lg:min-h-[350px] rounded-xl">
                                 <img src={api.logo} className="mb-7" />
                                 <div className="uppercase text-lg font-black my-3 text-teal-600 ">{api.heading}</div>
                                 <div className="whitespace-pre-line">{api.detail}</div>

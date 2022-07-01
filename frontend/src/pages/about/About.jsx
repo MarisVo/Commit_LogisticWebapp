@@ -37,17 +37,17 @@ function About() {
                 <div className='flex flex-col lg:flex-row items-center justify-around mt-16 gap-8 font-extrabold '>
                     <div className="flex flex-col items-center text-center px-3 gap-y-3 ">
                         <img src='https://jtexpress.vn/themes/jtexpress/assets/images/1000xe.png' alt="vehicle-pic" className='shadow-xl rounded-full' />
-                        <span className="text-3xl text-primary">850+</span>
+                        <span className="text-3xl text-[#F0B90B]">850+</span>
                         <span className="text-xl uppercase">phương tiện</span>
                     </div>
                     <div className="flex flex-col items-center text-center px-3 gap-y-3">
                         <img src='https://jtexpress.vn/themes/jtexpress/assets/images/25000nhan-vien.png' alt="staff-pic" className='shadow-xl rounded-full' />
-                        <span className="text-3xl text-primary">19.000+</span>
+                        <span className="text-3xl text-[#F0B90B]">19.000+</span>
                         <span className="text-xl uppercase">nhân viên</span>
                     </div>
                     <div className="flex flex-col items-center text-center px-3 gap-y-3">
                         <img src='https://jtexpress.vn/themes/jtexpress/assets/images/1900bu-cuc.png' alt="office-pic" className='shadow-xl rounded-full' />
-                        <span className="text-3xl text-primary">1.900</span>
+                        <span className="text-3xl text-[#F0B90B]">1.900</span>
                         <span className="text-xl uppercase">bưu cục</span>
                     </div>
                 </div>
@@ -58,7 +58,7 @@ function About() {
                     <img src="https://jtexpress.vn/themes/jtexpress/assets/images/dd-about-us.png" className='w-[76px] h-[63px]' />
                     <span className='text-2xl font-black uppercase'>Tấm nhìn</span>
                     <span className='text-base'>{data.vision}</span>
-                    <div className='w-20 h-[2px] bg-primary'></div>
+                    <div className='w-20 h-[2px] bg-[#F0B90B]'></div>
                     <span className='text-2xl font-black uppercase'>Giá trị cốt lõi</span>
                     <span className='text-base whitespace-pre-line '>{data.value}</span>
                 </div>
@@ -69,7 +69,7 @@ function About() {
             <div className=' container mx-auto my-10 bg-history'>
                 <div className="w-auto flex flex-col xl:flex-row items-center ">
                     <div className='xl:max-w-[400px]'>
-                        <div className='text-3xl xl:text-5xl text-center xl:text-left font-black my-4 text-primary '>LỊCH SỬ</div>
+                        <div className='text-3xl xl:text-5xl text-center xl:text-left font-black my-4 text-[#F0B90B] '>LỊCH SỬ</div>
                         <div className='p-8 mb-2 border-[3px] border-border_color rounded-2xl bg-yellow-100 shadow-2xl opacity-95'>
                             <span className='text-base font-semibold text-justify'>
                                 Được thành lập vào năm 2015 tại Indonesia, J&T Express là công ty chuyển phát nhanh
@@ -200,7 +200,7 @@ function About() {
             </div>
             <div className='relative w-full lg:px-0  mt-16'>
                 <div className='lg:absolute flex flex-col mx-auto justify-center items-center gap-y-0 lg:gap-y-8 px-4 container lg:left-1/2 lg:-translate-x-1/2 w-full'>
-                    <span className='text-2xl lg:text-4xl font-black text-center uppercase text-primary'>Mạng lưới phủ sóng</span>
+                    <span className='text-2xl lg:text-4xl font-black text-center uppercase text-[#F0B90B]'>Mạng lưới phủ sóng</span>
                     <span className=' lg:text-base text-justify lg:w-4/5 p-3 shadow-2xl rounded-xl border-[3px] bg-yellow-200 border-border_color tracking-wide'>Có mặt tại thị trường Việt Nam vào tháng 7/2018, J&T Express sở hữu một mạng lưới rộng khắp 63 tỉnh thành nhằm hỗ trợ các hoạt động giao nhận hàng hóa nhanh chóng,
                         phủ sóng các thành phố lớn, khu vực vùng sâu vùng xa hay hải đảo trên toàn lãnh thổ Việt Nam.
                         Mạng lưới chúng tôi dựa trên nguyên tắc "Không loại trừ bất kỳ vị trí địa lý nào".

@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./App.css";
 import "react-router-dom";
 // import Header from "./components/Header";
 // import Footer from "./components/Footer";
-import { Home, About, Commit, Track, VanDon, Adivce, SignUpAdvice, Contact, PageNotFound, Layer } from "./pages/pageExport"
+import {
+  Home, About, Commit, Track, SignUpAdvice,
+  Contact, PageNotFound, Layer,
+  LayerStorekeeper, ProductsManager, Inventory
+} from "./pages/pageExport"
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 const App = () => {
 
@@ -21,9 +25,14 @@ const App = () => {
               <Route path="buu-cuc" element={<Track number={"3"} />} />
               <Route path="bang-gia" element={<Track number={"4"} />} />
               <Route path="hang-cam-gui" element={<Track number={"5"} />} />
-            </Route>          
+            </Route>
             <Route path="dang-ki-tu-van" element={<SignUpAdvice />} />
             <Route path="contact" element={<Contact />} />
+
+          </Route>
+          <Route path="storekeeper" element={<LayerStorekeeper />} >
+            <Route path="xuat-nhap" element={<ProductsManager />} />
+            <Route path="ton-kho" element={<Inventory />} />
           </Route>
           <Route path="*" element={<PageNotFound />} />
         </Routes>

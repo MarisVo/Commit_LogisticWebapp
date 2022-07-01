@@ -91,7 +91,7 @@ const Header = () => {
                         <Link to="about" className="inline-flex items-center px-4 py-2">Giới thiệu
                             <FaChevronDown className="h-4 w-4 pl-[6px]" />
                         </Link>
-                        <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg">
+                        <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg animate-up">
                             <li>
                                 <Link to="about" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100">Về Chúng tôi</Link>
                             </li>
@@ -104,7 +104,7 @@ const Header = () => {
                         <Link to="track" className="inline-flex items-center  px-4 py-2">Tra cứu
                             <FaChevronDown className="h-4 w-4 pl-[6px]" />
                         </Link>
-                        <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg">
+                        <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg animate-up">
                             <li><Link to="track/cuoc-van-chuyen" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100">Cước vận chuyển</Link></li>
                             <li><Link to="track/buu-cuc" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100">Bưu cục gần đây</Link></li>
                             <li><Link to="track/van-don" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100">Vận đơn</Link></li>
@@ -116,7 +116,7 @@ const Header = () => {
                         <Link to="service" className="inline-flex items-center px-4 py-2">Dịch vụ
                             <FaChevronDown className="h-4 w-4 pl-[6px]" />
                         </Link>
-                        <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg">
+                        <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg animate-up">
                             <li>
                                 <Link to="standard-service" className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100">
                                     <span>Dịch vụ chuyển phát tiêu chuẩn</span>
@@ -148,7 +148,7 @@ const Header = () => {
                         <Link to="career" className="inline-flex items-center px-4 py-2">Tuyển dụng
                             <FaChevronDown className="h-4 w-4 pl-[6px]" />
                         </Link>
-                        <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg">
+                        <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg animate-up">
                             <li><Link to="career" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100 ">Cơ hội nghề nghiệp</Link></li>
                             <li><Link to="cuoc-song-jnt" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100">Cuộc sống J&T Epress</Link></li>
                         </ul>
@@ -157,23 +157,23 @@ const Header = () => {
                         <Link to="dang-ki-tu-van" className="inline-flex items-center px-4 py-2">Tư vấn
                             <FaChevronDown className="h-4 w-4 pl-[6px]" />
                         </Link>
-                        <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg">
+                        <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg animate-up">
                             <li><Link to="contact" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100 ">Liên hệ</Link></li>
                             <li><Link to="dang-ki-tu-van" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100">Đăng kí tư vấn</Link></li>
                         </ul>
                     </div>
                 </ul>
-                <div className="px-4 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm ">
+                <div className="px-4 py-2 bg-[#F0B90B] border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm ">
                     <a href="#" className="font-semibold">Đăng nhập</a>
                 </div>
             </div >
 
             {/* Phần mobile menu */}
-            <div className={isOpen ? 'lg:hidden fixed left-0 top-[65px] right-0 bottom-0 bg-slate-400/40' : 'hidden lg:hidden fixed left-0 top-[65px] right-0 bottom-0 bg-slate-400/40'}
+            <div className={isOpen ? 'lg:hidden fixed left-0 top-[65px] right-0 bottom-0 bg-slate-400/40 ' : 'hidden lg:hidden fixed left-0 top-[65px] right-0 bottom-0 bg-slate-400/40'}
                 onClick={(removeMobileMenu)}
             >
                 <Menu
-                    className="h-full"
+                    className="h-full animate-menu_in "
                     style={{'width':'75%',}}
                     mode="inline"
                     openKeys={openKeys}

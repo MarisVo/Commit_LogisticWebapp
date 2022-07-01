@@ -20,42 +20,42 @@ const flags = [
     },
     {
         id: 2,
-        name: 'IMalaysia',
+        name: 'Malaysia',
         url: 'https://jtexpress.vn/themes/jtexpress/assets/images/nation2.jpg'
     },
     {
         id: 3,
-        name: 'IMalaysia',
+        name: 'Philippines',
         url: 'https://jtexpress.vn/themes/jtexpress/assets/images/nation3.jpg'
     },
     {
         id: 4,
-        name: 'IMalaysia',
+        name: 'Thái Lan',
         url: 'https://jtexpress.vn/themes/jtexpress/assets/images/nation4.jpg'
     },
     {
         id: 5,
-        name: 'IMalaysia',
+        name: 'Singapore',
         url: 'https://jtexpress.vn/themes/jtexpress/assets/images/nation5.jpg'
     },
     {
         id: 6,
-        name: 'IMalaysia',
+        name: 'Campuchia',
         url: 'https://jtexpress.vn/themes/jtexpress/assets/images/nation6.jpg'
     },
     {
         id: 7,
-        name: 'IMalaysia',
+        name: 'Mexico',
         url: 'https://jtexpress.vn/themes/jtexpress/assets/images/mexico.png'
     },
     {
         id: 8,
-        name: 'IMalaysia',
+        name: 'Saudi Arabia',
         url: 'https://jtexpress.vn/themes/jtexpress/assets/images/saudi.png'
     },
     {
         id: 9,
-        name: 'IMalaysia',
+        name: 'UAE',
         url: 'https://jtexpress.vn/themes/jtexpress/assets/images/uae.png'
     },
 ]
@@ -71,7 +71,7 @@ const services = [
     },
     {
         type: 'j&T Fast',
-        content: 'Chuyển phát tiêu chuẩn',
+        content: 'Chuyển phát nhanh',
         path: 'standard-service',
         images: {
             front: 'https://jtexpress.vn/storage/app/uploads/public/627/5d6/892/6275d68928ffd381036854.png',
@@ -80,7 +80,7 @@ const services = [
     },
     {
         type: 'j&T Super',
-        content: 'Chuyển phát tiêu chuẩn',
+        content: 'Siêu vận chuyển',
         path: 'standard-service',
         images: {
             front: 'https://jtexpress.vn/storage/app/uploads/public/627/5d6/892/6275d68928ffd381036854.png',
@@ -89,7 +89,7 @@ const services = [
     },
     {
         type: 'j&T Fresh',
-        content: 'Chuyển phát tiêu chuẩn',
+        content: 'Chuyển phát tươi sống',
         path: 'standard-service',
         images: {
             front: 'https://jtexpress.vn/storage/app/uploads/public/627/5d6/892/6275d68928ffd381036854.png',
@@ -139,44 +139,49 @@ const coops = [
 const Home = () => {
     const [listProvinces, setListProvince] = useState([])
     const [listDistricts, setListDistricts] = useState([])
-    const [currentProvince, setCurrentProvince] = useState('')
-    const [currentDistrict, setCurrentDistrict] = useState('')
+    const [currentProvince, setCurrentProvince] = useState(null)
+    const [currentDistrict, setCurrentDistrict] = useState(null)
     const [person, setPerson] = useState(1)
     const [warehouses, setWarehouse] = useState([])
 
+    const searchWarehouse = () => {
+        if (currentDistrict && currentProvince) {
+            const find = async () => {
+                try {
+                    const { data: response } = await axios.get('http://localhost:8000/api/tracking/warehouse',
+                        {
+                            params: {
+                                province: currentProvince,
+                                district: currentDistrict
+                            }
+                        })
+                    setWarehouse(response.data)
+                }
+                catch (error) {
+                    console.log(error.message)
 
-    const fetchApi = async () => {
-        try {
-            const { data: response } = await axios.get('http://localhost:8000/api/tracking/warehouse',
-                {
-                    params: {
-                        province: currentProvince,
-                        district: currentDistrict
-                    }
-                })
-            setWarehouse(response.data)
+                }
+            }
+            find()
+        } else {
+            alert('Mời chọn đủ thông tin tra cứu')
         }
-        catch (error) {
-            console.log(error.message)
-        }
-
     }
-    console.log(warehouses)
+
 
     useEffect(() => {
         const dataProv = getProvinces()
         setListProvince(dataProv)
     }, [])
-    const handleSelectProvince = (provinceNameSelected) => {
-        const provinceCode = listProvinces.find(province => province.name === provinceNameSelected).code
+    const handleSelectProvince = (provinceSelected) => {
+        const provinceCode = listProvinces.find(province => province.name === provinceSelected).code
         const dataDistricts = getDistrictsByProvinceCode(provinceCode)
-        setCurrentProvince(provinceNameSelected)
+        setCurrentProvince(provinceSelected)
         setCurrentDistrict(null)
         setListDistricts(dataDistricts)
     }
-    const handleSelectDistrict = (districtNameSelected) => {
-        setCurrentDistrict(districtNameSelected)
-
+    const handleSelectDistrict = (districtSelected) => {
+        setCurrentDistrict(districtSelected)
     }
     const showPerson = (id) => {
         const numberId = coops.find(coop => coop.id === id).id
@@ -218,7 +223,7 @@ const Home = () => {
                         <div >
                             <form className="flex flex-col lg:flex-row ">
                                 <input
-                                    className="border border-gray-300 text-primary text-sm rounded focus:ring-yellow-500 focus:border-yellow-500 block w-full p-3 mb-2 lg:mb-0   "
+                                    className="border border-gray-300 text-[#F0B90B] text-sm rounded focus:ring-yellow-500 focus:border-yellow-500 block w-full p-3 mb-2 lg:mb-0   "
                                     placeholder='Nhập mã vận đơn của bạn (cách nhau bới dấu phẩy), tối đa 10 vận đơn'
                                 >
                                 </input>
@@ -231,12 +236,13 @@ const Home = () => {
                         </div>
                     </TabPane>
                     <TabPane tab={<div className="text-lg h-[30px]">Tra cứu bưu cục</div>} key="2">
-                        <div className="flex flex-col items-center lg:flex-row">
+                        <div className="flex flex-col items-center lg:flex-row gap-y-3">
                             <Select
                                 showSearch
                                 allowClear
                                 className="w-full lg:w-2/5"
                                 placeholder="Tỉnh/Thành Phố"
+                                onClear={() => { setCurrentDistrict(null); setListDistricts([]) }}
                                 onChange={value => handleSelectProvince(value)}
                             >
                                 {listProvinces.map((city) => <Option key={city.code} value={city.name} >{city.name} </Option>)}
@@ -248,12 +254,14 @@ const Home = () => {
                                 className="w-full lg:w-2/5"
                                 placeholder="Quận/Huyện"
                                 onChange={value => handleSelectDistrict(value)}
+                                value={currentDistrict}
                             >
+                                {/* <Option value={null} >Quận/Huyện</Option> */}
                                 {listDistricts.map((distr) => <Option key={distr.code} value={distr.name}>{distr.name}</Option>)}
                             </Select>
                             <button
-                                onClick={fetchApi}
-                                class="text-white bg-yellow-500 hover:bg-yellow-400 focus:ring-4  focus:ring-red-500 font-medium rounded-lg text-lg w-full lg:w-44 lg:ml-2 px-5 py-2.5 text-center "
+                                onClick={searchWarehouse}
+                                class="text-white bg-yellow-500 hover:bg-yellow-400 focus:ring-2  focus:ring-red-500 font-medium rounded-lg text-lg w-full lg:w-44 lg:ml-2 px-5 py-2.5 text-center "
                             >Tìm kiếm
                             </button>
                         </div>
@@ -267,12 +275,12 @@ const Home = () => {
 
             <div className=' container mt-4 grid grid-cols-1 lg:grid-cols-2 mx-auto gap-y-3 gap-x-6'>
                 {warehouses.map((warehouse, key) => (
-                    <div className='flex flex-col bg-yellow-200 p-4 rounded-xl gap-y-2'>
+                    <div key={key} className='flex flex-col bg-[#FFFF00] bg-opacity-70 p-4 rounded-xl gap-y-2'>
                         <div className='flex flex-row justify-between'>
                             <span className='text-xl font-extrabold text-red-700'>{warehouse.name}</span>
-                            <a className='flex items-center text-red-500'>
+                            <a href={'https://www.google.com/maps?q=' + warehouse?.lon + warehouse?.lat} target="_blank" className='flex items-center text-red-600'>
                                 <FiMap className="w-4 h-4 inline-block mr-2" />
-                                <span className=' text-lg text-inherit'>Tìm đường đi</span>
+                                <span className=' text-lg text-inherit font-semibold'>Tìm đường đi</span>
                             </a>
                         </div>
                         <div className='flex items-stretch'>
@@ -303,7 +311,7 @@ const Home = () => {
             </div>
 
             <div className="flex flex-col lg:flex-row ">
-                <div className="flex flex-col items-center justify-center text-justify gap-y-7 w-full lg:max-w-[500px] py-6 px-3 bg-primary rounded-r-xl">
+                <div className="flex flex-col items-center justify-center text-justify gap-y-7 w-full lg:max-w-[500px] py-6 px-3 bg-[#F0B90B] rounded-r-xl">
                     <span className="text-4xl font-black container text-white">VỀ CHÚNG TÔI</span>
                     <span className=" text-base container tracking-wide px-4 lg:px-6 w-full">
                         J&T Express là thương hiệu chuyển phát nhanh dựa trên sự phát triển của công nghệ và Internet.
@@ -418,7 +426,7 @@ const Home = () => {
                             </Carousel>
                         </div>
                     </div>
-                    <div className='bg-primary rounded-xl shadow-2xl lg:min-h-[450px] overflow-hidden  '>
+                    <div className='bg-[#F0B90B] rounded-xl shadow-2xl lg:min-h-[450px] overflow-hidden  '>
                         <div className="flex flex-col items-center px-4 py-8">
                             <div className='w-[134px] h-[134px]'>
                                 <img src={coops[person - 1].image} className=' h-full w-full rounded-full object-cover' alt='' />

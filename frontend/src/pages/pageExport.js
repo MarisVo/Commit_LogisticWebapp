@@ -11,3 +11,6 @@ export {default as SignUpAdvice} from './advice/signUpForAdvise/SignUp.advice'
 export {default as PageNotFound} from './PageNotFound'
 
 export {default as Layer} from './Layer'
+export {default as LayerStorekeeper} from './storekeeper/LayerStorekeeper'
+export {default as ProductsManager} from './storekeeper/ProductsManager'
+export {default as Inventory} from './storekeeper/Inventory'
