@@ -134,7 +134,11 @@ function ForgetPass() {
 
                 <Form.Item wrapperCol={{ span: 24 }}>
                     <div className='sign'>
+<<<<<<< HEAD
+                        <Link to="/dang-ki">
+=======
                         <Link to="/register" className="font-semibold text-blue-700">
+>>>>>>> 00100bd4e54260dc71d548952f07c9dd3f2d4d54
                             Đăng ký tài khoản
                         </Link>
                     </div>

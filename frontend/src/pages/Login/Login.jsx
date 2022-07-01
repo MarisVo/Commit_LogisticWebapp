@@ -160,7 +160,11 @@ function Login() {
 
                 <Form.Item wrapperCol={{ span: 24 }}>
                     <div className='sign'>
+<<<<<<< HEAD
+                        <Link to="/quen-mat-khau">
+=======
                         <Link to="/forgetpass" className="font-semibold text-blue-700">
+>>>>>>> 00100bd4e54260dc71d548952f07c9dd3f2d4d54
                             Quên mật khẩu
                         </Link>
                     </div>

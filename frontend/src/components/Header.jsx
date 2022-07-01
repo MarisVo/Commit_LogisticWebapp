@@ -5,8 +5,6 @@ import { useState } from 'react'
 import { Menu } from 'antd'
 import 'antd/dist/antd.css'
 
-
-
 function getItem(label, key, children) {
     return {
         key,
@@ -16,42 +14,42 @@ function getItem(label, key, children) {
 }
 const items = [
     getItem(<Link to="/">Trang chủ</Link>, '1'),
-    getItem(<Link to="about">Giới thiệu</Link>, 'sub2', [
-        getItem(<Link to="about">Về chúng tôi</Link>, '2'),
-        getItem(<Link to="commit">Cam kết</Link>, '3'),
+    getItem(<Link to="ve-chung-toi">Giới thiệu</Link>, 'sub2', [
+        getItem(<Link to="ve-chung-toi">Về chúng tôi</Link>, '2'),
+        getItem(<Link to="cam-ket">Cam kết</Link>, '3'),
     ]),
-    getItem(<Link to="track">Tra cứu</Link>, 'sub3', [
-        getItem(<Link to="">Cước vận chuyển</Link>, '4'),
-        getItem(<Link to="">Bưu cục gần đây</Link>, '5'),
-        getItem(<Link to="">Vận đơn</Link>, '6'),
-        getItem(<Link to="">Bảng giá</Link>, '7'),
-        getItem(<Link to="">Hàng cấm gửi</Link>, '8'),
+    getItem(<Link to="tra-cuu">Tra cứu</Link>, 'sub3', [
+        getItem(<Link to="cuoc-van-chuyen">Cước vận chuyển</Link>, '4'),
+        getItem(<Link to="buu-cuc">Bưu cục gần đây</Link>, '5'),
+        getItem(<Link to="van-don">Vận đơn</Link>, '6'),
+        getItem(<Link to="bang-gia">Bảng giá</Link>, '7'),
+        getItem(<Link to="gang-cam-gui">Hàng cấm gửi</Link>, '8'),
     ]),
-    getItem(<Link to="service">Dịch vụ</Link>, 'sub4', [
-        getItem(<Link to="" className="flex flex-col leading-5">
+    getItem(<Link to="dich-vu">Dịch vụ</Link>, 'sub4', [
+        getItem(<Link to="chuyen-phat-tieu-chuan" className="flex flex-col leading-5">
             <span >Dịch vụ chuyển phát tiêu chuẩn</span>
             <i className=" text-[#f0b90c] font-bold">J&T Epress</i>
         </Link>, '9'),
-        getItem(<Link to="" className="flex flex-col leading-5">
+        getItem(<Link to="chuyen-phat-nhanh" className="flex flex-col leading-5">
             <span >Dịch vụ chuyển phát nhanh</span>
             <i className=" text-[#f0b90c] font-bold">J&T Fast</i>
         </Link>, '10'),
-        getItem(<Link to="" className="flex flex-col leading-5">
+        getItem(<Link to="sieu-dich-vu-chuyen-phat" className="flex flex-col leading-5">
             <span >Dịch vụ Siêu giao hàng</span>
             <i className=" text-[#f0b90c] font-bold">J&T Super</i>
         </Link>, '11'),
-        getItem(<Link to="" className="flex flex-col leading-5">
+        getItem(<Link to="chuyen-phat-do-tuoi-song" className="flex flex-col leading-5">
             <span >Dịch vụ Tươi sống</span>
             <i className=" text-[#f0b90c] font-bold">J&T Fresh</i>
         </Link>, '12'),
     ]),
-    getItem(<Link to="">Tuển dụng </Link>, 'sub5', [
-        getItem(<Link to="about">Cơ hội nghề nghiệp</Link>, '13'),
-        getItem(<Link to="commit">Cuộc sống J%T Epress</Link>, '14'),
+    getItem(<Link to="tuyen-dung">Tuển dụng </Link>, 'sub5', [
+        getItem(<Link to="tuyen-dung">Cơ hội nghề nghiệp</Link>, '13'),
+        getItem(<Link to="cuoc-life">Cuộc sống J%T Epress</Link>, '14'),
     ]),
-    getItem(<Link to="contact">Tư vấn</Link>, 'sub6', [
-        getItem(<Link to="contact">Liên hệ</Link>, '15'),
-        getItem(<Link to="dang-ki-tu-van">Đăng kí tư vấn</Link>, '16'),
+    getItem(<Link to="tu-van/lien-he">Tư vấn</Link>, 'sub6', [
+        getItem(<Link to="tu-van/lien-he">Liên hệ</Link>, '15'),
+        getItem(<Link to="tu-van/dang-ki-tu-van">Đăng kí tư vấn</Link>, '16'),
     ]),
 ];
 const rootSubmenuKeys = ['sub1', 'sub2', 'sub3', 'sub4', 'sub5', 'sub6'];
@@ -97,55 +95,55 @@ const Header = () => {
                         <Link to="/" className=" flex items-center px-4 py-2 rounded-md hover:bg-yellow-200">Trang chủ</Link>
                     </li>
                     <div className='group hover:bg-yellow-200 rounded-md'>
-                        <Link to="about" className="inline-flex items-center px-4 py-2">Giới thiệu
+                        <Link to="ve-chung-toi" className="inline-flex items-center px-4 py-2">Giới thiệu
                             <FaChevronDown className="h-4 w-4 pl-[6px]" />
                         </Link>
                         <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg">
                             <li>
-                                <Link to="about" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100">Về Chúng tôi</Link>
+                                <Link to="ve-chung-toi" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100">Về Chúng tôi</Link>
                             </li>
                             <li>
-                                <Link to="commit" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100">Cam kết</Link>
+                                <Link to="cam-ket" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100">Cam kết</Link>
                             </li>
                         </ul>
                     </div>
                     <div className='group hover:bg-yellow-200 rounded-md'>
-                        <Link to="track" className="inline-flex items-center  px-4 py-2">Tra cứu
+                        <Link to="tra-cuu" className="inline-flex items-center  px-4 py-2">Tra cứu
                             <FaChevronDown className="h-4 w-4 pl-[6px]" />
                         </Link>
                         <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg" defaultActiveKey="cước vận chuyển" onChange={callback}>
-                            <li><Link to="/track?type=cước%20vận%20chuyển" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100" key="cước vận chuyển">Cước vận chuyển</Link></li>
-                            <li><Link to="/track?type=bưu%20cục" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100" key="bưu cục">Bưu cục gần đây</Link></li>
-                            <li><Link to="/track?type=vận%20đơn" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100" key="vận đơn">Vận đơn</Link></li>
-                            <li><Link to="/track?type=bảng%20giá" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100" key="bảng giá">Bảng giá</Link></li>
-                            <li><Link to="/track?type=hàng%20cấm%20gửi" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100" key="hàng cấm gửi">Hàng cấm gửi</Link></li>
+                            <li><Link to="/tra-cuu/cuoc-van-chuyen" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100" key="cước vận chuyển">Cước vận chuyển</Link></li>
+                            <li><Link to="/tra-cuu/buu-cuc" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100" key="bưu cục">Bưu cục gần đây</Link></li>
+                            <li><Link to="/tra-cuu/van-don" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100" key="vận đơn">Vận đơn</Link></li>
+                            <li><Link to="/tra-cuu/bang-gia" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100" key="bảng giá">Bảng giá</Link></li>
+                            <li><Link to="/tra-cuu/hang-cam-gui" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100" key="hàng cấm gửi">Hàng cấm gửi</Link></li>
                         </ul>
                     </div >
                     <div className='group hover:bg-yellow-200 rounded-md'>
-                        <Link to="service" className="inline-flex items-center px-4 py-2">Dịch vụ
+                        <Link to="dich-vu" className="inline-flex items-center px-4 py-2">Dịch vụ
                             <FaChevronDown className="h-4 w-4 pl-[6px]" />
                         </Link>
                         <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg">
                             <li>
-                                <Link to="standard-service" className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100">
+                                <Link to="chuyen-phat-tieu-chuan" className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100">
                                     <span>Dịch vụ chuyển phát tiêu chuẩn</span>
                                     <i className="text-[#f0b90c] font-bold">J&T Epress</i>
                                 </Link>
                             </li>
                             <li>
-                                <Link to="fast-service" className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100">
+                                <Link to="chuyen-phat-nhanh" className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100">
                                     <span>Dịch vụ nhanh</span>
                                     <i className="text-[#f0b90c] font-bold">J&T Fast</i>
                                 </Link>
                             </li>
                             <li>
-                                <Link to="super-service" className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100">
+                                <Link to="sieu-dich-vu-chuyen-phat" className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100">
                                     <span>Dịch vụ siêu giao hàng</span>
                                     <i className="text-[#f0b90c] font-bold">J&T Super</i>
                                 </Link>
                             </li>
                             <li>
-                                <Link to="fresh-service" className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100">
+                                <Link to="chuyen-phat-do-tuoi-song" className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100">
                                     <span>Dịch vụ Tươi sống</span>
                                     <i className="text-[#f0b90c] font-bold">J&T Fresh</i>
                                 </Link>
@@ -163,21 +161,34 @@ const Header = () => {
                         </ul>
                     </div>
                     <div className='group hover:bg-yellow-200 rounded-md'>
-                        <Link to="advice/contact" className="inline-flex items-center px-4 py-2">Tư vấn
+                        <Link to="tu-van/lien-he" className="inline-flex items-center px-4 py-2">Tư vấn
                             <FaChevronDown className="h-4 w-4 pl-[6px]" />
                         </Link>
                         <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg">
-                            <li><Link to="advice/contact" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100 ">Liên hệ</Link></li>
-                            <li><Link to="advice/dang-ki-tu-van" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100">Đăng kí tư vấn</Link></li>
+                            <li><Link to="tu-van/lien-he" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100 ">Liên hệ</Link></li>
+                            <li><Link to="tu-van/dang-ki-tu-van" className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100">Đăng kí tư vấn</Link></li>
                         </ul>
                     </div>
                 </ul>
+<<<<<<< HEAD
+                <Link to="/dang-nhap">
+                    <div className="px-4 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
+                        <span className="font-semibold text-white">Đăng nhập</span>
+                    </div>
+                </Link>
+                <Link to="/dang-ki">
+                    <div className="px-6 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
+                        <span href="#" className="font-semibold text-white">Đăng kí</span>
+                    </div>
+                </Link>
+=======
                 <div className="px-4 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
                     <Link to="/Login" className="font-semibold text-white">Đăng nhập</Link>
                 </div>
                 <div className="px-6 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
                     <Link to="/Register" className="font-semibold text-white">Đăng ký</Link>
                 </div>
+>>>>>>> 00100bd4e54260dc71d548952f07c9dd3f2d4d54
             </div >
 
             {/* Phần mobile menu */}

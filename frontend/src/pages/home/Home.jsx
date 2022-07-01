@@ -61,7 +61,7 @@ const services = [
     {
         type: 'j&T Epress',
         content: 'Chuyển phát tiêu chuẩn',
-        path: 'standard-service',
+        path: 'chuyen-phat-tieu-chuan',
         images: {
             front: 'https://jtexpress.vn/storage/app/uploads/public/627/5d6/892/6275d68928ffd381036854.png',
             back: 'https://jtexpress.vn/storage/app/uploads/public/627/5d6/866/6275d6866e7c4229470575.png'
@@ -70,7 +70,7 @@ const services = [
     {
         type: 'j&T Fast',
         content: 'Chuyển phát nhanh',
-        path: 'standard-service',
+        path: 'chuyen-phat-nhanh',
         images: {
             front: 'https://jtexpress.vn/storage/app/uploads/public/618/4e6/37b/6184e637b45ca442099845.png',
             back: 'https://jtexpress.vn/storage/app/uploads/public/627/5d6/866/6275d6866e7c4229470575.png'
@@ -79,7 +79,7 @@ const services = [
     {
         type: 'j&T Super',
         content: 'Siêu dịch vụ giao hàng',
-        path: 'standard-service',
+        path: 'sieu-sich-vu-chuyen-phat',
         images: {
             front: 'https://jtexpress.vn/storage/app/uploads/public/618/4e6/872/6184e6872c887801133904.png',
             back: 'https://jtexpress.vn/storage/app/uploads/public/627/5d6/866/6275d6866e7c4229470575.png'
@@ -88,7 +88,7 @@ const services = [
     {
         type: 'j&T Fresh',
         content: 'Giao hàng tươi sống',
-        path: 'standard-service',
+        path: 'chuyen-phat-hang-tuoi-song',
         images: {
             front: 'https://jtexpress.vn/storage/app/uploads/public/618/4e8/077/6184e8077e894431352453.png',
             back: 'https://jtexpress.vn/storage/app/uploads/public/627/5d6/866/6275d6866e7c4229470575.png'
@@ -188,7 +188,7 @@ const Home = () => {
             </Carousel>
 
             <div className="container flex items-center justify-center mx-auto w-full py-4 ">
-                <Tabs defaultActiveKey="vận đơn" type="card" onChange={callback} className="w-full shadow-xl p-3 rounded-xl ">
+                <Tabs defaultActiveKey="vận đơn" type="card" className="w-full shadow-xl p-3 rounded-xl ">
                     <TabPane tab={<div className="text-lg h-[30px] text-[#fcd535]">Tra cứu đơn hàng</div>} key="vận đơn" >
                         <div >
                             <form className="flex flex-col lg:flex-row ">
