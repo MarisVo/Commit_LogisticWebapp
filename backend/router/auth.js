@@ -23,6 +23,7 @@ const authRoute = express.Router()
 authRoute.post('/verify-token', (req, res) => {
     const { accessToken, refreshToken } = req.body
     try {
+        if(accessToken in TOKEN_LIST) return sendError(res, "Unauthorzied.", 401)
         const { payload } = jwt.verify(accessToken, process.env.JWT_SECRET_KEY, {
             complete: true
         })
@@ -31,7 +32,7 @@ authRoute.post('/verify-token', (req, res) => {
         })
     }
     catch (error) {
-        if (refreshToken && refreshToken in TOKEN_LIST && TOKEN_LIST[refreshToken].accessToken === accessToken) {
+        if (refreshToken && refreshToken in TOKEN_LIST) {
             try {
                 const { payload } = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET_KEY, {
                     complete: true

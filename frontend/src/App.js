@@ -28,7 +28,7 @@ import {
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import { MainProvider } from "./context/MainContext";
+import MainProvider from "./context/MainContext";
 import StandardService from "./pages/services/StandardService";
 import Service from "./pages/services/Service";
 import FastService from "./pages/services/FastService";

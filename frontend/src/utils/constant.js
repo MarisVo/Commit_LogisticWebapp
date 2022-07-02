@@ -1,4 +1,4 @@
-export const END_POINT = "http://127.0.0.1:8000/api"
+export const END_POINT = process.env.REACT_APP_API_BASE_URL
 
 export const MIEN_NAM = [
 	{
