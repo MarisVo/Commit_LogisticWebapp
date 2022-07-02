@@ -16,26 +16,18 @@ export { default as SignUpAdvice } from "./advice/signUpForAdvise/SignUp.advice"
 export { default as CareerOpportunities } from "./CareerOpportunities/CareerOpportunities.jsx";
 export { default as Life } from "./Life/Life.jsx";
 export { default as RecruitmentDetails } from "./RecruitmentDetails/RecruitmentDetails.jsx";
-<<<<<<< HEAD
 // ----------------------------------------------//
 export { default as Login } from "./Login/Login.jsx";
 export { default as Register } from "./Login/Register.jsx";
 export { default as ForgetPass } from "./Login/ForgetPass.jsx";
-=======
->>>>>>> 00100bd4e54260dc71d548952f07c9dd3f2d4d54
+
 
 export { default as PageNotFound } from "./PageNotFound";
 
 export { default as DefaultLayout } from "../layouts/DefaultLayout";
-<<<<<<< HEAD
-=======
 //----------------------------------------------//
 export { default as Purchase } from "./Purchase/Purchase.jsx";
 export { default as PurchaseStage } from "./PurchaseStage/PurchaseStage.jsx";
-export { default as Profile } from "./Profile/Profile.jsx";
-export { default as Notification } from "./Notification/Notification.jsx";
+export { default as Profile } from "./profile/Profile.jsx";
+export { default as Notification } from "./notification/Notification.jsx";
 //----------------------------------------------//
-export { default as Register } from "./Login/Register.jsx";
-export { default as Login } from "./Login/Login.jsx";
-export { default as ForgetPass } from "./Login/ForgetPass.jsx";
->>>>>>> 00100bd4e54260dc71d548952f07c9dd3f2d4d54

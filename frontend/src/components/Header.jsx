@@ -170,7 +170,6 @@ const Header = () => {
                         </ul>
                     </div>
                 </ul>
-<<<<<<< HEAD
                 <Link to="/dang-nhap">
                     <div className="px-4 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
                         <span className="font-semibold text-white">Đăng nhập</span>
@@ -181,14 +180,6 @@ const Header = () => {
                         <span href="#" className="font-semibold text-white">Đăng kí</span>
                     </div>
                 </Link>
-=======
-                <div className="px-4 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
-                    <Link to="/Login" className="font-semibold text-white">Đăng nhập</Link>
-                </div>
-                <div className="px-6 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
-                    <Link to="/Register" className="font-semibold text-white">Đăng ký</Link>
-                </div>
->>>>>>> 00100bd4e54260dc71d548952f07c9dd3f2d4d54
             </div >
 
             {/* Phần mobile menu */}
