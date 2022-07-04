@@ -54,6 +54,7 @@ export default function StandardService() {
                 src="https://jtexpress.vn/themes/jtexpress/assets/images/money-bag-service-detail.png"
                 alt
               />
+
               <div className="flex flex-col ml-4">
                 <h5 className="mb-2 text-[#f5c736] text-[20px] font-bold">
                   Tiết kiệm hơn
@@ -72,10 +73,12 @@ export default function StandardService() {
                 src="https://jtexpress.vn/themes/jtexpress/assets/images/time-service-detail.png"
                 alt
               />
+
               <div className="flex flex-col ml-4">
                 <h5 className="mb-2 text-[#f5c736] text-[20px]  font-bold">
                   Tiện lợi hơn
                 </h5>
+
                 <span className="text-justify aos-init">
                   J&amp;T Express có thể vận chuyển được đa dạng, hầu hết loại
                   hàng hóa. Đặc biệt, có thể vận chuyển hàng với kích thước lớn,
@@ -89,10 +92,12 @@ export default function StandardService() {
                 src="https://jtexpress.vn/themes/jtexpress/assets/images/delivery-time-service-detail.png"
                 alt
               />
+
               <div className="flex flex-col ml-4">
                 <h5 className="mb-2 text-[#f5c736] text-[20px]  font-bold">
                   Vượt trội hơn
                 </h5>
+
                 <span className="text-justify aos-init">
                   Khi đăng ký sử dụng dịch vụ chuyển phát tiêu chuẩn J&amp;T
                   Express, hàng hóa được đội ngũ "áo đỏ" đến tận nơi lấy đi. Quá
@@ -139,10 +144,12 @@ export default function StandardService() {
                 className="w-full h-full object-cover"
                 alt
               />
+
               <div className="object-service-detail absolute top-[60%] translate-y-[-60%] left-[10%] text-white w-[170px] lg:w-[320px]">
                 <span className="block font-bold mb-3 text-[20px]">
                   Cá nhân
                 </span>
+
                 <span
                   data-aos="fade-up"
                   data-aos-duration={1000}
@@ -160,10 +167,12 @@ export default function StandardService() {
                 className="w-full h-full object-cover"
                 alt
               />
+
               <div className="object-service-detail absolute top-[60%] translate-y-[-60%] left-[10%] text-white w-[170px] lg:w-[320px]">
                 <span className="block font-bold mb-3 text-[20px]">
                   Chủ shop
                 </span>
+
                 <span
                   data-aos="fade-up"
                   data-aos-duration={1000}
@@ -225,10 +234,12 @@ export default function StandardService() {
           src="https://jtexpress.vn/themes/jtexpress/assets/images/service-detail-bg.png"
           alt
         />
+
         <div className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] w-full lg:w-[825px]">
           <h5 className="text-center text-[#161D25] text-[24px] lg:text-[36px] font-bold mb-4 lg:mb-6 mt-8 lg:mt-0">
             Video giới thiệu dịch vụ
           </h5>
+
           <span
             className="block text-center mb-8 lg:mb-10 w-full lg:w-[600px] mx-auto px-4 lg:px-0 aos-init"
             data-aos="fade-up"

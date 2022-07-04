@@ -190,20 +190,6 @@ function Register() {
             </Form.Item>
 
             <Form.Item
-              name="address"
-              label="Địa chỉ"
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng nhập địa chỉ",
-                },
-              ]}
-              hasFeedback
-            >
-              <Input placeholder="Nhập địa chỉ" />
-            </Form.Item>
-
-            <Form.Item
               name="customerType"
               label="Khách hàng"
               rules={[
@@ -246,9 +232,7 @@ function Register() {
             <Form.Item wrapperCol={{ span: 24 }}>
               <div className="sign">
                 Bạn đã có tài khoản?
-                <Link to="/login" className="font-semibold text-blue-700">
-                  Đăng nhập
-                </Link>
+                <Link to="/dang-nhap">Đăng nhập</Link>
               </div>
             </Form.Item>
 
