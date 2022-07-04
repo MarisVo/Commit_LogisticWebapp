@@ -94,7 +94,7 @@ authRoute.post('/register', async (req, res) => {
 
         if (verify_op === VERIFY_OP.email) {
             const options = {
-                from: process.env.MAIL_HOST,
+                from: 'test01@gptgdt.ml',//process.env.MAIL_HOST,
                 to: email,
                 subject: '[noreply-Logistics Webapp] Xác thực email',
                 html: `<p>Nhập mã OTP để hoàn tất đăng ký: <i><b>${otp}</b></i></p>`
