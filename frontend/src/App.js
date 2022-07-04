@@ -23,6 +23,7 @@ import {
   RecruitmentDetails,
   Purchase,
   PurchaseStage,
+  PurchaseDetail,
   Profile,
   Notification,
 } from "./pages/pageExport";
@@ -34,8 +35,6 @@ import Service from "./pages/services/Service";
 import FastService from "./pages/services/FastService";
 import SuperService from "./pages/services/SuperService";
 import FreshService from "./pages/services/FreshService";
-import HotJob from "./components/HotJob";
-import NewJob from "./components/NewJob";
 
 const App = () => {
   return (
@@ -82,6 +81,18 @@ const App = () => {
                 path="chuyen-phat-do-tuoi-song"
                 element={<FreshService />}
               />
+              {/* ----------------------Profile------------------ */}
+              <Route path="user/account/profile" element={<Profile />} />
+              <Route path="user/purchase" element={<Purchase />} />
+              <Route path="user/purchase/:id" element={<PurchaseDetail />} />
+              <Route
+                path="user/purchase/order/:id"
+                element={<PurchaseStage />}
+              />
+              <Route
+                path="user/notifications/order"
+                element={<Notification />}
+              />
               {/* -------------------------Đăng kí/Đăng nhập------------- */}
               <Route path="dang-ki" element={<Register />} />
               <Route path="dang-nhap" element={<Login />} />
@@ -98,15 +109,5 @@ const App = () => {
     </MainProvider>
   );
 };
-/*   <Route path="user/account/profile" element={<Profile />} />
-              <Route path="user/purchase" element={<Purchase />} />
-              <Route
-                path="user/purchase/order/:id"
-                element={<PurchaseState />}
-              />
-              <Route
-                path="user/notifications/order"
-                element={<Notification />}
-              /> */
 
 export default App;
