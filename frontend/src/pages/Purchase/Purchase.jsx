@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
 import SideBar from "../../components/SideBar";
@@ -16,10 +16,70 @@ import { TiDeleteOutline } from "react-icons/ti";
 import { Link } from "react-router-dom";
 const Purchase = () => {
   const [open, setOpen] = useState(false);
+  const [order, setOrder] = useState();
   const handleOpen = () => {
     setOpen(!open);
     console.log(open);
   };
+  const order1 = {
+    orderId: 232321,
+    /*  service: {
+      type: Schema.Types.ObjectId,
+      ref: "delivery_services",
+    }, */
+    products: [
+      {
+        name: "oppo",
+        quantity: 2,
+        unit: "KG",
+      },
+    ],
+    customer: {
+      name: "Khoa",
+      address: "B5/10",
+      description: null,
+      customer_type: "passer",
+      rank_passers: {
+        point: 0,
+        level: "unrank",
+      },
+      companyTaxcode_business: null,
+      accepted_business: false,
+    },
+    /*    trips: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "trips",
+      },
+    ], */
+    receiver: {
+      name: "Nguyen Van Toan",
+      phone: "09947273",
+      identity: {
+        type: String,
+        required: true,
+        unique: true,
+      },
+      street: "duong 9 ",
+      ward: "Lac Dao",
+      district: "Phan Thiet",
+      province: "Binh Thuan",
+    },
+    total_price: 1000000,
+  };
+  /*  useEffect(() => {
+    const getOrder = async () => {
+      try {
+        const res = await axios.get(
+          `${REACT_APP_API_BASE_URL}/tracking/order/` + id
+        );
+        console.log(res.data);
+        setProduct(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+  }); */
 
   return (
     <div className="pt-[68px]">
@@ -78,12 +138,12 @@ const Purchase = () => {
             />
           </div>
 
-          <div className="flex flex-column mt-2 bg-white rounded-sm shadow-xl">
-            <div className="  overflow-auto mb-3">
+          <div className="flex flex-col mt-2 bg-white rounded-sm shadow-xl">
+            <div className="  overflow-auto mb-3 w-[100%]">
               <div className="flex justify-between items-center border-gray-300 border-b-[1px] py-2 ">
                 <div className="flex flex-nowrap items-center mx-2">
                   <div className=" text-lg sm:text-lg font-bold ml-2 text-[#00003B]">
-                    09523723827
+                     {order1.orderId}
                   </div>
                 </div>
                 <div className=" flex flex-nowrap items-center mx-2 flex-row">

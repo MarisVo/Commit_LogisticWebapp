@@ -20,6 +20,7 @@ export { default as RecruitmentDetails } from "./RecruitmentDetails/RecruitmentD
 export { default as PageNotFound } from "./PageNotFound";
 
 export { default as DefaultLayout } from "../layouts/DefaultLayout";
+
 //----------------------------------------------//
 export { default as Purchase } from "./Purchase/Purchase.jsx";
 export { default as PurchaseStage } from "./PurchaseStage/PurchaseStage.jsx";

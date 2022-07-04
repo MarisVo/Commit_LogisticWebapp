@@ -1,26 +1,15 @@
 import React, { useState } from "react";
-import { IoSearchOutline } from "react-icons/io5";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
 import SideBar from "../../components/SideBar";
-import { FaTruckMoving } from "react-icons/fa";
 import { IoLocationOutline } from "react-icons/io5";
 
-import {
-  AiOutlineGift,
-  AiOutlineUser,
-  AiTwotoneCalendar,
-  AiOutlineInbox,
-} from "react-icons/ai";
+import { AiOutlineGift, AiOutlineUser, AiOutlineInbox } from "react-icons/ai";
 
 import { TbSteeringWheel } from "react-icons/tb";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
 import { GiWeight } from "react-icons/gi";
 import { BsCoin } from "react-icons/bs";
-import { BiTargetLock } from "react-icons/bi";
 import { AiOutlinePhone } from "react-icons/ai";
-import { MdOutlineEditCalendar } from "react-icons/md";
-import { TiDeleteOutline } from "react-icons/ti";
-import { Link } from "react-router-dom";
 const PurchaseDetail = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -41,7 +30,7 @@ const PurchaseDetail = () => {
           </span>
         </div>
         <div className=" sm:mx-20 lg:mx-52 py-4 bg-gray-white mx-2 mb-2 ">
-          <div className="flex flex-column mt-2 bg-white rounded-sm shadow-lg mb-3 ">
+          <div className="flex flex-col mt-2 bg-white rounded-sm shadow-lg mb-3 ">
             <div className="  overflow-auto mb-3">
               <div className="flex justify-between items-center border-gray-300 border-b-[1px] py-2  bg-yellow-400 ">
                 <div className="flex flex-nowrap items-center mx-2">
@@ -78,7 +67,7 @@ const PurchaseDetail = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-column mt-2 bg-white rounded-sm shadow-lg mb-3 ">
+          <div className="flex flex-col mt-2 bg-white rounded-sm shadow-lg mb-3 ">
             <div className="  overflow-auto mb-3">
               <div className="flex justify-between items-center border-gray-300 border-b-[1px] py-2  bg-yellow-400 ">
                 <div className="flex flex-nowrap items-center mx-2">
@@ -115,7 +104,7 @@ const PurchaseDetail = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-column mt-2 bg-white rounded-sm shadow-lg mb-3">
+          <div className="flex flex-col mt-2 bg-white rounded-sm shadow-lg mb-3">
             <div className="  overflow-auto mb-3">
               <div className="flex justify-between items-center border-gray-300 border-b-[1px] py-2 bg-yellow-400">
                 <div className="flex flex-nowrap items-center mx-2">

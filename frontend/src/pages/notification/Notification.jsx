@@ -31,7 +31,7 @@ function Notification() {
                 </span>
               </div>
             </div>
-            <div className="flex flex-column mt-2  ">
+            <div className="flex flex-col mt-2  ">
               <div className="bg-white  mb-3 ">
                 <div className="flex items-center mt-1 sm:mt-2  justify-evenly sm:justify-between  sm:mx-3 md:mx-4 pb-4 md:pb-6 ">
                   <div className=" sm:ml-2 flex ">

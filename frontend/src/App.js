@@ -18,13 +18,13 @@ import {
   Life,
   Purchase,
   PurchaseStage,
+  PurchaseDetail,
   DefaultLayout,
+  Profile,
+  Notification,
   Login,
   Register,
   ForgetPass,
-  Profile,
-  Notification,
-  PurchaseDetail,
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HotJob from "./components/HotJob";
@@ -39,6 +39,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<DefaultLayout />}>
               <Route index element={<Home />}></Route>
+
               <Route path="about" element={<About />} />
               <Route path="commit" element={<Commit />} />
               {/* -----------------------Tra cứu---------------------- */}

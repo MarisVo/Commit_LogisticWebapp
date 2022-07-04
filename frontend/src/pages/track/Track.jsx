@@ -16,7 +16,7 @@ export default function Track({ number }) {
     const [defaultService, setDefaultService] = useState("cước vận chuyển")
     function callback(dichVu) {
         setDefaultService(dichVu);
-        navigate(`/track?type=${dichVu}`)   
+        navigate(`/tra-cuu?type=${dichVu}`)   
     }
     return (
         <>

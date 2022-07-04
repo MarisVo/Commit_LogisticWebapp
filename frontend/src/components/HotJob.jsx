@@ -48,13 +48,13 @@ const HotJob = () => {
                             {job.location}
                         </p>
                         <Link to="/chi-tiet-viec-lam-noi-bat">
-                            <a
+                            <span
                                 className="text-[14px] text-[#e5a663] tracking-wider flex items-center gap-2 font-bold"
                                 href="#"
                             >
                                 <RightOutlined />
                                 XEM CHI TIẾT
-                            </a>
+                            </span>
                         </Link>
                     </div>
                 );

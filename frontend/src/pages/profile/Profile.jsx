@@ -1,11 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
 import SideBar from "../../components/SideBar";
-
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 export default function Profile() {
   const o_passwordRef = useRef(null);
   const n_passwordRef = useRef(null);
   const cf_passwordRef = useRef(null);
+  const [eyeOp, setEyeOp] = useState(false);
+  const [eyeNp, setEyeNp] = useState(false);
+  const [eyeCf, setEyeCf] = useState(false);
   const [password, setPassword] = useState({
     o_password: "",
     n_password: "",
@@ -18,8 +21,6 @@ export default function Profile() {
   const [date, setDate] = useState(0);
   const [month, setMonth] = useState(0);
   const [year, setYear] = useState(0);
-  /*   const [gender, setGender] = useState(null); */
-
   const handleOpen = () => {
     setOpen(!open);
   };
@@ -97,9 +98,15 @@ export default function Profile() {
 
     return hiddenPhone;
   };
-  /*   const handleRadio = (e) => {
-    setGender(e.target.value);
-  }; */
+  const handleEyeOp = () => {
+    setEyeOp(!eyeOp);
+  };
+  const handleEyeNp = () => {
+    setEyeNp(!eyeNp);
+  };
+  const handleEyeCf = () => {
+    setEyeCf(!eyeCf);
+  };
 
   const handleDate = (e) => {
     setDate(e.target.value);
@@ -132,6 +139,9 @@ export default function Profile() {
         n_password: "",
         cf_password: "",
       });
+      setEyeOp(false);
+      setEyeNp(false);
+      setEyeCf(false);
       setFormErrors({});
     }
   }, [isModalVisible]);
@@ -152,18 +162,17 @@ export default function Profile() {
     if (!n_password) {
       errors.n_password = "This field is required";
     }
-    if (n_password.length <= 2) {
-      errors.n_password = "Password length at least than 2";
+    if (n_password && n_password.length <= 5) {
+      errors.n_password = "Password length at least than 6";
     }
     if (!cf_password) {
       errors.cf_password = "This field is required";
     }
-    if (cf_password.length <= 2) {
-      errors.cf_password = "Password length greater than 2";
+    if (cf_password && cf_password.length <= 5) {
+      errors.cf_password = "Password length greater than 6";
     }
-    if (cf_password !== n_password) {
+    if (cf_password && n_password && cf_password !== n_password) {
       errors.cf_password = "Not same with the new password";
-      errors.n_password = "Not same with the confirm password";
     }
     return errors;
   };
@@ -177,7 +186,7 @@ export default function Profile() {
       n_passwordRef.current.value = "";
       cf_passwordRef.current.value = "";
     }
-  }, [formErrors, password]);
+  }, [formErrors, password, isSubmit]);
 
   return (
     <div>
@@ -198,8 +207,8 @@ export default function Profile() {
                 </span>
               </div>
 
-              <div className="pb-6 pt-2 px-6 ">
-                <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
+              <div className="pb-6 pt-[6px] px-6 ">
+                <h3 className="mb-3 text-xl font-semibold text-gray-900 dark:text-white ">
                   Thay đổi
                 </h3>
                 <form className="space-y-4" action="#" onSubmit={handleSubmit}>
@@ -207,45 +216,84 @@ export default function Profile() {
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                       Mật khẩu cũ
                     </label>
-                    <input
-                      ref={o_passwordRef}
-                      type="password"
-                      name="o_password"
-                      defaultValue={password.o_password}
-                      onChange={handleChangePassword}
-                      placeholder="Add your password"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                    />
+                    <div className="relative">
+                      <input
+                        ref={o_passwordRef}
+                        type={eyeOp ? "text" : "password"}
+                        name="o_password"
+                        defaultValue={password.o_password}
+                        onChange={handleChangePassword}
+                        placeholder="Add your password"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white relative"
+                      />
+                      {eyeOp ? (
+                        <AiOutlineEye
+                          onClick={handleEyeOp}
+                          className="absolute right-2 top-[10px] w-5 h-5 cursor-pointer "
+                        />
+                      ) : (
+                        <AiOutlineEyeInvisible
+                          onClick={handleEyeOp}
+                          className="absolute right-2 top-[10px] w-5 h-5 cursor-pointer"
+                        />
+                      )}
+                    </div>
                     <p className="text-red-400">{formErrors.o_password}</p>
                   </div>
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                       Mật khẩu mới
                     </label>
-                    <input
-                      ref={n_passwordRef}
-                      type="password"
-                      name="n_password"
-                      defaultValue={password.n_password}
-                      onChange={handleChangePassword}
-                      placeholder="Add your new password"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                    />
+                    <div className="relative">
+                      <input
+                        ref={n_passwordRef}
+                        type={eyeNp ? "text" : "password"}
+                        name="n_password"
+                        defaultValue={password.n_password}
+                        onChange={handleChangePassword}
+                        placeholder="Add your new password"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      />
+                      {eyeNp ? (
+                        <AiOutlineEye
+                          onClick={handleEyeNp}
+                          className="absolute right-2 top-[10px] w-5 h-5 cursor-pointer "
+                        />
+                      ) : (
+                        <AiOutlineEyeInvisible
+                          onClick={handleEyeNp}
+                          className="absolute right-2 top-[10px] w-5 h-5 cursor-pointer"
+                        />
+                      )}
+                    </div>
                     <p className="text-red-400">{formErrors.n_password}</p>
                   </div>
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                       Xác nhận mật khẩu mới
                     </label>
-                    <input
-                      ref={cf_passwordRef}
-                      type="password"
-                      name="cf_password"
-                      defaultValue={password.cf_password}
-                      placeholder="Confirm new password"
-                      onChange={handleChangePassword}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                    />
+                    <div className="relative">
+                      <input
+                        ref={cf_passwordRef}
+                        type={eyeCf ? "text" : "password"}
+                        name="cf_password"
+                        defaultValue={password.cf_password}
+                        placeholder="Confirm new password"
+                        onChange={handleChangePassword}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      />
+                      {eyeCf ? (
+                        <AiOutlineEye
+                          onClick={handleEyeCf}
+                          className="absolute right-2 top-[10px] w-5 h-5 cursor-pointer "
+                        />
+                      ) : (
+                        <AiOutlineEyeInvisible
+                          onClick={handleEyeCf}
+                          className="absolute right-2 top-[10px] w-5 h-5 cursor-pointer"
+                        />
+                      )}
+                    </div>
                     <p className="text-red-400">{formErrors.cf_password}</p>
                   </div>
 
@@ -281,26 +329,28 @@ export default function Profile() {
               <form className=" lg:mx-7 mx-1 my-4 ">
                 <div className=" flex flex-col  ">
                   <div className="flex mb-3 sm:py-1">
-                    <div className="flex  w-2/5   justify-end ">
-                      <label className="mr-3 text-yellow-600  lg:text-base">
-                        Tên Đăng Nhập
-                      </label>
-                    </div>
-                    <div className="flex ">
-                      <div className="text-black-700  lg:text-base">
-                        Vanthat5652
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex mb-3 sm:py-1">
                     <div className="flex items-center w-2/5   justify-end ">
                       <label className=" mr-3 text-yellow-600 lg:text-base">
                         Tên
                       </label>
                     </div>
-                    <div className="flex ">
-                      <div className="text-black-700 lg:text-base ">
-                        Nguyễn văn thật
+
+                    <div className="flex  ">
+                      <div className="text-black-700 mr-3 lg:text-base">
+                        Nguyễn Văn Thật
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex mb-3 sm:py-1">
+                    <div className="flex items-center w-2/5   justify-end flex-shrink-0">
+                      <label className=" mr-3 text-yellow-600 lg:text-base">
+                        Địa chỉ
+                      </label>
+                    </div>
+
+                    <div className="flex  ">
+                      <div className="text-black-700 mr-3 lg:text-base line-clamp-1">
+                        B5/3 Phường An Phú Tp Thủ Đức
                       </div>
                     </div>
                   </div>
@@ -349,35 +399,6 @@ export default function Profile() {
                       </div>
                     </div>
                   </div>
-                  {/*  <div className="flex mb-3 ">
-                    <div className="flex items-center w-2/5  justify-end ">
-                      <label className=" mr-3  text-yellow-600">
-                        Giới tính
-                      </label>
-                    </div>
-                    <div className="flex ">
-                      <div className="text-black-700  ">
-                        <div className="flex items-center justify-center">
-                          <input
-                            value="male"
-                            name="male"
-                            type="radio"
-                            checked={gender === "male"}
-                            onChange={(e) => handleRadio(e)}
-                          />
-                          <div className="mx-2">Nam</div>
-                          <input
-                            value="female"
-                            name="female"
-                            type="radio"
-                            checked={gender === "female"}
-                            onChange={(e) => handleRadio(e)}
-                          />
-                          <div className="mx-2">Nữ</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div> */}
                   <div className="flex mb-3 sm:py-1  items-center">
                     <div className="flex items-center w-2/5   justify-end  lg:text-base">
                       <label className=" mr-3 text-yellow-600 text">

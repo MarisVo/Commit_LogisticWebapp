@@ -31,7 +31,7 @@ function PurchaseStage() {
           </span>
         </div>
         <div className=" sm:mx-6 lg:mx-32 pb-4 pt-2 mx-2 ">
-          <div className=" bg-gray-white  bg-white  rounded-sm shadow-xl">
+          <div className=" bg-gray-white  bg-white  rounded-sm shadow-xl ">
             <div className="flex items-center justify-between cursor-pointer ml-2 mr-3 ">
               <Link
                 className="flex items-center justify-start mt-1  hover:translate-y-[-1px] transition-all hover:text-yellow-500  "
@@ -42,7 +42,7 @@ function PurchaseStage() {
                   Trở lại
                 </span>
               </Link>
-              <div className="flex items-center text-yellow-500 flex-column sm:flex-row">
+              <div className="flex items-center text-yellow-500 flex-col sm:flex-row">
                 <div className="flex items-center text-yellow-500 text-[12px] sm:text-sm">
                   ID ĐƠN HÀNG. 2202092MBR2HBG
                 </div>
@@ -51,33 +51,7 @@ function PurchaseStage() {
                 </div>
               </div>
             </div>
-            <div className=" flex md:block  justify-center  items-center m-4">
-              <div className="  ">
-                <Steps
-                  status="process"
-                  current={stage}
-                  labelPlacement="vertical"
-                  style={{ position: "relative", zIndex: "2" }}
-                >
-                  <Step
-                    title="Đợi xác nhận"
-                    style={{ position: "relative", zIndex: "2" }}
-                  />
-                  <Step
-                    title="Chấp thuận"
-                    style={{ position: "relative", zIndex: "2" }}
-                  />
-                  <Step
-                    title="Đang giao"
-                    style={{ position: "relative", zIndex: "2" }}
-                  />
-                  <Step
-                    title="Đã giao xong"
-                    style={{ position: "relative", zIndex: "2" }}
-                  />
-                </Steps>
-              </div>
-            </div>
+
             <div className="flex items-end justify-evenly md:justify-right mb-4 ">
               <button
                 onClick={newStage}
@@ -107,7 +81,7 @@ function PurchaseStage() {
                 <div className="text-right text-sm sm:text-base font-semibold text-[#00003B] ">
                   Tổng: 36km
                 </div>
-                <div className="flex flex-col-reverse">
+                <div className="flex flex-col-reverse z-1">
                   <Steps
                     progressDot
                     current={3}
@@ -115,22 +89,27 @@ function PurchaseStage() {
                     style={{ zIndex: 1 }}
                   >
                     <Step
+                      style={{ zIndex: 1 }}
                       title="16:34 10-02-2022"
                       description="Lấy hàng thành công"
                     />
                     <Step
+                      style={{ zIndex: 1 }}
                       title="04:45 13-02-2022"
                       description="Đơn hàng đã xuất kho"
                     />
                     <Step
+                      style={{ zIndex: 1 }}
                       title="00:30 15-02-2022"
                       description="Đơn hàng đã đến kho Cu Chi SOC"
                     />
                     <Step
+                      style={{ zIndex: 1 }}
                       title="13:36 15-02-2022"
                       description="Đơn hàng đã đến kho 50-HCM D2/An Phu LM Hub"
                     />
                     <Step
+                      style={{ zIndex: 1 }}
                       title="14:32 15-02-2022"
                       description="Giao hàng thành công. Người nhận hàng: Bùi Đăng Khoa"
                     />
@@ -140,7 +119,7 @@ function PurchaseStage() {
             </div>
           </div>
 
-          <div className="flex flex-column mt-2 bg-white rounded-sm shadow-lg">
+          <div className="flex flex-col mt-2 bg-white rounded-sm shadow-lg">
             <div className="  overflow-auto mb-3">
               <div className="flex justify-between items-center border-gray-300 border-b-[1px] py-2 ">
                 <div className="flex flex-nowrap items-center mx-2">
@@ -164,6 +143,7 @@ function PurchaseStage() {
                   <img
                     className="w-[72px] h-[72px] mr-2 sm:w-24 sm:h-24 sm:mr-4"
                     src="https://media.bongda.com.vn/files/quan.le/2018/04/06/var-trong-tai-02-1830.jpg"
+                    alt="product"
                   ></img>
                   <div>
                     <div className="font-bold text-base sm:text-xl sm:mb-1">
