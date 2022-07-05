@@ -300,6 +300,29 @@ paths:
           description: current password isn't correct.
       security:
         - bearerAuth: []
+  /auth/logout:
+    post:
+      tags:
+        - auth
+      summary: user log out
+      consumes:
+        - application/json
+      parameters:
+      - in: body
+        name: token
+        required: true
+        schema:
+          type: object
+          properties:
+            refreshToken:
+              type: string
+      responses:
+        200:
+          description: log out successfully. see you soon.
+        401:
+          description: refresh token is invalid.
+      security:
+        - bearerAuth: []
   /about:
     get:
       tags:
