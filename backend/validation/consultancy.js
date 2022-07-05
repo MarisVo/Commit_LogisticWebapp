@@ -6,6 +6,6 @@ export const createConsultancyValidate = data => {
     error.isRequired(data.name, 'name')
     .isRequired(data.email, 'email')
     .isRequired(data.phone, 'phone')
-    .isOnlyRequiredOneOf([{field: data.serviceId, name:'serviceId'}, {field: data.serviceName,name:'serviceName'}])
+    .isRequired(data.service, 'service')
     return error.get()
 }

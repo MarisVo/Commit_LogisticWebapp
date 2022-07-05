@@ -875,22 +875,22 @@ paths:
           schema:
             type: object
             properties:
-              serviceName:
+              service:
                 type: string
               name:
                 type: string
               email:
                 type: string 
               phone: 
-                type: string
-              service:
-                type: string 
+                type: string              
               fulladdress:
                 type: string 
               parcel: 
                 type: string
               quantity:
                 type: number 
+              solved_status:
+                type: boolean
               
       responses:
         200:
@@ -928,7 +928,7 @@ paths:
           schema:
             type: object            
             properties:
-              serviceName:
+              service:
                 type: string
               name:
                 type: string               

@@ -39,6 +39,10 @@ const ConsultancySchema = new Schema(
             type: Number,
             default: null
         },
+        solved_status: {
+            type: Boolean,
+            default: false
+        }
     },
     { timestamps: true }
 )

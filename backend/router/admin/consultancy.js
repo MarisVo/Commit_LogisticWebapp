@@ -51,20 +51,16 @@ consultancyAdminRoute.put('/:id',
     async (req, res) => {
         try{
             const {id} = req.params
-            const {service, serviceName, serviceId , name, email, phone, district, province, ward, fulladdress, parcel, quantity} = req.body
+            const {service, name, email, phone, district, province, ward, fulladdress, parcel, quantity, solved_status} = req.body
             const isExist = await Consultancy.exists({_id: id})
             if (! isExist) return sendError(res, "This consultancy is not existed.")
-            if (serviceName || serviceId){
-                const service = await DeliveryService.findOne({
-                    $or: [
-                        { _id: serviceId },
-                        { name: serviceName }
-                    ]
-                })
-                if (!service) return sendError(res, 'the service is not exist.')    
+
+            if(service){
+                const isExistService = await DeliveryService.exists({ name: service })
+                if (!isExistService) return sendError(res, 'the service is not existed.')    
             }
-            await Consultancy.findByIdAndUpdate(id,{$set: {service, name, email, phone,  district, province, ward, fulladdress, parcel, quantity}})
-            return sendSuccess(res, "Update consultancy successfully",  {service, name, email, phone,  district, province, ward, fulladdress, parcel, quantity})            
+            await Consultancy.findByIdAndUpdate(id,{$set: {service, name, email, phone,  district, province, ward, fulladdress, parcel, quantity, solved_status}})
+            return sendSuccess(res, "Update consultancy successfully",  {service, name, email, phone,  district, province, ward, fulladdress, parcel, quantity, solved_status})            
         } catch (error) {
             console.log(error)
             return sendServerError(res)
