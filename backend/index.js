@@ -33,6 +33,7 @@ mongoose.connect(process.env.MONGO_URI, () => {
 
 const PORT = process.env.PORT || 8000
 export const TOKEN_LIST = {}
+export const TOKEN_BLACKLIST = {}
 const app = express()
 
 app.use(express.json())
