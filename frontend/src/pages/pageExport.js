@@ -23,11 +23,14 @@ export { default as ForgetPass } from "./Login/ForgetPass.jsx";
 
 export { default as PageNotFound } from "./PageNotFound";
 
+export {default as LayerStorekeeper} from './storekeeper/LayerStorekeeper'
+export {default as ProductsManager} from './storekeeper/ProductsManager'
+export {default as Inventory} from './storekeeper/Inventory'
 export { default as DefaultLayout } from "../layouts/DefaultLayout";
 
 //----------------------------------------------//
 export { default as Purchase } from "./Purchase/Purchase.jsx";
 export { default as PurchaseStage } from "./PurchaseStage/PurchaseStage.jsx";
-export { default as Profile } from "./Profile/Profile.jsx";
-export { default as Notification } from "./Notification/Notification.jsx";
+export { default as Profile } from "./profile/Profile.jsx";
+export { default as Notification } from "./notification/Notification.jsx";
 export { default as PurchaseDetail } from "./PurchaseDetail/PurchaseDetail.jsx";

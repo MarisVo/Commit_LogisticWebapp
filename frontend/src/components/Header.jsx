@@ -19,11 +19,11 @@ const items = [
     getItem(<Link to="cam-ket">Cam kết</Link>, "3"),
   ]),
   getItem(<Link to="tra-cuu">Tra cứu</Link>, "sub3", [
-    getItem(<Link to="cuoc-van-chuyen">Cước vận chuyển</Link>, "4"),
-    getItem(<Link to="buu-cuc">Bưu cục gần đây</Link>, "5"),
-    getItem(<Link to="van-don">Vận đơn</Link>, "6"),
-    getItem(<Link to="bang-gia">Bảng giá</Link>, "7"),
-    getItem(<Link to="gang-cam-gui">Hàng cấm gửi</Link>, "8"),
+    getItem(<Link to="tra-cuu/cuoc-van-chuyen">Cước vận chuyển</Link>, "4"),
+    getItem(<Link to="tra-cuu/buu-cuc">Bưu cục gần đây</Link>, "5"),
+    getItem(<Link to="tra-cuu/van-don">Vận đơn</Link>, "6"),
+    getItem(<Link to="tra-cuu/bang-gia">Bảng giá</Link>, "7"),
+    getItem(<Link to="tra-cuu/gang-cam-gui">Hàng cấm gửi</Link>, "8"),
   ]),
   getItem(<Link to="dich-vu">Dịch vụ</Link>, "sub4", [
     getItem(
@@ -57,7 +57,7 @@ const items = [
   ]),
   getItem(<Link to="tuyen-dung">Tuển dụng </Link>, "sub5", [
     getItem(<Link to="tuyen-dung">Cơ hội nghề nghiệp</Link>, "13"),
-    getItem(<Link to="cuoc-life">Cuộc sống J%T Epress</Link>, "14"),
+    getItem(<Link to="cuoc-song">Cuộc sống J&T Epress</Link>, "14"),
   ]),
   getItem(<Link to="tu-van/lien-he">Tư vấn</Link>, "sub6", [
     getItem(<Link to="tu-van/lien-he">Liên hệ</Link>, "15"),
@@ -117,7 +117,7 @@ const Header = () => {
               Giới thiệu
               <FaChevronDown className="h-4 w-4 pl-[6px]" />
             </Link>
-            <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg">
+            <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg animate-up">
               <li>
                 <Link
                   to="ve-chung-toi"
@@ -142,7 +142,7 @@ const Header = () => {
               <FaChevronDown className="h-4 w-4 pl-[6px]" />
             </Link>
             <ul
-              className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg"
+              className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg animate-up"
               defaultActiveKey="cước vận chuyển"
               onChange={callback}
             >
@@ -198,7 +198,7 @@ const Header = () => {
               Dịch vụ
               <FaChevronDown className="h-4 w-4 pl-[6px]" />
             </Link>
-            <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg">
+            <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg animate-up">
               <li>
                 <Link
                   to="chuyen-phat-tieu-chuan"
@@ -245,7 +245,7 @@ const Header = () => {
               Tuyển dụng
               <FaChevronDown className="h-4 w-4 pl-[6px]" />
             </Link>
-            <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg">
+            <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg animate-up">
               <li>
                 <Link
                   to="tuyen-dung"
@@ -272,7 +272,7 @@ const Header = () => {
               Tư vấn
               <FaChevronDown className="h-4 w-4 pl-[6px]" />
             </Link>
-            <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg">
+            <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg animate-up">
               <li>
                 <Link
                   to="tu-van/lien-he"
@@ -316,7 +316,7 @@ const Header = () => {
         onClick={removeMobileMenu}
       >
         <Menu
-          className="h-full"
+          className="h-full animate-menu_in"
           style={{ width: "75%" }}
           mode="inline"
           openKeys={openKeys}

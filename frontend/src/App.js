@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./App.css";
 import "react-router-dom";
+// import Header from "./components/Header";
+// import Footer from "./components/Footer";
 import {
   Home,
   About,
@@ -26,6 +28,7 @@ import {
   PurchaseDetail,
   Profile,
   Notification,
+  LayerStorekeeper, ProductsManager, Inventory
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -103,6 +106,11 @@ const App = () => {
 
               <Route path="*" element={<PageNotFound />} />
             </Route>
+            <Route path="storekeeper" element={<LayerStorekeeper />} >
+            <Route index element={<ProductsManager />} />
+            <Route path="xuat-nhap" element={<ProductsManager />} />
+            <Route path="ton-kho" element={<Inventory />} />
+          </Route>
           </Routes>
         </div>
       </BrowserRouter>

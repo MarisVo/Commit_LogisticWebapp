@@ -1954,10 +1954,17 @@ nodemailer@^6.7.5:
   resolved "https://registry.npmjs.org/nodemailer/-/nodemailer-6.7.5.tgz"
   integrity sha512-6VtMpwhsrixq1HDYSBBHvW0GwiWawE75dS3oal48VqRhUvKJNnKnJo2RI/bCVQubj1vgrgscMNW4DHaD6xtMCg==
 
+<<<<<<< HEAD
+nodemon@^2.0.18:
+  version "2.0.18"
+  resolved "https://registry.npmjs.org/nodemon/-/nodemon-2.0.18.tgz"
+  integrity sha512-uAvrKipi2zAz8E7nkSz4qW4F4zd5fs2wNGsTx+xXlP8KXqd9ucE0vY9wankOsPboeDyuUGN9vsXGV1pLn80l/A==
+=======
 nodemon@^2.0.15:
   version "2.0.16"
   resolved "https://registry.npmjs.org/nodemon/-/nodemon-2.0.16.tgz"
   integrity sha512-zsrcaOfTWRuUzBn3P44RDliLlp263Z/76FPoHFr3cFFkOz0lTPAcIw8dCzfdVIx/t3AtDYCZRCDkoCojJqaG3w==
+>>>>>>> fa70119e6cb8ea6d3de04c250de336d50b2765ac
   dependencies:
     chokidar "^3.5.2"
     debug "^3.2.7"
