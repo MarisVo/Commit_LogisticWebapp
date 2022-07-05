@@ -26,7 +26,7 @@ const Footer = () => {
                         TRUY CẬP NHANH
                     </h5>
                     <div className="w-full h-[2px] bg-slate-400 mb-4 relative">
-                        <div className="w-2/5 h-full bg-red-500 absolute"></div>
+                        <div className="w-2/5 h-full bg-[#f0b90c] absolute"></div>
                     </div>
                     <div className="flex  text-[12px]">
                         <div className="flex-1">
@@ -85,7 +85,7 @@ const Footer = () => {
                         THÔNG TIN LIÊN HỆ
                     </h5>
                     <div className="w-full h-[2px] bg-slate-400 mb-4 relative">
-                        <div className="w-1/2 h-full bg-red-500 absolute"></div>
+                        <div className="w-1/2 h-full bg-[#f0b90c] absolute"></div>
                     </div>
                     <div className="flex mb-3">
                         <IoMailOutline />
@@ -103,7 +103,7 @@ const Footer = () => {
                         TẢI ỨNG DỤNG
                     </h5>
                     <div className="w-full h-[2px] bg-slate-400 mb-4 relative">
-                        <div className="w-1/2 h-full bg-red-500 absolute "></div>
+                        <div className="w-1/2 h-full bg-[#f0b90c] absolute "></div>
                     </div>
                     <div class="flex">
                         <img

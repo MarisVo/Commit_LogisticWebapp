@@ -105,3 +105,10 @@ export const VERIFY_OP = {
     email: 'email',
     phone: 'phone'
 }
+
+export const ORDER_STATUS = {
+    waiting: 'waiting',
+    accepted: 'accepted',
+    processing: 'processing',
+    completed: 'completed'
+}

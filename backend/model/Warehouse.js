@@ -34,10 +34,10 @@ const WarehouseSchema = new Schema(
         lat: {
             type: String,
         },
-        inventory_products: [
+        inventory_product_shipments: [
             {
                 type: Schema.Types.ObjectId,
-                ref: 'products'
+                ref: 'product_shipments'
             }
         ]
     },

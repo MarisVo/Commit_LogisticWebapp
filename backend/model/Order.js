@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import { PRODUCT_UNIT } from "../constant.js"
+import { ORDER_STATUS } from "../constant.js"
 const { Schema } = mongoose
 
 const OrderSchema = new Schema(
@@ -23,12 +23,10 @@ const OrderSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'customers'
         },
-        trips: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'trips'
-            }
-        ],
+        trip: {
+            type: Schema.Types.ObjectId,
+            ref: 'trips'
+        },
         receiver: {
             type: Schema.Types.ObjectId,
             ref: 'receivers'
@@ -36,7 +34,27 @@ const OrderSchema = new Schema(
         total_price: {
             type: Number,
             default: null
-        }
+        },
+        status: {
+            type: String,
+            enum: Object.values(ORDER_STATUS),
+            default: ORDER_STATUS.waiting,
+            required: true
+        },
+        origin: {
+            type: String,
+            required: true
+        },
+        destination: {
+            type: String,
+            required: true
+        },
+        bills: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'bills'
+            }
+        ]
     },
     { timestamps: true }
 )

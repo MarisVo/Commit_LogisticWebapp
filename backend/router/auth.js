@@ -2,7 +2,7 @@ import express from "express"
 import jwt from "jsonwebtoken"
 import argon2 from "argon2"
 import User from "../model/User.js"
-import { userLoginValidate, customerRegisterValidate, userVerifyOTP, userUpdateOTP } from "../validation/auth.js"
+import { userLoginValidate, customerRegisterValidate, userVerifyOTP, userUpdateOTP, userForgotPw, userChangePw } from "../validation/auth.js"
 import { sendError, sendServerError, sendSuccess, sendAutoMail, sendAutoSMS } from "../helper/client.js"
 import Customer from "../model/Customer.js"
 import Staff from "../model/Staff.js"
@@ -10,6 +10,8 @@ import CustomerVerifyOTP from '../model/CustomerVerifyOTP.js'
 import { JWT_EXPIRED, JWT_REFRESH_EXPIRED, OTP_EXPIRED, VERIFY_OP } from '../constant.js'
 import { createOTP, updateOTP } from '../service/otp.js'
 import { TOKEN_LIST } from "../index.js"
+import { verifyToken } from "../middleware/index.js"
+import { renewPw } from "../service/password.js"
 
 const authRoute = express.Router()
 
@@ -21,6 +23,7 @@ const authRoute = express.Router()
 authRoute.post('/verify-token', (req, res) => {
     const { accessToken, refreshToken } = req.body
     try {
+        if(accessToken in TOKEN_LIST) return sendError(res, "Unauthorzied.", 401)
         const { payload } = jwt.verify(accessToken, process.env.JWT_SECRET_KEY, {
             complete: true
         })
@@ -29,7 +32,7 @@ authRoute.post('/verify-token', (req, res) => {
         })
     }
     catch (error) {
-        if (refreshToken && refreshToken in TOKEN_LIST && TOKEN_LIST[refreshToken].accessToken === accessToken) {
+        if (refreshToken && refreshToken in TOKEN_LIST) {
             try {
                 const { payload } = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET_KEY, {
                     complete: true
@@ -49,12 +52,16 @@ authRoute.post('/verify-token', (req, res) => {
                     accessToken: newAccessToken,
                     user: payload.user
                 })
-            } 
+            }
             catch (error) {
+                // console.log('refresh-token is expired.')
                 return sendError(res, "Unauthorzied.", 401)
             }
         }
-        else return sendError(res, "Unauthorzied.", 401)
+        else{
+            // console.log('access-token is expired.')
+            return sendError(res, "Unauthorzied.", 401)
+        }
     }
 })
 
@@ -221,12 +228,12 @@ authRoute.post('/login', async (req, res) => {
     let { email, phone, password } = req.body
     try {
         let user = await User.findOne({
-            email: {$ne: null, $eq: email},
+            email: { $ne: null, $eq: email },
             isActive: true
         }).populate({ path: 'role', model: Customer })
         if (!user) {
             user = await User.findOne({
-                phone: {$ne: null, $eq: phone},
+                phone: { $ne: null, $eq: phone },
                 isActive: true
             }).populate({ path: 'role', model: Customer })
         }
@@ -299,12 +306,12 @@ authRoute.post('/staff-login', async (req, res) => {
     let { email, phone, password } = req.body
     try {
         let user = await User.findOne({
-            email: {$ne: null, $eq: email},
+            email: { $ne: null, $eq: email },
             isActive: true
         }).populate({ path: 'role', model: Staff })
         if (!user) {
             user = await User.findOne({
-                phone: {$ne: null, $eq: phone},
+                phone: { $ne: null, $eq: phone },
                 isActive: true
             }).populate({ path: 'role', model: Staff })
         }
@@ -359,6 +366,84 @@ authRoute.post('/staff-login', async (req, res) => {
             user: userData
         })
     } catch (error) {
+        return sendServerError(res)
+    }
+})
+
+/**
+ * @route POST /api/auth/forgot-pw
+ * @description forgot password feature for customer
+ * @access public
+ */
+authRoute.post('/forgot-pw', async (req, res) => {
+    const errors = userForgotPw(req.body)
+    if (errors) return sendError(res, errors)
+
+    let { email, phone } = req.body
+    try {
+        let user = await User.findOne({
+            email: { $ne: null, $eq: email },
+            isActive: true
+        })
+        if (!user) {
+            user = await User.findOne({
+                phone: { $ne: null, $eq: phone },
+                isActive: true
+            })
+        }
+        if (!user) return sendError(res, 'email/phone doesn\'t exist.', 404)
+
+        const newPw = await renewPw()
+        if (email) {
+            const options = {
+                from: process.env.MAIL_HOST,
+                to: email,
+                subject: '[noreply-Logistics Webapp] Quên mật khẩu',
+                html: `<p>Mật khẩu mới của bạn là: <i><b>${newPw}</b></i></p>`
+            }
+            const sendMailSuccess = await sendAutoMail(options)
+            if (!sendMailSuccess) return sendError(res, 'send new password failed.')
+        }
+        else if (phone) {
+            const options = {
+                from: process.env.PHONE_NUMBER,
+                to: phone,
+                body: `Mật khẩu mới của bạn là: ${newPw}`
+            }
+            const sendSMSSuccess = await sendAutoSMS(options)
+            if (!sendSMSSuccess) return sendError(res, 'send new password failed.')
+        }
+
+        const argon2_newPw = await argon2.hash(newPw)
+        await User.findByIdAndUpdate(user.id, { password: argon2_newPw })
+        return sendSuccess(res, 'generate new password successfully.')
+    } catch (error) {
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
+/**
+ * @route PUT /api/auth/change-pw
+ * @description user change current password
+ * @access private
+ */
+authRoute.put('/change-pw', verifyToken, async (req, res) => {
+    const errors = userChangePw(req.body)
+    if (errors) return sendError(res, errors)
+
+    const { oldPw, newPw } = req.body
+    try {
+        const user = await User.findById(req.user.id)
+
+        const pwValid = await argon2.verify(user.password, oldPw)
+        if (!pwValid) return sendError(res, 'current password isn\'t correct.')
+
+        const argon2_newPw = await argon2.hash(newPw)
+        await User.findByIdAndUpdate(req.user.id, { password: argon2_newPw })
+        return sendSuccess(res, 'change your password successfully.')
+    } catch (error) {
+        console.log(error)
         return sendServerError(res)
     }
 })

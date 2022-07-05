@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import 'antd/dist/antd.css'
 import { Carousel, Tabs, Select } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import appStore from '../../assets/images/appStore.png'
 import ggPlay from '../../assets/images/ggPlay.png'
 import { getDistrictsByProvinceCode, getProvinces } from "sub-vn";
@@ -63,7 +63,7 @@ const services = [
     {
         type: 'j&T Epress',
         content: 'Chuyển phát tiêu chuẩn',
-        path: 'standard-service',
+        path: 'chuyen-phat-tieu-chuan',
         images: {
             front: 'https://jtexpress.vn/storage/app/uploads/public/627/5d6/892/6275d68928ffd381036854.png',
             back: 'https://jtexpress.vn/storage/app/uploads/public/627/5d6/866/6275d6866e7c4229470575.png'
@@ -72,27 +72,27 @@ const services = [
     {
         type: 'j&T Fast',
         content: 'Chuyển phát nhanh',
-        path: 'standard-service',
+        path: 'chuyen-phat-nhanh',
         images: {
-            front: 'https://jtexpress.vn/storage/app/uploads/public/627/5d6/892/6275d68928ffd381036854.png',
+            front: 'https://jtexpress.vn/storage/app/uploads/public/618/4e6/37b/6184e637b45ca442099845.png',
             back: 'https://jtexpress.vn/storage/app/uploads/public/627/5d6/866/6275d6866e7c4229470575.png'
         }
     },
     {
         type: 'j&T Super',
-        content: 'Siêu vận chuyển',
-        path: 'standard-service',
+        content: 'Siêu dịch vụ giao hàng',
+        path: 'sieu-sich-vu-chuyen-phat',
         images: {
-            front: 'https://jtexpress.vn/storage/app/uploads/public/627/5d6/892/6275d68928ffd381036854.png',
+            front: 'https://jtexpress.vn/storage/app/uploads/public/618/4e6/872/6184e6872c887801133904.png',
             back: 'https://jtexpress.vn/storage/app/uploads/public/627/5d6/866/6275d6866e7c4229470575.png'
         }
     },
     {
         type: 'j&T Fresh',
-        content: 'Chuyển phát tươi sống',
-        path: 'standard-service',
+        content: 'Giao hàng tươi sống',
+        path: 'chuyen-phat-hang-tuoi-song',
         images: {
-            front: 'https://jtexpress.vn/storage/app/uploads/public/627/5d6/892/6275d68928ffd381036854.png',
+            front: 'https://jtexpress.vn/storage/app/uploads/public/618/4e8/077/6184e8077e894431352453.png',
             back: 'https://jtexpress.vn/storage/app/uploads/public/627/5d6/866/6275d6866e7c4229470575.png'
         }
     },
@@ -137,6 +137,12 @@ const coops = [
 ]
 
 const Home = () => {
+    const navigate = useNavigate()
+    const [defaultService, setDefaultService] = useState("vận đơn")
+    function callback(dichVu) {
+        setDefaultService(dichVu);
+        navigate(`/track?type=${dichVu}`)
+    }
     const [listProvinces, setListProvince] = useState([])
     const [listDistricts, setListDistricts] = useState([])
     const [currentProvince, setCurrentProvince] = useState(null)
@@ -218,8 +224,8 @@ const Home = () => {
             </Carousel>
 
             <div className="container flex items-center justify-center mx-auto w-full py-4 ">
-                <Tabs defaultActiveKey="1" type="card" className="w-full shadow-xl p-3 rounded-xl ">
-                    <TabPane tab={<div className="text-lg h-[30px]">Tra cứu đơn hàng</div>} key="1" className="">
+                <Tabs defaultActiveKey="vận đơn" type="card" className="w-full shadow-xl p-3 rounded-xl ">
+                    <TabPane tab={<div className="text-lg h-[30px] text-[#fcd535]">Tra cứu đơn hàng</div>} key="vận đơn" >
                         <div >
                             <form className="flex flex-col lg:flex-row ">
                                 <input
@@ -235,7 +241,7 @@ const Home = () => {
                             </form>
                         </div>
                     </TabPane>
-                    <TabPane tab={<div className="text-lg h-[30px]">Tra cứu bưu cục</div>} key="2">
+                    <TabPane tab={<div className="text-lg h-[30px] text-[#fcd535]">Tra cứu bưu cục</div>} key="2">
                         <div className="flex flex-col items-center lg:flex-row gap-y-3">
                             <Select
                                 showSearch
@@ -266,7 +272,7 @@ const Home = () => {
                             </button>
                         </div>
                     </TabPane>
-                    <TabPane tab={<Link to="track/bang-gia" className="text-lg h-[30px]">Bảng giá</Link>} key="3">
+                    <TabPane tab={<Link to='tra-cuu/cuoc-van-chuyen' className="text-lg h-[30px] text-[#fcd535]" >Bảng giá</Link>} key="bảng giá">
                     </TabPane>
                 </Tabs>
             </div>
@@ -304,7 +310,7 @@ const Home = () => {
                 {flags.map((flag, key) => (
                     <div className='relative flex flex-col justify-start items-center' key={key}>
                         <img src={flag.url} alt={flag.name} className='peer w-12 h-12 shadow-md rounded-full  ' />
-                        <span className="hidden lg:peer-hover:block  absolute top-12 px-5 py-1 rounded-md bg-slate-800">{flag.name}</span>
+                        <span className="hidden lg:peer-hover:block  absolute top-14 px-5 py-1 rounded-md bg-slate-800">{flag.name}</span>
                     </div>
                 ))}
 

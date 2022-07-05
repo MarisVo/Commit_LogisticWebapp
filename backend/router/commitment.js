@@ -1,9 +1,6 @@
 import express from "express"
 import { sendError, sendServerError, sendSuccess } from "../helper/client.js"
 import Commitment from "../model/Commitment.js"
-import {createLogoDir, verifyAdmin, verifyToken} from "../middleware/index.js"
-import { handleFilePath, upload, uploadResources } from "../constant.js"
-import {createCommitmentValidate} from "../validation/commitment.js"
 
 const commitmentRoute = express.Router()
 
@@ -12,17 +9,20 @@ const commitmentRoute = express.Router()
  * @description get all commitments
  * @access public
  */
-commitmentRoute.get('/', async (req, res) => {
-    try {
-        const commits = await Commitment.find({})
-        if (commits)
-            return sendSuccess(res, 'get commitment information successfully.', commits)
-        return sendError(res, 'commitment information is not found.')
-    } catch (error) {
-        console.log(error)
-        return sendServerError(res)
+
+commitmentRoute.get('/',
+    async(req, res) => {
+        const {limit} = req.query
+        try {
+            const commits = await Commitment.find({}).limit(limit).sort('-updatedAt')
+            if (commits) return sendSuccess(res, "Get commitment successful.", commits)
+            return sendError(res, "Not information found.")
+        } catch(error){
+            console.log(error)
+            return sendServerError(res)
+        }
     }
-})
+)
 
 /**
  * @route GET /api/commitment/:commitmentId
@@ -41,6 +41,5 @@ commitmentRoute.get('/:commitmentId', async (req, res) => {
         return sendServerError(res)
     }
 })
-
 
 export default commitmentRoute

@@ -25,19 +25,20 @@ function About() {
                 <img src={banners[0]} alt="banner" className='w-full h-[143px] lg:h-[550px] object-cover' />
             </a>
             <div className="flex flex-col xl:flex-row justify-between  container mx-auto my-4 lg:mt-[-210px]">
-                <div className="backdrop-blur-[2px]">
-                    <span className='block text-2xl text-center font-black my-6 py-4 lg:text-6xl lg:text-left lg:text-red-600 '>J&T EXPRESS</span>
+                <div >
+                    <span className='block text-2xl text-center font-black my-6 py-4 lg:text-6xl lg:text-left lg:text-primary '>J&T EXPRESS</span>
                     <div className='text-justify w-full xl:w-[525px] border-4 border-border_color p-8 text-base rounded-2xl lg:bg-yellow-100 opacity-95'>
                         <span className="whitespace-pre-line">
                             {data.description}
                         </span>
-                        <div className='w-20 h-[2px] bg-red-500 mt-8'></div>
+                        <div className='w-20 h-[2px] bg-[#f0b90c] mt-8'></div>
                     </div>
                 </div>
                 <div className='flex flex-col lg:flex-row items-center justify-around mt-16 gap-8 font-extrabold '>
                     <div className="flex flex-col items-center text-center px-3 gap-y-3 ">
                         <img src='https://jtexpress.vn/themes/jtexpress/assets/images/1000xe.png' alt="vehicle-pic" className='shadow-xl rounded-full' />
-                        <span className="text-3xl text-[#F0B90B]">850+</span>
+                        <span className="text-3xl text-primary">850+</span>
+                        <span x-data="{ show: false }" x-show="show" x-init="setTimeout(() => show = true, 3000)"></span>
                         <span className="text-xl uppercase">phương tiện</span>
                     </div>
                     <div className="flex flex-col items-center text-center px-3 gap-y-3">
