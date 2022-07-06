@@ -38,6 +38,8 @@ import Service from "./pages/services/Service";
 import FastService from "./pages/services/FastService";
 import SuperService from "./pages/services/SuperService";
 import FreshService from "./pages/services/FreshService";
+import AdminPage from "./pages/admin/AdminPage";
+import AdminAbout from "./pages/admin/AdminAbout";
 
 const App = () => {
   return (
@@ -107,10 +109,14 @@ const App = () => {
               <Route path="*" element={<PageNotFound />} />
             </Route>
             <Route path="storekeeper" element={<LayerStorekeeper />} >
-            <Route index element={<ProductsManager />} />
-            <Route path="xuat-nhap" element={<ProductsManager />} />
-            <Route path="ton-kho" element={<Inventory />} />
-          </Route>
+              <Route index element={<ProductsManager />} />
+              <Route path="xuat-nhap" element={<ProductsManager />} />
+              <Route path="ton-kho" element={<Inventory />} />
+              
+            </Route>
+            <Route path="admin" element={<AdminPage />}>
+              <Route path="about" element={<AdminAbout />}></Route>
+            </Route>
           </Routes>
         </div>
       </BrowserRouter>
