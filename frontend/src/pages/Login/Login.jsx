@@ -82,9 +82,6 @@ const ButtonContainer = styled.div`
 const { Title } = Typography;
 
 function Login() {
-  /*   const [email,setEmail] = useState("")
-  const [phone,setPhone] = useState("")
-  const [password,setPassword] = useState("") */
   const [form, setForm] = useState({
     email: "",
     phone: "",
@@ -92,14 +89,17 @@ function Login() {
   });
   const { loginHandle } = useContext(MainContext);
   const handleChange = (e) => {
-    /*  e.preventDefault(); */
+    e.preventDefault();
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
     console.log(form);
   };
   const onFinish = async () => {
     try {
-      const res = await axios.post(`${END_POINT}/auth/login`, form);
+      const res = await axios.post(
+        `http://localhost:8000/api/auth/login`,
+        form
+      );
       console.log(res);
       loginHandle(res.accessToken, res.refreshToken, res.user);
     } catch (err) {
@@ -144,7 +144,7 @@ function Login() {
               <Input
                 placeholder="Nhập email"
                 onChange={handleChange}
-                defaultValue={form.email}
+                initialValues={form.email}
                 name="email"
               />
             </Form.Item>
@@ -169,7 +169,7 @@ function Login() {
               <Input
                 placeholder="Nhập số điện thoại"
                 onChange={handleChange}
-                defaultValue={form.phone}
+                initialValues={form.phone}
                 name="phone"
               />
             </Form.Item>
@@ -192,7 +192,7 @@ function Login() {
               <Input.Password
                 placeholder="Nhập mật khẩu"
                 onChange={handleChange}
-                defaultValue={form.password}
+                initialValues={form.password}
                 name="password"
               />
             </Form.Item>

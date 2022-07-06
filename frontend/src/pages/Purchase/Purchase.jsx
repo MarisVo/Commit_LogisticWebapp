@@ -22,6 +22,30 @@ const Purchase = () => {
   const [order, setOrder] = useState();
   const { user } = useContext(MainContext);
   /*  const [user, setUser] = contextData.user; */
+  /*  const [form, setForm] = useState({
+    email: "",
+    phone: "",
+    password: "",
+  });
+  const { loginHandle } = useContext(MainContext);
+  const handleChange = (e) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+    console.log(form);
+  };
+  const onFinish = async () => {
+    try {
+      const res = await axios.post(
+        `http://localhost:8000/api/auth/login`,
+        form
+      );
+      console.log(res);
+      loginHandle(res.accessToken, res.refreshToken, res.user);
+    } catch (err) {
+      console.log(err);
+    }
+  }; */
   const handleOpen = () => {
     setOpen(!open);
     console.log(open);

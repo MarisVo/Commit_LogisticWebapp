@@ -8,8 +8,8 @@ info:
 host: "localhost:8000"
 basePath: "/api"
 schemes:
-- "https"
 - "http"
+- "https"
 tags:
 - name: "auth"
   description: "Endpoint Authentication"
@@ -27,6 +27,8 @@ tags:
   description: "Endpoint Partner"
 - name: "message"
   description: "Endpoint Message"
+- name: "consultancy"
+  description: "Endpoint Consultancy"
 paths:
   /auth/verify-token:
     post:
@@ -298,6 +300,29 @@ paths:
           description: change your password successfully.
         400:
           description: current password isn't correct.
+      security:
+        - bearerAuth: []
+  /auth/logout:
+    post:
+      tags:
+        - auth
+      summary: user log out
+      consumes:
+        - application/json
+      parameters:
+      - in: body
+        name: token
+        required: true
+        schema:
+          type: object
+          properties:
+            refreshToken:
+              type: string
+      responses:
+        200:
+          description: log out successfully. see you soon.
+        401:
+          description: refresh token is invalid.
       security:
         - bearerAuth: []
   /about:
@@ -602,6 +627,8 @@ paths:
             }
         400:
           description: Create commitment failed.
+      security:
+        - bearerAuth: []
   /admin/commitment/{commitmentId}:
     put:
       tags:
@@ -660,6 +687,8 @@ paths:
             }
         400:
           description: Update commitment failed.
+      security:
+        - bearerAuth: []
 
     delete:
       tags:
@@ -686,6 +715,8 @@ paths:
                     description: Success message
         400:
           description: Update commitment failed.
+      security:
+        - bearerAuth: []
   
   /partner:
     get:
@@ -778,6 +809,8 @@ paths:
             }
         400:
           description: Create partner failed.
+      security:
+        - bearerAuth: []
   /admin/partner/{partnerId}:
     put:
       tags:
@@ -828,6 +861,8 @@ paths:
             }
         400:
           description: Update partner failed.
+      security:
+        - bearerAuth: []
 
     delete:
       tags:
@@ -854,6 +889,8 @@ paths:
                     description: Success message
         400:
           description: Update partner failed.
+      security:
+        - bearerAuth: []
   /admin/message:
     get:
       tags:
@@ -883,6 +920,8 @@ paths:
             }
         400:
           description: commitment is not found.  
+      security:
+        - bearerAuth: []
   /admin/message/{messageId}:
     get:
       tags:
@@ -909,6 +948,8 @@ paths:
             }          
         400:
           description: message is not found.    
+      security:
+        - bearerAuth: []
     put:
       tags:
         - "message"
@@ -941,6 +982,8 @@ paths:
           description: Update message successfully.
         400:
           description: Update message failed.
+      security:
+        - bearerAuth: []
     delete:
       tags:
         - "message"
@@ -958,6 +1001,8 @@ paths:
           description: Delete message successfully.
         400:
           description: Update message failed.
+      security:
+        - bearerAuth: []
   /message:
     post:
       tags:
@@ -987,7 +1032,166 @@ paths:
           description: Send message successfully.
         400:
           description: Create message failed.   
+  /admin/consultancy:
+    get:
+      tags:
+        - "consultancy"
+      summary: get consultancy
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: page
+          type: string
+          description: num of page
+        - in: query
+          name: pageSize
+          type: string
+          description: number of consultancy in a page  
+      responses:
+        200:
+          description: get consultancy successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "email": "string",
+              "phone": "string",
+              "service" : "string",
+              "fulladdress" : "string",
+              "parcel": "string",
+              "quantity": number,    
+            }
+        400:
+          description: consultancy is not found.  
+      security:
+        - bearerAuth: []
+  /admin/consultancy/{consultancyId}:
+    get:
+      tags:
+        - "consultancy"
+      summary: get consultancy by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: consultancyId
+          type: string
+          required: true
+          description: Id of a consultancy 
+      responses:
+        200:
+          description: get consultancy successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "email": "string",
+              "phone": "string",
+              "service" : "string",
+              "fulladdress" : "string",
+              "parcel": "string",
+              "quantity": "string",    
+            }          
+        400:
+          description: consultancy is not found.    
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - "consultancy"
+      summary: "Update a existing consultancy"
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: consultancyId
+          schema: 
+            type: string
+          required: true
+          description: consultancy id
+        - in: body
+          name: consultancy
+          description: a existing consultancy.
+          schema:
+            type: object
+            properties:
+              service:
+                type: string
+              name:
+                type: string
+              email:
+                type: string 
+              phone: 
+                type: string              
+              fulladdress:
+                type: string 
+              parcel: 
+                type: string
+              quantity:
+                type: number 
+              solved_status:
+                type: boolean
 
+      responses:
+        200:
+          description: Update consultancy successfully.
+        400:
+          description: Update consultancy failed.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "consultancy"
+      summary: "Delete a existing consultancy"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: consultancyId
+          type: string
+          required: true
+          description: Id of a consultancy 
+      responses:
+        200:
+          description: Delete consultancy successfully.
+        400:
+          description: Update consultancy failed.
+      security:
+        - bearerAuth: []
+  /consultancy:
+    post:
+      tags:
+        - "consultancy"
+      summary: "Create a new consultancy"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: consultancy
+          description: a new consultancy.
+          schema:
+            type: object            
+            properties:
+              service:
+                type: string
+              name:
+                type: string               
+              email:
+                type: string 
+              phone: 
+                type: string
+              fulladdress:
+                type: string 
+              parcel: 
+                type: string
+              quantity:
+                type: number 
+      responses:
+        200:
+          description: Send consultancy successfully.
+        400:
+          description: Create consultancy failed.   
 securityDefinitions:
   bearerAuth:
     type: "apiKey"
