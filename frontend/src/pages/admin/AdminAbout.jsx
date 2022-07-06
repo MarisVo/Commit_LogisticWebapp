@@ -1,118 +1,106 @@
-import { Table } from "antd";
+import { Button, Checkbox, Form, Input } from "antd";
 import React from "react";
 import { useState } from "react";
-
+import axios from "axios";
+import { TOKEN } from "./adminToken";
+import { useEffect } from "react";
 export default function AdminAbout() {
-  const [data, setdata] = useState( [
-    {
-      key: "1",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      date: 14,
-    },
-    {
-      key: "2",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      date: 15,
-    },
-    {
-      key: "3",
-      name: "Joe Black",
-      age: 32,
-      address: "Sidney No. 1 Lake Park",
-      date: 16,
-    },
-    {
-      key: "4",
-      name: "Jim Red",
-      age: 32,
-      address: "London No. 2 Lake Park",
-      date: 14,
-    },
-  ])
-  const columns = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      filters: [
-        {
-          text: "Joe",
-          value: "Joe",
-        },
-        {
-          text: "Jim",
-          value: "Jim",
-        },
-        {
-          text: "Submenu",
-          value: "Submenu",
-          children: [
+  const [contactState, setContactState] = useState({
+    address: "string",
+    phone: "phone",
+    email: "email@gmail.com",
+    facebook: "url",
+    instagram: "url",
+    tiktok: "url",
+    youtube: "url",
+  });
+  const callAboutData = async () => {
+    try {
+      const result = await axios({
+        url: "https://api.openweathermap.org/data/2.5/weather?q=helsinki&appid=460863ced2e6b5f80cdca7445aec9faf&units=metric",
+        method: "get",
+        headers: "Bears" + TOKEN,
+      });
+      console.log(result)
+      if (result.status === 200) {
+        setContactState(result.data);
+      }
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  useEffect(() => {
+    callAboutData();
+  }, []);
+
+  const onFinish = (values) => {
+    console.log("Success:", values);
+    alert("Thông tin được update");
+    setContactState(values);
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    // console.log("Failed:", errorInfo);
+    alert("vui lòng kiểm tra lại thông tin ");
+  };
+  const renderInput = () => {
+    let inputArray = [];
+    for (let [key, datavalue] of Object.entries(contactState)) {
+      inputArray.push(
+        <Form.Item
+          key={key}
+          label={key}
+          name={key}
+          initialValue={datavalue}
+          rules={[
             {
-              text: "Green",
-              value: "Green",
+              required: false,
+              message: `mời nhập ${key}`,
+              type: key === "email" ? key : "string",
             },
-            {
-              text: "Black",
-              value: "Black",
-            },
-          ],
-        },
-      ],
-      // specify the condition of filtering result
-      // here is that finding the name started with `value`
-      onFilter: (value, record) => record.name.indexOf(value) === 0,
-      sorter: (a, b) => a.name.length - b.name.length,
-      sortDirections: ["descend"],
-    },
-    {
-      title: "Age",
-      dataIndex: "age",
-      defaultSortOrder: "descend",
-      sorter: (a, b) => a.age - b.age,
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      filters: [
-        {
-          text: "London",
-          value: "London",
-        },
-        {
-          text: "New York",
-          value: "New York",
-        },
-      ],
-      onFilter: (value, record) => record.address.indexOf(value) === 0,
-    },
-    {
-      title: "Date",
-      dataIndex: "date",
-      render: (value) => (
-        <div>
-       <button className="">edit</button>
-       <button onClick={()=>{
-        setdata(()=>{
-          return data.push({
-            
-          })
-        })
-       }}>add</button>
-       
-        </div>
-      ),
-    },
-  ];
- 
-  const onChange = (pagination, filters, sorter, extra) => {
-    console.log("params", pagination, filters, sorter, extra);
+          ]}
+        >
+          <Input />
+        </Form.Item>
+      );
+    }
+    return inputArray;
   };
   return (
-    <div>
-      <Table columns={columns} dataSource={data} onChange={onChange} />
-    </div>
+    <Form
+    name="basic"
+    labelCol={{
+      span: 2,
+      }}
+      wrapperCol={{
+        span: 16,
+      }}
+      initialValues={{
+        remember: true,
+      }}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+      autoComplete="off"
+      >
+      {renderInput()}
+
+      <Form.Item
+        wrapperCol={{
+          offset: 8,
+          span: 16,
+        }}
+      >
+        <Button
+          type="primary"
+          style={{
+            color: "",
+          }}
+          htmlType="submit"
+        >
+          Gửi
+        </Button>
+      </Form.Item>
+    </Form>
   );
 }
