@@ -5,8 +5,6 @@ export default function useAuthConfig() {
     const { accessToken } = useContext(MainContext)
 
     return {
-        headers: {
-            Authorization: `Bearer ${accessToken}`
-        }
+        Authorization: `Bearer ${accessToken}`
     }
 }
