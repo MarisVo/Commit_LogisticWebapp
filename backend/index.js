@@ -13,6 +13,7 @@ import publicRoute from "./router/public.js"
 import contactUsRoute from "./router/contactUs.js"
 import commitmentRoute from "./router/commitment.js"
 import partnerRoute from "./router/partner.js"
+import contactMsgRoute from "./router/contactMsg.js"
 // import quoteRoute from "./router/quote.js"
 import warehouseRoute from "./router/warehouse.js"
 
@@ -48,6 +49,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/contactus', contactUsRoute)
     .use('/api/commitment', commitmentRoute)
     .use('/api/partner', partnerRoute)
+    .use('/api/message', contactMsgRoute)
     // .use('/api/quote', quoteRoute)
     .use('/api/warehouse', warehouseRoute)
     
