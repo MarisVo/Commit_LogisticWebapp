@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import axios from 'axios'
 import { END_POINT } from '../utils/constant'
 
@@ -10,13 +10,13 @@ const MainProvider = ({ children }) => {
 
   const checkAuthenticated = async () => {
     const refreshToken = localStorage.getItem(process.env.REACT_APP_LOCALSTORAGE_TOKEN_NAME)
+    if (!refreshToken) return false
     try {
       const res = await axios.post(`${END_POINT}/auth/verify-token`, { accessToken, refreshToken })
       const { data } = res.data
       setUser(data.user)
       setAccessToken(data.accessToken)
     } catch (error) {
-      console.log(error)
       return false
     }
     return true
@@ -33,6 +33,10 @@ const MainProvider = ({ children }) => {
     setUser(null)
     localStorage.removeItem(process.env.REACT_APP_LOCALSTORAGE_TOKEN_NAME)
   }
+
+  useEffect(() => {
+    checkAuthenticated()
+  }, [])
 
   return (
     <MainContext.Provider value={{ accessToken, user, checkAuthenticated, loginHandle, logoutHandle }}>

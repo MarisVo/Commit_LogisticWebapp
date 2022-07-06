@@ -5,7 +5,6 @@
   "resolutions": {
     "styled-components": "^5"
   },
-  "type": "module",
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
@@ -38,8 +37,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "test:unit": "node test.js"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
