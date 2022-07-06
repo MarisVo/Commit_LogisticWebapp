@@ -25,6 +25,8 @@ tags:
   description: "Endpoint Commitment"
 - name: "partner"
   description: "Endpoint Partner"
+- name: "warehouse"
+  description: "Endpoint Warehouse"
 
 paths:
   /auth/verify-token:
@@ -852,6 +854,164 @@ paths:
                     description: Success message
         400:
           description: Update partner failed.
+  /admin/warehouse:
+    post:
+      tags:
+        - "warehouse"
+      summary: "Create a new warehouse"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: warehouse
+          description: a new warehouse.
+          schema:
+            type: object      
+            required: 
+            - name, street, ward, district, province, phone     
+            properties:
+              name:
+                type: string
+              phone: 
+                type: string
+              street:
+                type: string               
+              ward:
+                type: string 
+              district: 
+                type: string
+              province:
+                type: string 
+      responses:
+        200:
+          description: Create new warehouse successfully.
+        400:
+          description: Create warehouse failed.
+      security:
+        - bearerAuth: []
+  /admin/warehouse/{warehouseId}:
+    put:
+      put:
+      tags:
+        - "warehouse"
+      summary: "Update a existing warehouse"
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: warehouseId
+          schema: 
+            type: string
+          required: true
+          description: warehouse id
+        - in: body
+          name: warehouse
+          description: a existing warehouse.
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              phone: 
+                type: string
+              street:
+                type: string               
+              ward:
+                type: string 
+              district: 
+                type: string
+              province:
+                type: string               
+      responses:
+        200:
+          description: Update warehouse successfully.
+        400:
+          description: Update warehouse failed.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "warehouse"
+      summary: "Delete a existing warehouse"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: warehouseId
+          type: string
+          required: true
+          description: Id of a warehouse 
+      responses:
+        200:
+          description: Delete warehouse successfully.
+        400:
+          description: Delete warehouse failed.
+      security:
+        - bearerAuth: []
+  /warehouse:
+    get:
+      tags:
+        - "warehouse"
+      summary: get warehouse
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: page
+          type: string
+          description: num of page
+        - in: query
+          name: pageSize
+          type: string
+          description: number of warehouse in a page  
+      responses:
+        200:
+          description: get warehouse successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "phone": "string",    
+              "street": "string",   
+              "ward" : "string",
+              "district": "string",
+              "province": "string",
+              "lon": "string",
+              "lat": "string",       
+            }
+        400:
+          description: warehouse is not found.  
+  /warehouse/{warehouseId}:
+    get:
+      tags:
+        - "warehouse"
+      summary: get warehouse by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: warehouseId
+          type: string
+          required: true
+          description: Id of a warehouse 
+      responses:
+        200:
+          description: get warehouse successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "phone": "string",    
+              "street": "string",   
+              "ward" : "string",
+              "district": "string",
+              "province": "string",
+              "lon": "string",
+              "lat": "string",       
+            }          
+        400:
+          description: warehouse is not found.    
+
 securityDefinitions:
   bearerAuth:
     type: "apiKey"

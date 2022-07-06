@@ -14,7 +14,7 @@ import contactUsRoute from "./router/contactUs.js"
 import commitmentRoute from "./router/commitment.js"
 import partnerRoute from "./router/partner.js"
 // import quoteRoute from "./router/quote.js"
-
+import warehouseRoute from "./router/warehouse.js"
 
 // swagger setup
 import swaggerUi from 'swagger-ui-express'
@@ -49,7 +49,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/commitment', commitmentRoute)
     .use('/api/partner', partnerRoute)
     // .use('/api/quote', quoteRoute)
-
+    .use('/api/warehouse', warehouseRoute)
+    
 app.listen(PORT, () => {
     console.log(`Server start at port: ${PORT}`)
 })
