@@ -3,16 +3,17 @@ import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
 import {createLogoDir, verifyAdmin, verifyToken} from "../../middleware/index.js"
 import { handleFilePath, upload, uploadResources } from "../../constant.js"
 import {createQuoteValidate} from "../../validation/quote.js"
+import { unlinkSync } from 'fs'
 import Quote from "../../model/Quote.js"
-
+import DeliveryService from "../../model/DeliveryService.js"
 const quoteAdminRoute = express.Router()
 
 /**
- * @route POST /api/admin/quote
+ * @route POST /api/admin/quote/:serviceId
  * @description create a new quote
  * @access private
  */
-quoteAdminRoute.post('/', 
+quoteAdminRoute.post('/:serviceId', 
     createLogoDir,
     uploadResources.single('avatar'),   
     async (req, res) => {    
@@ -20,6 +21,10 @@ quoteAdminRoute.post('/',
         if (error) return sendError(res, error)
       
         try {
+            const {serviceId} = req.params
+            const isExistedService = await DeliveryService.exists({_id: serviceId})
+            if (!isExistedService) return sendError(res, "Service is not existed")
+           
             const avatar = handleFilePath(req.file) 
             const {name, description, quote} = req.body;
             const isExist = await Quote.exists({
@@ -31,35 +36,8 @@ quoteAdminRoute.post('/',
                 return sendError(res, "This person is existed !")
             }
                             
-            await Quote.create({name, avatar: avatar , description, quote});
-            return sendSuccess(res, 'create commitment successfully.', {name, description, quote, avatar})
-            
-        } catch (error) {
-            console.log(error)
-            if (req.avatar) unlinkSync(req.avatar.path)
-            return sendServerError(res)
-        }
-    }
-)
-
-/**
- * @route POST /api/admin/quote
- * @description create a new quote
- * @access private
- */
-quoteAdminRoute.post('/', 
-    createLogoDir,
-    uploadResources.single('avatar'),   
-    async (req, res) => {    
-        try {
-            const avatar = handleFilePath(req.file) 
-            const {name, description, quote} = req.body;
-            const isExist = await Quote.exists({description})
-            if (isExist) {
-                return sendError(res, "This person is existed !")
-            }
-                            
-            await Quote.create({name, avatar: avatar , description, quote});
+            const newquote = await Quote.create({name, avatar: avatar , description, quote});
+            await DeliveryService.updateOne( { _id: serviceId}, { $push: {quotes : newquote}} )
             return sendSuccess(res, 'create commitment successfully.', {name, description, quote, avatar})
             
         } catch (error) {
@@ -72,7 +50,7 @@ quoteAdminRoute.post('/',
 
 /**
  * @route PUT /api/admin/quote/:id
- * @description update content of quote
+ * @description update content of quote by quoteId
  * @access private
  */
 quoteAdminRoute.put('/:id',
@@ -102,7 +80,7 @@ quoteAdminRoute.put('/:id',
 
 /**
  * @route DELETE /api/admin/quote/:id
- * @description delete a quote
+ * @description delete a quote by quoteId
  * @access private
  */
 quoteAdminRoute.delete('/:id',
@@ -111,7 +89,7 @@ quoteAdminRoute.delete('/:id',
         try {
             const isExist = await Quote.exists({_id : id});
             if (!isExist) return sendError(res, "Quote not exist");
-            
+            await DeliveryService.updateOne({},{ $pull: { quotes: id}})
             await Quote.findByIdAndRemove(id)
                 .then((data)=> { return sendSuccess(res, "Delete quote successfully.", data)})  
                 .catch((err) => { return sendError(res, err)})  

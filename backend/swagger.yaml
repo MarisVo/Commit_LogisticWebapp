@@ -31,6 +31,8 @@ tags:
   description: "Endpoint Warehouse"
 - name: "participant"
   description: "Endpoint Participant"
+- name: "quote"
+  description: "Endpoint Quote"
 paths:
   /auth/verify-token:
     post:
@@ -1263,7 +1265,7 @@ paths:
                   type: string
       responses:
         200:
-          description: Create partner successfully.
+          description: Create participant successfully.
           schema:
             type: object
             example: {
@@ -1272,7 +1274,7 @@ paths:
               "description": "string",     
             }        
         400:
-          description: Create partner failed.
+          description: Create participant failed.
       security:
         - bearerAuth: []
   /admin/participant/{participantId}:
@@ -1346,6 +1348,219 @@ paths:
           description: Delete participant successfully.
         400:
           description: Delete participant failed.
+      security:
+        - bearerAuth: []
+  
+  /quote:
+     get:
+      tags:
+        - "quote"
+      summary: get all quote
+      produces:
+        - application/json
+      responses:
+        200:
+          description: get quote successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "description": "string", 
+              "quote": "string",
+              "avatar": "path",
+            }
+        400:
+          description: quote is not found. 
+  /quote/{quoteId}:
+    get:
+      tags:
+        - "quote"
+      summary: get quote by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: quoteId
+          type: string
+          required: true
+          description: Id of a quote 
+      responses:
+        200:
+          description: get quote successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "description": "string", 
+              "quote": "string",
+              "avatar": "path",  
+            }          
+        400:
+          description: quote is not found. 
+  /quote/service/{serviceId}:
+    get:
+      tags:
+        - "quote"
+      summary: get list of quotes by serviceId
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: serviceId
+          type: string
+          required: true
+          description: Id of a service 
+      responses:
+        200:
+          description: get quote successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "description": "string", 
+              "quote": "string",
+              "avatar": "path",    
+            }          
+        400:
+          description: quote is not found.
+  /admin/quote/{serviceId}:
+    post:
+      tags:
+        - "quote"
+      summary: "Create a new quote"
+      consumes:
+        - multipart/form-data
+        - application/json
+      parameters:
+        - in: path
+          name: serviceId
+          type: string
+          required: true
+          description: Id of a service 
+        - in: body
+          name: quote
+          description: a new quote.
+          schema:
+            type: object
+            required:
+              - name, description, quote
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+              quote:
+                type: string
+        - in: formData
+          name: avatar
+          description: avatar of quote.
+          type: file          
+      requestBody:
+        content: 
+          multipart/form-data: 
+            schema:            
+              type: object
+              properties:      
+                name:           
+                  type: string                
+                description:
+                  type: string
+                quote:
+                  type: string
+                avatar: 
+                  type: string
+                  format: base64
+      responses:
+        200:
+          description: Create quote successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "description": "string", 
+              "quote": "string",
+              "avatar": "path",    
+            }        
+        400:
+          description: Create quote failed.
+      security:
+        - bearerAuth: []
+  /admin/quote/{quoteId}:
+    put:
+      tags:
+        - "quote"
+      summary: "Create a new quote"
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: quoteId
+          type: string
+          required: true
+          description: Id of a quote 
+        - in: body
+          name: quote
+          description: a new quote.
+          schema:
+            type: object            
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+              quote:
+                type: string
+        - in: formData
+          name: avatar
+          description: avatar of quote.
+          type: file          
+      requestBody:
+        content: 
+          multipart/form-data: 
+            schema:            
+              type: object
+              properties:      
+                name:           
+                  type: string                
+                description:
+                  type: string
+                quote:
+                  type: string
+                avatar: 
+                  type: string
+                  format: base64
+      responses:
+        200:
+          description: Create quote successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "description": "string", 
+              "quote": "string",
+              "avatar": "path",        
+            }        
+        400:
+          description: Create quote failed.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "quote"
+      summary: "Delete a existing quote"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: quoteId
+          type: string
+          required: true
+          description: Id of a quote 
+      responses:
+        200:
+          description: Delete quote successfully.
+        400:
+          description: Delete quote failed.
       security:
         - bearerAuth: []
 securityDefinitions:

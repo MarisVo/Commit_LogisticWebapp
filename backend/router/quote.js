@@ -1,13 +1,11 @@
 import express from "express"
 import { sendError, sendServerError, sendSuccess } from "../helper/client.js"
-import {createLogoDir, verifyAdmin, verifyToken} from "../middleware/index.js"
-import { handleFilePath, upload, uploadResources } from "../constant.js"
 import Quote from "../model/Quote.js"
-
+import DeliveryService from "../model/DeliveryService.js"
 const quoteRoute = express.Router()
 
 /**
- * @route GET /api/quote/
+ * @route GET /api/quote
  * @description get all quotes 
  * @access public
  */
@@ -43,4 +41,25 @@ quoteRoute.get('/:id',
     }
 )
 
+/**
+ * @route GET /api/quote/service/:serviceId
+ * @description get list of quotes of a service by serviceid
+ * @access public
+ */
+quoteRoute.get('/service/:serviceId', async(req, res) =>{
+    try{
+        const {serviceId} = req.params
+        const isExistedService = await DeliveryService.exists({_id: serviceId})
+        if (!isExistedService) return sendError(res, "Service is not existed")
+        const service = await DeliveryService.find({ _id: serviceId})
+        if (! service ) return sendError(res, 'service is not existed')
+        const result = await Quote.find({_id: service[0].quotes})
+        
+        return sendSuccess(res, 'get quote successfully.', result)
+    } catch (error) {
+        console.log(error)
+        return sendServerError(res)
+    }
+}
+)
 export default quoteRoute
