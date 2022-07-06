@@ -1,30 +1,34 @@
 import React, { useEffect, useRef, useState } from "react";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
 import SideBar from "../../components/SideBar";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import {
+  AiOutlineEye,
+  AiOutlineEyeInvisible,
+  AiOutlineEdit,
+} from "react-icons/ai";
+import { axios } from "axios";
+
 export default function Profile() {
-  const o_passwordRef = useRef(null);
-  const n_passwordRef = useRef(null);
-  const cf_passwordRef = useRef(null);
+  const oldPwRef = useRef(null);
+  const newPwRef = useRef(null);
+  const verify_passwordRef = useRef(null);
   const [eyeOp, setEyeOp] = useState(false);
   const [eyeNp, setEyeNp] = useState(false);
   const [eyeCf, setEyeCf] = useState(false);
-  const [password, setPassword] = useState({
-    o_password: "",
-    n_password: "",
-    cf_password: "",
+  const [cPassword, setCPassword] = useState({
+    oldPw: "",
+    newPw: "",
+    verify_password: "",
   });
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [open, setOpen] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [date, setDate] = useState(0);
+  /*   const [date, setDate] = useState(0);
   const [month, setMonth] = useState(0);
-  const [year, setYear] = useState(0);
-  const handleOpen = () => {
-    setOpen(!open);
-  };
-  const generateDateOptions = () => {
+  const [year, setYear] = useState(0); */
+
+  /*   const generateDateOptions = () => {
     const arr = [];
     const startDate = 1;
     const endDate = 31;
@@ -62,6 +66,18 @@ export default function Profile() {
       );
     }
     return arr;
+  }; */
+  /*   const handleDate = (e) => {
+    setDate(e.target.value);
+  };
+  const handleMonth = (e) => {
+    setMonth(e.target.value);
+  };
+  const handleYear = (e) => {
+    setYear(e.target.value);
+  }; */
+  const handleOpen = () => {
+    setOpen(!open);
   };
   const hideemail = (valuee) => {
     let email = valuee; //anas.behhari@gmail.com
@@ -108,36 +124,28 @@ export default function Profile() {
     setEyeCf(!eyeCf);
   };
 
-  const handleDate = (e) => {
-    setDate(e.target.value);
-  };
-  const handleMonth = (e) => {
-    setMonth(e.target.value);
-  };
-  const handleYear = (e) => {
-    setYear(e.target.value);
-  };
   const handleShowModal = () => {
     setIsModalVisible(true);
   };
   const handleChangePassword = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
-    setPassword({ ...password, [name]: value });
+    setCPassword({ ...cPassword, [name]: value });
+    console.log(cPassword);
   };
   const handleCloseModal = (e) => {
-    o_passwordRef.current.value = "";
-    n_passwordRef.current.value = "";
-    cf_passwordRef.current.value = "";
+    oldPwRef.current.value = "";
+    newPwRef.current.value = "";
+    verify_passwordRef.current.value = "";
     setIsModalVisible(false);
   };
   useEffect(() => {
     if (handleCloseModal) {
       setIsSubmit(false);
-      setPassword({
-        o_password: "",
-        n_password: "",
-        cf_password: "",
+      setCPassword({
+        oldPw: "",
+        newPw: "",
+        verify_password: "",
       });
       setEyeOp(false);
       setEyeNp(false);
@@ -151,43 +159,53 @@ export default function Profile() {
     setIsSubmit(true);
   };
   const validate = () => {
-    const { o_password, cf_password, n_password } = password;
+    const { oldPw, verify_password, newPw } = cPassword;
     const errors = {};
-    /*  if (o_password !== password) {
-       errors.o_password = "Wrong password";
+    /*  if (oldPw !== password) {
+       errors.oldPw = "Wrong password";
      } */
-    if (!o_password) {
-      errors.o_password = "This field is required";
+    if (!oldPw) {
+      errors.oldPw = "This field is required";
     }
-    if (!n_password) {
-      errors.n_password = "This field is required";
+    if (!newPw) {
+      errors.newPw = "This field is required";
     }
-    if (n_password && n_password.length <= 5) {
-      errors.n_password = "Password length at least than 6";
+    if (newPw && newPw.length <= 5) {
+      errors.newPw = "Password length at least than 6";
     }
-    if (!cf_password) {
-      errors.cf_password = "This field is required";
+    if (!verify_password) {
+      errors.verify_password = "This field is required";
     }
-    if (cf_password && cf_password.length <= 5) {
-      errors.cf_password = "Password length greater than 6";
+    if (verify_password && verify_password.length <= 5) {
+      errors.verify_password = "Password length greater than 6";
     }
-    if (cf_password && n_password && cf_password !== n_password) {
-      errors.cf_password = "Not same with the new password";
+    if (verify_password && newPw && verify_password !== newPw) {
+      errors.verify_password = "Not same with the new password";
     }
     return errors;
   };
 
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
-      alert("Change success");
+      /*  const handleChangePassword = async () => {
+        const res = await axios.put(
+          `${REACT_APP_API_BASE_URL}/auth/change-pw`,
+          cPassword,
+          {
+            header: { accessToken: `Bearer ${TOKEN}` },
+          }
+        );
+
+      }; */
+      /*  handleChangePassword() */
+      alert("Update password success");
       setIsModalVisible(false);
       setIsSubmit(false);
-      o_passwordRef.current.value = "";
-      n_passwordRef.current.value = "";
-      cf_passwordRef.current.value = "";
+      oldPwRef.current.value = "";
+      newPwRef.current.value = "";
+      verify_passwordRef.current.value = "";
     }
-  }, [formErrors, password, isSubmit]);
-
+  }, [formErrors, cPassword, isSubmit]);
   return (
     <div>
       <>
@@ -218,10 +236,10 @@ export default function Profile() {
                     </label>
                     <div className="relative">
                       <input
-                        ref={o_passwordRef}
+                        ref={oldPwRef}
                         type={eyeOp ? "text" : "password"}
-                        name="o_password"
-                        defaultValue={password.o_password}
+                        name="oldPw"
+                        defaultValue={cPassword.oldPw}
                         onChange={handleChangePassword}
                         placeholder="Add your password"
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white relative"
@@ -238,7 +256,7 @@ export default function Profile() {
                         />
                       )}
                     </div>
-                    <p className="text-red-400">{formErrors.o_password}</p>
+                    <p className="text-red-400">{formErrors.oldPw}</p>
                   </div>
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -246,10 +264,10 @@ export default function Profile() {
                     </label>
                     <div className="relative">
                       <input
-                        ref={n_passwordRef}
+                        ref={newPwRef}
                         type={eyeNp ? "text" : "password"}
-                        name="n_password"
-                        defaultValue={password.n_password}
+                        name="newPw"
+                        defaultValue={cPassword.newPw}
                         onChange={handleChangePassword}
                         placeholder="Add your new password"
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
@@ -266,7 +284,7 @@ export default function Profile() {
                         />
                       )}
                     </div>
-                    <p className="text-red-400">{formErrors.n_password}</p>
+                    <p className="text-red-400">{formErrors.newPw}</p>
                   </div>
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -274,10 +292,10 @@ export default function Profile() {
                     </label>
                     <div className="relative">
                       <input
-                        ref={cf_passwordRef}
+                        ref={verify_passwordRef}
                         type={eyeCf ? "text" : "password"}
-                        name="cf_password"
-                        defaultValue={password.cf_password}
+                        name="verify_password"
+                        defaultValue={cPassword.verify_password}
                         placeholder="Confirm new password"
                         onChange={handleChangePassword}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
@@ -294,7 +312,7 @@ export default function Profile() {
                         />
                       )}
                     </div>
-                    <p className="text-red-400">{formErrors.cf_password}</p>
+                    <p className="text-red-400">{formErrors.verify_password}</p>
                   </div>
 
                   <button
@@ -320,10 +338,12 @@ export default function Profile() {
             />
           </span>
 
-          <div className="grid grid-cols-5  sm:mx-12 lg:mx-56 py-5 bg-gray-100  ">
+          <div className="grid grid-cols-5 mx-1 sm:mx-20 lg:mx-60 md:mx-28 py-5 bg-gray-100  ">
             <div className=" col-span-5 bg-white rounded-lg   shadow-xl">
               <div className="flex justify-start flex-col ml-4 border-b-2  pl-4 pb-3 pt-3">
-                <div className="text-xl font-bold mb-1">Hồ Sơ Của Tôi</div>
+                <div className="text-xl font-bold mb-1 lg:text-2xl">
+                  Hồ Sơ Của Tôi
+                </div>
                 <div>Quản lý thông tin hồ sơ để bảo mật tài khoản</div>
               </div>
               <form className=" lg:mx-7 mx-1 my-4 ">
@@ -399,7 +419,19 @@ export default function Profile() {
                       </div>
                     </div>
                   </div>
-                  <div className="flex mb-3 sm:py-1  items-center">
+                  <div className="flex mb-3 sm:py-1">
+                    <div className="flex items-center w-2/5   justify-end lg:text-base ">
+                      <label className=" mr-3 text-yellow-600 ">
+                        Mã số thuế
+                      </label>
+                    </div>
+                    <div className="flex ">
+                      <div className="text-black-700 lg:text-base ">
+                        51312312
+                      </div>
+                    </div>
+                  </div>
+                  {/*  <div className="flex mb-3 sm:py-1  items-center">
                     <div className="flex items-center w-2/5   justify-end  lg:text-base">
                       <label className=" mr-3 text-yellow-600 text">
                         Ngày Sinh
@@ -436,8 +468,8 @@ export default function Profile() {
                         </select>
                       </div>
                     </div>
-                  </div>
-                  <div className="flex mb-3 ">
+                  </div> */}
+                  {/*  <div className="flex mb-3 ">
                     <div className="flex items-center w-2/5  justify-end ">
                       <label className="text-gray-500 mr-3  "></label>
                     </div>
@@ -446,7 +478,7 @@ export default function Profile() {
                         Save
                       </button>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </form>
             </div>

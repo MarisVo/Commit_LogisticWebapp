@@ -1,12 +1,12 @@
-import { useContext } from "react"
-import MainContext from "../context/MainContext"
+import { useContext } from "react";
 
+import { MainContext } from "./../context/MainContext";
 export default function useAuthConfig() {
-    const { accessToken } = useContext(MainContext)
+  const { accessToken } = useContext(MainContext);
 
-    return {
-        headers: {
-            Authorization: `Bearer ${accessToken}`
-        }
-    }
+  return {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
 }

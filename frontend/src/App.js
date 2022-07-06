@@ -26,6 +26,7 @@ import {
   PurchaseDetail,
   Profile,
   Notification,
+  PurchaseDriver,
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -84,6 +85,7 @@ const App = () => {
               {/* ----------------------Profile------------------ */}
               <Route path="user/account/profile" element={<Profile />} />
               <Route path="user/purchase" element={<Purchase />} />
+              <Route path="driver/purchase" element={<PurchaseDriver />} />
               <Route path="user/purchase/:id" element={<PurchaseDetail />} />
               <Route
                 path="user/purchase/order/:id"

@@ -2,11 +2,11 @@ import { createContext, useState } from "react";
 import axios from "axios";
 import { END_POINT } from "../utils/constant";
 
-const MainContext = createContext();
+export const MainContext = createContext();
 const MainProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState(null);
   const [refreshToken, setRefreshToken] = useState(null);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState("admin");
 
   const checkAuthenticated = async () => {
     if (!refreshToken) {
@@ -47,19 +47,14 @@ const MainProvider = ({ children }) => {
     localStorage.removeItem(process.env.REACT_APP_LOCALSTORAGE_TOKEN_NAME);
   };
 
-  return (
-    <MainContext.Provider
-      value={{
-        accessToken,
-        user,
-        checkAuthenticated,
-        loginHandle,
-        logoutHandle,
-      }}
-    >
-      {children}
-    </MainContext.Provider>
-  );
+  const state = {
+    accessToken,
+    user,
+    checkAuthenticated,
+    loginHandle,
+    logoutHandle,
+  };
+  return <MainContext.Provider value={state}>{children}</MainContext.Provider>;
 };
 
 export default MainProvider;
