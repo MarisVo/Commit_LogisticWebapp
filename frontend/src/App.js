@@ -44,6 +44,7 @@ import AdminContactUs from './pages/admin/AdminContactUs.jsx'
 import AdminCommitment from './pages/admin/AdminCommitment.jsx'
 import AdminContactMessage from './pages/admin/AdminContactMessage.jsx'
 import AdminDeliveryService from './pages/admin/AdminDeliveryService.jsx'
+import AdminPartner from "./pages/admin/AdminPartner";
 const App = () => {
   return (
     <MainProvider>
@@ -123,6 +124,7 @@ const App = () => {
               <Route path="commitment" element={<AdminCommitment />}></Route>
               <Route path="message" element={<AdminContactMessage />}></Route>
               <Route path="service" element={<AdminDeliveryService />}></Route>
+              <Route path="partner" element={<AdminPartner />}></Route>
             </Route>
           </Routes>
         </div>

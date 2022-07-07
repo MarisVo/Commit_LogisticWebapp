@@ -1,18 +1,21 @@
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Checkbox, Form, Input, Upload } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
 import { TOKEN } from "./adminToken";
 import { useEffect } from "react";
+import { useRef } from "react";
 export default function AdminAbout() {
   const [contactState, setContactState] = useState({
-    address: "string",
-    phone: "phone",
-    email: "email@gmail.com",
-    facebook: "url",
-    instagram: "url",
-    tiktok: "url",
-    youtube: "url",
+    description: "string",
+    vision: "string",
+    values: "string",
+    logo: "https://cdn.tgdd.vn/Files/2020/12/11/1312984/huong-dan-tra-cuu-van-don-j-t-express-nhanh-nhat-c-4-652x367.jpg",
+    banners: [
+      "https://icdn.dantri.com.vn/thumb_w/640/2020/05/08/j-chuandocx-1588932311071.jpeg",
+      "https://cdn.tgdd.vn/Files/2020/12/11/1312984/huong-dan-tra-cuu-van-don-j-t-express-nhanh-nhat-c-4-652x367.jpg",
+    ],
   });
   const callAboutData = async () => {
     try {
@@ -21,13 +24,21 @@ export default function AdminAbout() {
         method: "get",
         headers: "Bears" + TOKEN,
       });
-      console.log(result)
+      console.log(result);
       if (result.status === 200) {
         setContactState(result.data);
       }
     } catch (error) {
       console.log(error.response);
     }
+  };
+  const normFile = (e) => {
+    console.log("Upload event:", e);
+    if (Array.isArray(e)) {
+      return e;
+    }
+
+    return e?.fileList;
   };
 
   useEffect(() => {
@@ -37,58 +48,102 @@ export default function AdminAbout() {
   const onFinish = (values) => {
     console.log("Success:", values);
     alert("Thông tin được update");
-    setContactState(values);
+  
+    setContactState(() => {
+      
+      return { ...contactState, description: values.description, vision: values.vision, values: values.values };
+    });
+    console.log(contactState);
   };
-
+  const createFileList = (key, datavalue) => {
+    let fileList = [];
+    if (key === "logo") {
+      fileList.push({
+        uid: "logo",
+        name: "logo.png",
+        status: "done",
+        url: datavalue,
+        thumbUrl: datavalue,
+      });
+    } else {
+      datavalue?.map((dataURL, index) => {
+        return fileList.push({
+          uid: `banner${index}`,
+          name: `banner${index}`,
+          status: "done",
+          url: dataURL,
+          thumbUrl: dataURL,
+        });
+      });
+    }
+    return fileList;
+  };
   const onFinishFailed = (errorInfo) => {
     // console.log("Failed:", errorInfo);
     alert("vui lòng kiểm tra lại thông tin ");
   };
+
   const renderInput = () => {
     let inputArray = [];
     for (let [key, datavalue] of Object.entries(contactState)) {
-      inputArray.push(
-        <Form.Item
-          key={key}
-          label={key}
-          name={key}
-          initialValue={datavalue}
-          rules={[
-            {
-              required: false,
-              message: `mời nhập ${key}`,
-              type: key === "email" ? key : "string",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-      );
+      if (key === "banners" || key === "logo") {
+        let fileList = createFileList(key, datavalue);
+        inputArray.push(
+          <Form.Item name={key} label={key} valuePropName="fileList" getValueFromEvent={normFile}>
+            <Upload
+              name={key}
+              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              maxCount={key === "logo" ? 1 : ""}
+              listType="picture"
+              defaultFileList={[...fileList]}
+            >
+              <Button icon={<UploadOutlined />}>Click to Upload {key}</Button>
+            </Upload>
+          </Form.Item>
+        );
+      } else {
+        inputArray.push(
+          <Form.Item
+            key={key}
+            label={key}
+            name={key}
+            initialValue={datavalue}
+            rules={[
+              {
+                required: false,
+                message: `mời nhập ${key}`,
+              },
+            ]}
+          >
+            <Input.TextArea />
+          </Form.Item>
+        );
+      }
     }
     return inputArray;
   };
   return (
     <Form
-    name="basic"
-    labelCol={{
-      span: 2,
+      name="basic"
+      labelCol={{
+        span: 2,
       }}
       wrapperCol={{
-        span: 16,
+        span: 20,
       }}
-      initialValues={{
-        remember: true,
-      }}
+      // initialValues={{
+      //   remember: true,
+      // }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
-      >
+    >
       {renderInput()}
 
       <Form.Item
         wrapperCol={{
-          offset: 8,
-          span: 16,
+          offset: 10,
+          // span: 20,
         }}
       >
         <Button

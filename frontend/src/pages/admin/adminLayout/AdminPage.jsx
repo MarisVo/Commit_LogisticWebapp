@@ -40,25 +40,39 @@ export default function AdminPage() {
       "2",
       <DesktopOutlined> </DesktopOutlined>
     ),
-    getItem(
-      <div>
-        <Link to="commitment">commitment</Link>
-      </div>,
-      "3",
-      <DesktopOutlined> </DesktopOutlined>
-    ),
+    getItem(<div>Commit</div>, "sub1", <DesktopOutlined> </DesktopOutlined>, [
+      getItem(
+        <div>
+          <Link to="">Add Commitment</Link>
+        </div>,
+        "3"
+      ),
+      getItem(
+        <div>
+          <Link to="commitment">Main Commitment</Link>
+        </div>,
+        "4"
+      ),
+    ]),
     getItem(
       <div>
         <Link to="message">message</Link>
       </div>,
-      "4",
+      "5",
       <DesktopOutlined> </DesktopOutlined>
     ),
     getItem(
       <div>
         <Link to="service">service</Link>
       </div>,
-      "5",
+      "6",
+      <DesktopOutlined> </DesktopOutlined>
+    ),
+    getItem(
+      <div>
+        <Link to="partner">service</Link>
+      </div>,
+      "7",
       <DesktopOutlined> </DesktopOutlined>
     ),
     // getItem("User", "sub1", <UserOutlined />, [getItem("Tom", "3"), getItem("Bill", "4"), getItem("Alex", "5")]),
@@ -74,6 +88,7 @@ export default function AdminPage() {
         trigger={null}
         collapsible
         collapsed={collapsed}
+        className= 'uppercase'
         style={{
           background: "#fff",
         }}
