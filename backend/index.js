@@ -21,6 +21,7 @@ import swaggerUi from 'swagger-ui-express'
 const swaggerDocument = YAML.load('./swagger.yaml')
 
 import { verifyAdmin, verifyToken } from "./middleware/index.js"
+import { clearTokenList } from "./service/jwt.js"
 dotenv.config()
 
 /**
@@ -55,3 +56,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.listen(PORT, () => {
     console.log(`Server start at port: ${PORT}`)
 })
+
+setInterval(()=>{
+    clearTokenList(TOKEN_BLACKLIST)
+}, 3600000)
