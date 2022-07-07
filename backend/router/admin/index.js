@@ -18,5 +18,11 @@ adminRoute.use('/auth', authAdminRoute)
     .use('/commitment', commitmentAdminRoute)
     .use('/partner', partnerAdminRoute)
     .use('/message', contactMsgAdminRoute)
+    .use('/partner', partnerAdminRoute)
+    .use('/user', userAdminRoute)
+    .use('/car', carAdminRoute)
+    .use('/road', roadAdminRoute)
+    .use('/bill', billAdminRoute)
+    .use('/product-shipment', productShipmentAdminRoute)
     
 export default adminRoute

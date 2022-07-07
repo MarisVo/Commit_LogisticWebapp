@@ -52,7 +52,12 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/message', contactMsgRoute)
     // .use('/api/quote', quoteRoute)
     .use('/api/warehouse', warehouseRoute)
-    
-app.listen(PORT, () => {
+    .use('/api/user', userRoot)
+    .use('/api/road', roadRoute)
+    .use('/api/car', carRoute)
+    .use('/api/product-shipment', productShipmentRoute)
+    .use('/api/bill', billRoute)
+
+    app.listen(PORT, () => {
     console.log(`Server start at port: ${PORT}`)
 })
