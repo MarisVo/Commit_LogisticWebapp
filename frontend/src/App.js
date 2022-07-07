@@ -45,6 +45,7 @@ import AdminCommitment from './pages/admin/AdminCommitment.jsx'
 import AdminContactMessage from './pages/admin/AdminContactMessage.jsx'
 import AdminDeliveryService from './pages/admin/AdminDeliveryService.jsx'
 import AdminPartner from "./pages/admin/AdminPartner";
+import AdminAddCommit from './components/Admin/Commit/AdminAddCommit.jsx'
 const App = () => {
   return (
     <MainProvider>
@@ -122,11 +123,13 @@ const App = () => {
               <Route path="about" element={<AdminAbout />}></Route>
               <Route path="contact-us" element={<AdminContactUs />}></Route>
               <Route path="commitment" element={<AdminCommitment />}></Route>
+              <Route path='addcommit' element={<AdminAddCommit />}></Route>
               <Route path="message" element={<AdminContactMessage />}></Route>
               <Route path="service" element={<AdminDeliveryService />}></Route>
               <Route path="partner" element={<AdminPartner />}></Route>
             </Route>
           </Routes>
+
         </div>
       </BrowserRouter>
     </MainProvider>

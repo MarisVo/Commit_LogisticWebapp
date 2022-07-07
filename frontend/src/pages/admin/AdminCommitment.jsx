@@ -1,9 +1,9 @@
 import { SearchOutlined } from "@ant-design/icons";
-import { Button, Input, Space, Table } from "antd";
+import { Button, Input, Space, Table, Modal } from "antd";
+import axios from "axios";
 import React, { useRef, useState } from "react";
-export  function AddCommitment(){
-    return(<div>add commit</div>)
-}
+import { useEffect } from "react";
+
 export default function AdminCommitment() {
   const [dataCommit, setDataCommit] = useState([
     {
@@ -18,7 +18,21 @@ export default function AdminCommitment() {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
-
+  const getInforCommitAPI = async () => {
+    try {
+      const result = await axios({
+        url: "",
+        method: "get",
+        headers: "Bearer",
+      });
+      if (result.status === 200) {
+        setDataCommit(result.data);
+      }
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+  useEffect(() => {}, []);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -113,7 +127,7 @@ export default function AdminCommitment() {
       dataIndex: "heading",
       key: "heading",
       width: "20%",
-        sorter: (a, b) => a.heading.length - b.heading.length,
+      sorter: (a, b) => a.heading.length - b.heading.length,
 
       ...getColumnSearchProps("heading"),
     },
@@ -129,9 +143,12 @@ export default function AdminCommitment() {
       title: "Tao Tac",
       dataIndex: "id",
       width: "20%",
-      render: (e) => (
+      render: (a, e) => (
         <div className="flex flex-row justify-around">
-          <button className="bg-green-500 p-3 w-24 hover:opacity-80 rounded-lg">Chỉnh sủa</button>
+          {console.log(a)}
+          <button className="bg-green-500 p-3 w-24 hover:opacity-80 rounded-lg" onClick={() => {}}>
+            Chỉnh sủa
+          </button>
           <button className="bg-red-500 p-3 w-24 hover:opacity-80 rounded-lg">Xóa</button>
         </div>
       ),

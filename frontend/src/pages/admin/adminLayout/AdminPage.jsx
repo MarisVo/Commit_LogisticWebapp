@@ -43,7 +43,7 @@ export default function AdminPage() {
     getItem(<div>Commit</div>, "sub1", <DesktopOutlined> </DesktopOutlined>, [
       getItem(
         <div>
-          <Link to="">Add Commitment</Link>
+          <Link to="addcommit">Add Commitment</Link>
         </div>,
         "3"
       ),
