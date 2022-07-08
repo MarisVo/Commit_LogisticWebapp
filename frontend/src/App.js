@@ -38,7 +38,13 @@ import Service from "./pages/services/Service";
 import FastService from "./pages/services/FastService";
 import SuperService from "./pages/services/SuperService";
 import FreshService from "./pages/services/FreshService";
-
+import AdminPage from "./pages/admin/adminLayout/AdminPage";
+import AdminAbout from "./pages/admin/AdminAbout";
+import AdminContactUs from './pages/admin/AdminContactUs.jsx'
+import AdminCommitment from './pages/admin/AdminCommitment.jsx'
+import AdminContactMessage from './pages/admin/AdminContactMessage.jsx'
+import AdminDeliveryService from './pages/admin/AdminDeliveryService.jsx'
+import AdminPartner from "./pages/admin/AdminPartner";
 const App = () => {
   return (
     <MainProvider>
@@ -107,10 +113,19 @@ const App = () => {
               <Route path="*" element={<PageNotFound />} />
             </Route>
             <Route path="storekeeper" element={<LayerStorekeeper />} >
-            <Route index element={<ProductsManager />} />
-            <Route path="xuat-nhap" element={<ProductsManager />} />
-            <Route path="ton-kho" element={<Inventory />} />
-          </Route>
+              <Route index element={<ProductsManager />} />
+              <Route path="xuat-nhap" element={<ProductsManager />} />
+              <Route path="ton-kho" element={<Inventory />} />
+
+            </Route>
+            <Route path="admin" element={<AdminPage />}>
+              <Route path="about" element={<AdminAbout />}></Route>
+              <Route path="contact-us" element={<AdminContactUs />}></Route>
+              <Route path="commitment" element={<AdminCommitment />}></Route>
+              <Route path="message" element={<AdminContactMessage />}></Route>
+              <Route path="service" element={<AdminDeliveryService />}></Route>
+              <Route path="partner" element={<AdminPartner />}></Route>
+            </Route>
           </Routes>
         </div>
       </BrowserRouter>
