@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./App.css";
 import "react-router-dom";
 import {
@@ -27,16 +27,24 @@ import {
   Profile,
   Notification,
   PurchaseDriver,
+  LayerStorekeeper,
+  ProductsManager,
+  Inventory,
+  StandardService,
+  Service,
+  FastService,
+  SuperService,
+  FreshService,
+  AdminPage,
+  AdminAbout,
+  AdminContactUs,
+  AdminCommitment,
+  AdminContactMessage,
+  AdminDeliveryService,
+  AdminPartner,
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
 import MainProvider from "./context/MainContext";
-import StandardService from "./pages/services/StandardService";
-import Service from "./pages/services/Service";
-import FastService from "./pages/services/FastService";
-import SuperService from "./pages/services/SuperService";
-import FreshService from "./pages/services/FreshService";
-
 const App = () => {
   return (
     <MainProvider>
@@ -104,6 +112,19 @@ const App = () => {
               <Route path="tu-van/dang-ki-tu-van" element={<SignUpAdvice />} />
 
               <Route path="*" element={<PageNotFound />} />
+            </Route>
+            <Route path="storekeeper" element={<LayerStorekeeper />}>
+              <Route index element={<ProductsManager />} />
+              <Route path="xuat-nhap" element={<ProductsManager />} />
+              <Route path="ton-kho" element={<Inventory />} />
+            </Route>
+            <Route path="admin" element={<AdminPage />}>
+              <Route path="about" element={<AdminAbout />}></Route>
+              <Route path="contact-us" element={<AdminContactUs />}></Route>
+              <Route path="commitment" element={<AdminCommitment />}></Route>
+              <Route path="message" element={<AdminContactMessage />}></Route>
+              <Route path="service" element={<AdminDeliveryService />}></Route>
+              <Route path="partner" element={<AdminPartner />}></Route>
             </Route>
           </Routes>
         </div>
