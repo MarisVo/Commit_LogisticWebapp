@@ -1,8 +1,7 @@
 import React from "react";
 import "./App.css";
 import "react-router-dom";
-// import Header from "./components/Header";
-// import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
 import {
   Home,
   About,
@@ -44,8 +43,10 @@ const App = () => {
     <MainProvider>
       <BrowserRouter>
         <div className="wrapper">
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<DefaultLayout />}>
+
               <Route index element={<Home />}></Route>
               <Route path="ve-chung-toi" element={<About />} />
               <Route path="cam-ket" element={<Commit />} />
@@ -107,10 +108,10 @@ const App = () => {
               <Route path="*" element={<PageNotFound />} />
             </Route>
             <Route path="storekeeper" element={<LayerStorekeeper />} >
-            <Route index element={<ProductsManager />} />
-            <Route path="xuat-nhap" element={<ProductsManager />} />
-            <Route path="ton-kho" element={<Inventory />} />
-          </Route>
+              <Route index element={<ProductsManager />} />
+              <Route path="xuat-nhap" element={<ProductsManager />} />
+              <Route path="ton-kho" element={<Inventory />} />
+            </Route>
           </Routes>
         </div>
       </BrowserRouter>

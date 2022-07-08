@@ -8,6 +8,7 @@ import { getDistrictsByProvinceCode, getProvinces } from "sub-vn";
 import { IoLocationOutline } from 'react-icons/io5'
 import { FiMap } from 'react-icons/fi'
 import axios from 'axios'
+import { Fade, Zoom, Reveal } from 'react-reveal';
 
 const { TabPane } = Tabs
 const { Option } = Select
@@ -305,47 +306,52 @@ const Home = () => {
                 <span className='uppercase text-xl font-black'>mạng lưới phủ sóng các nước</span>
                 <span className='text-sm'>J&T Express tự hào đã & đang mở rộng mạng lưới quốc tế để mang đến trải nghiệm tốt nhất</span>
             </div>
-
-            <div className="grid grid-cols-3 text-white text-center gap-y-12 mb-9">
-                {flags.map((flag, key) => (
-                    <div className='relative flex flex-col justify-start items-center' key={key}>
-                        <img src={flag.url} alt={flag.name} className='peer w-12 h-12 shadow-md rounded-full  ' />
-                        <span className="hidden lg:peer-hover:block  absolute top-14 px-5 py-1 rounded-md bg-slate-800">{flag.name}</span>
-                    </div>
-                ))}
-
-            </div>
+            <Fade bottom duration="1500">
+                <div className="grid grid-cols-3 text-white text-center gap-y-12 mb-9">
+                    {flags.map((flag, key) => (
+                        <div className='relative flex flex-col justify-start items-center' key={key}>
+                            <img src={flag.url} alt={flag.name} className='peer w-12 h-12 shadow-md rounded-full  ' />
+                            <span className="hidden lg:peer-hover:block  absolute top-14 px-5 py-1 rounded-md bg-slate-800">{flag.name}</span>
+                        </div>
+                    ))}
+                </div>
+            </Fade>
 
             <div className="flex flex-col lg:flex-row ">
                 <div className="flex flex-col items-center justify-center text-justify gap-y-7 w-full lg:max-w-[500px] py-6 px-3 bg-[#F0B90B] rounded-r-xl">
-                    <span className="text-4xl font-black container text-white">VỀ CHÚNG TÔI</span>
-                    <span className=" text-base container tracking-wide px-4 lg:px-6 w-full">
-                        J&T Express là thương hiệu chuyển phát nhanh dựa trên sự phát triển của công nghệ và Internet.
-                        Chúng tôi sở hữu mạng lưới rộng khắp nhằm hỗ trợ các hoạt động giao nhận hàng hóa nhanh chóng không chỉ ở nội thành
-                        mà còn ở ngoại thành và các vùng xa của các tỉnh thành trong cả nước Việt Nam.
-                    </span>
+                    <Fade left duration='1500'>
+                        <span className="text-4xl font-black container text-white">VỀ CHÚNG TÔI</span>
+                        <span className=" text-base container tracking-wide px-4 lg:px-6 w-full">
+                            J&T Express là thương hiệu chuyển phát nhanh dựa trên sự phát triển của công nghệ và Internet.
+                            Chúng tôi sở hữu mạng lưới rộng khắp nhằm hỗ trợ các hoạt động giao nhận hàng hóa nhanh chóng không chỉ ở nội thành
+                            mà còn ở ngoại thành và các vùng xa của các tỉnh thành trong cả nước Việt Nam.
+                        </span>
+                    </Fade>
+
                 </div>
                 <div className="grid grid-cols-2 mx-auto gap-y-2 px-6 bg-yellow-100 rounded-l-2xl w-full">
-                    <div className="flex flex-col items-center text-center py-4">
-                        <img src='https://jtexpress.vn/themes/jtexpress/assets/images/63tinh-thanh.png' alt="63-tinh-thanh-pic" />
-                        <span className="text-xl font-extrabold">63 TỈNH THÀNH</span>
-                        <span>Dịch vụ phủ sóng khắp 63 tỉnh thành</span>
-                    </div>
-                    <div className="flex flex-col items-center text-center py-4">
-                        <img src='https://jtexpress.vn/themes/jtexpress/assets/images/1000xe.png' alt="vehicle-pic" />
-                        <span className="text-xl font-extrabold">850 PHƯƠNG TIỆN</span>
-                        <span>Sở hữu 850 xe tải vận chuyển hàng hóa</span>
-                    </div>
-                    <div className="flex flex-col items-center text-center py-4">
-                        <img src='https://jtexpress.vn/themes/jtexpress/assets/images/25000nhan-vien.png' alt="staff-pic" />
-                        <span className="text-xl font-extrabold">19.000+ NHÂN VIÊN</span>
-                        <span>Hơn 19.000 nhân viên đang làm việc khắp các tỉnh thành</span>
-                    </div>
-                    <div className="flex flex-col items-center text-center py-4">
-                        <img src='https://jtexpress.vn/themes/jtexpress/assets/images/1900bu-cuc.png' alt="office-pic" />
-                        <span className="text-xl font-extrabold">1.900 BƯU CỤC</span>
-                        <span>Hơn 1.900 bưu cục hoạt động trên toàn quốc</span>
-                    </div>
+                    <Fade right duration="2000">
+                        <div className="flex flex-col items-center text-center py-4">
+                            <img src='https://jtexpress.vn/themes/jtexpress/assets/images/63tinh-thanh.png' alt="63-tinh-thanh-pic" />
+                            <span className="text-xl font-extrabold">63 TỈNH THÀNH</span>
+                            <span>Dịch vụ phủ sóng khắp 63 tỉnh thành</span>
+                        </div>
+                        <div className="flex flex-col items-center text-center py-4">
+                            <img src='https://jtexpress.vn/themes/jtexpress/assets/images/1000xe.png' alt="vehicle-pic" />
+                            <span className="text-xl font-extrabold">850 PHƯƠNG TIỆN</span>
+                            <span>Sở hữu 850 xe tải vận chuyển hàng hóa</span>
+                        </div>
+                        <div className="flex flex-col items-center text-center py-4">
+                            <img src='https://jtexpress.vn/themes/jtexpress/assets/images/25000nhan-vien.png' alt="staff-pic" />
+                            <span className="text-xl font-extrabold">19.000+ NHÂN VIÊN</span>
+                            <span>Hơn 19.000 nhân viên đang làm việc khắp các tỉnh thành</span>
+                        </div>
+                        <div className="flex flex-col items-center text-center py-4">
+                            <img src='https://jtexpress.vn/themes/jtexpress/assets/images/1900bu-cuc.png' alt="office-pic" />
+                            <span className="text-xl font-extrabold">1.900 BƯU CỤC</span>
+                            <span>Hơn 1.900 bưu cục hoạt động trên toàn quốc</span>
+                        </div>
+                    </Fade>
                 </div>
             </div>
             <div className="hidden lg:flex flex-row justify-around items-center container mx-auto my-12 ">
@@ -367,14 +373,16 @@ const Home = () => {
             </div>
 
             <div className="flex items-center justify-center my-6 container mx-auto">
-                <iframe
-                    width="731" height="411"
-                    src="https://www.youtube.com/embed/99RCEdAP_yk"
-                    title="J&T Express tự hào ra mắt Trung tâm trung chuyển lớn nhất Việt Nam"
-                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                >
-                </iframe>
+                <Zoom duration="1000">
+                    <iframe
+                        width="731" height="411"
+                        src="https://www.youtube.com/embed/99RCEdAP_yk"
+                        title="J&T Express tự hào ra mắt Trung tâm trung chuyển lớn nhất Việt Nam"
+                        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                    >
+                    </iframe>
+                </Zoom>
             </div>
             <div className='relative h-[670px] lg:h-[462px]'>
                 <img src="https://jtexpress.vn/themes/jtexpress/assets/images/bg-download-appnew.png" alt="" className=' h-full w-full object-cover' />

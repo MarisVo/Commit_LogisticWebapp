@@ -152,7 +152,7 @@ function Login() {
                 <Form.Item wrapperCol={{ span: 24 }}>
                     <div className='sign'>
                         Bạn chưa có tài khoản?  
-                        <Link to="/register" className="font-semibold text-blue-700">
+                        <Link to="/dang-ki" className="font-semibold text-blue-700">
                             Đăng ký tài khoản
                         </Link>
                     </div>

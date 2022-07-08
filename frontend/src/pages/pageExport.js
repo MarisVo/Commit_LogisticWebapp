@@ -23,7 +23,7 @@ export { default as ForgetPass } from "./Login/ForgetPass.jsx";
 
 export { default as PageNotFound } from "./PageNotFound";
 
-export {default as LayerStorekeeper} from './storekeeper/LayerStorekeeper'
+export {default as LayerStorekeeper} from '../layouts/StorekeeperLayout'
 export {default as ProductsManager} from './storekeeper/ProductsManager'
 export {default as Inventory} from './storekeeper/Inventory'
 export { default as DefaultLayout } from "../layouts/DefaultLayout";
