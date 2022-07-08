@@ -3,6 +3,7 @@ import { Button, Input, Space, Table, Modal } from "antd";
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import { useEffect } from "react";
+import AdminEditCommit from "../../components/Admin/Commit/AdminEditCommit";
 
 export default function AdminCommitment() {
   const [dataCommit, setDataCommit] = useState([
@@ -14,9 +15,10 @@ export default function AdminCommitment() {
     },
     { id: "2", heading: "Danske", logo: "https://brandslogos.com/wp-content/uploads/images/large/danske-bank-logo.png", detail: "Banking" },
   ]);
-
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
+  const [editCommitInfor,setEditCommitInfor] =useState({})
   const searchInput = useRef(null);
   const getInforCommitAPI = async () => {
     try {
@@ -32,6 +34,12 @@ export default function AdminCommitment() {
       console.log(error.response);
     }
   };
+  const onClose = () => {
+    setIsModalVisible(false);
+  };
+  useEffect(() => {
+    getInforCommitAPI();
+  }, []);
   useEffect(() => {}, []);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -145,8 +153,14 @@ export default function AdminCommitment() {
       width: "20%",
       render: (a, e) => (
         <div className="flex flex-row justify-around">
-          {console.log(a)}
-          <button className="bg-green-500 p-3 w-24 hover:opacity-80 rounded-lg" onClick={() => {}}>
+         
+          <button
+            className="bg-green-500 p-3 w-24 hover:opacity-80 rounded-lg"
+            onClick={() => {
+              setIsModalVisible(!isModalVisible);
+              setEditCommitInfor(e)
+            }}
+          >
             Chỉnh sủa
           </button>
           <button className="bg-red-500 p-3 w-24 hover:opacity-80 rounded-lg">Xóa</button>
@@ -156,6 +170,7 @@ export default function AdminCommitment() {
   ];
   return (
     <div>
+      <AdminEditCommit isModalVisible={isModalVisible} infor = {editCommitInfor} onClose={onClose}></AdminEditCommit>
       <Table columns={columns} dataSource={dataCommit} />
     </div>
   );

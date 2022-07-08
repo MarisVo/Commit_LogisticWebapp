@@ -1,9 +1,11 @@
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Form, Input, } from "antd";
 import axios from "axios";
 import React, { useState } from "react";
 import { handleChangeFile } from "../HandleChangeFileToFormData";
 
+
 export default function AdminAddCommit() {
+  
   const [img, setImg] = useState("");
   const [addCommit, setAddCommit] = useState({
     heading: "",
@@ -32,9 +34,10 @@ export default function AdminAddCommit() {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-  return (
-    <Form
+  return (<div>
+     <Form
       name="basic"
+    
       labelCol={{
         span: 2,
       }}
@@ -48,6 +51,7 @@ export default function AdminAddCommit() {
       onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
+        <h1 className="uppercase"> VUI LÒNG nhập commit mới </h1>
       <Form.Item
         label="Heading"
         name="Heading"
@@ -90,6 +94,10 @@ export default function AdminAddCommit() {
           Submit
         </Button>
       </Form.Item>
+   
     </Form>
+
+  </div>
+   
   );
 }

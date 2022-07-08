@@ -1,7 +1,9 @@
-import React from 'react'
+
+import React, { useState } from "react";
 
 export default function AdminContactMessage() {
+
   return (
-    <div>AdminContactMessage</div>
-  )
+    <div></div>
+  );
 }
