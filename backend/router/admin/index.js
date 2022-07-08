@@ -7,6 +7,12 @@ import contactUsAdminRoute from "./contactUs.js"
 import commitmentAdminRoute from "./commitment.js"
 import partnerAdminRoute from "./partner.js"
 import contactMsgAdminRoute from "./contactMsg.js"
+import userAdminRoute from "./user.js"
+import carAdminRoute from "./car.js"
+import roadAdminRoute from "./road.js"
+import billAdminRoute from "./bill.js"
+import productShipmentAdminRoute from "./productShipment.js"
+import prohibitedProductAdminRoute from "./ProhibitedProduct.js"
 
 const adminRoute = express.Router()
 
@@ -24,5 +30,6 @@ adminRoute.use('/auth', authAdminRoute)
     .use('/road', roadAdminRoute)
     .use('/bill', billAdminRoute)
     .use('/product-shipment', productShipmentAdminRoute)
+    .use('/prohibited-product', prohibitedProductAdminRoute)
     
 export default adminRoute

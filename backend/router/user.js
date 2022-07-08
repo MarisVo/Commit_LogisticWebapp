@@ -44,7 +44,7 @@ const userRoute = express.Router()
     })
 
 /**
- * @route PUT /api/customer/:id
+ * @route PUT /api/user/customer/:id
  * @description update information of customer user
  * @access private
  */
@@ -72,7 +72,7 @@ const userRoute = express.Router()
      }             
  })
 /**
- * @route PUT /api/staff/:id
+ * @route PUT /api/user/staff/:id
  * @description update information of staff user
  * @access private
  */

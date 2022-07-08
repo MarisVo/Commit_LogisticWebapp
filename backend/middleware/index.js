@@ -31,6 +31,14 @@ export const createLogoDir = (req, res, next) => {
     next()
 }
 
+export const createImageDir = (req, res, next) => {
+    mkdir(`public/image`, { recursive: true }, (err) => {
+        if(err) return sendError(res, 'Cannot upload file.')
+    })
+    req.dirName = 'image'
+    next()
+}
+
 /**
  * header contain
  * Authorised : Bearer token

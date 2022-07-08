@@ -22,6 +22,12 @@ import swaggerUi from 'swagger-ui-express'
 const swaggerDocument = YAML.load('./swagger.yaml')
 
 import { verifyAdmin, verifyToken } from "./middleware/index.js"
+import userRoute from "./router/user.js"
+import roadRoute from "./router/road.js"
+import carRoute from "./router/car.js"
+import billRoute from "./router/bill.js"
+import productShipmentRoute from "./router/productShipment.js"
+import prohibitedProductRoute from "./router/prohibitedProduct.js"
 dotenv.config()
 
 /**
@@ -52,11 +58,12 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/message', contactMsgRoute)
     // .use('/api/quote', quoteRoute)
     .use('/api/warehouse', warehouseRoute)
-    .use('/api/user', userRoot)
+    .use('/api/user', userRoute)
     .use('/api/road', roadRoute)
     .use('/api/car', carRoute)
     .use('/api/product-shipment', productShipmentRoute)
     .use('/api/bill', billRoute)
+    .use('/api/prohibited-product', prohibitedProductRoute)
 
     app.listen(PORT, () => {
     console.log(`Server start at port: ${PORT}`)

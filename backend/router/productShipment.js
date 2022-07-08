@@ -1,6 +1,6 @@
 import express from "express"
 import { sendError, sendServerError, sendSuccess } from "../helper/client.js"
-import productShipment from "../model/ProductShipment.js"
+import ProductShipment from "../model/ProductShipment.js"
 import { createProductShipmentValidate } from "../validation/productShipment.js"
 
 
@@ -16,7 +16,7 @@ const productShipmentRoute = express.Router()
     async (req, res) => {
         const {limit} = req.query
         try {
-            const productShipments = await productShipment.find({}).limit(limit).sort('-updatedAt')
+            const productShipments = await ProductShipment.find({}).limit(limit).sort('-updatedAt')
             if (productShipments) return sendSuccess(res, "Get product shipment successful.", productShipments)
             return sendError(res, "Not information found.")
         } catch(error){
@@ -34,7 +34,7 @@ productShipmentRoute.get('/:id',
     async (req, res) => {
         try {
             const {id} = req.params
-            const productShipments = await productShipment.findById(id)
+            const productShipments = await ProductShipment.findById(id)
             if ( productShipments ) return sendSuccess(res, "Get product shipment successful.", productShipments)
             return sendError(res, "Not information found.")
         } catch(error){

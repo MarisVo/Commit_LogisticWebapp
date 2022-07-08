@@ -1,0 +1,92 @@
+import express from "express"
+import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
+import ProhibitedProduct from "../../model/ProhibitedProduct.js"
+import { handleFilePath, uploadResources } from '../../constant.js'
+import { createImageDir } from "../../middleware/index.js"
+
+
+const prohibitedProductAdminRoute = express.Router()
+
+/**
+ * @route POST /api/admin/prohibited-product/create
+ * @description create new prohibited product
+ * @access private
+ */
+ prohibitedProductAdminRoute.post('/create', createImageDir,
+    uploadResources.single('image'),   
+    async (req, res) => {    
+
+        try {            
+            const image = handleFilePath(req.file) 
+            const {name, detail} = req.body;
+            const isExist = await ProhibitedProduct.exists({name})
+            if (isExist) {
+                return sendError(res, "Name is already existed.")
+            }              
+                        
+            await ProhibitedProduct.create({name: name, image: image , detail: detail});
+            return sendSuccess(res, 'Create prohibied product successfully.', {name, image, detail})
+            
+        } catch (error) {
+            console.log(error)
+            if (req.image) unlinkSync(req.image.path)
+            return sendServerError(res)
+        }
+ })
+
+
+/**
+ * @route PUT /api/admin/prohibited-product/:id
+ * @description update infomation of a existing prohibited product
+ * @access private
+ */
+ prohibitedProductAdminRoute.put('/:id',createImageDir,
+    uploadResources.single('image'),
+    async (req, res) => {
+        const {id} = req.params;
+        const image = handleFilePath(req.file) 
+        const {name, detail} = req.body;
+        try {
+            const isExist = await ProhibitedProduct.findById(id);
+            if (isExist)
+            {
+                const isExistName = await ProhibitedProduct.exists({name})
+                if (isExistName) 
+                    return sendError(res, "Name is existed.")
+                
+                await ProhibitedProduct.findByIdAndUpdate(id, {name: name, image:image, detail: detail})
+                return sendSuccess(res, "Update prohibited product successfully.", {name: name, image:image, detail: detail})
+            }        
+            return sendError(res, "Prohibited product not exists.")
+
+        } catch (error) {
+            console.log(error)
+            if (req.logo) unlinkSync(req.image.path)
+            return sendServerError(res, error)
+        }
+    }
+)
+
+/**
+ * @route DELETE /api/admin/prohibited-product/:id
+ * @description delete a existing prohibited product
+ * @access private
+ */
+ prohibitedProductAdminRoute.delete('/:id',
+    async (req, res) => {
+        const {id} = req.params;    
+        try {
+            const isExist = await ProhibitedProduct.exists({_id: id})
+            if (!isExist) 
+                return sendError(res, "Prohibited product not exists.")
+            
+            await ProhibitedProduct.findByIdAndRemove(id)
+                .then(()=> { return sendSuccess(res, "Delete prohibited product successfully.")})  
+                .catch((err) => { return sendError(res, err)})  
+        } catch (error) {
+            console.log(error)
+            return sendError(res)
+        }
+    })
+
+export default prohibitedProductAdminRoute
