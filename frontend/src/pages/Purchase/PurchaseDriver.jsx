@@ -14,45 +14,14 @@ import { BiTargetLock } from "react-icons/bi";
 import { MdOutlineEditCalendar } from "react-icons/md";
 import { TiDeleteOutline } from "react-icons/ti";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
-import { MainContext } from "../../context/MainContext";
-
-const Purchase = () => {
+const PurchaseDriver = () => {
   const [open, setOpen] = useState(false);
   const [order, setOrder] = useState();
-  const { user } = useContext(MainContext);
-  /*  const [user, setUser] = contextData.user; */
-  /*  const [form, setForm] = useState({
-    email: "",
-    phone: "",
-    password: "",
-  });
-  const { loginHandle } = useContext(MainContext);
-  const handleChange = (e) => {
-    e.preventDefault();
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
-    console.log(form);
-  };
-  const onFinish = async () => {
-    try {
-      const res = await axios.post(
-        `http://localhost:8000/api/auth/login`,
-        form
-      );
-      console.log(res);
-      loginHandle(res.accessToken, res.refreshToken, res.user);
-    } catch (err) {
-      console.log(err);
-    }
-  }; */
+  const [status, setStatus] = useState("waiting");
   const handleOpen = () => {
     setOpen(!open);
     console.log(open);
   };
-  useEffect(() => {
-    console.log(user);
-  });
   const order1 = {
     orderId: 232321,
     /*  service: {
@@ -98,6 +67,7 @@ const Purchase = () => {
       province: "Binh Thuan",
     },
     total_price: 1000000,
+    status: "waiting",
   };
   /*  useEffect(() => {
     const getOrder = async () => {
@@ -112,7 +82,7 @@ const Purchase = () => {
       }
     };
   }); */
-
+  const handleStatus = () => {};
   return (
     <div className="pt-[68px]">
       <div className="bg-gray-100 relative ">
@@ -184,7 +154,7 @@ const Purchase = () => {
                     className=" text-[10px] font-medium  sm:mr-4 sm:text-sm  hover:translate-y-[-1px] transition-all hover:text-yellow-500  cursor-pointer "
                     to="/user/purchase/order/2323"
                   >
-                    Đang giao hàng
+                    Chưa giao
                   </Link>
                 </div>
               </div>
@@ -221,9 +191,12 @@ const Purchase = () => {
                 </div> */}
                 <div className="flex justify-end mb-1 mr-2">
                   <Link className=" " to="/user/purchase/order/2323">
-                    <button className="p-2 ml-3 items-center max-w-[140px] flex font-semibold bg-yellow-500  border-button_color border-2  hover:translate-y-[-1px] transition-all text-[#00003B] rounded-sm">
+                    <button
+                      onClick={handleStatus()}
+                      className="p-2 ml-3 items-center max-w-[140px] flex font-semibold bg-yellow-500  border-button_color border-2  hover:translate-y-[-1px] transition-all text-[#00003B] rounded-sm"
+                    >
                       <BiTargetLock />
-                      <div>Tra hành trình</div>
+                      <div>Nhận đơn</div>
                     </button>
                   </Link>
                 </div>
@@ -244,4 +217,4 @@ const Purchase = () => {
   );
 };
 
-export default Purchase;
+export default PurchaseDriver;

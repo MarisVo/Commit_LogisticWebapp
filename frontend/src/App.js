@@ -1,8 +1,6 @@
 import React from "react";
 import "./App.css";
 import "react-router-dom";
-// import Header from "./components/Header";
-// import Footer from "./components/Footer";
 import {
   Home,
   About,
@@ -28,23 +26,25 @@ import {
   PurchaseDetail,
   Profile,
   Notification,
-  LayerStorekeeper, ProductsManager, Inventory
+  PurchaseDriver,
+  LayerStorekeeper,
+  ProductsManager,
+  Inventory,
+  StandardService,
+  Service,
+  FastService,
+  SuperService,
+  FreshService,
+  AdminPage,
+  AdminAbout,
+  AdminContactUs,
+  AdminCommitment,
+  AdminContactMessage,
+  AdminDeliveryService,
+  AdminPartner,
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
 import MainProvider from "./context/MainContext";
-import StandardService from "./pages/services/StandardService";
-import Service from "./pages/services/Service";
-import FastService from "./pages/services/FastService";
-import SuperService from "./pages/services/SuperService";
-import FreshService from "./pages/services/FreshService";
-import AdminPage from "./pages/admin/adminLayout/AdminPage";
-import AdminAbout from "./pages/admin/AdminAbout";
-import AdminContactUs from './pages/admin/AdminContactUs.jsx'
-import AdminCommitment from './pages/admin/AdminCommitment.jsx'
-import AdminContactMessage from './pages/admin/AdminContactMessage.jsx'
-import AdminDeliveryService from './pages/admin/AdminDeliveryService.jsx'
-import AdminPartner from "./pages/admin/AdminPartner";
 const App = () => {
   return (
     <MainProvider>
@@ -93,6 +93,7 @@ const App = () => {
               {/* ----------------------Profile------------------ */}
               <Route path="user/account/profile" element={<Profile />} />
               <Route path="user/purchase" element={<Purchase />} />
+              <Route path="driver/purchase" element={<PurchaseDriver />} />
               <Route path="user/purchase/:id" element={<PurchaseDetail />} />
               <Route
                 path="user/purchase/order/:id"
@@ -112,11 +113,10 @@ const App = () => {
 
               <Route path="*" element={<PageNotFound />} />
             </Route>
-            <Route path="storekeeper" element={<LayerStorekeeper />} >
+            <Route path="storekeeper" element={<LayerStorekeeper />}>
               <Route index element={<ProductsManager />} />
               <Route path="xuat-nhap" element={<ProductsManager />} />
               <Route path="ton-kho" element={<Inventory />} />
-
             </Route>
             <Route path="admin" element={<AdminPage />}>
               <Route path="about" element={<AdminAbout />}></Route>

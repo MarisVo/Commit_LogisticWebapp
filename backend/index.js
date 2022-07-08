@@ -14,8 +14,7 @@ import contactUsRoute from "./router/contactUs.js"
 import commitmentRoute from "./router/commitment.js"
 import partnerRoute from "./router/partner.js"
 import contactMsgRoute from "./router/contactMsg.js"
-// import quoteRoute from "./router/quote.js"
-
+import consultancyRoute from "./router/consultancy.js"
 
 // swagger setup
 import swaggerUi from 'swagger-ui-express'
@@ -33,6 +32,7 @@ mongoose.connect(process.env.MONGO_URI, () => {
 
 const PORT = process.env.PORT || 8000
 export const TOKEN_LIST = {}
+export const TOKEN_BLACKLIST = {}
 const app = express()
 
 app.use(express.json())
@@ -50,7 +50,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/commitment', commitmentRoute)
     .use('/api/partner', partnerRoute)
     .use('/api/message', contactMsgRoute)
-    // .use('/api/quote', quoteRoute)
+    .use('/api/consultancy', consultancyRoute)
 
 app.listen(PORT, () => {
     console.log(`Server start at port: ${PORT}`)
