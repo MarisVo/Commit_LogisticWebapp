@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 import axios from "axios";
 import { END_POINT } from "../utils/constant";
 
@@ -40,10 +40,6 @@ const MainProvider = ({ children }) => {
     setUser(null);
     localStorage.removeItem(process.env.REACT_APP_LOCALSTORAGE_TOKEN_NAME);
   };
-
-  useEffect(() => {
-    checkAuthenticated();
-  }, []);
 
   return (
     <MainContext.Provider

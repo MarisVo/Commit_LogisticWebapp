@@ -24,58 +24,10 @@ export default function Profile() {
   const [isSubmit, setIsSubmit] = useState(false);
   const [open, setOpen] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  /*   const [date, setDate] = useState(0);
-  const [month, setMonth] = useState(0);
-  const [year, setYear] = useState(0); */
-
-  /*   const generateDateOptions = () => {
-    const arr = [];
-    const startDate = 1;
-    const endDate = 31;
-    for (let i = endDate; i >= startDate; i--) {
-      arr.push(
-        <option key={i} value={i}>
-          {i}
-        </option>
-      );
-    }
-    return arr;
-  };
-  const generateMonthOptions = () => {
-    const arr = [];
-    const startMonth = 1;
-    const endMonth = 12;
-    for (let i = endMonth; i >= startMonth; i--) {
-      arr.push(
-        <option key={i} value={i}>
-          {i}
-        </option>
-      );
-    }
-    return arr;
-  };
-  const generateYearOptions = () => {
-    const arr = [];
-    const startYear = 1900;
-    const endYear = new Date().getFullYear();
-    for (let i = endYear; i >= startYear; i--) {
-      arr.push(
-        <option key={i} value={i}>
-          {i}
-        </option>
-      );
-    }
-    return arr;
-  }; */
-  /*   const handleDate = (e) => {
-    setDate(e.target.value);
-  };
-  const handleMonth = (e) => {
-    setMonth(e.target.value);
-  };
-  const handleYear = (e) => {
-    setYear(e.target.value);
-  }; */
+  const [information, setInformation] = useState({
+    name: "Nguyễn Văn Thật",
+    address: "B5/3 Phường An Phú Tp Thủ Đức",
+  });
   const handleOpen = () => {
     setOpen(!open);
   };
@@ -187,15 +139,19 @@ export default function Profile() {
 
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
-      /*  const handleChangePassword = async () => {
-        const res = await axios.put(
-          `${REACT_APP_API_BASE_URL}/auth/change-pw`,
-          cPassword,
-          {
-            header: { accessToken: `Bearer ${TOKEN}` },
-          }
-        );
+      /* const handleChangePassword = async () => {
+        try{
+          const res = await axios.put(
+            `${REACT_APP_API_BASE_URL}/auth/change-pw`,
+            cPassword,
+            {
+              header: { accessToken: `Bearer ${TOKEN}` },
+            }
+          );
+        }
+        catch(err){
 
+        }
       }; */
       /*  handleChangePassword() */
       alert("Update password success");
@@ -206,6 +162,12 @@ export default function Profile() {
       verify_passwordRef.current.value = "";
     }
   }, [formErrors, cPassword, isSubmit]);
+  const handleForm = (e) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    setInformation({ ...information, [name]: value });
+    console.log(information);
+  };
   return (
     <div>
       <>
@@ -330,10 +292,9 @@ export default function Profile() {
       <div className="pt-[68px] relative">
         <div className="bg-gray-100 relative ">
           <SideBar className="" handleOpen={handleOpen} open={open} />
-
           <span className="w-6 h-6 absolute top-[10%] left-[0%] z-3 transition  lg:top-[15%]">
             <IoArrowForwardCircleOutline
-              className="w-6 h-6 z-50   "
+              className="w-6 h-6 z-50 "
               onClick={() => handleOpen()}
             />
           </span>
@@ -356,9 +317,16 @@ export default function Profile() {
                     </div>
 
                     <div className="flex  ">
-                      <div className="text-black-700 mr-3 lg:text-base">
+                      {/* <div className="text-black-700 mr-3 lg:text-base">
                         Nguyễn Văn Thật
-                      </div>
+                      </div> */}
+                      <input
+                        className="outline-none border-[1px] border-gray-200  min-w-[160px] md:min-w-[260px] line-clamp-1"
+                        type="text"
+                        name="name"
+                        onChange={handleForm}
+                        defaultValue={information.name}
+                      />
                     </div>
                   </div>
                   <div className="flex mb-3 sm:py-1">
@@ -369,9 +337,16 @@ export default function Profile() {
                     </div>
 
                     <div className="flex  ">
-                      <div className="text-black-700 mr-3 lg:text-base line-clamp-1">
+                      {/*  <div className="text-black-700 mr-3 lg:text-base line-clamp-1">
                         B5/3 Phường An Phú Tp Thủ Đức
-                      </div>
+                      </div> */}
+                      <input
+                        className="outline-none border-[1px] border-gray-200  min-w-[160px] md:min-w-[260px] line-clamp-1"
+                        type="text"
+                        name="address"
+                        onChange={handleForm}
+                        defaultValue={information.address}
+                      />
                     </div>
                   </div>
                   <div className="flex mb-3 sm:py-1">
@@ -431,45 +406,7 @@ export default function Profile() {
                       </div>
                     </div>
                   </div>
-                  {/*  <div className="flex mb-3 sm:py-1  items-center">
-                    <div className="flex items-center w-2/5   justify-end  lg:text-base">
-                      <label className=" mr-3 text-yellow-600 text">
-                        Ngày Sinh
-                      </label>
-                    </div>
-                    <div className="flex  ">
-                      <div className="text-black-700  flex flex-nowrap items-start ">
-                        <select
-                          className="  outline-none  border-[1px] sm:px-1 sm:mr-2 hover:bottom-3 scrollbar"
-                          name="date"
-                          onChange={(e) => handleDate(e)}
-                          value={date}
-                        >
-                          <option value="0">Date</option>
-                          {generateDateOptions()}
-                        </select>
-                        <select
-                          className="  outline-none border-[1px] sm:px-1 sm:mr-2  hover:bottom-3 scrollbar"
-                          name="month"
-                          onChange={(e) => handleMonth(e)}
-                          value={month}
-                        >
-                          <option value="0">Month</option>
-                          {generateMonthOptions()}
-                        </select>
-                        <select
-                          className="  outline-none  border-[1px] sm:px-1 sm:mr-2 hover:bottom-3 scrollbar"
-                          name="year"
-                          onChange={(e) => handleYear(e)}
-                          value={year}
-                        >
-                          <option value="0">Year</option>
-                          {generateYearOptions()}
-                        </select>
-                      </div>
-                    </div>
-                  </div> */}
-                  {/*  <div className="flex mb-3 ">
+                  <div className="flex mb-3 ">
                     <div className="flex items-center w-2/5  justify-end ">
                       <label className="text-gray-500 mr-3  "></label>
                     </div>
@@ -478,7 +415,7 @@ export default function Profile() {
                         Save
                       </button>
                     </div>
-                  </div> */}
+                  </div>
                 </div>
               </form>
             </div>
