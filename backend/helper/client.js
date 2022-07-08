@@ -47,10 +47,10 @@ export const sendRequest = async (url, method, headers = [], postData = {}) => {
 export const sendAutoMail = async (options) => {
     const service = process.env.MAIL_SERVICE || 'gmail'
     const transport = NodeMailer.createTransport({
-        service: 'Outlook365',
+        service: service,
         auth: {
-            user: 'test01@gptgdt.ml', // process.env.MAIL_HOST,
-            pass: 'bbcnpqbktlqbnxfx' // process.env.PASS_MAIL_HOST
+            user: process.env.MAIL_HOST,
+            pass: process.env.PASS_MAIL_HOST
         }
     })
     try {
