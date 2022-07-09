@@ -27,13 +27,11 @@ const ApplicantSchema = new Schema(
         },
         message: {
             type: String,
-            default: null
         },
         status: {
             type: String,
             type: String,
             enum: Object.values(APPLICANT_STATUS),
-            default: APPLICANT_STATUS.PENDING
         },
     },
     { timestamps: true }

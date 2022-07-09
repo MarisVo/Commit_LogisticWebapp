@@ -10,15 +10,11 @@ export const careerValidate = data => {
     .isRequired(data.state, 'state')
     .isRequired(data.bonus, 'bonus')
     .isRequired(data.deadline, 'deadline')
-    .isRequired(data.applicants, 'applicants')
 
     return error.get()
 
 }
 
-    // CV file check type of file 
-
-    // check admin fx
 
 
    

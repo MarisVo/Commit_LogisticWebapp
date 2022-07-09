@@ -11,12 +11,9 @@ export const submitApplicantValidate = data => {
     .isRequired(data.phone, 'phone number')
     .isRequired(data.email, 'email') 
     .isRequired(data.source, 'source')
-    // source range
     .isInRange(data.source, INTEREST_SOURCE)
     .isRequired(data.message, 'message') 
     .isValidLength(data.message, 'message', MIN_LENGTH, MAX_LENGTH)
-    // status range
-    .isInRange(data.status, APPLICANT_STATUS)
 
     return error.get()
 }
@@ -33,14 +30,3 @@ export const updateStatusValidate = data => {
     return error.get()
 }
 
-/*export const uploadCvValidate = data => {
-    const error = new Error()
-
-    .isRequired(data.file, "CV")
-    
-    .isInRange(data.status, APPLICANT_STATUS)
-
-    if(error.get()) return error.errors
-
-    return error.get()
-}*/
