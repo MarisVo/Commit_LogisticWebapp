@@ -1,5 +1,4 @@
 import express from 'express'
-import argon2 from "argon2"
 import { sendError, sendServerError, sendSuccess } from '../../helper/client.js'
 import Department from '../../model/Department.js'
 import { departmentRegisterValidate } from '../../validation/department.js'

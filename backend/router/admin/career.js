@@ -1,8 +1,7 @@
 import express from 'express'
-import argon2 from "argon2"
 import { sendError, sendServerError, sendSuccess } from '../../helper/client.js'
 import Career from '../../model/Career.js'
-import { careerRegisterValidate } from '../../validation/career.js'
+import { careerValidate } from '../../validation/career.js'
 import Department from '../../model/Department.js'
 
 
@@ -15,7 +14,7 @@ const careerAdminRoute = express.Router()
  */
  careerAdminRoute.post('/',
  async (req, res) => {
-    const errors = careerRegisterValidate(req.body)
+    const errors = careerValidate(req.body)
     if (errors)
         return sendError(res, errors)
 
@@ -62,7 +61,7 @@ const careerAdminRoute = express.Router()
 careerAdminRoute.put('/:id',
     async (req, res) => {
         const {id} = req.params
-        const errors = careerRegisterValidate(req.body)
+        const errors = careerValidate(req.body)
         if (errors)
             return sendError(res, errors)
         let { name, type, description, location, state, bonus, deadline } = req.body

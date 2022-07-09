@@ -1,10 +1,11 @@
 import express from "express"
 import { sendError, sendServerError, sendSuccess } from "../helper/client.js"
+import Department from "../model/Department.js"
 
 const departmentRoute = express.Router()
 
 
-// post ?? Department def: contains array of careers, can be created, called within career so no need to access in public get(?)
+// post ?? Department def: contains array of departments, can be created, called within department so no need to access in public get(?)
 
 
 
@@ -56,6 +57,27 @@ const departmentRoute = express.Router()
      }
  })
 
+/**
+ * @route GET /api/department/search/:keyword
+ * @description get department information by keyword
+ * @access public
+ */
+
+ departmentRoute.get('/search/:keyword',
+ async (req, res) => {
+     try {
+         const {keyword} = req.params
+         const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0
+         const page = req.query.page ? parseInt(req.query.page) : 0
+         const department = await Department.find({ $in: [ keyword ] }).limit(pageSize).skip(pageSize*page)
+         if (department)
+             return sendSuccess(res, 'get department information successfully.', department)
+         return sendError(res, 'department information is not found.')
+     } catch (error) {
+         console.log(error)
+         return sendServerError(res)
+     }
+ })
 
 
 

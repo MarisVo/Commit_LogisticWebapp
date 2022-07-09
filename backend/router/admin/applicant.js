@@ -1,8 +1,8 @@
 import express from "express"
-import { sendError, sendServerError, sendAutoMail, sendSuccess } from "../helper/client.js"
-import { APPLICANT_STATUS } from "../constant.js"
-import { updateStatusValidate } from "../validation/applicant.js"
-import Applicant from "../model/Applicant.js"
+import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
+import { updateStatusValidate } from "../../validation/applicant.js"
+import Applicant from "../../model/Applicant.js"
+
 
 const applicantAdminRoute = express.Router()
 
@@ -78,6 +78,89 @@ applicantAdminRoute.put('/:id',
 )
 
 
+/**
+ * @route GET /api/applicant/search/:keyword
+ * @description get applicant information by keyword
+ * @access public
+ */
+
+ applicantRoute.get('/search/:keyword',
+ async (req, res) => {
+     try {
+         const {keyword} = req.params
+         const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0
+         const page = req.query.page ? parseInt(req.query.page) : 0
+         const applicant = await Applicant.find({ $in: [ keyword ] }).limit(pageSize).skip(pageSize*page)
+         if (applicant)
+             return sendSuccess(res, 'get applicant information successfully.', applicant)
+         return sendError(res, 'applicant information is not found.')
+     } catch (error) {
+         console.log(error)
+         return sendServerError(res)
+     }
+ })
+
+
+ /**
+ * @route GET /api/applicant/filter
+ * @description filter applicant information
+ * @access public
+ */
+
+  applicantRoute.get('/filter',
+  async (req, res) => {
+    
+      try {
+          
+        const { department, type,  location, state } = req.query
+        
+          const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0
+          const page = req.query.page ? parseInt(req.query.page) : 0
+          const applicant = await Applicant.find({ 
+                $or: [
+                    {department: department},
+                    {type: type},
+                    {location: location},
+                    {state: state}
+                ]
+           }).limit(pageSize).skip(pageSize*page)
+          if (applicant)
+              return sendSuccess(res, 'get applicant information successfully.', applicant)
+          return sendError(res, 'applicant information is not found.')
+      } catch (error) {
+          console.log(error)
+          return sendServerError(res)
+      }
+  })
+
+
+
+
+
+
+
+/**
+ * @route GET /api/applicant/sort
+ * @description sort applicant information
+ * @access public
+ */
+
+    applicantRoute.get('/sort',
+    async (req, res) => {
+        try {
+            const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0
+            const page = req.query.page ? parseInt(req.query.page) : 0
+            const sortBy = req.query.sortBy 
+            const applicant = await Applicant.find({ }).limit(pageSize).skip(pageSize*page).sort(-sortBy)
+            if (applicant)
+                return sendSuccess(res, 'get applicant information successfully.', applicant)
+            return sendError(res, 'applicant information is not found.')
+        } catch (error) {
+            console.log(error)
+            return sendServerError(res)
+        }
+    })
+  
 
 
 

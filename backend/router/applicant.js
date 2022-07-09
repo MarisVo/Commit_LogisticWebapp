@@ -37,7 +37,7 @@ applicantRoute.use(fileUpload())
         
 
 
-        const cvPath = console.log(req.files.file.data.toString());
+        const cvPath = req.file.data;
         
         const options = {
             from: applicant.email,
@@ -55,16 +55,7 @@ applicantRoute.use(fileUpload())
         
         if (!sendMailSuccess) return sendError(res, 'send CV failed.')
         const ret = await applicant.save()
-        const career = await Career.exists({ _id: req.params.careerId })
-        if (career) {
-            await Career.updateOne({
-                 _id: career._id
-             },
-                 {
-                     $push: { applicants: { applicant } }
-                 })
-             return sendSuccess(res, 'Added applicant in career successfully')
-         }
+        const career = Career.findByIdAndUpdate(careerId, { $push: { applicants: { applicant } }})
     } catch (error) {
         console.log(error)
         if (req.cv) unlinkSync(req.cv.path)
