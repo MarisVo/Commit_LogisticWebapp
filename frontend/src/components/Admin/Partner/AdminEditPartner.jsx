@@ -4,17 +4,14 @@ import Modal from "antd/lib/modal/Modal";
 import axios from "axios";
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { handleChangeFile } from "../HandleChangeFileToFormData";
-const { Option } = Select;
-
-export default function AdminEditCommit(props) {
+export default function AdminEditPartner(props) {
   const { isModalVisibleEdit, onClose, infor } = props;
-  const [editCommit, setEditCommit] = useState({
-    heading: "",
-    detail: "",
+  const [editPartner, setEditPartner] = useState({
+    name: "",
     file: "",
   });
   const postNewCommitAPI = async (newData, id) => {
+    console.log(newData);
     try {
       const result = await axios({
         url: `url${id}`,
@@ -35,17 +32,20 @@ export default function AdminEditCommit(props) {
 
     return e?.fileList;
   };
+
   const onFinish = (values) => {
-    // console.log("Success:", values);
-    setEditCommit(() => {
+    console.log("Success:", values);
+
+    setEditPartner(() => {
       if (values.logo) {
-        editCommit.logo = values.logo;
+        editPartner.file = values.logo;
+      } else {
+        editPartner.file = infor.logo;
       }
-      return { ...editCommit, heading: values.Heading, detail: values.Detail };
+      return { ...editPartner, name: values.name };
     });
-    console.log(editCommit);
     // send new commit to backend
-    postNewCommitAPI(editCommit, infor.id);
+    postNewCommitAPI(editPartner, infor.id);
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -72,35 +72,22 @@ export default function AdminEditCommit(props) {
               autoComplete="off"
             >
               <h1 className="uppercase"> VUI LÒNG nhập chỉnh sửa commit </h1>
-              <Form.Item
-                label="Heading"
-                name="Heading"
-                rules={[
-                  {
-                    required: true,
-                    message: "Mời nhập tiêu đề",
-                  },
-                ]}
-                initialValue={infor.heading}
-              >
-                <Input />
-              </Form.Item>
 
               <Form.Item
-                label="Detail"
-                name="Detail"
+                label="Name"
+                name="name"
                 rules={[
                   {
                     required: true,
                     message: "Mời nhập chi ",
                   },
                 ]}
-                initialValue={infor.detail}
+                initialValue={infor.name}
               >
                 <Input />
               </Form.Item>
 
-              <Form.Item  name={"logo"} label={"logo"} valuePropName="fileList" getValueFromEvent={normFile}>
+              <Form.Item name={"logo"} label={"logo"} valuePropName="fileList" getValueFromEvent={normFile}>
                 <Upload
                   name={"logo"}
                   action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
@@ -109,7 +96,7 @@ export default function AdminEditCommit(props) {
                     {
                       // uid: "-",
                       name: "defaul-logo",
-                      // status: "done",
+                      status: "done",
                       // url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
                       thumbUrl: infor.logo,
                     },

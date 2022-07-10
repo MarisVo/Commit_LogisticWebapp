@@ -3,9 +3,12 @@ import { Button, Input, Space, Table, Modal } from "antd";
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import { useEffect } from "react";
+import { AiOutlinePlus } from "react-icons/ai";
+import AdminAddCommit from "../../components/Admin/Commit/AdminAddCommit";
 import AdminEditCommit from "../../components/Admin/Commit/AdminEditCommit";
 
 export default function AdminCommitment() {
+  //state data commit
   const [dataCommit, setDataCommit] = useState([
     {
       id: "1",
@@ -13,12 +16,22 @@ export default function AdminCommitment() {
       logo: "https://play-lh.googleusercontent.com/5qotPJfklVo9cNI6JLJivYm3OGYRIIgRSrlKMbWQAUuAl03WwWUQwurYz36yDQUUww",
       detail: "Banking",
     },
-    { id: "2", heading: "Danske", logo: "https://brandslogos.com/wp-content/uploads/images/large/danske-bank-logo.png", detail: "Banking" },
+    {
+      id: "2",
+      heading: "Danske",
+      logo: "https://danskebank.com/-/media/danske-bank-images/global/graphics/logo/danske-bank-logo-dark-bg.jpg?rev=db1d1203e2fb49a68beea65b43eeb689&hash=59231469392BF4421574B3E6D1402911",
+      detail: "Banking",
+    },
   ]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  //   state open edit commit modal
+  const [isModalVisibleEdit, setIsModalVisibleEdit] = useState(false);
+  //   state open add commit modal
+  const [isModalVisibleAdd, setIsModalVisibleAdd] = useState(false);
+  // state search text
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
-  const [editCommitInfor,setEditCommitInfor] =useState({})
+  //   state for edit commit
+  const [editCommitInfor, setEditCommitInfor] = useState({});
   const searchInput = useRef(null);
   const getInforCommitAPI = async () => {
     try {
@@ -34,13 +47,20 @@ export default function AdminCommitment() {
       console.log(error.response);
     }
   };
+  //   close edit modal
   const onClose = () => {
-    setIsModalVisible(false);
+    setIsModalVisibleEdit(false);
   };
+  //   close add modal
+  const onCloseAddModal = () => {
+    setIsModalVisibleAdd(false);
+  };
+  // onChange={(e) => handleChangeFile(e, setImg, setEditCommit, editCommit)}
+
+  //
   useEffect(() => {
     getInforCommitAPI();
   }, []);
-  useEffect(() => {}, []);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -121,6 +141,19 @@ export default function AdminCommitment() {
     },
     render: (text) => (searchedColumn === dataIndex ? <>{searchText}</> : text),
   });
+  const deleteAPI = async (id) => {
+    try {
+      const result = await axios({
+        url: `url${id}`,
+        method: "delete",
+      });
+      if (result.status === 200) {
+        alert("đã xóa thành công ");
+      }
+    } catch (err) {
+      console.log(err.response);
+    }
+  };
   const columns = [
     {
       title: "Logo",
@@ -137,14 +170,14 @@ export default function AdminCommitment() {
       width: "20%",
       sorter: (a, b) => a.heading.length - b.heading.length,
 
-      ...getColumnSearchProps("heading"),
+      //   ...getColumnSearchProps("heading"),
     },
     {
       title: "detail",
       dataIndex: "detail",
       key: "details",
-      //   ...getColumnSearchProps("details"),
-      //   sorter: (a, b) => a.details.length - b.details.length,
+      // ...getColumnSearchProps("details"),
+      sorter: (a, b) => a.detail.length - b.detail.length,
       //   sortDirections: ["descend", "ascend"],
     },
     {
@@ -153,24 +186,42 @@ export default function AdminCommitment() {
       width: "20%",
       render: (a, e) => (
         <div className="flex flex-row justify-around">
-         
           <button
             className="bg-green-500 p-3 w-24 hover:opacity-80 rounded-lg"
             onClick={() => {
-              setIsModalVisible(!isModalVisible);
-              setEditCommitInfor(e)
+              setIsModalVisibleEdit(!isModalVisibleEdit);
+              setEditCommitInfor(e);
             }}
           >
             Chỉnh sủa
           </button>
-          <button className="bg-red-500 p-3 w-24 hover:opacity-80 rounded-lg">Xóa</button>
+          <button
+            className="bg-red-500 p-3 w-24 hover:opacity-80 rounded-lg"
+            onClick={() => {
+              deleteAPI(a);
+            }}
+          >
+            Xóa
+          </button>
         </div>
       ),
     },
   ];
   return (
-    <div>
-      <AdminEditCommit isModalVisible={isModalVisible} infor = {editCommitInfor} onClose={onClose}></AdminEditCommit>
+    <div className="flex flex-col gap-y-3 border-l ">
+      {<AdminAddCommit isModalVisibleAdd={isModalVisibleAdd} onClose={onCloseAddModal}></AdminAddCommit>}
+      <AdminEditCommit isModalVisibleEdit={isModalVisibleEdit} infor={editCommitInfor} onClose={onClose}></AdminEditCommit>
+      <span className="text-2xl font-blod py-4 px-2">Commit</span>
+      <div className="relative w-full h-10">
+        <button
+          className="inline-flex justify-around items-center absolute right-10 w-32 border rounded-lg p-2 shadow-xl hover:bg-yellow-100"
+          onClick={() => setIsModalVisibleAdd(!isModalVisibleAdd)}
+        >
+          <AiOutlinePlus className="" />
+          Thêm mới
+        </button>
+      </div>
+
       <Table columns={columns} dataSource={dataCommit} />
     </div>
   );

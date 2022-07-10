@@ -1,20 +1,18 @@
-import { Button, Drawer, Form, Input, Select, Upload } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
-import Modal from "antd/lib/modal/Modal";
+import { Button, Form, Input } from "antd";
 import axios from "axios";
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { handleChangeFile } from "../HandleChangeFileToFormData";
-const { Option } = Select;
+const { TextArea } = Input;
 
-export default function AdminEditCommit(props) {
+export default function AdminEditMessage(props) {
   const { isModalVisibleEdit, onClose, infor } = props;
-  const [editCommit, setEditCommit] = useState({
-    heading: "",
-    detail: "",
-    file: "",
+  const [editMessage, setEditMessage] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    message: "",
   });
-  const postNewCommitAPI = async (newData, id) => {
+  const postNewEditMessageAPI = async (newData, id) => {
     try {
       const result = await axios({
         url: `url${id}`,
@@ -27,25 +25,15 @@ export default function AdminEditCommit(props) {
       }
     } catch (error) {}
   };
-  const normFile = (e) => {
-    if (Array.isArray(e)) {
-      return e;
-    }
-    // console.log("Upload event:", e?.fileList);
 
-    return e?.fileList;
-  };
   const onFinish = (values) => {
-    // console.log("Success:", values);
-    setEditCommit(() => {
-      if (values.logo) {
-        editCommit.logo = values.logo;
-      }
-      return { ...editCommit, heading: values.Heading, detail: values.Detail };
+    console.log("Success:", values);
+    setEditMessage(() => {
+      return { values };
     });
-    console.log(editCommit);
+    // console.log(editCommit);
     // send new commit to backend
-    postNewCommitAPI(editCommit, infor.id);
+    postNewEditMessageAPI(editMessage, infor.id);
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -64,61 +52,73 @@ export default function AdminEditCommit(props) {
               wrapperCol={{
                 span: 16,
               }}
-              initialValues={{
-                remember: true,
-              }}
+              initialValues={
+                {
+                  // remember: true,
+                }
+              }
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
               autoComplete="off"
             >
-              <h1 className="uppercase"> VUI LÒNG nhập chỉnh sửa commit </h1>
+              <h1 className="uppercase"> VUI LÒNG nhập Message mới </h1>
               <Form.Item
-                label="Heading"
-                name="Heading"
+                label="Name"
+                name="name"
                 rules={[
                   {
                     required: true,
                     message: "Mời nhập tiêu đề",
                   },
                 ]}
-                initialValue={infor.heading}
+                initialValue={infor.name}
               >
                 <Input />
               </Form.Item>
 
               <Form.Item
-                label="Detail"
-                name="Detail"
+                label="Phone"
+                name="Phone"
+                initialValue={infor.phone}
                 rules={[
                   {
                     required: true,
-                    message: "Mời nhập chi ",
+                    message: "nhập số phone",
+                    type: "number/text",
                   },
                 ]}
-                initialValue={infor.detail}
               >
                 <Input />
               </Form.Item>
 
-              <Form.Item  name={"logo"} label={"logo"} valuePropName="fileList" getValueFromEvent={normFile}>
-                <Upload
-                  name={"logo"}
-                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                  listType="picture"
-                  defaultFileList={[
-                    {
-                      // uid: "-",
-                      name: "defaul-logo",
-                      // status: "done",
-                      // url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-                      thumbUrl: infor.logo,
-                    },
-                  ]}
-                >
-                  <Button icon={<UploadOutlined />}>Click to Upload ne logo</Button>
-                </Upload>
+              <Form.Item
+                label="Email"
+                name="email"
+                initialValue={infor.email}
+                rules={[
+                  {
+                    required: true,
+                    message: "Mời nhập email",
+                    type: "email",
+                  },
+                ]}
+              >
+                <Input />
               </Form.Item>
 
+              <Form.Item
+                label="message"
+                name="message"
+                initialValue={infor.message}
+                rules={[
+                  {
+                    required: true,
+                    message: "Mời nhập chi tiết",
+                  },
+                ]}
+              >
+                <TextArea />
+              </Form.Item>
               <Form.Item
                 wrapperCol={{
                   offset: 13,

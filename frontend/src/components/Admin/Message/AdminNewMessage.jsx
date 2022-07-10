@@ -1,17 +1,18 @@
 import { Button, Form, Input, Upload } from "antd";
 import axios from "axios";
 import { UploadOutlined } from "@ant-design/icons";
-
 import React, { useState } from "react";
 
-export default function AdminAddCommit(props) {
+const { TextArea } = Input;
+export default function AdminNewMessage(props) {
   const { isModalVisibleAdd, onClose } = props;
   const [addCommit, setAddCommit] = useState({
-    heading: "",
-    detail: "",
-    file: "",
+    name: "string",
+    email: "string",
+    phone: "string",
+    message: "string",
   });
-  const postNewCommitAPI = async (newData) => {
+  const postNewMessage = async (newData) => {
     try {
       const result = await axios({
         url: "",
@@ -22,21 +23,14 @@ export default function AdminAddCommit(props) {
     } catch (error) {}
   };
   const onFinish = (values) => {
-    // console.log("Success:", values);
+    console.log("Success:", values);
     setAddCommit(() => {
-      return { ...addCommit, heading: values.Heading, detail: values.Detail,file : values.file };
+      return { ...values };
     });
-    postNewCommitAPI(addCommit);
+    postNewMessage(addCommit);
     // console.log(addCommit);
   };
-const normFile = (e) => {
-  if (Array.isArray(e)) {
-    return e;
-  }
-  // console.log("Upload event:", e?.fileList);
 
-  return e?.fileList;
-};
   const onFinishFailed = (errorInfo) => {
     // console.log("Failed:", errorInfo);
   };
@@ -53,17 +47,19 @@ const normFile = (e) => {
               wrapperCol={{
                 span: 16,
               }}
-              initialValues={{
-                // remember: true,
-              }}
+              initialValues={
+                {
+                  // remember: true,
+                }
+              }
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
               autoComplete="off"
             >
-              <h1 className="uppercase"> VUI LÒNG nhập commit mới </h1>
+              <h1 className="uppercase"> VUI LÒNG nhập Message mới </h1>
               <Form.Item
-                label="Heading"
-                name="Heading"
+                label="Name"
+                name="name"
                 rules={[
                   {
                     required: true,
@@ -75,8 +71,36 @@ const normFile = (e) => {
               </Form.Item>
 
               <Form.Item
-                label="Detail"
-                name="Detail"
+                label="Phone"
+                name="Phone"
+                rules={[
+                  {
+                    required: true,
+                    message: "nhập số phone",
+                    type: "number/text",
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+
+              <Form.Item
+                label="Email"
+                name="email"
+                rules={[
+                  {
+                    required: true,
+                    message: "Mời nhập email",
+                    type: "email",
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+
+              <Form.Item
+                label="message"
+                name="message"
                 rules={[
                   {
                     required: true,
@@ -84,21 +108,7 @@ const normFile = (e) => {
                   },
                 ]}
               >
-                <Input />
-              </Form.Item>
-
-              <Form.Item name={"file"} label={"file"} rules={[{
-                required : true,
-                message : 'upload hình mới'
-              }]} valuePropName="fileList" getValueFromEvent={normFile}>
-                <Upload
-                  name={"logo"}
-                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                  listType="picture"
-                
-                >
-                  <Button icon={<UploadOutlined />}>Click to Upload new logo</Button>
-                </Upload>
+                <TextArea />
               </Form.Item>
               <Form.Item
                 wrapperCol={{

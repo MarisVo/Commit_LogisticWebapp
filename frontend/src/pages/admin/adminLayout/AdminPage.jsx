@@ -43,36 +43,30 @@ export default function AdminPage() {
     getItem(<div>Commit</div>, "sub1", <DesktopOutlined> </DesktopOutlined>, [
       getItem(
         <div>
-          <Link to="addcommit">Add Commitment</Link>
-        </div>,
-        "3"
-      ),
-      getItem(
-        <div>
           <Link to="commitment">Main Commitment</Link>
         </div>,
-        "4"
+        "3"
       ),
     ]),
     getItem(
       <div>
-        <Link to="message">message</Link>
+        <Link to="message">Contact message</Link>
+      </div>,
+      "4",
+      <DesktopOutlined> </DesktopOutlined>
+    ),
+    getItem(
+      <div>
+        <Link to="service">delivery service</Link>
       </div>,
       "5",
       <DesktopOutlined> </DesktopOutlined>
     ),
     getItem(
       <div>
-        <Link to="service">service</Link>
+        <Link to="partner">partner</Link>
       </div>,
       "6",
-      <DesktopOutlined> </DesktopOutlined>
-    ),
-    getItem(
-      <div>
-        <Link to="partner">service</Link>
-      </div>,
-      "7",
       <DesktopOutlined> </DesktopOutlined>
     ),
     // getItem("User", "sub1", <UserOutlined />, [getItem("Tom", "3"), getItem("Bill", "4"), getItem("Alex", "5")]),
