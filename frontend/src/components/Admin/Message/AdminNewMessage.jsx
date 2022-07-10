@@ -20,10 +20,14 @@ export default function AdminNewMessage(props) {
         data: newData,
         headers: "Bearer",
       });
+      if (result.status === 200) {
+        alert("Thêm mới thành công ");
+        onClose();
+      }
     } catch (error) {}
   };
   const onFinish = (values) => {
-    console.log("Success:", values);
+    // console.log("Success:", values);
     setAddCommit(() => {
       return { ...values };
     });

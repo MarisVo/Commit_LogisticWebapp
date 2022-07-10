@@ -31,7 +31,11 @@ export default function AdminCommitment() {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   //   state for edit commit
-  const [editCommitInfor, setEditCommitInfor] = useState({});
+  const [editCommitInfor, setEditCommitInfor] = useState({
+    heading: "",
+    detail: "",
+    logo: "",
+  });
   const searchInput = useRef(null);
   const getInforCommitAPI = async () => {
     try {
@@ -210,7 +214,12 @@ export default function AdminCommitment() {
   return (
     <div className="flex flex-col gap-y-3 border-l ">
       {<AdminAddCommit isModalVisibleAdd={isModalVisibleAdd} onClose={onCloseAddModal}></AdminAddCommit>}
-      <AdminEditCommit isModalVisibleEdit={isModalVisibleEdit} infor={editCommitInfor} onClose={onClose}></AdminEditCommit>
+      <AdminEditCommit
+        isModalVisibleEdit={isModalVisibleEdit}
+        infor={editCommitInfor}
+        setEditCommitInfor={setEditCommitInfor}
+        onClose={onClose}
+      ></AdminEditCommit>
       <span className="text-2xl font-blod py-4 px-2">Commit</span>
       <div className="relative w-full h-10">
         <button

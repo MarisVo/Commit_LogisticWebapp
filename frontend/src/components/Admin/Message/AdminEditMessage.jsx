@@ -1,17 +1,11 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, DatePicker } from "antd";
 import axios from "axios";
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React from "react";
 const { TextArea } = Input;
 
 export default function AdminEditMessage(props) {
-  const { isModalVisibleEdit, onClose, infor } = props;
-  const [editMessage, setEditMessage] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    message: "",
-  });
+  const { isModalVisibleEdit, onClose, infor, setDataEditMessage } = props;
+
   const postNewEditMessageAPI = async (newData, id) => {
     try {
       const result = await axios({
@@ -27,17 +21,17 @@ export default function AdminEditMessage(props) {
   };
 
   const onFinish = (values) => {
-    console.log("Success:", values);
-    setEditMessage(() => {
-      return { values };
+    // console.log("Success:", values);
+    setDataEditMessage(() => {
+      return { ...values };
     });
-    // console.log(editCommit);
+    // console.log(infor);
     // send new commit to backend
-    postNewEditMessageAPI(editMessage, infor.id);
+    postNewEditMessageAPI(infor, infor.id);
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    // console.log("Failed:", errorInfo);
   };
   return (
     <>
@@ -72,6 +66,11 @@ export default function AdminEditMessage(props) {
                   },
                 ]}
                 initialValue={infor.name}
+                onChange={(e) => {
+                  setDataEditMessage(() => {
+                    return { ...infor, name: e.target.value };
+                  });
+                }}
               >
                 <Input />
               </Form.Item>
@@ -87,6 +86,11 @@ export default function AdminEditMessage(props) {
                     type: "number/text",
                   },
                 ]}
+                onChange={(e) => {
+                  setDataEditMessage(() => {
+                    return { ...infor, phone: e.target.value };
+                  });
+                }}
               >
                 <Input />
               </Form.Item>
@@ -102,6 +106,11 @@ export default function AdminEditMessage(props) {
                     type: "email",
                   },
                 ]}
+                onChange={(e) => {
+                  setDataEditMessage(() => {
+                    return { ...infor, email: e.target.value };
+                  });
+                }}
               >
                 <Input />
               </Form.Item>
@@ -116,8 +125,25 @@ export default function AdminEditMessage(props) {
                     message: "Mời nhập chi tiết",
                   },
                 ]}
+                onChange={(e) => {
+                  setDataEditMessage(() => {
+                    return { ...infor, message: e.target.value };
+                  });
+                }}
               >
                 <TextArea />
+              </Form.Item>
+              <Form.Item
+                label="Ngày gửi "
+                name='date'
+                initialValue={infor.date}
+                onChange={(e) => {
+                  setDataEditMessage(() => {
+                    return { ...infor, date: e.target.value };
+                  });
+                }}
+              >
+                <DatePicker />
               </Form.Item>
               <Form.Item
                 wrapperCol={{

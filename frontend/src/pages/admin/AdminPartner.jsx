@@ -201,7 +201,12 @@ export default function AdminPartner() {
   return (
     <div className="flex flex-col gap-y-3 border-l ">
       {<AdminNewPartner isModalVisibleAdd={isModalVisibleAdd} onClose={onCloseAddModal}></AdminNewPartner>}
-      <AdminEditPartner isModalVisibleEdit={isModalVisibleEdit} infor={editCommitInfor} onClose={onClose}></AdminEditPartner>
+      <AdminEditPartner
+        isModalVisibleEdit={isModalVisibleEdit}
+        infor={editCommitInfor}
+        setEditCommitInfor={setEditCommitInfor}
+        onClose={onClose}
+      ></AdminEditPartner>
 
       <span className="text-2xl font-blod py-4 px-2">Partner</span>
       <div className="relative w-full h-10">

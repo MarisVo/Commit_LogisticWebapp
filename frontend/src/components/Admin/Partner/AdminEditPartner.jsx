@@ -1,17 +1,13 @@
-import { Button, Drawer, Form, Input, Select, Upload } from "antd";
+import { Button, Form, Input,  Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import Modal from "antd/lib/modal/Modal";
 import axios from "axios";
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, {  } from "react";
 export default function AdminEditPartner(props) {
-  const { isModalVisibleEdit, onClose, infor } = props;
-  const [editPartner, setEditPartner] = useState({
-    name: "",
-    file: "",
-  });
+  const { isModalVisibleEdit, onClose, infor, setEditCommitInfor } = props;
+  console.log("infor", infor);
+
   const postNewCommitAPI = async (newData, id) => {
-    console.log(newData);
+    // console.log("data to upload api", newData);
     try {
       const result = await axios({
         url: `url${id}`,
@@ -21,6 +17,7 @@ export default function AdminEditPartner(props) {
       });
       if (result.status === 200) {
         alert("cap nhập thành công");
+        onClose()
       }
     } catch (error) {}
   };
@@ -34,18 +31,17 @@ export default function AdminEditPartner(props) {
   };
 
   const onFinish = (values) => {
-    console.log("Success:", values);
+    // console.log("Success:", values);
 
-    setEditPartner(() => {
+    setEditCommitInfor(() => {
       if (values.logo) {
-        editPartner.file = values.logo;
-      } else {
-        editPartner.file = infor.logo;
+        infor.logo = values.logo;
       }
-      return { ...editPartner, name: values.name };
+      return { ...infor, name: values.name };
     });
     // send new commit to backend
-    postNewCommitAPI(editPartner, infor.id);
+    console.log("infor", infor);
+    postNewCommitAPI(infor, infor.id);
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -83,6 +79,11 @@ export default function AdminEditPartner(props) {
                   },
                 ]}
                 initialValue={infor.name}
+                onChange={(e) => {
+                  setEditCommitInfor(() => {
+                    return { ...infor, name: e.target.value };
+                  });
+                }}
               >
                 <Input />
               </Form.Item>

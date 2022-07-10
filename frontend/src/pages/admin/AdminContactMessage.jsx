@@ -38,21 +38,21 @@ export default function AdminContactMessage() {
   useEffect(() => {
     getMessageAPI();
   }, []);
-  // delete API : 
+  // delete API :
 
-   const deleteAPI = async (id) => {
-     try {
-       const result = await axios({
-         url: `url${id}`,
-         method: "delete",
-       });
-       if (result.status === 200) {
-         alert("đã xóa thành công ");
-       }
-     } catch (err) {
-       console.log(err.response);
-     }
-   };
+  const deleteAPI = async (id) => {
+    try {
+      const result = await axios({
+        url: `url${id}`,
+        method: "delete",
+      });
+      if (result.status === 200) {
+        alert("đã xóa thành công ");
+      }
+    } catch (err) {
+      console.log(err.response);
+    }
+  };
   // setdata to edit
   const [dataEditMessage, setDataEditMessage] = useState();
   //  data message
@@ -154,7 +154,12 @@ export default function AdminContactMessage() {
   return (
     <div className="flex flex-col gap-y-3 border-l ">
       <AdminNewMessage isModalVisibleAdd={isModalVisibleAdd} onClose={onCloseAddModal}></AdminNewMessage>
-      <AdminEditMessage isModalVisibleEdit={isModalVisibleEdit} infor={dataEditMessage} onClose={onClose}></AdminEditMessage>
+      <AdminEditMessage
+        isModalVisibleEdit={isModalVisibleEdit}
+        infor={dataEditMessage}
+        setDataEditMessage={setDataEditMessage}
+        onClose={onClose}
+      ></AdminEditMessage>
       <span className="text-2xl font-blod py-4 px-2">Message</span>
       <div className="relative w-full h-10">
         <button

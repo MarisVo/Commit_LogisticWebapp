@@ -1,19 +1,11 @@
-import { Button, Drawer, Form, Input, Select, Upload } from "antd";
+import { Button, Form, Input, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import Modal from "antd/lib/modal/Modal";
 import axios from "axios";
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { handleChangeFile } from "../HandleChangeFileToFormData";
-const { Option } = Select;
+import React from "react";
 
 export default function AdminEditCommit(props) {
-  const { isModalVisibleEdit, onClose, infor } = props;
-  const [editCommit, setEditCommit] = useState({
-    heading: "",
-    detail: "",
-    file: "",
-  });
+  const { isModalVisibleEdit, onClose, infor, setEditCommitInfor } = props;
+
   const postNewCommitAPI = async (newData, id) => {
     try {
       const result = await axios({
@@ -24,6 +16,7 @@ export default function AdminEditCommit(props) {
       });
       if (result.status === 200) {
         alert("cap nhập thành công");
+        onClose();
       }
     } catch (error) {}
   };
@@ -32,20 +25,19 @@ export default function AdminEditCommit(props) {
       return e;
     }
     // console.log("Upload event:", e?.fileList);
-
     return e?.fileList;
   };
   const onFinish = (values) => {
     // console.log("Success:", values);
-    setEditCommit(() => {
+    setEditCommitInfor(() => {
       if (values.logo) {
-        editCommit.logo = values.logo;
+        infor.logo = values.logo;
       }
-      return { ...editCommit, heading: values.Heading, detail: values.Detail };
+      return { ...infor, heading: values.Heading, detail: values.Detail };
     });
-    console.log(editCommit);
+    console.log(infor);
     // send new commit to backend
-    postNewCommitAPI(editCommit, infor.id);
+    postNewCommitAPI(infor, infor.id);
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -82,6 +74,11 @@ export default function AdminEditCommit(props) {
                   },
                 ]}
                 initialValue={infor.heading}
+                onChange={(e) =>
+                  setEditCommitInfor(() => {
+                    return { ...infor, heading: e.target.value };
+                  })
+                }
               >
                 <Input />
               </Form.Item>
@@ -96,11 +93,16 @@ export default function AdminEditCommit(props) {
                   },
                 ]}
                 initialValue={infor.detail}
+                onChange={(e) =>
+                  setEditCommitInfor(() => {
+                    return { ...infor, detail: e.target.value };
+                  })
+                }
               >
                 <Input />
               </Form.Item>
 
-              <Form.Item  name={"logo"} label={"logo"} valuePropName="fileList" getValueFromEvent={normFile}>
+              <Form.Item name={"logo"} label={"logo"} valuePropName="fileList" getValueFromEvent={normFile}>
                 <Upload
                   name={"logo"}
                   action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
