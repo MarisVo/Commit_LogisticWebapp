@@ -1103,7 +1103,15 @@ paths:
         - in: query
           name: pageSize
           type: string
-          description: number of warehouse in a page  
+          description: number of warehouse in a page 
+        - in: query
+          name: district
+          type: string
+          description: district
+        - in: query
+          name: province
+          type: string
+          description: province
       responses:
         200:
           description: get warehouse successfully.
