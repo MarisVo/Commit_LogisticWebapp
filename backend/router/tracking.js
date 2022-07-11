@@ -5,7 +5,6 @@ import { lookupPostageValidate } from "../validation/tracking.js"
 import DeliveryService from '../model/DeliveryService.js'
 import Distance from '../model/Distance.js'
 import Order from "../model/Order.js"
-import Warehouse from '../model/Warehouse.js'
 
 const trackingRoute = express.Router()
 
@@ -72,25 +71,6 @@ trackingRoute.get('/order/:lstOrderId', async (req, res) => {
             orderId: { $in: lstOrderId }
         })
         return sendSuccess(res, 'request successfully', { orders, success: orders.length, failure: lstOrderId.length - orders.length })
-    } catch (error) {
-        console.log(error)
-        return sendServerError(res)
-    }
-})
-
-/**
- * @route GET /api/tracking/warehouse
- * @description get list of warehouses by province and district query
- * @access public
- */
-trackingRoute.get('/warehouse', async (req, res) => {
-    const { province, district } = req.query
-    try {
-        const warehouses = await Warehouse.find({
-            province,
-            district
-        })
-        return sendSuccess(res, 'request successfully', warehouses)
     } catch (error) {
         console.log(error)
         return sendServerError(res)
