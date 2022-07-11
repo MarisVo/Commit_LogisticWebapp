@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { END_POINT } from "../../utils/constant"
 
 function Commit() {
     const [data, setData] = useState([])
     useEffect(() => {
         const fetchApi = async () => {
             try {
-                const { data: response } = await axios.get('http://localhost:8000/api/commitment')
+                const { data: response } = await axios.get(`${END_POINT}/commitment`)
                 setData(response.data)
             }
             catch (error) {

@@ -1,5 +1,4 @@
-import { Menu } from 'antd';
-import { Outlet, Link } from 'react-router-dom'
+import { Outlet, Link, Navigate } from 'react-router-dom'
 import { useState } from 'react'
 import logoJT from '../assets/icons/logo-J&T.svg'
 
@@ -14,10 +13,6 @@ const items = [
     },
 ]
 function LayerStorekeeper() {
-    // const [current, setCurrent] = useState('invent')
-    // const switchMenu = (e) => {
-    //     setCurrent(e.key)
-    // }
     return (
         <>
             <div className='fixed left-0 right-0 top-0 flex flex-row justify-between px-4 items-center h-20 bg-gradient-to-l from-orange-400 to-yellow-400 z-10 '>

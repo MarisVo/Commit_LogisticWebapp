@@ -8,6 +8,7 @@ import { getDistrictsByProvinceCode, getProvinces } from "sub-vn";
 import { IoLocationOutline } from 'react-icons/io5'
 import { FiMap } from 'react-icons/fi'
 import axios from 'axios'
+import { END_POINT } from "../../utils/constant"
 import { Fade, Zoom, Reveal } from 'react-reveal';
 
 const { TabPane } = Tabs
@@ -155,7 +156,7 @@ const Home = () => {
         if (currentDistrict && currentProvince) {
             const find = async () => {
                 try {
-                    const { data: response } = await axios.get('http://localhost:8000/api/tracking/warehouse',
+                    const { data: response } = await axios.get(`${END_POINT}/tracking/warehouse`,
                         {
                             params: {
                                 province: currentProvince,

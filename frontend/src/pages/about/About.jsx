@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from 'react'
-
+import { END_POINT } from "../../utils/constant"
 
 function About() {
     const [data, setData] = useState({})
@@ -8,7 +8,7 @@ function About() {
     useEffect(() => {
         const fetchApi = async () => {
             try {
-                const {data:response} = await axios.get('http://localhost:8000/api/about')
+                const {data:response} = await axios.get(`${END_POINT}/about`)
                 setData(response.data)
                 setBanners(response.data.banners)
             }
@@ -67,7 +67,7 @@ function About() {
                     <img src={data.logo} className=' w-full h-full  object-cover' />
                 </div >
             </div>
-            <div className=' container mx-auto my-10 bg-history'>
+            <div className='container mx-auto my-10 bg-history'>
                 <div className="w-auto flex flex-col xl:flex-row items-center ">
                     <div className='xl:max-w-[400px]'>
                         <div className='text-3xl xl:text-5xl text-center xl:text-left font-black my-4 text-[#F0B90B] '>LỊCH SỬ</div>
