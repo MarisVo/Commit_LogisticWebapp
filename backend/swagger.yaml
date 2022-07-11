@@ -498,6 +498,7 @@ paths:
               "instagram":"url",
               "tiktok":"url",
               "youtube":"url",
+              "hr_mailbox": "email",
             }
         400:
           description: contact information is not found.
@@ -528,6 +529,8 @@ paths:
             tiktok:
               type: string
             youtube:
+              type: string
+            hr_mailbox:
               type: string
       responses:
         200:

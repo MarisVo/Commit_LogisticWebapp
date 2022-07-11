@@ -62,6 +62,6 @@ export const verifyToken = async (req, res, next) => {
 
 export const verifyAdmin = async (req, res, next) => {
     if (req.user.role.staff_type !== 'admin')
-        sendError(res, 'Forbidden.',403)
+        return sendError(res, 'Forbidden.',403)
     next()    
 }
