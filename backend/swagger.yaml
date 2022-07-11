@@ -29,6 +29,10 @@ tags:
   description: "Endpoint Message"
 - name: "warehouse"
   description: "Endpoint Warehouse"
+- name: "participant"
+  description: "Endpoint Participant"
+- name: "quote"
+  description: "Endpoint Quote"
 paths:
   /auth/verify-token:
     post:
@@ -1147,7 +1151,418 @@ paths:
             }          
         400:
           description: warehouse is not found.    
-
+  /participant:
+     get:
+      tags:
+        - "participant"
+      summary: get all participant
+      produces:
+        - application/json
+      responses:
+        200:
+          description: get participant successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "banner": "path",    
+              "description": "string", 
+            }
+        400:
+          description: participant is not found. 
+  /participant/{participantId}:
+    get:
+      tags:
+        - "participant"
+      summary: get participant by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: participantId
+          type: string
+          required: true
+          description: Id of a participant 
+      responses:
+        200:
+          description: get participant successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "banner": "path",    
+              "description": "string",     
+            }          
+        400:
+          description: participant is not found. 
+  /participant/service/{serviceId}:
+    get:
+      tags:
+        - "participant"
+      summary: get list of participants by serviceId
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: serviceId
+          type: string
+          required: true
+          description: Id of a service 
+      responses:
+        200:
+          description: get participant successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "banner": "path",    
+              "description": "string",     
+            }          
+        400:
+          description: participant is not found.
+  /admin/participant/{serviceId}:
+    post:
+      tags:
+        - "participant"
+      summary: "Create a new participant"
+      consumes:
+        - multipart/form-data
+        - application/json
+      parameters:
+        - in: path
+          name: serviceId
+          type: string
+          required: true
+          description: Id of a service 
+        - in: body
+          name: participant
+          description: a new participant.
+          schema:
+            type: object
+            required:
+              - name, description
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+        - in: formData
+          name: banner
+          description: banner of participant.
+          type: file          
+      requestBody:
+        content: 
+          multipart/form-data: 
+            schema:            
+              type: object
+              properties:      
+                name:           
+                  type: string
+                banner: 
+                  type: string
+                  format: base64
+                description:
+                  type: string
+      responses:
+        200:
+          description: Create participant successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "banner": "path",    
+              "description": "string",     
+            }        
+        400:
+          description: Create participant failed.
+      security:
+        - bearerAuth: []
+  /admin/participant/{participantId}:
+    put:
+      tags:
+        - "participant"
+      summary: "Create a new participant"
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: participantId
+          type: string
+          required: true
+          description: Id of a participant 
+        - in: body
+          name: participant
+          description: a new participant.
+          schema:
+            type: object            
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+        - in: formData
+          name: banner
+          description: banner of participant.
+          type: file          
+      requestBody:
+        content: 
+          multipart/form-data: 
+            schema:            
+              type: object
+              properties:      
+                name:           
+                  type: string
+                banner: 
+                  type: string
+                  format: base64
+                description:
+                  type: string
+      responses:
+        200:
+          description: Create participant successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "banner": "path",    
+              "description": "string",     
+            }        
+        400:
+          description: Create participant failed.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "participant"
+      summary: "Delete a existing participant"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: participantId
+          type: string
+          required: true
+          description: Id of a participant 
+      responses:
+        200:
+          description: Delete participant successfully.
+        400:
+          description: Delete participant failed.
+      security:
+        - bearerAuth: []
+  
+  /quote:
+     get:
+      tags:
+        - "quote"
+      summary: get all quote
+      produces:
+        - application/json
+      responses:
+        200:
+          description: get quote successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "description": "string", 
+              "quote": "string",
+              "avatar": "path",
+            }
+        400:
+          description: quote is not found. 
+  /quote/{quoteId}:
+    get:
+      tags:
+        - "quote"
+      summary: get quote by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: quoteId
+          type: string
+          required: true
+          description: Id of a quote 
+      responses:
+        200:
+          description: get quote successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "description": "string", 
+              "quote": "string",
+              "avatar": "path",  
+            }          
+        400:
+          description: quote is not found. 
+  /quote/service/{serviceId}:
+    get:
+      tags:
+        - "quote"
+      summary: get list of quotes by serviceId
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: serviceId
+          type: string
+          required: true
+          description: Id of a service 
+      responses:
+        200:
+          description: get quote successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "description": "string", 
+              "quote": "string",
+              "avatar": "path",    
+            }          
+        400:
+          description: quote is not found.
+  /admin/quote/{serviceId}:
+    post:
+      tags:
+        - "quote"
+      summary: "Create a new quote"
+      consumes:
+        - multipart/form-data
+        - application/json
+      parameters:
+        - in: path
+          name: serviceId
+          type: string
+          required: true
+          description: Id of a service 
+        - in: body
+          name: quote
+          description: a new quote.
+          schema:
+            type: object
+            required:
+              - name, description, quote
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+              quote:
+                type: string
+        - in: formData
+          name: avatar
+          description: avatar of quote.
+          type: file          
+      requestBody:
+        content: 
+          multipart/form-data: 
+            schema:            
+              type: object
+              properties:      
+                name:           
+                  type: string                
+                description:
+                  type: string
+                quote:
+                  type: string
+                avatar: 
+                  type: string
+                  format: base64
+      responses:
+        200:
+          description: Create quote successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "description": "string", 
+              "quote": "string",
+              "avatar": "path",    
+            }        
+        400:
+          description: Create quote failed.
+      security:
+        - bearerAuth: []
+  /admin/quote/{quoteId}:
+    put:
+      tags:
+        - "quote"
+      summary: "Create a new quote"
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: quoteId
+          type: string
+          required: true
+          description: Id of a quote 
+        - in: body
+          name: quote
+          description: a new quote.
+          schema:
+            type: object            
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+              quote:
+                type: string
+        - in: formData
+          name: avatar
+          description: avatar of quote.
+          type: file          
+      requestBody:
+        content: 
+          multipart/form-data: 
+            schema:            
+              type: object
+              properties:      
+                name:           
+                  type: string                
+                description:
+                  type: string
+                quote:
+                  type: string
+                avatar: 
+                  type: string
+                  format: base64
+      responses:
+        200:
+          description: Create quote successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "description": "string", 
+              "quote": "string",
+              "avatar": "path",        
+            }        
+        400:
+          description: Create quote failed.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "quote"
+      summary: "Delete a existing quote"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: quoteId
+          type: string
+          required: true
+          description: Id of a quote 
+      responses:
+        200:
+          description: Delete quote successfully.
+        400:
+          description: Delete quote failed.
+      security:
+        - bearerAuth: []
 securityDefinitions:
   bearerAuth:
     type: "apiKey"
