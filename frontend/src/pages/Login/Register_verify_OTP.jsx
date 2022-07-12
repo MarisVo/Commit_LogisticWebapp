@@ -1,11 +1,12 @@
 import React from 'react'
 import 'antd/dist/antd.css'
-import { Form, Button, Input, Typography, message} from "antd";
+import { Form, Button, Input, message} from "antd";
 import styled from 'styled-components';
+import { useLocation, useNavigate } from 'react-router-dom';
 import * as axios from 'axios'
 
-const ForgetForm = styled.div`
-.Forget{
+const Register_OTP_Form = styled.div`
+.Register_OTP{
     height: 100vh;
     display: flex;
     flex-direction:row;
@@ -24,7 +25,7 @@ const ForgetForm = styled.div`
     overflow:auto;
 }
 
-.Forget-header{
+.Register_OTP-header{
     max-width: 500px;
     width: 100%;
     background-color: #fff;
@@ -50,11 +51,18 @@ const ForgetForm = styled.div`
 }
 a {
   color: #348ceb;
+}
+.notification{
+    text-align: center;
+    padding-bottom: 30px;
+    font-size: 20px;
+}
+.ant-row{
+    justify-content: center;
 }`
 
 const ButtonContainer = styled.div`
 .ant-btn-primary {
-    margin-top: 30px;
     height: 100%;
     width: 100%;
     border-radius: 5px;
@@ -72,27 +80,15 @@ const ButtonContainer = styled.div`
     }
 }`;
 
-function isValidEmail(email) {
-  return /\S+@\S+\.\S+/.test(email);
-}
 
-const { Title } = Typography;
-function ForgetPass() {
+function Register_OTP() {
   const [form] = Form.useForm();
+
+  let navigate = useNavigate();
 
   const success = () => {
     message.success({
-      content: 'Mật khẩu mới đã được gửi đến email hoặc số điện thoại của bạn',
-      className: 'custom-class',
-      style: {
-        marginTop: '20vh',
-      },
-    });
-  };
-
-  const failed404 = () => {
-    message.error({
-      content: 'Email hoặc số điện thoại không tồn tại',
+      content: 'Đăng kí thành công',
       className: 'custom-class',
       style: {
         marginTop: '20vh',
@@ -102,7 +98,7 @@ function ForgetPass() {
 
   const failed400 = () => {
     message.error({
-      content: 'Tạo mật khẩu mới không thành công',
+      content: 'Mã OTP không chính xác',
       className: 'custom-class',
       style: {
         marginTop: '20vh',
@@ -110,36 +106,75 @@ function ForgetPass() {
     });
   };
 
-  const emailphone = Form.useWatch('email/phone', form);
-  var email;
-  var phone;
-  (isValidEmail(emailphone)) ? email = emailphone : phone = emailphone
+  const update_success = () => {
+    message.success({
+      content: 'Mã OTP mới đã được gửi đến email hoặc số điện thoại của bạn',
+      className: 'custom-class',
+      style: {
+        marginTop: '20vh',
+      },
+    });
+  };
+
+  const update_failed400 = () => {
+    message.error({
+      content: 'Gửi lại mã OTP gửi không thành công',
+      className: 'custom-class',
+      style: {
+        marginTop: '20vh',
+      },
+    });
+  };
+
+
+  const OTP = Form.useWatch('OTP', form);
+  const regis_data = useLocation();
+  const user = regis_data.state;
+
+  const Update_OTP = async() =>{
+    try{
+        console.log(user);
+        const response = await axios({
+            method: 'post',
+            url: 'http://localhost:8000/api/auth/update-otp',
+            data: {
+                userId: user.userId,
+                verify_op: user.verify_op
+            }  
+        });
+        update_success();
+
+    } catch(error) {
+        if(error.message == "Request failed with status code 400") {
+            update_failed400();
+        }
+    }
+  } 
 
   const onFinish = async() => {
-    try{ 
-      const response = await axios({
-        method: 'post',
-        url: 'http://localhost:8000/api/auth/forgot-pw',
-        data: {
-          email: email,
-          phone: phone
-        }
-      })   
-      success();
-    } catch(error) {
-      if(error.message == "Request failed with status code 404") {
-        failed404();
-      }
+    console.log(user);
+    try{
+        const response = await axios({
+            method: 'post',
+            url: 'http://localhost:8000/api/auth/verify-otp',
+            data: {
+                userId: user.userId,
+                otp: OTP
+            }  
+        });
 
-      if(error.message == "Request failed with status code 400") {
-        failed400();
-      }
+        success();
+        navigate("/dang-nhap");
+    } catch(error) {
+        if(error.message == "Request failed with status code 400") {
+            failed400();
+        }
     }
   };
   return (   
-    <ForgetForm>
-        <div className="Forget">
-          <div className="Forget-header">
+    <Register_OTP_Form>
+        <div className="Register_OTP">
+          <div className="Register_OTP-header">
             <Form
               form ={form}
               autoComplete="off"
@@ -150,22 +185,22 @@ function ForgetPass() {
                 console.log({ error });
               } }
             >
-                <Title level={2} className="text-center">
-                    Quên mật khẩu
-                </Title>
 
+
+                <div className='notification'>Quý khách vui lòng xác thực mã OTP, mã có thời hạn là 1 phút</div>
                 <Form.Item
-                    name="email/phone"
-                    label="Email/Phone"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập email hoặc số điện thoại",
-                      },                  
-                    ]}
-                    hasFeedback
-                    >
-                    <Input placeholder="Nhập email hoặc số điện thoại" />
+                    name="OTP"             
+                >                
+                    <Input placeholder="Nhập mã OTP" />
+                </Form.Item>
+
+                <Form.Item wrapperCol={{ span: 24 }}>
+                    <div className='sign'>
+                        Mã hết hạn?
+                        <span className="font-semibold text-blue-700">
+                            <Button type="link" onClick={Update_OTP}>Gửi lại OTP</Button>
+                        </span>
+                    </div>
                 </Form.Item>
 
                 <Form.Item wrapperCol={{ span: 24 }}>
@@ -179,8 +214,8 @@ function ForgetPass() {
             </Form>
           </div>
         </div>
-    </ForgetForm>
+    </Register_OTP_Form>
   );
 }
 
-export default ForgetPass;
+export default Register_OTP;

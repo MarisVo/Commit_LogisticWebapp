@@ -1,8 +1,9 @@
 import React from 'react'
 import 'antd/dist/antd.css'
-import { Form, Button, Input, Select, Typography } from "antd";
-import { Link } from 'react-router-dom';
+import { Form, Button, Input, Select, Typography, message } from "antd";
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import * as axios from 'axios'
 
 const RegisForm = styled.div`
 .Regis{
@@ -67,21 +68,119 @@ const ButtonContainer = styled.div`
         background-image: linear-gradient(250deg, #e3ed1f 0%, #F7CE68 100%);
     }
 }`;
+
+function isValidEmail(email) {
+  return /\S+@\S+\.\S+/.test(email);
+}
+
 const { Title } = Typography;
 
-
 function Register() {
+  const [form] = Form.useForm();
+
+  const success = () => {
+    message.success({
+      content: 'Mã OTP đã được gửi về email hoặc số điện thoại của bạn, vui lòng nhập mã OTP để xác thực tài khoản',
+      className: 'custom-class',
+      style: {
+        marginTop: '20vh',
+      },
+    });
+  };
+
+  const existed = () => {
+    message.error({
+      content: 'Email hoặc số điện thoại đã tồn tại',
+      className: 'custom-class',
+      style: {
+        marginTop: '20vh',
+      },
+    });
+  };
+
+  const failed400 = () => {
+    message.error({
+      content: 'Đăng kí không thành công',
+      className: 'custom-class',
+      style: {
+        marginTop: '20vh',
+      },
+    });
+  };
+
+  const failed500 = () => {
+    message.error({
+      content: 'Lỗi hệ thống',
+      className: 'custom-class',
+      style: {
+        marginTop: '20vh',
+      },
+    });
+  };
+  
+  const emailphone = Form.useWatch('email/phone', form);
+  var email;
+  var phone;
+  (isValidEmail(emailphone)) ? email = emailphone : phone = emailphone
+  var name = Form.useWatch('name', form);
+  var address = Form.useWatch('address', form);
+  var customer_type = Form.useWatch('customer_type', form);
+  var tax = Form.useWatch('tax', form);
+  var description = Form.useWatch('description', form);
+  var password = Form.useWatch('password', form);
+  var verify_password = Form.useWatch('confirmPassword', form);
+  var verify_op;
+  (email) ? verify_op = "email" : verify_op = "phone"
+
+  let navigate = useNavigate();
+
+  const onFinish = async() => {
+    try{
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:8000/api/auth/register',
+        data: {
+          name: name,
+          email: email,
+          phone: phone,
+          password: password,
+          verify_password: verify_password,
+          address: address,
+          description: description,
+          customer_type: customer_type,
+          verify_op: verify_op
+        }
+      });
+
+      /*console.log(JSON.stringify(response?.data));*/
+      const userId = response?.data?.data?.userId;
+      success();
+      navigate("/xac-thuc-otp", {state:{userId: userId, verify_op: verify_op}});
+    } catch(error){
+      if(error.response.data.message == "user is exist"){
+        existed();
+      }
+
+      if(error.message == "Request failed with status code 400") {
+        failed400();
+      }
+
+      if(error.message == "Request failed with status code 500") {
+        failed500();
+      }
+    }
+  };
+
   return (
     <RegisForm>
         <div className="Regis">
           <div className="Regis-header">
             <Form
+                form ={form}
                 autoComplete="off"
                 labelCol={{ span: 10 }}
                 wrapperCol={{ span: 14 }}
-                onFinish={(values) => {
-                  console.log({ values });
-                } }
+                onFinish={(onFinish)}
                 onFinishFailed={(error) => {
                   console.log({ error });
                 } }
@@ -105,44 +204,17 @@ function Register() {
                 </Form.Item>
 
                 <Form.Item
-                    name="email"
-                    label="Email"
+                    name="email/phone"
+                    label="Email/Phone"
                     rules={[
-                        { type: "email", message: "Vui lòng nhập email có thật" },
-                        ({ getFieldValue }) => ({
-                          validator(_, email) {
-                            if (email || getFieldValue("phone")) {
-                              return Promise.resolve();
-                            }
-                            return Promise.reject(
-                              "Vui lòng nhập email hoặc số điện thoại"
-                            );
-                          },
-                        }),
+                      {
+                        required: true,
+                        message: "Vui lòng nhập email hoặc số điện thoại",
+                      },                  
                     ]}
                     hasFeedback
                     >
-                    <Input placeholder="Nhập email" />
-                </Form.Item>
-
-                <Form.Item
-                    name="phone"
-                    label="Số điện thoại"
-                    rules={[
-                      ({ getFieldValue }) => ({
-                        validator(_, phone) {
-                          if (phone || getFieldValue("email")) {
-                            return Promise.resolve();
-                          }
-                          return Promise.reject(
-                            "Vui lòng nhập email hoặc số điện thoại"
-                          );
-                        },
-                      }),
-                    ]}
-                    hasFeedback
-                    >
-                    <Input placeholder="Nhập số điện thoại" />
+                    <Input placeholder="Nhập email hoặc số điện thoại" />
                 </Form.Item>
 
                 <Form.Item
@@ -154,8 +226,12 @@ function Register() {
                           message: "Vui lòng nhập mật khẩu",
                         },
                         { 
-                          min: 8 ,
-                          message: "Mật khẩu phải dài hơn 8 chữ số",
+                          min: 6,
+                          message: "Mật khẩu phải dài hơn 6 chữ số",
+                        },
+                        {
+                          max: 24,
+                          message: "Mật khẩu chỉ được tối đa 24 chữ số",
                         },
                     ]}
                     hasFeedback
@@ -204,7 +280,7 @@ function Register() {
 
 
                 <Form.Item 
-                  name="customerType" 
+                  name="customer_type" 
                   label="Khách hàng"
                   rules={[
                     {
@@ -215,8 +291,9 @@ function Register() {
                   hasFeedback
                 >
                   <Select placeholder="Chọn loại khách hàng">
-                    <Select.Option value="invidual">Cá nhân</Select.Option>
-                    <Select.Option value="enterprise">Doanh nghiệp</Select.Option>
+                    <Select.Option value="intermediary">intermediary</Select.Option>
+                    <Select.Option value="business">business</Select.Option>
+                    <Select.Option value="passers">passers</Select.Option>
                   </Select>
                 </Form.Item>
 
@@ -226,7 +303,7 @@ function Register() {
                   rules={[
                     ({ getFieldValue }) => ({
                       validator(_, tax) {
-                        if ((tax && getFieldValue("customerType") === "enterprise") || getFieldValue("customerType") === "invidual") {
+                        if ((tax && getFieldValue("customer_type") === "business") || getFieldValue("customer_type") === "passers" || getFieldValue("customer_type") === "intermediary") {
                           return Promise.resolve();
                         }
                         return Promise.reject(
@@ -243,11 +320,7 @@ function Register() {
                 <Form.Item wrapperCol={{ span: 24 }}>
                     <div className='sign'>
                         Bạn đã có tài khoản?  
-<<<<<<< HEAD
-                        <Link to="/dang-nhap">
-=======
-                        <Link to="/login" className="font-semibold text-blue-700">
->>>>>>> 00100bd4e54260dc71d548952f07c9dd3f2d4d54
+                        <Link to="/dang-nhap" className="font-semibold text-blue-700">
                             Đăng nhập
                         </Link>
                     </div>
