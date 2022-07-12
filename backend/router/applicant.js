@@ -25,7 +25,7 @@ const applicantRoute = express.Router();
 applicantRoute.post("/", uploadHandle.single("file"), async (req, res) => {
   const errors = submitApplicantValidate(req.body);
   if (errors) return sendError(res, errors);
-  let { firstName, lastName, phone, email, source, message, careerId } =
+  let { firstName, lastName, phoneNumber, email, source, message, careerId } =
     req.body;
   const cv = req.file;
   const extension = path.extname(cv.originalname);
@@ -34,7 +34,7 @@ applicantRoute.post("/", uploadHandle.single("file"), async (req, res) => {
     const applicant = new Applicant({
       firstName,
       lastName,
-      phone,
+      phoneNumber,
       email,
       source,
       message,
@@ -59,7 +59,7 @@ applicantRoute.post("/", uploadHandle.single("file"), async (req, res) => {
 
     if (!sendMailSuccess) return sendError(res, "send CV failed.");
     const ret = await applicant.save();
-    const career = await Career.findByIdAndUpdate(careerId, {
+    const career =/* await */ Career.findByIdAndUpdate(careerId, {
       $push: { applicants: { applicant } },
     });
     if (career)

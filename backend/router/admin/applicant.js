@@ -42,7 +42,7 @@ applicantAdminRoute.put("/:id", async (req, res) => {
  */
 applicantAdminRoute.get("/", async (req, res) => {
   try {
-    const applicant = await applicant.find({});
+    const applicant = await Applicant.find({});
     if (applicant)
       return sendSuccess(
         res,
@@ -62,20 +62,11 @@ applicantAdminRoute.get("/", async (req, res) => {
  * @access private
  */
 applicantAdminRoute.delete("/:id", async (req, res) => {
-  const { id, c_id } = req.params;
+  const { id } = req.params;
   try {
     const isExist = await Applicant.exists({ _id: id });
     if (!isExist) return sendError(res, "Applicant does not exist.");
-    const career = await Career.exists({
-      _id: c_id,
-    });
-    if (career) {
-      const car = await Career.deleteOne({ careers: { id } });
-      if (!car) {
-        return sendError(res, "Delete applicant from career failed.");
-      }
-    }
-
+    await Career.updateOne({}, { $pull: { applicants: id } });
     await Applicant.findByIdAndRemove(id)
       .then(() => {
         return sendSuccess(res, "Delete applicant successfully.");
@@ -90,7 +81,7 @@ applicantAdminRoute.delete("/:id", async (req, res) => {
 });
 
 /**
- * @route GET /api/applicant/search/:keyword
+ * @route GET /api/admin/applicant/search/:keyword
  * @description get applicant information by keyword
  * @access public
  */
@@ -117,7 +108,7 @@ applicantAdminRoute.get("/search/:keyword", async (req, res) => {
 });
 
 /**
- * @route GET /api/applicant/filter
+ * @route GET /api/admin/applicant/filter
  * @description filter applicant information
  * @access public
  */
@@ -152,7 +143,7 @@ applicantAdminRoute.get("/filter", async (req, res) => {
 });
 
 /**
- * @route GET /api/applicant/sort
+ * @route GET /api/admin/applicant/sort
  * @description sort applicant information
  * @access public
  */

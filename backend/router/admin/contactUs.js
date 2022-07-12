@@ -16,13 +16,13 @@ contactUsAdminRoute.post('/',
         if (error)
             return sendError(res, error)
 
-        const { address, phone, email, facebook, instagram, tiktok, youtube } = req.body
+        const { address, phone, email, facebook, instagram, tiktok, youtube, hr_mailbox } = req.body
         try {
             const isExist = await Contact.exists({})
             if (isExist) {
-                await Contact.findOneAndUpdate({}, { address, phone, email, facebook, instagram, tiktok, youtube })
+                await Contact.findOneAndUpdate({}, { address, phone, email, facebook, instagram, tiktok, youtube, hr_mailbox })
             }
-            else await Contact.create({ address, phone, email, facebook, instagram, tiktok, youtube })
+            else await Contact.create({ address, phone, email, facebook, instagram, tiktok, youtube,hr_mailbox })
             return sendSuccess(res, 'set contact-us information successfully.')
         } catch (error) {
             console.log(error)

@@ -100,20 +100,11 @@ careerAdminRoute.put("/:id", async (req, res) => {
  * @access private
  */
 careerAdminRoute.delete("/:id", async (req, res) => {
-  const { id, d_id } = req.params;
+  const { id } = req.params;
   try {
     const isExist = await Career.exists({ _id: id });
     if (!isExist) return sendError(res, "Career does not exist.");
-    const department = await Department.exists({
-      _id: d_id,
-    });
-    if (department) {
-      const dep = await Department.deleteOne({ careers: { id } });
-      if (!dep) {
-        return sendError(res, "Delete career from department failed.");
-      }
-    }
-
+    await Department.updateOne({}, { $pull: { careers: id } });
     await Career.findByIdAndRemove(id)
       .then(() => {
         return sendSuccess(res, "Delete career successfully.");
