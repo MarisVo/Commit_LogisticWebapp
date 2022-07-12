@@ -13,7 +13,7 @@ const SideBar = ({ open, handleOpen }) => {
   return (
     <div>
       <div
-        className={` w-35vh  md:min-h-[100%]  duration-700 flex flex-col transition-all ease-out  delay-100  z-100  border-t-4 rounded-lg fixed top-0 left-0 bg-white   min-h-full ${
+        className={` w-35vh  md:min-h-[100%]  duration-700 flex flex-col transition-all ease-out  delay-100  z-[102]   border-t-4 rounded-lg fixed top-0 left-0 bg-white   min-h-full ${
           open
             ? ` peer:transition ease-out delay-150 duration-400`
             : `translate-x-[-300px] duration-1000 ease-in duration-400  `
@@ -25,7 +25,7 @@ const SideBar = ({ open, handleOpen }) => {
               className="flex justify-end "
               onClick={() => handleOpen(!open)}
             >
-              <IoArrowBackCircleOutline className="w-6 h-6 z-100" />
+              <IoArrowBackCircleOutline className="w-6 h-6 z-101" />
             </div>
             <div className="text-xl font-semibold text-[#00003B] ">
               Nguyễn Văn Thật
@@ -77,11 +77,11 @@ const SideBar = ({ open, handleOpen }) => {
         </div>
       </div>
       <div
-        class={`${
+        className={`${
           open
-            ? `z-99 lg:hidden fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-40 `
-            : `opacity-0 z-99`
-        }   transition-all ease-out  delay-100   `}
+            ? `z-100 lg:hidden fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-40 `
+            : `opacity-0 `
+        }   transition-all ease-out  delay-100  `}
       ></div>
     </div>
   );

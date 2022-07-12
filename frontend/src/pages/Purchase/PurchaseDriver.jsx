@@ -8,19 +8,18 @@ import {
   AiOutlineUser,
   AiTwotoneCalendar,
 } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
 
 import { BiTargetLock } from "react-icons/bi";
-
+import { useNavigate } from "react-router-dom";
+import { Tabs } from "antd";
 import { MdOutlineEditCalendar } from "react-icons/md";
 import { TiDeleteOutline } from "react-icons/ti";
 import { Link } from "react-router-dom";
-
-import { Tabs } from "antd";
 const { TabPane } = Tabs;
-const Purchase = () => {
+const PurchaseDriver = () => {
   const [open, setOpen] = useState(false);
   const [order, setOrder] = useState();
+  const [status, setStatus] = useState("waiting");
   const handleOpen = () => {
     setOpen(!open);
     console.log(open);
@@ -70,6 +69,7 @@ const Purchase = () => {
       province: "Binh Thuan",
     },
     total_price: 1000000,
+    status: "waiting",
   };
   /*  useEffect(() => {
     const getOrder = async () => {
@@ -84,7 +84,7 @@ const Purchase = () => {
       }
     };
   }); */
-
+  const handleStatus = () => {};
   const navigate = useNavigate();
   const [key, setKey] = useState("tất cả");
   function handleTabs(key) {
@@ -105,10 +105,7 @@ const Purchase = () => {
           </span>
         </div>
         <div className=" sm:mx-16 lg:mx-52 py-4 bg-gray-white mx-2  ">
-          <div
-            className="custom-tab shadow-[#000000] container mx-auto  text-xl bg-white "
-            style={{ width: "100%" }}
-          >
+          <div className="custom-tab shadow-[#000000] container mx-auto text-xl w-[100%] bg-white ">
             <Tabs
               defaultActiveKey="tất cả"
               onChange={handleTabs}
@@ -116,7 +113,7 @@ const Purchase = () => {
               size="large"
               tabPosition="top"
               type="line"
-              className="pt-2 px-2 lg:px-4"
+              className="pt-2 px-4 lg:px-4"
               tabBarStyle={{ color: "#ffbb00" }}
             >
               <TabPane tab="Tất cả" key="tất cả"></TabPane>
@@ -153,7 +150,7 @@ const Purchase = () => {
                     className=" text-[10px] font-medium  sm:mr-4 sm:text-sm  hover:translate-y-[-1px] transition-all hover:text-yellow-500  cursor-pointer "
                     to="/user/purchase/order/2323"
                   >
-                    Đang giao hàng
+                    Chưa giao
                   </Link>
                 </div>
               </div>
@@ -190,9 +187,12 @@ const Purchase = () => {
                 </div> */}
                 <div className="flex justify-end mb-1 mr-2">
                   <Link className=" " to="/user/purchase/order/2323">
-                    <button className="p-2 ml-3 items-center max-w-[140px] flex font-semibold bg-yellow-500  border-button_color border-2  hover:translate-y-[-1px] transition-all text-[#00003B] rounded-sm">
+                    <button
+                      onClick={handleStatus()}
+                      className="p-2 ml-3 items-center max-w-[140px] flex font-semibold bg-yellow-500  border-button_color border-2  hover:translate-y-[-1px] transition-all text-[#00003B] rounded-sm"
+                    >
                       <BiTargetLock />
-                      <div>Tra hành trình</div>
+                      <div>Nhận đơn</div>
                     </button>
                   </Link>
                 </div>
@@ -213,4 +213,4 @@ const Purchase = () => {
   );
 };
 
-export default Purchase;
+export default PurchaseDriver;

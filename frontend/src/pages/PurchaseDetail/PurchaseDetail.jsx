@@ -4,17 +4,36 @@ import SideBar from "../../components/SideBar";
 import { IoLocationOutline } from "react-icons/io5";
 
 import { AiOutlineGift, AiOutlineUser, AiOutlineInbox } from "react-icons/ai";
-
 import { TbSteeringWheel } from "react-icons/tb";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
 import { GiWeight } from "react-icons/gi";
 import { BsCoin } from "react-icons/bs";
 import { AiOutlinePhone } from "react-icons/ai";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 const PurchaseDetail = () => {
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+
   const handleOpen = () => {
     setOpen(!open);
     console.log(open);
+  };
+
+  useEffect(() => {
+    console.log(location);
+  });
+  const order = {
+    formProvince: "Ho Chi Minh",
+    fromDistrict: "Quan 2",
+    fromWard: "Binh An",
+    toProvince: "Binh Thuan",
+    toDistrict: "Phan Thiet",
+    toWard: "Lac Dao",
+    unit: "kg",
+    quantity: 1,
+    serviceId: "string",
+    serviceName: "string",
   };
 
   return (
@@ -146,18 +165,18 @@ const PurchaseDetail = () => {
                     </div>
                     <div className="text-base md:text-lg">1.000.000 đ</div>
                   </div>
-                  <div className="ml-2 flex items-center py-1">
-                    <FaRegMoneyBillAlt className="mr-1 w-5 h-5  md:w-7 md:h-7 " />
-                    <div className="text-base md:text-lg mr-1">Phí COD:</div>
-                    <div className="text-base md:text-lg ">1.000 đ</div>
-                  </div>
 
                   <div className="ml-2 flex items-center py-1">
                     <div>
-                      <TbSteeringWheel className="mr-1 w-5 h-5 md:w-7 md:h-7" />
+                      <FaRegMoneyBillAlt className="mr-1 w-5 h-5 md:w-7 md:h-7" />
                     </div>
                     <div className="text-base md:text-lg mr-1">Vận phí:</div>
                     <div className="text-base md:text-lg">25.000 đ</div>
+                  </div>
+                  <div className="ml-2 flex items-center py-1">
+                    <TbSteeringWheel className="mr-1 w-5 h-5  md:w-7 md:h-7 " />
+                    <div className="text-base md:text-lg mr-1">Dịch vụ:</div>
+                    <div className="text-base md:text-lg ">J&T fast</div>
                   </div>
                 </div>
               </div>

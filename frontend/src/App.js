@@ -1,8 +1,6 @@
 import React from "react";
 import "./App.css";
 import "react-router-dom";
-// import Header from "./components/Header";
-// import Footer from "./components/Footer";
 import {
   Home,
   About,
@@ -26,19 +24,27 @@ import {
   Purchase,
   PurchaseStage,
   PurchaseDetail,
-  Profile,
-  Notification,
-  LayerStorekeeper, ProductsManager, Inventory,
-  AdminAbout, AdminPage, AdminContactUs, AdminCommitment, AdminContactMessage, AdminDeliveryService, AdminPartner
+  // Profile,
+  // Notification,
+  PurchaseDriver,
+  LayerStorekeeper,
+  ProductsManager,
+  Inventory,
+  StandardService,
+  Service,
+  FastService,
+  SuperService,
+  FreshService,
+  AdminPage,
+  AdminAbout,
+  AdminContactUs,
+  AdminCommitment,
+  AdminContactMessage,
+  AdminDeliveryService,
+  AdminPartner,
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
 import MainProvider from "./context/MainContext";
-import StandardService from "./pages/services/StandardService";
-import Service from "./pages/services/Service";
-import FastService from "./pages/services/FastService";
-import SuperService from "./pages/services/SuperService";
-import FreshService from "./pages/services/FreshService";
 const App = () => {
   return (
     <MainProvider>
@@ -85,17 +91,18 @@ const App = () => {
                 element={<FreshService />}
               />
               {/* ----------------------Profile------------------ */}
-              <Route path="user/account/profile" element={<Profile />} />
+              {/* <Route path="user/account/profile" element={<Profile />} /> */}
               <Route path="user/purchase" element={<Purchase />} />
+              <Route path="driver/purchase" element={<PurchaseDriver />} />
               <Route path="user/purchase/:id" element={<PurchaseDetail />} />
               <Route
                 path="user/purchase/order/:id"
                 element={<PurchaseStage />}
               />
-              <Route
+              {/* <Route
                 path="user/notifications/order"
                 element={<Notification />}
-              />
+              /> */}
               {/* -------------------------Đăng kí/Đăng nhập------------- */}
               <Route path="dang-ki" element={<Register />} />
               <Route path="dang-nhap" element={<Login />} />
@@ -106,11 +113,10 @@ const App = () => {
 
               <Route path="*" element={<PageNotFound />} />
             </Route>
-            <Route path="storekeeper" element={<LayerStorekeeper />} >
+            <Route path="storekeeper" element={<LayerStorekeeper />}>
               <Route index element={<ProductsManager />} />
               <Route path="xuat-nhap" element={<ProductsManager />} />
               <Route path="ton-kho" element={<Inventory />} />
-
             </Route>
             <Route path="admin" element={<AdminPage />}>
               <Route path="about" element={<AdminAbout />}></Route>
