@@ -24,7 +24,7 @@ const authRoute = express.Router()
 authRoute.post('/verify-token', (req, res) => {
     const { accessToken, refreshToken } = req.body
     try {
-        if(accessToken in TOKEN_LIST || accessToken in TOKEN_BLACKLIST) return sendError(res, "Unauthorzied.", 401)
+        if (accessToken in TOKEN_LIST || accessToken in TOKEN_BLACKLIST) return sendError(res, "Unauthorzied.", 401)
         const { payload } = jwt.verify(accessToken, process.env.JWT_SECRET_KEY, {
             complete: true
         })
@@ -55,7 +55,7 @@ authRoute.post('/verify-token', (req, res) => {
                         }
                     )
                     TOKEN_LIST[refreshToken].accessToken = newAccessToken
-    
+
                     return sendSuccess(res, "Verify token successfully.", {
                         accessToken: newAccessToken,
                         user: payload.user
@@ -66,7 +66,7 @@ authRoute.post('/verify-token', (req, res) => {
                 }
             }
         }
-        else{
+        else {
             // console.log('access-token is expired.')
             return sendError(res, "Unauthorzied.", 401)
         }
@@ -461,9 +461,9 @@ authRoute.put('/change-pw', verifyToken, async (req, res) => {
  * @description user log out
  * @access private
  */
- authRoute.post('/logout', verifyToken, async (req, res) => {
+authRoute.post('/logout', verifyToken, async (req, res) => {
     const { refreshToken } = req.body
-    if(refreshToken in TOKEN_LIST)
+    if (refreshToken in TOKEN_LIST)
         delete TOKEN_LIST[refreshToken]
     else return sendError(res, 'refresh token is invalid.', 401)
     try {
@@ -472,7 +472,7 @@ authRoute.put('/change-pw', verifyToken, async (req, res) => {
         })
         TOKEN_BLACKLIST[req.verifyToken] = req.verifyToken
         clearTokenList(TOKEN_BLACKLIST)
-    } catch (error) {  }
+    } catch (error) { }
     return sendSuccess(res, 'log out successfully. see you soon.')
 })
 

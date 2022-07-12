@@ -112,3 +112,11 @@ export const ORDER_STATUS = {
     processing: 'processing',
     completed: 'completed'
 }
+
+export const NOTIFY_EVENT = {
+    connection: 'connection',
+    addSession: 'add-session',
+    send: 'send',
+    receive: 'receive',
+    disconnect: 'disconnect'
+}

@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 import mongoose from "mongoose"
 import cors from "cors"
 import YAML from 'yamljs'
+import { Server } from 'socket.io'
 
 import authRoute from "./router/auth.js"
 import adminRoute from "./router/admin/index.js"
@@ -25,6 +26,8 @@ const swaggerDocument = YAML.load('./swagger.yaml')
 
 import { verifyAdmin, verifyToken } from "./middleware/index.js"
 import { clearTokenList } from "./service/jwt.js"
+import { NOTIFY_EVENT } from "./constant.js"
+import { sendNotify } from "./socket/handle.js"
 dotenv.config()
 
 /**
@@ -37,7 +40,13 @@ mongoose.connect(process.env.MONGO_URI, () => {
 const PORT = process.env.PORT || 8000
 export const TOKEN_LIST = {}
 export const TOKEN_BLACKLIST = {}
+export const SOCKET_SESSIONS = []
 const app = express()
+const io = new Server(process.env.SOCKET_PORT, {
+    cors: {
+        origin: '*'
+    }
+})
 
 app.use(express.json())
 app.use(express.static('public'))
@@ -59,10 +68,27 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/warehouse', warehouseRoute)
     .use('/api/participant', participantRoute)
 
+io.on(NOTIFY_EVENT.connection, socket => {
+    // console.log('Connected to a user successfully.')
+
+    socket.on(NOTIFY_EVENT.disconnect, () => {
+        console.log('user disconnected')
+    })
+
+    socket.on(NOTIFY_EVENT.addSession, userId => {
+        SOCKET_SESSIONS.push({ socketId: socket.id, userId })
+    })
+
+    socket.on(NOTIFY_EVENT.send, (userId, message) => {
+        // console.log(message)
+        sendNotify(io, userId, message)
+    })
+})
+
 app.listen(PORT, () => {
     console.log(`Server start at port: ${PORT}`)
 })
 
-setInterval(()=>{
+setInterval(() => {
     clearTokenList(TOKEN_BLACKLIST)
 }, 3600000)
