@@ -271,9 +271,9 @@ export default function StandardService() {
                 ></img>
                 <div className="mx-8 sm:mx-[70px] md:mx-[130px] lg:mx-[320px] mt-[12px]">
                   <div className="text-white font-semibold text-lg text-center sm:text-xl md:text-2xl preventselect">
-                    J&T luôn là sự lựa chọn an toàn đối với nhưng cửa hàng như
-                    tôi. Tôi thật sự rất biết ơn J&T đã đồng hành và hỗ trợ tôi
-                    suốt thời gian vừa qua
+                    Nhờ J&T mà shop của tôi được nhiều khách hàng đánh giá tốt
+                    về thời gian ship hàng.Giá thành tiết kiệm, đội ngủ shipper
+                    chuyên nghiệp hỗ trợ rất nhiều trong việc kinh doanh của tôi
                   </div>
                 </div>
                 <h1 className="text-white font-bold text-lg mt-[14px] preventselect">
@@ -300,10 +300,10 @@ export default function StandardService() {
                 ></img>
                 <div className="mx-8 sm:mx-[70px] md:mx-[130px] lg:mx-[320px] mt-[12px]">
                   <div className="text-white font-semibold text-lg text-center sm:text-xl md:text-2xl preventselect">
-                    Nhờ có J&T giúp đỡ mà hàng hóa chúng tôi được vận chuyển tối
-                    ưu nhất.Sự chậm trễ trong việc giao hàng gần như là không
-                    có, khách hàng của tôi rất hài lòng với dịch vụ vận chuyển
-                    của J&T
+                    Tôi đã từng hợp tác với nhiều đơn vị chuyển phát nhưng cuối
+                    cùng quyết định đồng hành cùng J&T.Phải nói rằng,hệ thống
+                    bưu cục đồng nhất về chất lượng khắp 63 tỉnh thành là điểm
+                    tôi hài lòng nhất
                   </div>
                 </div>
                 <h1 className="text-white font-bold text-lg mt-[14px] preventselect">
@@ -330,9 +330,9 @@ export default function StandardService() {
                 ></img>
                 <div className="mx-8 sm:mx-[70px] md:mx-[130px] lg:mx-[320px] mt-[12px]">
                   <div className="text-white font-semibold text-lg text-center sm:text-xl md:text-2xl preventselect">
-                    Cửa hàng của chúng tôi luôn ưu tiên lựa chọn J&T để đảm bảo
-                    nhận hàng nhanh chóng nhất có thể.Tôi luôn tin tưởng cách mà
-                    J&T làm việc
+                    Kinh doanh online 3 năm nay, thái độ cùng với sự hỗ trợ
+                    nhiệt tình của shipper J&T là điều vô cùng đặc biệt đối với
+                    tôi.Tôi rất hài lòng và chọn J&T cho cửa hàng của mình
                   </div>
                 </div>
                 <h1 className="text-white font-bold text-lg mt-[14px] preventselect">
