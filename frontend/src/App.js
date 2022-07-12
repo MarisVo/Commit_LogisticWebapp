@@ -29,7 +29,7 @@ import {
   Profile,
   Notification,
   LayerStorekeeper, ProductsManager, Inventory,
-  AdminAbout, AdminContactUs, AdminCommitment, AdminContactMessage, AdminDeliveryService, AdminPartner
+  AdminAbout, AdminPage, AdminContactUs, AdminCommitment, AdminContactMessage, AdminDeliveryService, AdminPartner
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -39,7 +39,6 @@ import Service from "./pages/services/Service";
 import FastService from "./pages/services/FastService";
 import SuperService from "./pages/services/SuperService";
 import FreshService from "./pages/services/FreshService";
-import AdminPage from "./pages/admin/adminLayout/AdminPage";
 const App = () => {
   return (
     <MainProvider>

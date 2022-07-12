@@ -41,6 +41,7 @@ export { default as AdminCommitment } from './admin/AdminCommitment.jsx'
 export { default as AdminContactMessage } from './admin/AdminContactMessage.jsx'
 export { default as AdminDeliveryService } from './admin/AdminDeliveryService.jsx'
 export { default as AdminPartner } from './admin/AdminPartner.jsx'
+export {default as AdminPage} from './admin/adminLayout/AdminPage.jsx'
 
 
 
