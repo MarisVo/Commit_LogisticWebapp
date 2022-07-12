@@ -8,51 +8,23 @@ import {
   AiOutlineUser,
   AiTwotoneCalendar,
 } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
 import { BiTargetLock } from "react-icons/bi";
 
 import { MdOutlineEditCalendar } from "react-icons/md";
 import { TiDeleteOutline } from "react-icons/ti";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
-import { MainContext } from "../../context/MainContext";
 
+import { Tabs } from "antd";
+const { TabPane } = Tabs;
 const Purchase = () => {
   const [open, setOpen] = useState(false);
   const [order, setOrder] = useState();
-  const { user } = useContext(MainContext);
-  /*  const [user, setUser] = contextData.user; */
-  /*  const [form, setForm] = useState({
-    email: "",
-    phone: "",
-    password: "",
-  });
-  const { loginHandle } = useContext(MainContext);
-  const handleChange = (e) => {
-    e.preventDefault();
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
-    console.log(form);
-  };
-  const onFinish = async () => {
-    try {
-      const res = await axios.post(
-        `http://localhost:8000/api/auth/login`,
-        form
-      );
-      console.log(res);
-      loginHandle(res.accessToken, res.refreshToken, res.user);
-    } catch (err) {
-      console.log(err);
-    }
-  }; */
   const handleOpen = () => {
     setOpen(!open);
     console.log(open);
   };
-  useEffect(() => {
-    console.log(user);
-  });
   const order1 = {
     orderId: 232321,
     /*  service: {
@@ -113,6 +85,13 @@ const Purchase = () => {
     };
   }); */
 
+  const navigate = useNavigate();
+  const [key, setKey] = useState("tất cả");
+  function handleTabs(key) {
+    setKey(key);
+    navigate(`/user/purchase?type=${key}`);
+  }
+
   return (
     <div className="pt-[68px]">
       <div className="bg-gray-100 relative ">
@@ -126,41 +105,31 @@ const Purchase = () => {
           </span>
         </div>
         <div className=" sm:mx-16 lg:mx-52 py-4 bg-gray-white mx-2  ">
-          <div className="flex  justify-between sm:justify-evenly align-center m-w-[100%] scrollbar rounded-sm sm:border-gray-400 sm:border-b-[1px] bg-white sm:pb-1 flex-nowrap overflow-x-auto scroll-smooth scrollbar">
-            <a className="preventselect m-w-[70px] mx-2 p-1 flex-shrink-0 ">
-              <span className=" font-semibold text-base md:text-base text text-black hover:text-yellow-500 ">
-                Tất cả
-              </span>
-            </a>
-            <a className="m-w-[70px] mx-2 p-1 flex-shrink-0 preventselect">
-              <span className=" font-semibold text-base md:text-base text-black hover:text-yellow-500">
-                Chờ xác nhận
-              </span>
-            </a>
-            <a className="m-w-[70px] mx-2 p-1 flex-shrink-0 preventselect">
-              <span className=" font-semibold text-base md:text-base text-black hover:text-yellow-500">
-                Chờ lấy hàng
-              </span>
-            </a>
-            <a className="m-w-[70px] mx-2 p-1 flex-shrink-0 preventselect ">
-              <span className="font-semibold text-base md:text-base text-black hover:text-yellow-500">
-                Đang giao
-              </span>
-            </a>
-            <a className="m-w-[70px] mx-2 p-1 flex-shrink-0 preventselect">
-              <span className="font-semibold text-base md:text-base text-black hover:text-yellow-500">
-                Đã giao
-              </span>
-            </a>
-            <a className="m-w-[70px] mx-2 p-1 flex-shrink-0 preventselect">
-              <span className=" font-semibold text-base md:text-base text-black hover:text-yellow-500">
-                Đã hủy
-              </span>
-            </a>
+          <div
+            className="custom-tab shadow-[#000000] container mx-auto  text-xl bg-white "
+            style={{ width: "100%" }}
+          >
+            <Tabs
+              defaultActiveKey="tất cả"
+              onChange={handleTabs}
+              centered
+              size="large"
+              tabPosition="top"
+              type="line"
+              className="pt-2 px-2 lg:px-4"
+              tabBarStyle={{ color: "#ffbb00" }}
+            >
+              <TabPane tab="Tất cả" key="tất cả"></TabPane>
+              <TabPane tab="Chờ xác nhận" key="chờ xác nhận"></TabPane>
+              <TabPane tab="Chờ lấy hàng" key="chờ lấy hàng"></TabPane>
+              <TabPane tab="Đang giao" key="đang giao"></TabPane>
+              <TabPane tab="Đã giao" key="đã giao"></TabPane>
+              <TabPane tab="Đã hủy" key="đã hủy"></TabPane>
+            </Tabs>
           </div>
 
-          <div class="  flex items-center text-gray-400 focus-within:text-gray-600 my-1">
-            <IoSearchOutline class="w-5 h-5 absolute ml-4 pointer-events-none " />
+          <div className="  flex items-center text-gray-400 focus-within:text-gray-600 my-1">
+            <IoSearchOutline className="w-5 h-5 absolute ml-4 pointer-events-none " />
             <input
               type="text"
               name="search"

@@ -326,16 +326,17 @@ export default function FreshService() {
                 ></img>
                 <div className="mx-8 sm:mx-[70px] md:mx-[130px] lg:mx-[320px] mt-[12px]">
                   <div className="text-white font-semibold text-lg text-center sm:text-xl md:text-2xl preventselect">
-                    J&T luôn là sự lựa chọn an toàn đối với nhưng cửa hàng như
-                    tôi. Tôi thật sự rất biết ơn J&T đã đồng hành và hỗ trợ tôi
-                    suốt thời gian vừa qua
+                    Bằng các cách thức đóng gói đặc biệt và cẩn trọng,J&T Fresh
+                    không chỉ là một dịch vụ,nó đã giúp gia đình tôi mang các
+                    loại hải sản đến các tỉnh thành cả nước mà vẫn giữ được độ
+                    tươi ngon
                   </div>
                 </div>
                 <h1 className="text-white font-bold text-lg mt-[14px] preventselect">
                   Lâm Ngọc Anh
                 </h1>
                 <div className="text-white text-base sm:text-lg preventselect">
-                  Chủ tiệm cây cảnh Đồng Tháp
+                  Chủ tiệm cung cấp hải sản
                 </div>
               </div>
             </div>
@@ -365,7 +366,7 @@ export default function FreshService() {
                   Thái Văn Lâm
                 </h1>
                 <div className="text-white text-base sm:text-lg preventselect">
-                  Chủ tiệm công ty sản suất giấy in
+                  Chủ tiệm công ty cây trồng
                 </div>
               </div>
             </div>
@@ -394,7 +395,7 @@ export default function FreshService() {
                   Trần Văn Nghĩa
                 </h1>
                 <div className="text-white text-base sm:text-lg preventselect">
-                  Chủ công ty sản xuất hàng tiêu dùng
+                  Chủ công ty sản xuất gia cầm
                 </div>
               </div>
             </div>
