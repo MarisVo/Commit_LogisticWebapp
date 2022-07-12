@@ -1,81 +1,55 @@
-import {Table, Modal} from 'antd'
+import {Table, Input} from 'antd'
 import { useState } from 'react';
 
 const columns = [
     {
-        title: 'Phòng ban',
+        title: 'Tên phòng ban',
+        dataIndex: 'name',
+    },
+    {
+        title: 'Giám đốc',
+        dataIndex: 'director',
+    },
+    {
+        title: 'Vị trí',
+        dataIndex: 'location',
+    },
+    {
+        title: 'Số lượng nhân viên',
+        dataIndex: 'scale',
+    },
+    {
+        title: 'Danh sách việc làm',
         dataIndex: 'department',
-    },
-    {
-        title: 'Hạn nộp hồ sơ',
-        dataIndex: 'date',
-        sorter:true,
-    },
-    {
-        title: 'Phòng ban',
-        dataIndex: 'department',
-        filters: [
-            {
-                text: 'Kĩ thuật',
-                value: 'technical',
-            },
-            {
-                text: 'Nhân sự',
-                value: 'human',
-            },
-        ],
-    },
-    {
-        title: 'Vị trí làm việc',
-        dataIndex: 'job',
-        filters: [
-            {
-                text: 'noname',
-                value: 'technical',
-            },
-            {
-                text: 'noname',
-                value: 'human',
-            },
-        ],
-    },
-    {
-        title: 'Địa điểm làm việc',
-        dataIndex: 'department',
-        filters: [
-            {
-                text: 'Hồ Chí Minh',
-                value: 'Hồ Chí Minh',
-            },
-            {
-                text: 'Hà Nội',
-                value: 'Hà Nội',
-            },
-        ],
-    },
-    {
-        title: 'Trạng thái',
-        dataIndex: 'status',
-        filters: [
-            {
-                text: 'Đang mở',
-                value: 'open',
-            },
-            {
-                text: 'Đã đóng',
-                value: 'closed',
-            },
-        ],
     },
 ];
 function AdminDepartment() {
+    const [data, setData] = useState([])
     const [loading, setLoading] = useState(false);
     const [pagination, setPagination] = useState({
         current: 1,
         pageSize: 10,
     });
+    const [isAddVisible, setIsAddVisible] = useState(false);
+
+    const dataAfterFetch = [
+        {
+
+        }
+    ]
     return ( 
     <div>
+        <div className="flex justify-between mb-4">
+                <span className="text-3xl font-bold uppercase">Department</span>
+
+                <Input.Search
+                    className='w-1/3 lg:w-[400px]'
+                    placeholder="Search" />
+                <button
+                    className="px-5 py-2 border border-neutral-800 text-center hover:bg-slate-300"
+                    onClick={() => setIsAddVisible(true)}
+                >+ Thêm mới</button>
+            </div>
         <Table
                 columns={columns}
                 rowKey={(record) => record.login.uuid}

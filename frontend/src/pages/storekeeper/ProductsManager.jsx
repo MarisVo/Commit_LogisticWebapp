@@ -34,9 +34,11 @@ function ProductsManager() {
             dataIndex: 'detail',
             key: 'detail',
             ellipsis: true,
-            render: (_,e) => <div onClick={() => {
+            render: (a,e) => <div onClick={() => {
                 setIsModalVisible(true)
-                console.log(e)
+                console.log("e là", e)
+                console.log("a là", a)
+
             }} className='text-blue-700 cursor-pointer'>Chi tiết</div>,
 
         },

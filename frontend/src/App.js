@@ -119,7 +119,7 @@ const App = () => {
 
               <Route path="*" element={<PageNotFound />} />
             </Route>
-            <Route element={<LayerStorekeeper />}>
+            <Route path="storekeeper" element={<LayerStorekeeper />}>
               <Route index element={<ProductsManager />} />
               <Route path="xuat-nhap" element={<ProductsManager />} />
               <Route path="ton-kho" element={<Inventory />} />
