@@ -70,9 +70,30 @@ export default function AdminPage() {
     ),
     getItem(
       <div>
-        <Link to="partner">service</Link>
+        <Link to="partner">partner</Link>
       </div>,
       "7",
+      <DesktopOutlined> </DesktopOutlined>
+    ),
+    getItem(
+      <div>
+        <Link to="career">career</Link>
+      </div>,
+      "8",
+      <DesktopOutlined> </DesktopOutlined>
+    ),
+    getItem(
+      <div>
+        <Link to="applicant">applicant</Link>
+      </div>,
+      "9",
+      <DesktopOutlined> </DesktopOutlined>
+    ),
+    getItem(
+      <div>
+        <Link to="department">department</Link>
+      </div>,
+      "10",
       <DesktopOutlined> </DesktopOutlined>
     ),
     // getItem("User", "sub1", <UserOutlined />, [getItem("Tom", "3"), getItem("Bill", "4"), getItem("Alex", "5")]),
