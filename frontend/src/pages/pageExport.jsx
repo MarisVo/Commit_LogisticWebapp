@@ -32,8 +32,8 @@ export { default as DefaultLayout } from "../layouts/DefaultLayout";
 export { default as Purchase } from "./Purchase/Purchase.jsx";
 export { default as PurchaseDriver } from "./Purchase/PurchaseDriver.jsx";
 export { default as PurchaseStage } from "./PurchaseStage/PurchaseStage.jsx";
-// export { default as Profile } from "./Profile/Profile.jsx";
-// export { default as Notification } from "./Notification/Notification.jsx";
+export { default as Profile } from "./profile/Profile.jsx";
+export { default as Notification } from "./notification/Notification.jsx";
 export { default as PurchaseDetail } from "./PurchaseDetail/PurchaseDetail.jsx";
 //---------------------------------------------//
 export { default as StandardService } from "./services/StandardService.jsx";

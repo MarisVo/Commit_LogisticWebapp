@@ -25,8 +25,8 @@ import {
   Purchase,
   PurchaseStage,
   PurchaseDetail,
-  // Profile,
-  // Notification,
+  Profile, 
+  Notification,
   PurchaseDriver,
   LayerStorekeeper,
   ProductsManager,
@@ -97,7 +97,7 @@ const App = () => {
                 element={<FreshService />}
               />
               {/* ----------------------Profile------------------ */}
-              {/* <Route path="user/account/profile" element={<Profile />} /> */}
+              <Route path="user/account/profile" element={<Profile />} />
               <Route path="user/purchase" element={<Purchase />} />
               <Route path="driver/purchase" element={<PurchaseDriver />} />
               <Route path="user/purchase/:id" element={<PurchaseDetail />} />
@@ -105,10 +105,10 @@ const App = () => {
                 path="user/purchase/order/:id"
                 element={<PurchaseStage />}
               />
-              {/* <Route
+              <Route
                 path="user/notifications/order"
                 element={<Notification />}
-              /> */}
+              />
               {/* -------------------------Đăng kí/Đăng nhập------------- */}
               <Route path="dang-ki" element={<Register />} />
               <Route path="dang-nhap" element={<Login />} />
