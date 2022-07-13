@@ -16,6 +16,9 @@ import partnerRoute from "./router/partner.js"
 import contactMsgRoute from "./router/contactMsg.js"
 import quoteRoute from "./router/quote.js"
 import warehouseRoute from "./router/warehouse.js"
+import applicantRoute from "./router/applicant.js"
+import careerRoute from "./router/career.js"
+import departmentRoute from "./router/department.js"
 import participantRoute from "./router/participant.js"
 
 // swagger setup
@@ -53,6 +56,9 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/message', contactMsgRoute)
     .use('/api/quote', quoteRoute)
     .use('/api/warehouse', warehouseRoute)
+    .use('/api/applicant', applicantRoute)
+    .use('/api/career', careerRoute)
+    .use('/api/department', departmentRoute)
     .use('/api/participant', participantRoute)
 
 app.listen(PORT, () => {

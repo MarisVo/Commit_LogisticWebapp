@@ -9,6 +9,10 @@ import partnerAdminRoute from "./partner.js"
 import contactMsgAdminRoute from "./contactMsg.js"
 import participantAdminRoute from "./participant.js"
 import quoteAdminRoute from "./quote.js"
+import applicantAdminRoute from "./applicant.js"
+import careerAdminRoute from "./career.js"
+import departmentAdminRoute from "./department.js"
+
 const adminRoute = express.Router()
 
 adminRoute.use('/auth', authAdminRoute)
@@ -21,5 +25,8 @@ adminRoute.use('/auth', authAdminRoute)
     .use('/message', contactMsgAdminRoute)
     .use('/participant', participantAdminRoute)
     .use('/quote', quoteAdminRoute)
-    
+    .use("/applicant", applicantAdminRoute)
+    .use("/career", careerAdminRoute)
+    .use("/department", departmentAdminRoute);
+
 export default adminRoute
