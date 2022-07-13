@@ -1,7 +1,7 @@
 import { Table, Form, Input } from 'antd';
 import { useEffect, useState } from 'react';
-import AddNewCareer from '../../components/Admin/Career/AddNewCareer';
-import EditCareer from '../../components/Admin/Career/EditCareer';
+import AddNewCareer from '../../components/Admin/career/AddNewCareer';
+import EditCareer from '../../components/Admin/career/EditCareer';
 import ConfirmModal from '../../components/ConfirmModal';
 import { AiFillEdit, AiOutlineDelete } from 'react-icons/ai'
 
@@ -43,7 +43,7 @@ const getRandomuserParams = (params) => ({
 const { Item } = Form
 
 function AdminCareer() {
-    const [data, setData] = useState(data2);
+    const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [pagination, setPagination] = useState({
         current: 1,
@@ -177,6 +177,7 @@ function AdminCareer() {
         try {
             await setTimeout(() => {
                 setLoading(false)
+                setData(data2)
             }, 2000)
         }
         catch {
@@ -199,7 +200,7 @@ function AdminCareer() {
         setLoading(true)
         setIsDisable(true)
         try {
-            await setTimeout(() => {
+            await setTimeout(() => {  //thay bằng DELETE request
                 setLoading(false)
                 setIsDeleteVisible(false)
                 setIsDisable(false)
@@ -220,7 +221,7 @@ function AdminCareer() {
         setLoading(true)
         setIsDisable(true)
         try {
-            await setTimeout(() => {
+            await setTimeout(() => {  //thay bằng POST request
                 setLoading(false)
                 setIsAddVisible(false)
                 setIsDisable(false)
@@ -231,23 +232,6 @@ function AdminCareer() {
 
         }
     }
-    const acceptEditCareer2 = async () => {
-        setLoading(true)
-        setIsDisable(true)
-
-        try {
-            await setTimeout(() => {
-                setLoading(false)
-                setIsEditVisible(false)
-                setIsDisable(false)
-                console.log('Okay')
-            }, 2000)
-        }
-        catch {
-
-        }
-    }
-
     return (
         <>
             <div className="flex justify-between mb-4">

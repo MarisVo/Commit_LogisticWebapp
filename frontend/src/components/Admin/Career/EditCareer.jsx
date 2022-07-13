@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Form, Input, DatePicker, Button } from 'antd'
 
 const { Item } = Form
-function EditCareer({ isVisible, onClose, onOk, data, refetchData }) {
+function EditCareer({ onClose, onOk, data, refetchData }) {
     const [editData, setEditData] = useState(data)
     const [loading, setLoading] = useState(false)
     const [disable, setDisable] = useState(false)
@@ -12,7 +12,7 @@ function EditCareer({ isVisible, onClose, onOk, data, refetchData }) {
         setLoading(true)
         setDisable(true)
         try {
-            setTimeout(() => {
+            setTimeout(() => {  //sẽ thay bằng PUT request
                 setLoading(false)
                 setDisable(false)
                 onClose()
