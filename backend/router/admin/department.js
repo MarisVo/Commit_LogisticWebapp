@@ -21,7 +21,7 @@ departmentAdminRoute.post("/", async (req, res) => {
   let { name, description, location, director, scale } = req.body;
 
   try {
-    const isExist = await Department.exists();
+    const isExist = await Department.exists({name:name});
     if (isExist) return sendError(res, "Department already exists");
 
     await Department.create({
@@ -48,7 +48,7 @@ departmentAdminRoute.put("/:id", async (req, res) => {
   try {
     const department = await Department.findById(id);
     if (department) {
-      await department.findByIdAndUpdate(id, {
+      await Department.findByIdAndUpdate(id, {
         name: name,
         description: description,
         location: location,

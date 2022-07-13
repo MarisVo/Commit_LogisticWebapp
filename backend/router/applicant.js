@@ -42,8 +42,8 @@ applicantRoute.post("/", uploadHandle.single("file"), async (req, res) => {
     });
     const contact = await Contact.findOne({});
     const options = {
-      from: applicant.email,
-      to: contact.hr_mailbox,
+      from: process.env.MAIL_HOST,
+      to: process.env.MAIL_HOST,
       subject: applicant.lastName + "_CV",
       html: `<p>Job application CV</p>`,
 
