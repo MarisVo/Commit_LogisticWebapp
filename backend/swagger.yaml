@@ -29,6 +29,8 @@ tags:
   description: "Endpoint Message"
 - name: "consultancy"
   description: "Endpoint Consultancy"
+- name: "notification"
+  description: "Endpoint Notification for user's realtime interaction"
 paths:
   /auth/verify-token:
     post:
@@ -1910,6 +1912,52 @@ paths:
           description: Delete quote successfully.
         400:
           description: Delete quote failed.
+      security:
+        - bearerAuth: []
+  /notification:
+    get:
+      tags:
+        - notification
+      summary: Get list of notifications
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: limit
+          type: string
+          description: limitation of notifications in response
+      responses:
+        200:
+          description: request successfully.
+          schema:
+            example: ["notification1","notification2",]
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - notification
+      summary: Send a notification to another
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: content
+          schema:
+            type: object
+            properties:
+              receiverId:
+                type: string
+              title:
+                type: string
+              message:
+                type: string
+              link:
+                type: string
+      responses:
+        200:
+          description: send the notification successfully.
+        404:
+          description: receiver's ID didn't exist.
       security:
         - bearerAuth: []
 securityDefinitions:

@@ -27,7 +27,8 @@ const swaggerDocument = YAML.load('./swagger.yaml')
 import { verifyAdmin, verifyToken } from "./middleware/index.js"
 import { clearTokenList } from "./service/jwt.js"
 import { NOTIFY_EVENT } from "./constant.js"
-import { sendNotify } from "./socket/handle.js"
+import { handleDisconnect, sendNotify } from "./socket/handle.js"
+import notificationRoute from "./router/notification.js"
 dotenv.config()
 
 /**
@@ -67,21 +68,21 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/quote', quoteRoute)
     .use('/api/warehouse', warehouseRoute)
     .use('/api/participant', participantRoute)
+    .use('/api/notification', verifyToken, notificationRoute)
 
 io.on(NOTIFY_EVENT.connection, socket => {
     // console.log('Connected to a user successfully.')
 
     socket.on(NOTIFY_EVENT.disconnect, () => {
-        console.log('user disconnected')
+        handleDisconnect(socket)
     })
 
     socket.on(NOTIFY_EVENT.addSession, userId => {
         SOCKET_SESSIONS.push({ socketId: socket.id, userId })
     })
 
-    socket.on(NOTIFY_EVENT.send, (userId, message) => {
-        // console.log(message)
-        sendNotify(io, userId, message)
+    socket.on(NOTIFY_EVENT.send, (userId, data) => {
+        sendNotify(io, userId, data)
     })
 })
 
