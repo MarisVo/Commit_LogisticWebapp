@@ -1,8 +1,9 @@
-import React from "react";
-import "antd/dist/antd.css";
-import { Form, Button, Input, Typography } from "antd";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import React from 'react'
+import 'antd/dist/antd.css'
+import { Form, Button, Input, Typography, message } from "antd";
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import * as axios from 'axios'
 
 const LoginForm = styled.div`
   .Login {
@@ -71,101 +72,144 @@ const ButtonContainer = styled.div`
   }
 `;
 
+function isValidEmail(email) {
+  return /\S+@\S+\.\S+/.test(email);
+}
+
 const { Title } = Typography;
 
 function Login() {
+  const [form] = Form.useForm();
+
+  const success = () => {
+    message.success({
+      content: 'Đăng nhập thành công',
+      className: 'custom-class',
+      style: {
+        marginTop: '20vh',
+      },
+    });
+  };
+
+  const failed403 = () => {
+    message.error({
+      content: 'Role của bạn chưa được xác nhận, từ chối đăng nhập',
+      className: 'custom-class',
+      style: {
+        marginTop: '20vh',
+      },
+    });
+  };
+
+  const failed400 = () => {
+    message.error({
+      content: 'Email, số điện thoại hoặc mật khẩu không đúng',
+      className: 'custom-class',
+      style: {
+        marginTop: '20vh',
+      },
+    });
+  };
+  
+  const emailphone = Form.useWatch('email/phone', form);
+  var email;
+  var phone;
+  (isValidEmail(emailphone)) ? email = emailphone : phone = emailphone
+  var password = Form.useWatch('password', form);
+
+  const onFinish = async() => {
+    try{ 
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:8000/api/auth/login',
+        data: {
+          email: email,
+          phone: phone,
+          password: password
+        }
+      })   
+
+      success();
+    } catch(error) {
+      if(error.message == "Request failed with status code 403") {
+        failed403();
+      }
+
+      if(error.message == "Request failed with status code 400") {
+        failed400();
+      }
+    }
+  };
   return (
     <LoginForm>
-      <div className="Login">
-        <div className="Login-header">
-          <Form
-            autoComplete="off"
-            labelCol={{ span: 10 }}
-            wrapperCol={{ span: 14 }}
-            onFinish={(values) => {
-              console.log({ values });
-            }}
-            onFinishFailed={(error) => {
-              console.log({ error });
-            }}
-          >
-            <Title level={2} className="text-center">
-              Đăng nhập
-            </Title>
-
-            <Form.Item
-              name="email"
-              label="Email"
-              rules={[
-                { type: "email", message: "Vui lòng nhập email có thật" },
-                ({ getFieldValue }) => ({
-                  validator(_, email) {
-                    if (email || getFieldValue("phone")) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject(
-                      "Vui lòng nhập email hoặc số điện thoại"
-                    );
-                  },
-                }),
-              ]}
-              hasFeedback
+        <div className="Login">
+          <div className="Login-header">
+            <Form
+              form ={form}
+              autoComplete="off"
+              labelCol={{ span: 10 }}
+              wrapperCol={{ span: 14 }}
+              onFinish={(onFinish)}
+              onFinishFailed={(error) => {
+                console.log({ error });
+              } }
             >
-              <Input placeholder="Nhập email" />
-            </Form.Item>
+                <Title level={2} className="text-center">
+                    Đăng nhập
+                </Title>
 
-            <Form.Item
-              name="phone"
-              label="Số điện thoại"
-              rules={[
-                ({ getFieldValue }) => ({
-                  validator(_, phone) {
-                    if (phone || getFieldValue("email")) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject(
-                      "Vui lòng nhập email hoặc số điện thoại"
-                    );
-                  },
-                }),
-              ]}
-              hasFeedback
-            >
-              <Input placeholder="Nhập số điện thoại" />
-            </Form.Item>
+                <Form.Item
+                    name="email/phone"
+                    label="Email/Phone"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Vui lòng nhập email hoặc số điện thoại",
+                      },                  
+                    ]}
+                    hasFeedback
+                    >
+                    <Input placeholder="Nhập email hoặc số điện thoại" />
+                </Form.Item>
 
-            <Form.Item
-              name="password"
-              label="Mật khẩu"
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng nhập mật khẩu",
-                },
-                {
-                  min: 8,
-                  message: "Mật khẩu phải dài hơn 8 chữ số",
-                },
-              ]}
-              hasFeedback
-            >
-              <Input.Password placeholder="Nhập mật khẩu" />
-            </Form.Item>
+                <Form.Item
+                    name="password"
+                    label="Mật khẩu"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Vui lòng nhập mật khẩu",
+                        },
+                        { 
+                            min: 6 ,
+                            message: "Mật khẩu phải dài hơn 6 chữ số",
+                        },
+                        {
+                          max: 24,
+                          message: "Mật khẩu chỉ được tối đa 24 chữ số",
+                        },
+                    ]}
+                    hasFeedback
+                >
+                    <Input.Password placeholder="Nhập mật khẩu" />
+                </Form.Item>
 
-            <Form.Item wrapperCol={{ span: 24 }}>
-              <div className="sign">
-                Bạn chưa có tài khoản?
-                <Link to="/register" className="font-semibold text-blue-700">
-                  Đăng ký tài khoản
-                </Link>
-              </div>
-            </Form.Item>
+                <Form.Item wrapperCol={{ span: 24 }}>
+                    <div className='sign'>
+                        Bạn chưa có tài khoản?  
+                        <Link to="/dang-ki" className="font-semibold text-blue-700">
+                            Đăng ký tài khoản
+                        </Link>
+                    </div>
+                </Form.Item>
 
-            <Form.Item wrapperCol={{ span: 24 }}>
-              <div className="sign">
-                <Link to="/quen-mat-khau">Quên mật khẩu</Link>
-              </div>
-            </Form.Item>
+                <Form.Item wrapperCol={{ span: 24 }}>
+                    <div className='sign'>
+                        <Link to="/quen-mat-khau" className="font-semibold text-blue-700">
+                            Quên mật khẩu
+                        </Link>
+                    </div>
+                </Form.Item>
 
             <Form.Item wrapperCol={{ span: 24 }}>
               <ButtonContainer>

@@ -20,6 +20,8 @@ export { default as RecruitmentDetails } from "./RecruitmentDetails/RecruitmentD
 export { default as Login } from "./Login/Login.jsx";
 export { default as Register } from "./Login/Register.jsx";
 export { default as ForgetPass } from "./Login/ForgetPass.jsx";
+export { default as Register_OTP } from "./Login/Register_verify_OTP.jsx";
+
 
 export { default as PageNotFound } from "./PageNotFound";
 
