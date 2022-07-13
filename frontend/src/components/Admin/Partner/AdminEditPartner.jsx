@@ -4,7 +4,6 @@ import axios from "axios";
 import React, {  } from "react";
 export default function AdminEditPartner(props) {
   const { isModalVisibleEdit, onClose, infor, setEditCommitInfor } = props;
-  console.log("infor", infor);
 
   const postNewCommitAPI = async (newData, id) => {
     // console.log("data to upload api", newData);

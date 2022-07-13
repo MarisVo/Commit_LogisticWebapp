@@ -6,6 +6,8 @@ import { useEffect } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import AdminAddCommit from "../../components/Admin/Commit/AdminAddCommit";
 import AdminEditCommit from "../../components/Admin/Commit/AdminEditCommit";
+import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
+import { handleSearch } from "../../components/Admin/HandleSearch/HandleSearch";
 
 export default function AdminCommitment() {
   //state data commit
@@ -14,7 +16,21 @@ export default function AdminCommitment() {
       id: "1",
       heading: "Nodea",
       logo: "https://play-lh.googleusercontent.com/5qotPJfklVo9cNI6JLJivYm3OGYRIIgRSrlKMbWQAUuAl03WwWUQwurYz36yDQUUww",
+      detail: "store",
+    },
+    {
+      id: "2",
+      heading: "Danske",
+      logo: "https://danskebank.com/-/media/danske-bank-images/global/graphics/logo/danske-bank-logo-dark-bg.jpg?rev=db1d1203e2fb49a68beea65b43eeb689&hash=59231469392BF4421574B3E6D1402911",
       detail: "Banking",
+    },
+  ]);
+  const [dataRender, setDataRender] = useState([
+    {
+      id: "1",
+      heading: "Nodea",
+      logo: "https://play-lh.googleusercontent.com/5qotPJfklVo9cNI6JLJivYm3OGYRIIgRSrlKMbWQAUuAl03WwWUQwurYz36yDQUUww",
+      detail: "store",
     },
     {
       id: "2",
@@ -28,15 +44,14 @@ export default function AdminCommitment() {
   //   state open add commit modal
   const [isModalVisibleAdd, setIsModalVisibleAdd] = useState(false);
   // state search text
-  const [searchText, setSearchText] = useState("");
-  const [searchedColumn, setSearchedColumn] = useState("");
+
   //   state for edit commit
   const [editCommitInfor, setEditCommitInfor] = useState({
     heading: "",
     detail: "",
     logo: "",
   });
-  const searchInput = useRef(null);
+
   const getInforCommitAPI = async () => {
     try {
       const result = await axios({
@@ -65,86 +80,7 @@ export default function AdminCommitment() {
   useEffect(() => {
     getInforCommitAPI();
   }, []);
-  const handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
-    setSearchText(selectedKeys[0]);
-    setSearchedColumn(dataIndex);
-  };
 
-  const handleReset = (clearFilters) => {
-    clearFilters();
-    setSearchText("");
-  };
-  const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-      <div
-        style={{
-          padding: 8,
-        }}
-      >
-        <Input
-          ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{
-            marginBottom: 8,
-            display: "block",
-          }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{
-              width: 90,
-            }}
-          >
-            Search
-          </Button>
-          <Button
-            onClick={() => clearFilters && handleReset(clearFilters)}
-            size="small"
-            style={{
-              width: 90,
-            }}
-          >
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({
-                closeDropdown: false,
-              });
-              setSearchText(selectedKeys[0]);
-              setSearchedColumn(dataIndex);
-            }}
-          >
-            Filter
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: (filtered) => (
-      <SearchOutlined
-        style={{
-          color: filtered ? "#1890ff" : undefined,
-        }}
-      />
-    ),
-    onFilter: (value, record) => record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-    onFilterDropdownVisibleChange: (visible) => {
-      if (visible) {
-        setTimeout(() => searchInput.current?.select(), 100);
-      }
-    },
-    render: (text) => (searchedColumn === dataIndex ? <>{searchText}</> : text),
-  });
   const deleteAPI = async (id) => {
     try {
       const result = await axios({
@@ -189,22 +125,24 @@ export default function AdminCommitment() {
       dataIndex: "id",
       width: "20%",
       render: (a, e) => (
-        <div className="flex flex-row justify-around">
+        <div className="flex flex-row justify-around gap-y-1 gap-x-3">
           <button
-            className="bg-green-500 p-3 w-24 hover:opacity-80 rounded-lg"
+            className="flex items-baseline gap-x-1 hover:text-blue-600 "
             onClick={() => {
               setIsModalVisibleEdit(!isModalVisibleEdit);
               setEditCommitInfor(e);
             }}
           >
-            Chỉnh sủa
+            <AiFillEdit className="translate-y-[1px]" />
+            Sửa
           </button>
           <button
-            className="bg-red-500 p-3 w-24 hover:opacity-80 rounded-lg"
+            className="flex items-baseline gap-x-1 hover:text-red-600"
             onClick={() => {
               deleteAPI(a);
             }}
           >
+            <AiOutlineDelete className="translate-y-[1px]" />
             Xóa
           </button>
         </div>
@@ -212,26 +150,34 @@ export default function AdminCommitment() {
     },
   ];
   return (
-    <div className="flex flex-col gap-y-3 border-l ">
-      {<AdminAddCommit isModalVisibleAdd={isModalVisibleAdd} onClose={onCloseAddModal}></AdminAddCommit>}
-      <AdminEditCommit
-        isModalVisibleEdit={isModalVisibleEdit}
-        infor={editCommitInfor}
-        setEditCommitInfor={setEditCommitInfor}
-        onClose={onClose}
-      ></AdminEditCommit>
-      <span className="text-2xl font-blod py-4 px-2">Commit</span>
-      <div className="relative w-full h-10">
-        <button
-          className="inline-flex justify-around items-center absolute right-10 w-32 border rounded-lg p-2 shadow-xl hover:bg-yellow-100"
-          onClick={() => setIsModalVisibleAdd(!isModalVisibleAdd)}
-        >
-          <AiOutlinePlus className="" />
-          Thêm mới
-        </button>
+    <>
+      <div className="flex   justify-between mb-4">
+        {<AdminAddCommit isModalVisibleAdd={isModalVisibleAdd} onClose={onCloseAddModal}></AdminAddCommit>}
+        <AdminEditCommit
+          isModalVisibleEdit={isModalVisibleEdit}
+          infor={editCommitInfor}
+          setEditCommitInfor={setEditCommitInfor}
+          onClose={onClose}
+        ></AdminEditCommit>
+        <span className="text-3xl font-blod py-4 px-2">Commit</span>
+        <Input.Search
+          className="w-1/3 lg:w-[400px]"
+          placeholder="Search"
+          onChange={(e) => {
+            handleSearch(dataCommit, e.target.value, setDataRender);
+          }}
+        />
+        <div>
+          <button
+            className=" justify-around flex items-center absolute right-10 w-32 border rounded-lg p-2 shadow-xl hover:bg-yellow-100"
+            onClick={() => setIsModalVisibleAdd(!isModalVisibleAdd)}
+          >
+            <AiOutlinePlus className="" />
+            Thêm mới
+          </button>
+        </div>
       </div>
-
-      <Table columns={columns} dataSource={dataCommit} />
-    </div>
+      <Table columns={columns} dataSource={dataRender} />
+    </>
   );
 }

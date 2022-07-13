@@ -1,14 +1,14 @@
-import { SearchOutlined } from "@ant-design/icons";
-import { Button, Input, Space, Table, Modal } from "antd";
+import { Input, Table } from "antd";
 import axios from "axios";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
-import AdminEditCommit from "../../components/Admin/Commit/AdminEditCommit";
 import AdminEditMessage from "../../components/Admin/Message/AdminEditMessage";
 import AdminNewMessage from "../../components/Admin/Message/AdminNewMessage";
+import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
+import { handleSearch } from "../../components/Admin/HandleSearch/HandleSearch";
+
 export default function AdminContactMessage() {
-  const [sortedInfo, setSortedInfo] = useState({});
   //   state open edit commit modal
   const [isModalVisibleEdit, setIsModalVisibleEdit] = useState(false);
   //   state open add commit modal
@@ -82,6 +82,32 @@ export default function AdminContactMessage() {
       date: "",
     },
   ]);
+  const [dataRender, setDataRender] = useState([
+    {
+      name: "a",
+      email: "a@gmail42424.com",
+      phone: "424",
+      message: "new message",
+      id: 1,
+      date: "",
+    },
+    {
+      name: "b",
+      email: "bfasf@gmail.com",
+      phone: "4422424",
+      message: "new message",
+      id: 2,
+      date: "",
+    },
+    {
+      name: "c",
+      email: "chjhr@gmail.com",
+      phone: "4565624",
+      message: "new message",
+      id: 3,
+      date: "",
+    },
+  ]);
   // colummns table
   const columns = [
     {
@@ -128,23 +154,25 @@ export default function AdminContactMessage() {
       dataIndex: "id",
       width: "20%",
       render: (a, e) => (
-        <div className="flex flex-row justify-around">
+        <div className="flex flex-row justify-around gap-y-1 gap-x-3">
           <button
-            className="bg-green-500 p-3 w-24 hover:opacity-80 rounded-lg"
+            className="flex items-baseline gap-x-1 hover:text-blue-600"
             onClick={() => {
               console.log(a);
               setIsModalVisibleEdit(!isModalVisibleEdit);
               setDataEditMessage(e);
             }}
           >
-            Chỉnh sủa
+            <AiFillEdit className="translate-y-[1px]" />
+            Sửa
           </button>
           <button
-            className="bg-red-500 p-3 w-24 hover:opacity-80 rounded-lg"
+            className="flex items-baseline gap-x-1 hover:text-red-600"
             onClick={() => {
               deleteAPI(a);
             }}
           >
+            <AiOutlineDelete className="translate-y-[1px]" />
             Xóa
           </button>
         </div>
@@ -152,25 +180,35 @@ export default function AdminContactMessage() {
     },
   ];
   return (
-    <div className="flex flex-col gap-y-3 border-l ">
-      <AdminNewMessage isModalVisibleAdd={isModalVisibleAdd} onClose={onCloseAddModal}></AdminNewMessage>
-      <AdminEditMessage
-        isModalVisibleEdit={isModalVisibleEdit}
-        infor={dataEditMessage}
-        setDataEditMessage={setDataEditMessage}
-        onClose={onClose}
-      ></AdminEditMessage>
-      <span className="text-2xl font-blod py-4 px-2">Message</span>
-      <div className="relative w-full h-10">
-        <button
-          className="inline-flex justify-around items-center absolute right-10 w-32 border rounded-lg p-2 shadow-xl hover:bg-yellow-100"
-          onClick={() => setIsModalVisibleAdd(!isModalVisibleAdd)}
-        >
-          <AiOutlinePlus className="" />
-          Thêm Mới
-        </button>
+    <>
+      <div className="flex   justify-between mb-4">
+        <AdminNewMessage isModalVisibleAdd={isModalVisibleAdd} onClose={onCloseAddModal}></AdminNewMessage>
+        <AdminEditMessage
+          isModalVisibleEdit={isModalVisibleEdit}
+          infor={dataEditMessage}
+          setDataEditMessage={setDataEditMessage}
+          onClose={onClose}
+        ></AdminEditMessage>
+        <span className="text-2xl font-blod py-4 px-2">Message</span>
+        <Input.Search
+          className="w-1/3 lg:w-[400px]"
+          placeholder="Search"
+          onChange={(e) => {
+            handleSearch(dataMessage, e.target.value, setDataRender,["name","email"]);
+          }}
+        />
+
+        <div className=" relative">
+          <button
+            className="inline-flex justify-around items-center absolute right-10 w-32 border rounded-lg p-2 shadow-xl hover:bg-yellow-100"
+            onClick={() => setIsModalVisibleAdd(!isModalVisibleAdd)}
+          >
+            <AiOutlinePlus className="" />
+            Thêm Mới
+          </button>
+        </div>
       </div>
-      <Table columns={columns} dataSource={dataMessage} />
-    </div>
+      <Table columns={columns} dataSource={dataRender} />
+    </>
   );
 }

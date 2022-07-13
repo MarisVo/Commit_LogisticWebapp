@@ -1,12 +1,7 @@
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UploadOutlined,
   DesktopOutlined,
-  UserOutlined,
-  TeamOutlined,
-  VideoCameraOutlined,
-  FileOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import React, { useState } from "react";
@@ -62,11 +57,33 @@ export default function AdminPage() {
       "5",
       <DesktopOutlined> </DesktopOutlined>
     ),
+
     getItem(
       <div>
         <Link to="partner">partner</Link>
       </div>,
       "6",
+      <DesktopOutlined> </DesktopOutlined>
+    ),
+    getItem(
+      <div>
+        <Link to="career">career</Link>
+      </div>,
+      "7",
+      <DesktopOutlined> </DesktopOutlined>
+    ),
+    getItem(
+      <div>
+        <Link to="applicant">applicant</Link>
+      </div>,
+      "8",
+      <DesktopOutlined> </DesktopOutlined>
+    ),
+    getItem(
+      <div>
+        <Link to="department">department</Link>
+      </div>,
+      "9",
       <DesktopOutlined> </DesktopOutlined>
     ),
     // getItem("User", "sub1", <UserOutlined />, [getItem("Tom", "3"), getItem("Bill", "4"), getItem("Alex", "5")]),

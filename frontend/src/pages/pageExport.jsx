@@ -23,7 +23,7 @@ export { default as ForgetPass } from "./Login/ForgetPass.jsx";
 
 export { default as PageNotFound } from "./PageNotFound";
 
-export { default as LayerStorekeeper } from "./storekeeper/LayerStorekeeper";
+export { default as LayerStorekeeper } from "../layouts/StorekeeperLayout";
 export { default as ProductsManager } from "./storekeeper/ProductsManager";
 export { default as Inventory } from "./storekeeper/Inventory";
 export { default as DefaultLayout } from "../layouts/DefaultLayout";
@@ -49,5 +49,8 @@ export { default as AdminCommitment } from "./admin/AdminCommitment.jsx";
 export { default as AdminContactMessage } from "./admin/AdminContactMessage.jsx";
 export { default as AdminDeliveryService } from "./admin/AdminDeliveryService.jsx";
 export { default as AdminPartner } from "./admin/AdminPartner.jsx";
+export { default as AdminCareer } from "./admin/AdminCareer.jsx";
+export { default as AdminApplicant } from "./admin/AdminApplicant.jsx";
+export { default as AdminDepartment } from "./admin/AdminDepartment.jsx";
 
-//---------------------------------------------//
+
