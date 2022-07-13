@@ -14,7 +14,11 @@ warehouseRoute.get('/',
         try {
             const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0
             const page = req.query.page ? parseInt(req.query.page) : 0
-            const warehouses = await Warehouse.find({}).limit(pageSize).skip(pageSize*page)
+            const { province, district } = req.query
+            let addressCondition = {}
+            if (province && district) 
+                addressCondition = {province: province, district: district}
+            const warehouses = await Warehouse.find(addressCondition).limit(pageSize).skip(pageSize*page)
             if (warehouses) return sendSuccess(res, "Get warehouse successful.", warehouses)
             return sendError(res, "Not information found.")
         } catch(error){
@@ -23,7 +27,6 @@ warehouseRoute.get('/',
         }
     }
 )
-
 /**
  * @route GET /api/warehouse/:id
  * @description get warehouse by id
@@ -42,5 +45,8 @@ warehouseRoute.get('/:id',
         }
     }
 )
+
+
+
 
 export default warehouseRoute
