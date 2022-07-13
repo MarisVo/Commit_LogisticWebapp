@@ -20,12 +20,13 @@ import {
   DefaultLayout,
   Login,
   Register,
+  Register_OTP,
   ForgetPass,
   RecruitmentDetails,
   Purchase,
   PurchaseStage,
   PurchaseDetail,
-  Profile,
+  Profile, 
   Notification,
   PurchaseDriver,
   LayerStorekeeper,
@@ -113,10 +114,10 @@ const App = () => {
               <Route path="dang-ki" element={<Register />} />
               <Route path="dang-nhap" element={<Login />} />
               <Route path="quen-mat-khau" element={<ForgetPass />} />
+              <Route path="xac-thuc-otp" element={<Register_OTP />} />
               {/* -----------------------Tư vấn----------------------- */}
               <Route path="tu-van/lien-he" element={<Contact />} />
               <Route path="tu-van/dang-ki-tu-van" element={<SignUpAdvice />} />
-
               <Route path="*" element={<PageNotFound />} />
             </Route>
             <Route path="storekeeper" element={<LayerStorekeeper />}>
@@ -136,6 +137,7 @@ const App = () => {
               <Route path="department" element={<AdminDepartment />}></Route>
             </Route>
           </Routes>
+
         </div>
       </BrowserRouter>
     </MainProvider>

@@ -1,12 +1,7 @@
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UploadOutlined,
   DesktopOutlined,
-  UserOutlined,
-  TeamOutlined,
-  VideoCameraOutlined,
-  FileOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import React, { useState } from "react";
@@ -43,57 +38,52 @@ export default function AdminPage() {
     getItem(<div>Commit</div>, "sub1", <DesktopOutlined> </DesktopOutlined>, [
       getItem(
         <div>
-          <Link to="">Add Commitment</Link>
-        </div>,
-        "3"
-      ),
-      getItem(
-        <div>
           <Link to="commitment">Main Commitment</Link>
         </div>,
-        "4"
+        "3"
       ),
     ]),
     getItem(
       <div>
-        <Link to="message">message</Link>
+        <Link to="message">Contact message</Link>
       </div>,
-      "5",
+      "4",
       <DesktopOutlined> </DesktopOutlined>
     ),
     getItem(
       <div>
-        <Link to="service">service</Link>
+        <Link to="service">delivery service</Link>
+      </div>,
+      "5",
+      <DesktopOutlined> </DesktopOutlined>
+    ),
+
+    getItem(
+      <div>
+        <Link to="partner">partner</Link>
       </div>,
       "6",
       <DesktopOutlined> </DesktopOutlined>
     ),
     getItem(
       <div>
-        <Link to="partner">partner</Link>
+        <Link to="career">career</Link>
       </div>,
       "7",
       <DesktopOutlined> </DesktopOutlined>
     ),
     getItem(
       <div>
-        <Link to="career">career</Link>
+        <Link to="applicant">applicant</Link>
       </div>,
       "8",
       <DesktopOutlined> </DesktopOutlined>
     ),
     getItem(
       <div>
-        <Link to="applicant">applicant</Link>
-      </div>,
-      "9",
-      <DesktopOutlined> </DesktopOutlined>
-    ),
-    getItem(
-      <div>
         <Link to="department">department</Link>
       </div>,
-      "10",
+      "9",
       <DesktopOutlined> </DesktopOutlined>
     ),
     // getItem("User", "sub1", <UserOutlined />, [getItem("Tom", "3"), getItem("Bill", "4"), getItem("Alex", "5")]),
