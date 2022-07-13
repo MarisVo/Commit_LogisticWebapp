@@ -1,7 +1,7 @@
 import { Table, Form, Input } from 'antd';
-import qs from 'qs';
 import { useEffect, useState } from 'react';
-import AddNewCareer from '../../components/Admin/Career/AddNewCareer';
+import AddNewCareer from '../../components/Admin/career/AddNewCareer';
+import EditCareer from '../../components/Admin/career/EditCareer';
 import ConfirmModal from '../../components/ConfirmModal';
 import { AiFillEdit, AiOutlineDelete } from 'react-icons/ai'
 
@@ -43,7 +43,7 @@ const getRandomuserParams = (params) => ({
 const { Item } = Form
 
 function AdminCareer() {
-    const [data, setData] = useState(data2);
+    const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [pagination, setPagination] = useState({
         current: 1,
@@ -61,9 +61,11 @@ function AdminCareer() {
     ]
     )
     const [isAddVisible, setIsAddVisible] = useState(false);
+    const [isEditVisible, setIsEditVisible] = useState(false)
     const [isDeleteVisible, setIsDeleteVisible] = useState(false);
     const [isDisable, setIsDisable] = useState(false)
     const [valueCompare, setValueCompare] = useState('')
+    const [dataForEdit, setDataForEdit] = useState({})
 
     const columns = [
         {
@@ -152,7 +154,7 @@ function AdminCareer() {
                 <div className='flex flex-row gap-y-1 gap-x-3'>
                     <button
                         className="flex items-baseline gap-x-1 hover:text-blue-600 "
-                    // onClick={}
+                        onClick={() => handleClickEdit(b)}
                     >
                         <AiFillEdit className='translate-y-[1px]' />Sửa
                     </button >
@@ -161,7 +163,6 @@ function AdminCareer() {
                         onClick={() => {
                             setIsDeleteVisible(true)
                             setValueCompare(b.name)
-
                         }}
                     >
                         <AiOutlineDelete className='translate-y-[1px]' />Xóa
@@ -171,28 +172,21 @@ function AdminCareer() {
             )
         }
     ];
-
-    // const fetchData = (params = {}) => {
-    //     setLoading(true);
-    //     fetch(`https://randomuser.me/api?${qs.stringify(getRandomuserParams(params))}`)
-    //         .then((res) => res.json())
-    //         .then(({ results }) => {
-    //             setData(results);
-    //             setLoading(false);
-    //             setPagination({
-    //                 ...params.pagination,
-    //                 total: 200, // 200 is mock data, you should read it from server
-    //                 // total: data.totalCount,
-    //             });
-    //         });
-    // };
-
-    // useEffect(() => {
-    //     fetchData({
-    //         pagination,
-    //     });
-    // }, []);
-
+    const fetchData = async () => {
+        setLoading(true)
+        try {
+            await setTimeout(() => {
+                setLoading(false)
+                setData(data2)
+            }, 2000)
+        }
+        catch {
+            //Code here
+        }
+    }
+    useEffect(() => {
+        fetchData()
+    }, []);
     const handleTableChange = (newPagination, filters, sorter) => {
         // fetchData({
         //     sortField: sorter.field,
@@ -206,7 +200,7 @@ function AdminCareer() {
         setLoading(true)
         setIsDisable(true)
         try {
-            await setTimeout(() => {
+            await setTimeout(() => {  //thay bằng DELETE request
                 setLoading(false)
                 setIsDeleteVisible(false)
                 setIsDisable(false)
@@ -218,12 +212,16 @@ function AdminCareer() {
 
         }
     }
+    const handleClickEdit = (row) => {
+        setIsEditVisible(true)
+        const [dataEdit] = data.filter(ele => ele.key === row.key)
+        setDataForEdit(dataEdit)
+    }
     const acceptAddNewCareer = async () => {
         setLoading(true)
         setIsDisable(true)
-
         try {
-            await setTimeout(() => {
+            await setTimeout(() => {  //thay bằng POST request
                 setLoading(false)
                 setIsAddVisible(false)
                 setIsDisable(false)
@@ -234,7 +232,6 @@ function AdminCareer() {
 
         }
     }
-
     return (
         <>
             <div className="flex justify-between mb-4">
@@ -264,6 +261,16 @@ function AdminCareer() {
                 disable={isDisable}
                 onOk={acceptAddNewCareer}
             />
+            {
+                isEditVisible &&
+                <EditCareer
+                    isVisible={isEditVisible}
+                    onClose={() => setIsEditVisible(false)}
+                    disable={isDisable}
+                    data={dataForEdit}
+                    refetchData={fetchData}
+                />
+            }
             <ConfirmModal
                 isVisible={isDeleteVisible}
                 text={`xóa Công việc ${valueCompare}`}
