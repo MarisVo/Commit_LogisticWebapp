@@ -1,67 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
 import SideBar from "../../components/SideBar";
+import {
+  AiOutlineEye,
+  AiOutlineEyeInvisible,
+  AiOutlineEdit,
+} from "react-icons/ai";
+import { axios } from "axios";
 
-const initialpassword = {
-  password: "",
-  npassword: "",
-  cf_password: "",
-};
 export default function Profile() {
-  const [password, setPassword] = useState(initialpassword);
+  const oldPwRef = useRef(null);
+  const newPwRef = useRef(null);
+  const verify_passwordRef = useRef(null);
+  const [eyeOp, setEyeOp] = useState(false);
+  const [eyeNp, setEyeNp] = useState(false);
+  const [eyeCf, setEyeCf] = useState(false);
+  const [cPassword, setCPassword] = useState({
+    oldPw: "",
+    newPw: "",
+    verify_password: "",
+  });
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmit, setIsSubmit] = useState(false);
   const [open, setOpen] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [date, setDate] = useState(0);
-  const [month, setMonth] = useState(0);
-  const [year, setYear] = useState(0);
-  const [gender, setGender] = useState(null);
-  const handleChangePassword = (e) => {
-    e.preventDefault();
-    const { name, value } = e.target;
-    setPassword({ ...password, [name]: value });
-    console.log(password);
-  };
-
-  const generateDateOptions = () => {
-    const arr = [];
-    const startDate = 1;
-    const endDate = 31;
-    for (let i = endDate; i >= startDate; i--) {
-      arr.push(
-        <option key={i} value={i}>
-          {i}
-        </option>
-      );
-    }
-    return arr;
-  };
-
-  const generateMonthOptions = () => {
-    const arr = [];
-    const startMonth = 1;
-    const endMonth = 12;
-    for (let i = endMonth; i >= startMonth; i--) {
-      arr.push(
-        <option key={i} value={i}>
-          {i}
-        </option>
-      );
-    }
-    return arr;
-  };
-
-  const generateYearOptions = () => {
-    const arr = [];
-    const startYear = 1900;
-    const endYear = new Date().getFullYear();
-    for (let i = endYear; i >= startYear; i--) {
-      arr.push(
-        <option key={i} value={i}>
-          {i}
-        </option>
-      );
-    }
-    return arr;
+  const [information, setInformation] = useState({
+    name: "Nguyễn Văn Thật",
+    address: "B5/3 Phường An Phú Tp Thủ Đức",
+  });
+  const handleOpen = () => {
+    setOpen(!open);
   };
   const hideemail = (valuee) => {
     let email = valuee; //anas.behhari@gmail.com
@@ -85,41 +53,121 @@ export default function Profile() {
 
     return hiddenPassword;
   };
-  const handleOpen = () => {
-    setOpen(!open);
+  const hidephone = (valuephone) => {
+    let phone = valuephone; //989238382
+    let hiddenPhone = "";
+    for (let i = 0; i < phone.length; i++) {
+      if (i < phone.length - 3) {
+        hiddenPhone += "*";
+      } else {
+        hiddenPhone += phone[i];
+      }
+    }
+
+    return hiddenPhone;
   };
-  const handleDate = (e) => {
-    setDate(e.target.value);
+  const handleEyeOp = () => {
+    setEyeOp(!eyeOp);
   };
-  const handleMonth = (e) => {
-    setMonth(e.target.value);
+  const handleEyeNp = () => {
+    setEyeNp(!eyeNp);
   };
-  const handleYear = (e) => {
-    setYear(e.target.value);
+  const handleEyeCf = () => {
+    setEyeCf(!eyeCf);
   };
 
   const handleShowModal = () => {
     setIsModalVisible(true);
   };
-  useEffect(() => {
-    handleCloseModal();
-  }, []);
-  const handleCloseModal = () => {
-    window.onload = () => {
-      setPassword({
-        password: "",
-        npassword: "",
-        cf_password: "",
-      });
-    };
-
+  const handleChangePassword = (e) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    setCPassword({ ...cPassword, [name]: value });
+    console.log(cPassword);
+  };
+  const handleCloseModal = (e) => {
+    oldPwRef.current.value = "";
+    newPwRef.current.value = "";
+    verify_passwordRef.current.value = "";
     setIsModalVisible(false);
   };
-
-  const handleRadio = (e) => {
-    setGender(e.target.value);
+  useEffect(() => {
+    if (handleCloseModal) {
+      setIsSubmit(false);
+      setCPassword({
+        oldPw: "",
+        newPw: "",
+        verify_password: "",
+      });
+      setEyeOp(false);
+      setEyeNp(false);
+      setEyeCf(false);
+      setFormErrors({});
+    }
+  }, [isModalVisible]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setFormErrors(validate);
+    setIsSubmit(true);
+  };
+  const validate = () => {
+    const { oldPw, verify_password, newPw } = cPassword;
+    const errors = {};
+    /*  if (oldPw !== password) {
+       errors.oldPw = "Wrong password";
+     } */
+    if (!oldPw) {
+      errors.oldPw = "This field is required";
+    }
+    if (!newPw) {
+      errors.newPw = "This field is required";
+    }
+    if (newPw && newPw.length <= 5) {
+      errors.newPw = "Password length at least than 6";
+    }
+    if (!verify_password) {
+      errors.verify_password = "This field is required";
+    }
+    if (verify_password && verify_password.length <= 5) {
+      errors.verify_password = "Password length greater than 6";
+    }
+    if (verify_password && newPw && verify_password !== newPw) {
+      errors.verify_password = "Not same with the new password";
+    }
+    return errors;
   };
 
+  useEffect(() => {
+    if (Object.keys(formErrors).length === 0 && isSubmit) {
+      /* const handleChangePassword = async () => {
+        try{
+          const res = await axios.put(
+            `${REACT_APP_API_BASE_URL}/auth/change-pw`,
+            cPassword,
+            {
+              header: { accessToken: `Bearer ${TOKEN}` },
+            }
+          );
+        }
+        catch(err){
+
+        }
+      }; */
+      /*  handleChangePassword() */
+      alert("Update password success");
+      setIsModalVisible(false);
+      setIsSubmit(false);
+      oldPwRef.current.value = "";
+      newPwRef.current.value = "";
+      verify_passwordRef.current.value = "";
+    }
+  }, [formErrors, cPassword, isSubmit]);
+  const handleForm = (e) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    setInformation({ ...information, [name]: value });
+    console.log(information);
+  };
   return (
     <div>
       <>
@@ -139,61 +187,98 @@ export default function Profile() {
                 </span>
               </div>
 
-              <div className="pb-6 pt-2 px-6 ">
-                <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
+              <div className="pb-6 pt-[6px] px-6 ">
+                <h3 className="mb-3 text-xl font-semibold text-gray-900 dark:text-white ">
                   Thay đổi
                 </h3>
-                <form
-                  className="space-y-4"
-                  action="#"
-                  onSubmit={handleChangePassword}
-                >
+                <form className="space-y-4" action="#" onSubmit={handleSubmit}>
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                       Mật khẩu cũ
                     </label>
-                    <input
-                      type="password"
-                      name="password"
-                      defaultValue={password.password}
-                      /*   value={password.password} */
-                      onChange={handleChangePassword}
-                      placeholder="Add your password"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                    />
+                    <div className="relative">
+                      <input
+                        ref={oldPwRef}
+                        type={eyeOp ? "text" : "password"}
+                        name="oldPw"
+                        defaultValue={cPassword.oldPw}
+                        onChange={handleChangePassword}
+                        placeholder="Add your password"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white relative"
+                      />
+                      {eyeOp ? (
+                        <AiOutlineEye
+                          onClick={handleEyeOp}
+                          className="absolute right-2 top-[10px] w-5 h-5 cursor-pointer "
+                        />
+                      ) : (
+                        <AiOutlineEyeInvisible
+                          onClick={handleEyeOp}
+                          className="absolute right-2 top-[10px] w-5 h-5 cursor-pointer"
+                        />
+                      )}
+                    </div>
+                    <p className="text-red-400">{formErrors.oldPw}</p>
                   </div>
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                       Mật khẩu mới
                     </label>
-                    <input
-                      type="password"
-                      name="npassword"
-                      defaultValue={password.npassword}
-                      /*    value={password.npassword} */
-                      onChange={handleChangePassword}
-                      placeholder="Add your new password"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                    />
+                    <div className="relative">
+                      <input
+                        ref={newPwRef}
+                        type={eyeNp ? "text" : "password"}
+                        name="newPw"
+                        defaultValue={cPassword.newPw}
+                        onChange={handleChangePassword}
+                        placeholder="Add your new password"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      />
+                      {eyeNp ? (
+                        <AiOutlineEye
+                          onClick={handleEyeNp}
+                          className="absolute right-2 top-[10px] w-5 h-5 cursor-pointer "
+                        />
+                      ) : (
+                        <AiOutlineEyeInvisible
+                          onClick={handleEyeNp}
+                          className="absolute right-2 top-[10px] w-5 h-5 cursor-pointer"
+                        />
+                      )}
+                    </div>
+                    <p className="text-red-400">{formErrors.newPw}</p>
                   </div>
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                       Xác nhận mật khẩu mới
                     </label>
-                    <input
-                      type="password"
-                      name="cf_password"
-                      defaultValue={password.cf_password}
-                      /*    value={password.cf_password} */
-                      placeholder="Confirm new password"
-                      onChange={handleChangePassword}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                    />
+                    <div className="relative">
+                      <input
+                        ref={verify_passwordRef}
+                        type={eyeCf ? "text" : "password"}
+                        name="verify_password"
+                        defaultValue={cPassword.verify_password}
+                        placeholder="Confirm new password"
+                        onChange={handleChangePassword}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      />
+                      {eyeCf ? (
+                        <AiOutlineEye
+                          onClick={handleEyeCf}
+                          className="absolute right-2 top-[10px] w-5 h-5 cursor-pointer "
+                        />
+                      ) : (
+                        <AiOutlineEyeInvisible
+                          onClick={handleEyeCf}
+                          className="absolute right-2 top-[10px] w-5 h-5 cursor-pointer"
+                        />
+                      )}
+                    </div>
+                    <p className="text-red-400">{formErrors.verify_password}</p>
                   </div>
 
                   <button
                     type="submit"
-                    /* onClick={handleChangePassword} */
                     className="w-full text-[#00003B] bg-yellow-500 hover:bg-yellow-600 focus:outline-none  font-semibold rounded-lg text-sm px-5 py-2.5 text-center  "
                   >
                     Thay đổi
@@ -207,140 +292,117 @@ export default function Profile() {
       <div className="pt-[68px] relative">
         <div className="bg-gray-100 relative ">
           <SideBar className="" handleOpen={handleOpen} open={open} />
-
           <span className="w-6 h-6 absolute top-[10%] left-[0%] z-3 transition  lg:top-[15%]">
             <IoArrowForwardCircleOutline
-              className="w-6 h-6 z-50   "
+              className="w-6 h-6 z-50 "
               onClick={() => handleOpen()}
             />
           </span>
 
-          <div className="grid grid-cols-5  sm:mx-6 lg:mx-32 py-5 bg-gray-100  ">
-            <div className=" col-span-5 bg-white rounded-lg ml-2 ">
+          <div className="grid grid-cols-5 mx-1 sm:mx-20 lg:mx-60 md:mx-28 py-5 bg-gray-100  ">
+            <div className=" col-span-5 bg-white rounded-lg   shadow-xl">
               <div className="flex justify-start flex-col ml-4 border-b-2  pl-4 pb-3 pt-3">
-                <div className="text-xl font-bold mb-1">Hồ Sơ Của Tôi</div>
+                <div className="text-xl font-bold mb-1 lg:text-2xl">
+                  Hồ Sơ Của Tôi
+                </div>
                 <div>Quản lý thông tin hồ sơ để bảo mật tài khoản</div>
               </div>
               <form className=" lg:mx-7 mx-1 my-4 ">
                 <div className=" flex flex-col  ">
-                  <div className="flex mb-3 ">
-                    <div className="flex  w-2/5   justify-end ">
-                      <label className="mr-3 text-yellow-600 ">
-                        Tên Đăng Nhập
+                  <div className="flex mb-3 sm:py-1">
+                    <div className="flex items-center w-2/5   justify-end ">
+                      <label className=" mr-3 text-yellow-600 lg:text-base">
+                        Tên
+                      </label>
+                    </div>
+
+                    <div className="flex  ">
+                      {/* <div className="text-black-700 mr-3 lg:text-base">
+                        Nguyễn Văn Thật
+                      </div> */}
+                      <input
+                        className="outline-none border-[1px] border-gray-200  min-w-[160px] md:min-w-[260px] line-clamp-1"
+                        type="text"
+                        name="name"
+                        onChange={handleForm}
+                        defaultValue={information.name}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex mb-3 sm:py-1">
+                    <div className="flex items-center w-2/5   justify-end flex-shrink-0">
+                      <label className=" mr-3 text-yellow-600 lg:text-base">
+                        Địa chỉ
+                      </label>
+                    </div>
+
+                    <div className="flex  ">
+                      {/*  <div className="text-black-700 mr-3 lg:text-base line-clamp-1">
+                        B5/3 Phường An Phú Tp Thủ Đức
+                      </div> */}
+                      <input
+                        className="outline-none border-[1px] border-gray-200  min-w-[160px] md:min-w-[260px] line-clamp-1"
+                        type="text"
+                        name="address"
+                        onChange={handleForm}
+                        defaultValue={information.address}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex mb-3 sm:py-1">
+                    <div className="flex items-center w-2/5   justify-end ">
+                      <label className=" mr-3 text-yellow-600 lg:text-base">
+                        Email
                       </label>
                     </div>
                     <div className="flex ">
-                      <div className="text-black-700  ">Vanthat5652</div>
-                    </div>
-                  </div>
-                  <div className="flex mb-3 ">
-                    <div className="flex items-center w-2/5   justify-end ">
-                      <label className=" mr-3 text-yellow-600">Tên</label>
-                    </div>
-                    <div className="flex ">
-                      <div className="text-black-700  ">Nguyễn văn thật</div>
-                    </div>
-                  </div>
-                  <div className="flex mb-3 ">
-                    <div className="flex items-center w-2/5   justify-end ">
-                      <label className=" mr-3 text-yellow-600">Email</label>
-                    </div>
-                    <div className="flex ">
-                      <div className="text-black-700">
+                      <div className="text-black-700 lg:text-base">
                         {hideemail("nguyenvanthat123@gmail.com")}
                       </div>
                     </div>
                   </div>
-                  <div className="flex mb-3 r ">
+                  <div className="flex mb-3  sm:py-1 ">
                     <div className="flex items-center w-2/5   justify-end ">
-                      <label className=" mr-3 text-yellow-600">Mật khẩu</label>
+                      <label className=" mr-3 text-yellow-600 lg:text-base">
+                        Mật khẩu
+                      </label>
                     </div>
                     <div className="flex  ">
-                      <div className="text-black-700 mr-3" type="password">
+                      <div
+                        className="text-black-700 mr-3 lg:text-base"
+                        type="password"
+                      >
                         {hidepassword("khoa12")}
                       </div>
                       <div
-                        className="text-xs text-center text-yellow-500 cursor-pointer"
+                        className="text-xs text-center text-yellow-500 cursor-pointer lg:text-base"
                         onClick={handleShowModal}
                       >
                         Thay đổi
                       </div>
                     </div>
                   </div>
-                  <div className="flex mb-3 ">
-                    <div className="flex items-center w-2/5   justify-end ">
+                  <div className="flex mb-3 sm:py-1">
+                    <div className="flex items-center w-2/5   justify-end lg:text-base ">
                       <label className=" mr-3 text-yellow-600 ">
                         Số điện thoại
                       </label>
                     </div>
                     <div className="flex ">
-                      <div className="text-black-700  ">093222128</div>
-                    </div>
-                  </div>
-                  <div className="flex mb-3 ">
-                    <div className="flex items-center w-2/5  justify-end ">
-                      <label className=" mr-3  text-yellow-600">
-                        Giới tính
-                      </label>
-                    </div>
-                    <div className="flex ">
-                      <div className="text-black-700  ">
-                        <div className="flex items-center justify-center">
-                          <input
-                            value="male"
-                            name="male"
-                            type="radio"
-                            checked={gender === "male"}
-                            onChange={(e) => handleRadio(e)}
-                          />
-                          <div className="mx-2">Nam</div>
-                          <input
-                            value="female"
-                            name="female"
-                            type="radio"
-                            checked={gender === "female"}
-                            onChange={(e) => handleRadio(e)}
-                          />
-                          <div className="mx-2">Nữ</div>
-                        </div>
+                      <div className="text-black-700 lg:text-base ">
+                        {hidephone("093222128")}
                       </div>
                     </div>
                   </div>
-                  <div className="flex mb-3 ">
-                    <div className="flex items-center w-2/5   justify-end ">
+                  <div className="flex mb-3 sm:py-1">
+                    <div className="flex items-center w-2/5   justify-end lg:text-base ">
                       <label className=" mr-3 text-yellow-600 ">
-                        Ngày Sinh
+                        Mã số thuế
                       </label>
                     </div>
                     <div className="flex ">
-                      <div className="text-black-700  flex flex-nowrap">
-                        <select
-                          className=" px-1  outline-none  border-2 sm:mr-2 hover:bottom-3 "
-                          name="date"
-                          onChange={(e) => handleDate(e)}
-                          value={date}
-                        >
-                          <option value="0">Date</option>
-                          {generateDateOptions()}
-                        </select>
-                        <select
-                          className=" px-1  outline-none border-2  sm:mr-2  hover:bottom-3 "
-                          name="year"
-                          onChange={(e) => handleMonth(e)}
-                          value={month}
-                        >
-                          <option value="0">Month</option>
-                          {generateMonthOptions()}
-                        </select>
-                        <select
-                          className=" px-1 outline-none  border-2 sm:mr-2 hover:bottom-3 "
-                          name="year"
-                          onChange={(e) => handleYear(e)}
-                          value={year}
-                        >
-                          <option value="0">Year</option>
-                          {generateYearOptions()}
-                        </select>
+                      <div className="text-black-700 lg:text-base ">
+                        51312312
                       </div>
                     </div>
                   </div>
@@ -349,10 +411,7 @@ export default function Profile() {
                       <label className="text-gray-500 mr-3  "></label>
                     </div>
                     <div className="flex ">
-                      <button
-                        className="py-2 px-4 text-[#00003B] font-semibold bg-yellow-500 rounded-sm"
-                        /*  onChange={handleChangePassword} */
-                      >
+                      <button className="py-2 px-4 mt-2 font-semibold bg-yellow-500  hover:translate-y-[-1px] transition-all text-[#00003B] rounded-sm">
                         Save
                       </button>
                     </div>

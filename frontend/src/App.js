@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./App.css";
 import "react-router-dom";
 import {
@@ -22,16 +22,30 @@ import {
   Register_OTP,
   ForgetPass,
   RecruitmentDetails,
+  Purchase,
+  PurchaseStage,
+  PurchaseDetail,
+  Profile,
+  Notification,
+  PurchaseDriver,
+  LayerStorekeeper,
+  ProductsManager,
+  Inventory,
+  StandardService,
+  Service,
+  FastService,
+  SuperService,
+  FreshService,
+  AdminPage,
+  AdminAbout,
+  AdminContactUs,
+  AdminCommitment,
+  AdminContactMessage,
+  AdminDeliveryService,
+  AdminPartner,
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
-import { MainProvider } from "./context/MainContext";
-import StandardService from "./pages/services/StandardService";
-import Service from "./pages/services/Service";
-import FastService from "./pages/services/FastService";
-import SuperService from "./pages/services/SuperService";
-import FreshService from "./pages/services/FreshService";
-
+import MainProvider from "./context/MainContext";
 const App = () => {
   return (
     <MainProvider>
@@ -77,6 +91,19 @@ const App = () => {
                 path="chuyen-phat-do-tuoi-song"
                 element={<FreshService />}
               />
+              {/* ----------------------Profile------------------ */}
+              <Route path="user/account/profile" element={<Profile />} />
+              <Route path="user/purchase" element={<Purchase />} />
+              <Route path="driver/purchase" element={<PurchaseDriver />} />
+              <Route path="user/purchase/:id" element={<PurchaseDetail />} />
+              <Route
+                path="user/purchase/order/:id"
+                element={<PurchaseStage />}
+              />
+              <Route
+                path="user/notifications/order"
+                element={<Notification />}
+              />
               {/* -------------------------Đăng kí/Đăng nhập------------- */}
               <Route path="dang-ki" element={<Register />} />
               <Route path="dang-nhap" element={<Login />} />
@@ -87,21 +114,24 @@ const App = () => {
               <Route path="tu-van/dang-ki-tu-van" element={<SignUpAdvice />} />
               <Route path="*" element={<PageNotFound />} />
             </Route>
+            <Route path="storekeeper" element={<LayerStorekeeper />}>
+              <Route index element={<ProductsManager />} />
+              <Route path="xuat-nhap" element={<ProductsManager />} />
+              <Route path="ton-kho" element={<Inventory />} />
+            </Route>
+            <Route path="admin" element={<AdminPage />}>
+              <Route path="about" element={<AdminAbout />}></Route>
+              <Route path="contact-us" element={<AdminContactUs />}></Route>
+              <Route path="commitment" element={<AdminCommitment />}></Route>
+              <Route path="message" element={<AdminContactMessage />}></Route>
+              <Route path="service" element={<AdminDeliveryService />}></Route>
+              <Route path="partner" element={<AdminPartner />}></Route>
+            </Route>
           </Routes>
         </div>
       </BrowserRouter>
     </MainProvider>
   );
 };
-/*   <Route path="user/account/profile" element={<Profile />} />
-              <Route path="user/purchase" element={<Purchase />} />
-              <Route
-                path="user/purchase/order/:id"
-                element={<PurchaseState />}
-              />
-              <Route
-                path="user/notifications/order"
-                element={<Notification />}
-              /> */
 
 export default App;

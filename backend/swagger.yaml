@@ -8,66 +8,76 @@ info:
 host: "localhost:8000"
 basePath: "/api"
 schemes:
-- "https"
-- "http"
+  - "http"
+  - "https"
 tags:
-- name: "auth"
-  description: "Endpoint Authentication"
-- name: "about"
-  description: "Endpoint AboutUs"
-- name: "contactUs"
-  description: "Endpoint ContactUs"
-- name: "tracking"
-  description: "Tracking feature"
-- name: "public"
-  description: "Public assets of web service"
-- name: "commitment"
-  description: "Endpoint Commitment"
-- name: "partner"
-  description: "Endpoint Partner"
-- name: "message"
-  description: "Endpoint Message"
+  - name: "auth"
+    description: "Endpoint Authentication"
+  - name: "about"
+    description: "Endpoint AboutUs"
+  - name: "contactUs"
+    description: "Endpoint ContactUs"
+  - name: "tracking"
+    description: "Tracking feature"
+  - name: "public"
+    description: "Public assets of web service"
+  - name: "commitment"
+    description: "Endpoint Commitment"
+  - name: "partner"
+    description: "Endpoint Partner"
+  - name: "message"
+    description: "Endpoint Message"
+
+  - name: "warehouse"
+    description: "Endpoint Warehouse"
+  - name: "participant"
+    description: "Endpoint Participant"
+  - name: "quote"
+    description: "Endpoint Quote"
+
 paths:
   /auth/verify-token:
     post:
       tags:
-      - "auth"
+        - "auth"
       summary: "Verify the post token, if it's expired, refresh token"
       produces:
         - application/json
       consumes:
         - application/json
       parameters:
-      - in: body
-        name: token
-        required: true
-        schema:
-          type: object
-          properties:
-            accessToken:
-              type: string
-            refreshToken:
-              type: string
+        - in: body
+          name: token
+          required: true
+          schema:
+            type: object
+            properties:
+              accessToken:
+                type: string
+              refreshToken:
+                type: string
       responses:
         200:
           description: Verify token successfully.
           schema:
             type: object
-            example: {
-              "accessToken":"123456",
-              "user":{
-                "id":"userId",
-                "email":"email",
-                "phone":"phone",
-                "role":"role",
+            example:
+              {
+                "accessToken": "123456",
+                "user":
+                  {
+                    "id": "userId",
+                    "email": "email",
+                    "phone": "phone",
+                    "role": "role",
+                  },
               }
-            }
         401:
           description: Unauthorized.
   /auth/register:
     post:
       tags:
-      - "auth"
+        - "auth"
       summary: "Register customer"
       produces:
         - application/json
@@ -75,38 +85,36 @@ paths:
         - application/json
         - multipart/form-data
       parameters:
-      - in: body
-        name: customer
-        required: true
-        schema:
-          type: object
-          properties:
-            name:
-              type: string
-            email:
-              type: string
-            phone:
-              type: string
-            password:
-              type: string
-            address:
-              type: string
-            description:
-              type: string
-            customer_type:
-              type: string
-              enum: ['business', 'passers', 'intermediary']
-            verify_op:
-              type: string
-              enum: ['email', 'phone']
+        - in: body
+          name: customer
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              email:
+                type: string
+              phone:
+                type: string
+              password:
+                type: string
+              address:
+                type: string
+              description:
+                type: string
+              customer_type:
+                type: string
+                enum: ["business", "passers", "intermediary"]
+              verify_op:
+                type: string
+                enum: ["email", "phone"]
       responses:
         200:
           description: send otp code successfully.
           schema:
             type: object
-            example: {
-              "userId":"verifyId",
-            }
+            example: { "userId": "verifyId" }
         400:
           description: Send OTP failed.
   /auth/verify-otp:
@@ -117,16 +125,16 @@ paths:
       consumes:
         - application/json
       parameters:
-      - in: body
-        name: otp
-        required: true
-        schema:
-          type: object
-          properties:
-            userId:
-              type: string
-            otp:
-              type: string
+        - in: body
+          name: otp
+          required: true
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+              otp:
+                type: string
       responses:
         200:
           description: user registered successfully.
@@ -142,17 +150,17 @@ paths:
       consumes:
         - application/json
       parameters:
-      - in: body
-        name: otp
-        required: true
-        schema:
-          type: object
-          properties:
-            userId:
-              type: string
-            verify_op:
-              type: string
-              enum: ['email','phone']
+        - in: body
+          name: otp
+          required: true
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+              verify_op:
+                type: string
+                enum: ["email", "phone"]
       responses:
         200:
           description: update otp successfully.
@@ -169,33 +177,35 @@ paths:
         - application/json
         - multipart/form-data
       parameters:
-      - in: body
-        name: user
-        required: true
-        schema:
-          type: object
-          properties:
-            email:
-              type: string
-            phone:
-              type: string
-            password:
-              type: string
+        - in: body
+          name: user
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              phone:
+                type: string
+              password:
+                type: string
       responses:
         200:
           description: Login successfully.
           schema:
             type: object
-            example: {
-              "accessToken":"string",
-              "refreshToken":"string",
-              "user": {
-                "id":"string",
-                "email":"string",
-                "phone":"string",
-                "role":{},
+            example:
+              {
+                "accessToken": "string",
+                "refreshToken": "string",
+                "user":
+                  {
+                    "id": "string",
+                    "email": "string",
+                    "phone": "string",
+                    "role": {},
+                  },
               }
-            }
         400:
           description: email/phone or password is wrong.
         403:
@@ -211,33 +221,35 @@ paths:
         - application/json
         - multipart/form-data
       parameters:
-      - in: body
-        name: user
-        required: true
-        schema:
-          type: object
-          properties:
-            email:
-              type: string
-            phone:
-              type: string
-            password:
-              type: string
+        - in: body
+          name: user
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              phone:
+                type: string
+              password:
+                type: string
       responses:
         200:
           description: Login successfully.
           schema:
             type: object
-            example: {
-              "accessToken":"string",
-              "refreshToken":"string",
-              "user": {
-                "id":"string",
-                "email":"string",
-                "phone":"string",
-                "role":{},
+            example:
+              {
+                "accessToken": "string",
+                "refreshToken": "string",
+                "user":
+                  {
+                    "id": "string",
+                    "email": "string",
+                    "phone": "string",
+                    "role": {},
+                  },
               }
-            }
         400:
           description: email/phone or password is wrong.
         403:
@@ -253,16 +265,16 @@ paths:
         - application/json
         - multipart/form-data
       parameters:
-      - in: body
-        name: info
-        required: true
-        schema:
-          type: object
-          properties:
-            email:
-              type: string
-            phone:
-              type: string
+        - in: body
+          name: info
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              phone:
+                type: string
       responses:
         200:
           description: generate new password successfully.
@@ -281,23 +293,46 @@ paths:
         - application/json
         - multipart/form-data
       parameters:
-      - in: body
-        name: info
-        required: true
-        schema:
-          type: object
-          properties:
-            oldPw:
-              type: string
-            newPw:
-              type: string
-            verify_password:
-              type: string
+        - in: body
+          name: info
+          required: true
+          schema:
+            type: object
+            properties:
+              oldPw:
+                type: string
+              newPw:
+                type: string
+              verify_password:
+                type: string
       responses:
         200:
           description: change your password successfully.
         400:
           description: current password isn't correct.
+      security:
+        - bearerAuth: []
+  /auth/logout:
+    post:
+      tags:
+        - auth
+      summary: user log out
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: token
+          required: true
+          schema:
+            type: object
+            properties:
+              refreshToken:
+                type: string
+      responses:
+        200:
+          description: log out successfully. see you soon.
+        401:
+          description: refresh token is invalid.
       security:
         - bearerAuth: []
   /about:
@@ -312,13 +347,14 @@ paths:
           description: get about information successfully.
           schema:
             type: object
-            example: {
-              "description": "string",
-              "vision": "string",
-              "values": "string",
-              "logo": "path",
-              "banners": ["path1", "path2"],
-            }
+            example:
+              {
+                "description": "string",
+                "vision": "string",
+                "values": "string",
+                "logo": "path",
+                "banners": ["path1", "path2"],
+              }
         400:
           description: about information is not found.
   /contactUs:
@@ -333,15 +369,16 @@ paths:
           description: get contact information successfully.
           schema:
             type: object
-            example: {
-              "address":"string",
-              "phone":"phone",
-              "email":"email",
-              "facebook":"url",
-              "instagram":"url",
-              "tiktok":"url",
-              "youtube":"url",
-            }
+            example:
+              {
+                "address": "string",
+                "phone": "phone",
+                "email": "email",
+                "facebook": "url",
+                "instagram": "url",
+                "tiktok": "url",
+                "youtube": "url",
+              }
         400:
           description: contact information is not found.
   /tracking/postage:
@@ -355,41 +392,39 @@ paths:
         - application/json
         - multipart/form-data
       parameters:
-      - in: body
-        name: information
-        required: true
-        schema:
-          type: object
-          properties:
-            formProvince:
-              type: string
-            fromDistrict:
-              type: string
-            fromWard:
-              type: string
-            toProvince:
-              type: string
-            toDistrict:
-              type: string
-            toWard:
-              type: string
-            unit:
-              type: string
-              enum: ['kg','m3','ton']
-            quantity:
-              type: number
-            serviceId:
-              type: string
-            serviceName:
-              type: string
+        - in: body
+          name: information
+          required: true
+          schema:
+            type: object
+            properties:
+              formProvince:
+                type: string
+              fromDistrict:
+                type: string
+              fromWard:
+                type: string
+              toProvince:
+                type: string
+              toDistrict:
+                type: string
+              toWard:
+                type: string
+              unit:
+                type: string
+                enum: ["kg", "m3", "ton"]
+              quantity:
+                type: number
+              serviceId:
+                type: string
+              serviceName:
+                type: string
       responses:
         200:
           description: calculate shipment fee successfully.
           schema:
             type: object
-            example: {
-              "result": 400000,
-            }
+            example: { "result": 400000 }
         400:
           description: the service is not exist. / the service don't support this road.
   /tracking/order/{lstOrderId}:
@@ -400,21 +435,18 @@ paths:
       produces:
         - application/json
       parameters:
-      - in: path
-        name: lstOrderId
-        type: string
-        required: true
-        description: string of list of OrderIDs, which seperate by '&'
+        - in: path
+          name: lstOrderId
+          type: string
+          required: true
+          description: string of list of OrderIDs, which seperate by '&'
       responses:
         200:
           description: request successfully
           schema:
             type: object
-            example: {
-              "orders": ["order1", "order2"],
-              "success": 5,
-              "failure": 2,
-            }
+            example:
+              { "orders": ["order1", "order2"], "success": 5, "failure": 2 }
   /tracking/warehouse:
     get:
       tags:
@@ -423,22 +455,20 @@ paths:
       produces:
         - application/json
       parameters:
-      - in: query
-        name: province
-        type: string
-        required: true
-      - in: query
-        name: district
-        type: string
-        required: true
+        - in: query
+          name: province
+          type: string
+          required: true
+        - in: query
+          name: district
+          type: string
+          required: true
       responses:
         200:
           description: request successfully
           schema:
             type: object
-            example: {
-              "warehouses": ['warehouse1', 'warehouse2']
-            }
+            example: { "warehouses": ["warehouse1", "warehouse2"] }
   /tracking/service/{serviceId}:
     get:
       tags:
@@ -447,19 +477,18 @@ paths:
       produces:
         - application/json
       parameters:
-      - in: path
-        name: serviceId
-        type: string
-        required: true
-        description: serviceId of request service
+        - in: path
+          name: serviceId
+          type: string
+          required: true
+          description: serviceId of request service
       responses:
         200:
           description: request successfully
           schema:
             type: object
-            example: {
-              "serviceWithUniquePriceFiles": ["pricelist1","pricelist2"]
-            }
+            example:
+              { "serviceWithUniquePriceFiles": ["pricelist1", "pricelist2"] }
         400:
           description: not exist.
   /public/uploads/{dirName}/{fileName}:
@@ -468,16 +497,16 @@ paths:
         - public
       summary: get uploaded resource
       parameters:
-      - in: path
-        name: dirName
-        type: string
-        required: true
-        description: directory name of request file
-      - in: path
-        name: fileName
-        type: string
-        required: true
-        description: file name of request file
+        - in: path
+          name: dirName
+          type: string
+          required: true
+          description: directory name of request file
+        - in: path
+          name: fileName
+          type: string
+          required: true
+          description: file name of request file
       responses:
         200:
           description: resource file downloaded
@@ -489,16 +518,16 @@ paths:
         - public
       summary: get public assets
       parameters:
-      - in: path
-        name: dirName
-        type: string
-        required: true
-        description: directory name of request file
-      - in: path
-        name: fileName
-        type: string
-        required: true
-        description: file name of request file
+        - in: path
+          name: dirName
+          type: string
+          required: true
+          description: directory name of request file
+        - in: path
+          name: fileName
+          type: string
+          required: true
+          description: file name of request file
       responses:
         200:
           description: resource file downloaded
@@ -521,11 +550,7 @@ paths:
           description: get commitments successfully.
           schema:
             type: object
-            example: {
-              "heading": "string",
-              "logo": "path",
-              "detail": "string",              
-            }
+            example: { "heading": "string", "logo": "path", "detail": "string" }
         400:
           description: commitment is not found.
   /commitment/{commitmentId}:
@@ -540,17 +565,13 @@ paths:
           name: commitmentId
           type: string
           required: true
-          description: Id of a commitment 
+          description: Id of a commitment
       responses:
         200:
           description: get commitment successfully.
           schema:
             type: object
-            example: {
-              "heading": "string",
-              "logo": "path",
-              "detail": "string",              
-            }
+            example: { "heading": "string", "logo": "path", "detail": "string" }
         400:
           description: commitment is not found.
   /admin/commitment:
@@ -572,36 +593,34 @@ paths:
               heading:
                 type: string
               detail:
-                type: string  
+                type: string
         - in: formData
           name: logo
           description: a logo commitment.
           type: file
       requestBody:
-        content: 
+        content:
           application/json:
-            schema:            
+            schema:
               type: object
-              properties:      
-                name:           
+              properties:
+                name:
                   type: string
-                logo: 
+                logo:
                   type: string
                   format: base64
-                detail:   
+                detail:
                   type: string
       responses:
         200:
           description: Create commitment successfully.
           schema:
             type: object
-            example: {
-              "heading": "string",
-              "logo": "path",
-              "detail": "string",
-            }
+            example: { "heading": "string", "logo": "path", "detail": "string" }
         400:
           description: Create commitment failed.
+      security:
+        - bearerAuth: []
   /admin/commitment/{commitmentId}:
     put:
       tags:
@@ -612,7 +631,7 @@ paths:
       parameters:
         - in: path
           name: commitmentId
-          schema: 
+          schema:
             type: string
           required: true
           description: commitment id
@@ -645,7 +664,7 @@ paths:
                 type: string
               logo:
                 type: string
-                format: base64 
+                format: base64
               detail:
                 type: string
       responses:
@@ -653,13 +672,11 @@ paths:
           description: Update commitment successfully.
           schema:
             type: object
-            example: {
-              "heading": "string",
-              "logo": "path",
-              "detail": "string",
-            }
+            example: { "heading": "string", "logo": "path", "detail": "string" }
         400:
           description: Update commitment failed.
+      security:
+        - bearerAuth: []
 
     delete:
       tags:
@@ -672,7 +689,7 @@ paths:
           name: commitmentId
           type: string
           required: true
-          description: Id of a commitment 
+          description: Id of a commitment
       responses:
         200:
           description: Delete commitment successfully.
@@ -686,7 +703,9 @@ paths:
                     description: Success message
         400:
           description: Update commitment failed.
-  
+      security:
+        - bearerAuth: []
+
   /partner:
     get:
       tags:
@@ -698,16 +717,13 @@ paths:
         - in: query
           name: limit
           type: string
-          description: limit number of partners 
+          description: limit number of partners
       responses:
         200:
           description: get partners successfully.
           schema:
             type: object
-            example: {
-              "name": "string",
-              "logo": "path",
-            }
+            example: { "name": "string", "logo": "path" }
         400:
           description: partner is not found.
   /partner/{partnerId}:
@@ -722,16 +738,13 @@ paths:
           name: partnerId
           type: string
           required: true
-          description: Id of a partner 
+          description: Id of a partner
       responses:
         200:
           description: get partner successfully.
           schema:
             type: object
-            example: {
-              "name": "string",
-              "logo": "path",
-            }
+            example: { "name": "string", "logo": "path" }
         400:
           description: partnerId is not found.
   /admin/partner:
@@ -755,16 +768,16 @@ paths:
         - in: formData
           name: logo
           description: a logo commitment.
-          type: file  
+          type: file
       requestBody:
-        content: 
-          multipart/form-data: 
-            schema:            
+        content:
+          multipart/form-data:
+            schema:
               type: object
-              properties:      
-                name:           
+              properties:
+                name:
                   type: string
-                logo: 
+                logo:
                   type: string
                   format: base64
       responses:
@@ -772,12 +785,11 @@ paths:
           description: Create partner successfully.
           schema:
             type: object
-            example: {
-              "name": "string",
-              "logo": "path",
-            }
+            example: { "name": "string", "logo": "path" }
         400:
           description: Create partner failed.
+      security:
+        - bearerAuth: []
   /admin/partner/{partnerId}:
     put:
       tags:
@@ -788,7 +800,7 @@ paths:
       parameters:
         - in: path
           name: partnerId
-          schema: 
+          schema:
             type: string
           required: true
           description: partner id
@@ -807,14 +819,14 @@ paths:
           description: a logo commitment.
           type: file
       requestBody:
-        content: 
-          multipart/form-data: 
-            schema:            
+        content:
+          multipart/form-data:
+            schema:
               type: object
-              properties:      
-                name:           
+              properties:
+                name:
                   type: string
-                logo: 
+                logo:
                   type: string
                   format: base64
       responses:
@@ -822,12 +834,11 @@ paths:
           description: Update partner successfully.
           schema:
             type: object
-            example: {
-              "name": "string",
-              "logo": "path",
-            }
+            example: { "name": "string", "logo": "path" }
         400:
           description: Update partner failed.
+      security:
+        - bearerAuth: []
 
     delete:
       tags:
@@ -869,20 +880,23 @@ paths:
         - in: query
           name: pageSize
           type: string
-          description: number of message in a page  
+          description: number of message in a page
       responses:
         200:
           description: get message successfully.
           schema:
             type: object
-            example: {
-              "name": "string",
-              "email": "string",
-              "phone": "string",    
-              "message": "string",          
-            }
+            example:
+              {
+                "name": "string",
+                "email": "string",
+                "phone": "string",
+                "message": "string",
+              }
         400:
-          description: commitment is not found.  
+          description: commitment is not found.
+      security:
+        - bearerAuth: []
   /admin/message/{messageId}:
     get:
       tags:
@@ -895,20 +909,23 @@ paths:
           name: messageId
           type: string
           required: true
-          description: Id of a message 
+          description: Id of a message
       responses:
         200:
           description: get message successfully.
           schema:
             type: object
-            example: {
-              "name": "string",
-              "email": "string",
-              "phone": "string",    
-              "message": "string",          
-            }          
+            example:
+              {
+                "name": "string",
+                "email": "string",
+                "phone": "string",
+                "message": "string",
+              }
         400:
-          description: message is not found.    
+          description: message is not found.
+      security:
+        - bearerAuth: []
     put:
       tags:
         - "message"
@@ -918,7 +935,7 @@ paths:
       parameters:
         - in: path
           name: messageId
-          schema: 
+          schema:
             type: string
           required: true
           description: message id
@@ -931,16 +948,18 @@ paths:
               name:
                 type: string
               email:
-                type: string 
-              phone: 
+                type: string
+              phone:
                 type: string
               message:
-                type: string 
+                type: string
       responses:
         200:
           description: Update message successfully.
         400:
           description: Update message failed.
+      security:
+        - bearerAuth: []
     delete:
       tags:
         - "message"
@@ -952,12 +971,14 @@ paths:
           name: messageId
           type: string
           required: true
-          description: Id of a message 
+          description: Id of a message
       responses:
         200:
           description: Delete message successfully.
         400:
           description: Update message failed.
+      security:
+        - bearerAuth: []
   /message:
     post:
       tags:
@@ -977,17 +998,587 @@ paths:
               name:
                 type: string
               email:
-                type: string 
-              phone: 
+                type: string
+              phone:
                 type: string
               message:
-                type: string 
+                type: string
       responses:
         200:
           description: Send message successfully.
         400:
-          description: Create message failed.   
+          description: Create message failed.
+  /admin/warehouse:
+    post:
+      tags:
+        - "warehouse"
+      summary: "Create a new warehouse"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: warehouse
+          description: a new warehouse.
+          schema:
+            type: object
+            required:
+              - name, street, ward, district, province, phone
+            properties:
+              name:
+                type: string
+              phone:
+                type: string
+              street:
+                type: string
+              ward:
+                type: string
+              district:
+                type: string
+              province:
+                type: string
+      responses:
+        200:
+          description: Create new warehouse successfully.
+        400:
+          description: Create warehouse failed.
+      security:
+        - bearerAuth: []
+  /admin/warehouse/{warehouseId}:
+    put:
+      put:
+      tags:
+        - "warehouse"
+      summary: "Update a existing warehouse"
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: warehouseId
+          schema:
+            type: string
+          required: true
+          description: warehouse id
+        - in: body
+          name: warehouse
+          description: a existing warehouse.
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              phone:
+                type: string
+              street:
+                type: string
+              ward:
+                type: string
+              district:
+                type: string
+              province:
+                type: string
+      responses:
+        200:
+          description: Update warehouse successfully.
+        400:
+          description: Update warehouse failed.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "warehouse"
+      summary: "Delete a existing warehouse"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: warehouseId
+          type: string
+          required: true
+          description: Id of a warehouse
+      responses:
+        200:
+          description: Delete warehouse successfully.
+        400:
+          description: Delete warehouse failed.
+      security:
+        - bearerAuth: []
+  /warehouse:
+    get:
+      tags:
+        - "warehouse"
+      summary: get warehouse
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: page
+          type: string
+          description: num of page
+        - in: query
+          name: pageSize
+          type: string
+          description: number of warehouse in a page
+        - in: query
+          name: district
+          type: string
+          description: district
+        - in: query
+          name: province
+          type: string
+          description: province
+      responses:
+        200:
+          description: get warehouse successfully.
+          schema:
+            type: object
+            example:
+              {
+                "name": "string",
+                "phone": "string",
+                "street": "string",
+                "ward": "string",
+                "district": "string",
+                "province": "string",
+                "lon": "string",
+                "lat": "string",
+              }
+        400:
+          description: warehouse is not found.
+  /warehouse/{warehouseId}:
+    get:
+      tags:
+        - "warehouse"
+      summary: get warehouse by id
 
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: warehouseId
+          type: string
+          required: true
+          description: Id of a warehouse
+      responses:
+        200:
+          description: get warehouse successfully.
+
+          schema:
+            type: object
+            example:
+              {
+                "name": "string",
+                "phone": "string",
+                "street": "string",
+                "ward": "string",
+                "district": "string",
+                "province": "string",
+                "lon": "string",
+                "lat": "string",
+              }
+        400:
+          description: warehouse is not found.
+  /participant:
+    get:
+      tags:
+        - "participant"
+      summary: get all participant
+      produces:
+        - application/json
+      responses:
+        200:
+          description: get participant successfully.
+          schema:
+            type: object
+            example:
+              { "name": "string", "banner": "path", "description": "string" }
+        400:
+          description: participant is not found.
+  /participant/{participantId}:
+    get:
+      tags:
+        - "participant"
+      summary: get participant by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: participantId
+          type: string
+          required: true
+          description: Id of a participant
+      responses:
+        200:
+          description: get participant successfully.
+          schema:
+            type: object
+            example:
+              { "name": "string", "banner": "path", "description": "string" }
+        400:
+          description: participant is not found.
+  /participant/service/{serviceId}:
+    get:
+      tags:
+        - "participant"
+      summary: get list of participants by serviceId
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: serviceId
+          type: string
+          required: true
+          description: Id of a service
+      responses:
+        200:
+          description: get participant successfully.
+          schema:
+            type: object
+            example:
+              { "name": "string", "banner": "path", "description": "string" }
+        400:
+          description: participant is not found.
+  /admin/participant/{serviceId}:
+    post:
+      tags:
+        - "participant"
+      summary: "Create a new participant"
+      consumes:
+        - multipart/form-data
+        - application/json
+      parameters:
+        - in: path
+          name: serviceId
+          type: string
+          required: true
+          description: Id of a service
+        - in: body
+          name: participant
+          description: a new participant.
+          schema:
+            type: object
+            required:
+              - name, description
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+        - in: formData
+          name: banner
+          description: banner of participant.
+          type: file
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                banner:
+                  type: string
+                  format: base64
+                description:
+                  type: string
+      responses:
+        200:
+          description: Create participant successfully.
+          schema:
+            type: object
+            example:
+              { "name": "string", "banner": "path", "description": "string" }
+        400:
+          description: Create participant failed.
+      security:
+        - bearerAuth: []
+  /admin/participant/{participantId}:
+    put:
+      tags:
+        - "participant"
+      summary: "Create a new participant"
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: participantId
+          type: string
+          required: true
+          description: Id of a participant
+        - in: body
+          name: participant
+          description: a new participant.
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+        - in: formData
+          name: banner
+          description: banner of participant.
+          type: file
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                banner:
+                  type: string
+                  format: base64
+                description:
+                  type: string
+      responses:
+        200:
+          description: Create participant successfully.
+          schema:
+            type: object
+            example:
+              { "name": "string", "banner": "path", "description": "string" }
+        400:
+          description: Create participant failed.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "participant"
+      summary: "Delete a existing participant"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: participantId
+          type: string
+          required: true
+          description: Id of a participant
+      responses:
+        200:
+          description: Delete participant successfully.
+        400:
+          description: Delete participant failed.
+      security:
+        - bearerAuth: []
+
+  /quote:
+    get:
+      tags:
+        - "quote"
+      summary: get all quote
+      produces:
+        - application/json
+      responses:
+        200:
+          description: get quote successfully.
+          schema:
+            type: object
+            example:
+              {
+                "name": "string",
+                "description": "string",
+                "quote": "string",
+                "avatar": "path",
+              }
+        400:
+          description: quote is not found.
+  /quote/{quoteId}:
+    get:
+      tags:
+        - "quote"
+      summary: get quote by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: quoteId
+          type: string
+          required: true
+          description: Id of a quote
+      responses:
+        200:
+          description: get quote successfully.
+          schema:
+            type: object
+            example:
+              {
+                "name": "string",
+                "description": "string",
+                "quote": "string",
+                "avatar": "path",
+              }
+        400:
+          description: quote is not found.
+  /quote/service/{serviceId}:
+    get:
+      tags:
+        - "quote"
+      summary: get list of quotes by serviceId
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: serviceId
+          type: string
+          required: true
+          description: Id of a service
+      responses:
+        200:
+          description: get quote successfully.
+          schema:
+            type: object
+            example:
+              {
+                "name": "string",
+                "description": "string",
+                "quote": "string",
+                "avatar": "path",
+              }
+        400:
+          description: quote is not found.
+  /admin/quote/{serviceId}:
+    post:
+      tags:
+        - "quote"
+      summary: "Create a new quote"
+      consumes:
+        - multipart/form-data
+        - application/json
+      parameters:
+        - in: path
+          name: serviceId
+          type: string
+          required: true
+          description: Id of a service
+        - in: body
+          name: quote
+          description: a new quote.
+          schema:
+            type: object
+            required:
+              - name, description, quote
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+              quote:
+                type: string
+        - in: formData
+          name: avatar
+          description: avatar of quote.
+          type: file
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                quote:
+                  type: string
+                avatar:
+                  type: string
+                  format: base64
+      responses:
+        200:
+          description: Create quote successfully.
+          schema:
+            type: object
+            example:
+              {
+                "name": "string",
+                "description": "string",
+                "quote": "string",
+                "avatar": "path",
+              }
+        400:
+          description: Create quote failed.
+      security:
+        - bearerAuth: []
+  /admin/quote/{quoteId}:
+    put:
+      tags:
+        - "quote"
+      summary: "Create a new quote"
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: quoteId
+          type: string
+          required: true
+          description: Id of a quote
+        - in: body
+          name: quote
+          description: a new quote.
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+              quote:
+                type: string
+        - in: formData
+          name: avatar
+          description: avatar of quote.
+          type: file
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                quote:
+                  type: string
+                avatar:
+                  type: string
+                  format: base64
+      responses:
+        200:
+          description: Create quote successfully.
+          schema:
+            type: object
+            example:
+              {
+                "name": "string",
+                "description": "string",
+                "quote": "string",
+                "avatar": "path",
+              }
+        400:
+          description: Create quote failed.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "quote"
+      summary: "Delete a existing quote"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: quoteId
+          type: string
+          required: true
+          description: Id of a quote
+      responses:
+        200:
+          description: Delete quote successfully.
+        400:
+          description: Delete quote failed.
+      security:
+        - bearerAuth: []
 securityDefinitions:
   bearerAuth:
     type: "apiKey"

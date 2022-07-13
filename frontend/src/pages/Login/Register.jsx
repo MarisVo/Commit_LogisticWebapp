@@ -6,10 +6,10 @@ import styled from 'styled-components';
 import * as axios from 'axios'
 
 const RegisForm = styled.div`
-.Regis{
+  .Regis {
     height: 150vh;
     display: flex;
-    flex-direction:row;
+    flex-direction: row;
     @media (max-width: 768px) {
       flex-direction: column;
       height: 140vh;
@@ -22,36 +22,39 @@ const RegisForm = styled.div`
     align-items: center;
     padding-top: 100px;
     padding-bottom: 50px;
-    background-color: #FBAB7E;
-    background-image: linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%);
-}
+    background-color: #fbab7e;
+    background-image: linear-gradient(62deg, #fbab7e 0%, #f7ce68 100%);
+  }
 
-.Regis-header{
+  .Regis-header {
     max-width: 500px;
     width: 100%;
     background-color: #fff;
     padding: 25px 30px;
     margin-top: 10px;
     border-radius: 5px;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.15);
-    overflow:auto;
-}
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    overflow: auto;
+  }
 
-.ant-typography{
+  .ant-typography {
     font-size: 45px;
     font-weight: 500;
     position: relative;
-}
+  }
 
-.ant-input-affix-wrapper {
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
-}
-.sign{
-    text-align:right;
-}`
+  .ant-input-affix-wrapper {
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px,
+      rgba(0, 0, 0, 0.1) 0px 2px 4px 0px,
+      rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+  }
+  .sign {
+    text-align: right;
+  }
+`;
 
 const ButtonContainer = styled.div`
-.ant-btn-primary {
+  .ant-btn-primary {
     height: 100%;
     width: 100%;
     border-radius: 5px;
@@ -62,10 +65,10 @@ const ButtonContainer = styled.div`
     letter-spacing: 1px;
     cursor: pointer;
     transition: all 0.3s ease;
-    background-color: #FBAB7E;
-    &:hover{
-        background-color: #FBAB7E;
-        background-image: linear-gradient(250deg, #e3ed1f 0%, #F7CE68 100%);
+    background-color: #fbab7e;
+    &:hover {
+      background-color: #fbab7e;
+      background-image: linear-gradient(250deg, #e3ed1f 0%, #f7ce68 100%);
     }
 }`;
 

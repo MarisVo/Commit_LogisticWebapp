@@ -5,7 +5,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import appStore from '../../assets/images/appStore.png'
 import ggPlay from '../../assets/images/ggPlay.png'
 import { getDistrictsByProvinceCode, getProvinces } from "sub-vn";
-
+import { IoLocationOutline } from 'react-icons/io5'
+import { FiMap } from 'react-icons/fi'
+import axios from 'axios'
 
 const { TabPane } = Tabs
 const { Option } = Select
@@ -48,7 +50,7 @@ const flags = [
     },
     {
         id: 8,
-        name: 'Saudi',
+        name: 'Saudi Arabia',
         url: 'https://jtexpress.vn/themes/jtexpress/assets/images/saudi.png'
     },
     {
@@ -141,26 +143,60 @@ const Home = () => {
         setDefaultService(dichVu);
         navigate(`/track?type=${dichVu}`)
     }
-    const [dataProvices, setProvince] = useState([])
-    const [dataDistricts, setDistricts] = useState([])
+    const [listProvinces, setListProvince] = useState([])
+    const [listDistricts, setListDistricts] = useState([])
+    const [currentProvince, setCurrentProvince] = useState(null)
+    const [currentDistrict, setCurrentDistrict] = useState(null)
+    const [person, setPerson] = useState(1)
+    const [warehouses, setWarehouse] = useState([])
+
+    const searchWarehouse = () => {
+        if (currentDistrict && currentProvince) {
+            const find = async () => {
+                try {
+                    const { data: response } = await axios.get('http://localhost:8000/api/tracking/warehouse',
+                        {
+                            params: {
+                                province: currentProvince,
+                                district: currentDistrict
+                            }
+                        })
+                    setWarehouse(response.data)
+                }
+                catch (error) {
+                    console.log(error.message)
+
+                }
+            }
+            find()
+        } else {
+            alert('Mời chọn đủ thông tin tra cứu')
+        }
+    }
+
+
     useEffect(() => {
         const dataProv = getProvinces()
-        console.log(dataProv)
-        setProvince(dataProv)
+        setListProvince(dataProv)
     }, [])
-    const [person, setPerson] = useState(1)
-    const handleSelect = (cityCode) => {
-        const dataDist = getDistrictsByProvinceCode(cityCode)
-        setDistricts(dataDist)
+    const handleSelectProvince = (provinceSelected) => {
+        const provinceCode = listProvinces.find(province => province.name === provinceSelected).code
+        const dataDistricts = getDistrictsByProvinceCode(provinceCode)
+        setCurrentProvince(provinceSelected)
+        setCurrentDistrict(null)
+        setListDistricts(dataDistricts)
     }
-    console.log(dataDistricts)
-
-
+    const handleSelectDistrict = (districtSelected) => {
+        setCurrentDistrict(districtSelected)
+    }
     const showPerson = (id) => {
         const numberId = coops.find(coop => coop.id === id).id
         setPerson(numberId)
     }
-
+    console.log(`
+        province: ${currentProvince}
+        district: ${currentDistrict}
+    `)
     return (
         <div className="pt-[65px]">
             <Carousel autoplay autoplaySpeed={2000} effect="fade">
@@ -193,7 +229,7 @@ const Home = () => {
                         <div >
                             <form className="flex flex-col lg:flex-row ">
                                 <input
-                                    className="border border-gray-300 text-primary text-sm rounded focus:ring-yellow-500 focus:border-yellow-500 block w-full p-3 mb-2 lg:mb-0   "
+                                    className="border border-gray-300 text-[#F0B90B] text-sm rounded focus:ring-yellow-500 focus:border-yellow-500 block w-full p-3 mb-2 lg:mb-0   "
                                     placeholder='Nhập mã vận đơn của bạn (cách nhau bới dấu phẩy), tối đa 10 vận đơn'
                                 >
                                 </input>
@@ -205,16 +241,17 @@ const Home = () => {
                             </form>
                         </div>
                     </TabPane>
-                    <TabPane tab={<div className="text-lg h-[30px] text-[#fcd535]">Tra cứu bưu cục</div>} key="bưu cục">
-                        <form className="flex flex-col items-center lg:flex-row">
+                    <TabPane tab={<div className="text-lg h-[30px] text-[#fcd535]">Tra cứu bưu cục</div>} key="2">
+                        <div className="flex flex-col items-center lg:flex-row gap-y-3">
                             <Select
                                 showSearch
                                 allowClear
                                 className="w-full lg:w-2/5"
                                 placeholder="Tỉnh/Thành Phố"
-                                onSelect={(key) => handleSelect(key)}
+                                onClear={() => { setCurrentDistrict(null); setListDistricts([]) }}
+                                onChange={value => handleSelectProvince(value)}
                             >
-                                {dataProvices.map((city, key) => <Option key={key} value={city.code} >{city.name} </Option>)}
+                                {listProvinces.map((city) => <Option key={city.code} value={city.name} >{city.name} </Option>)}
 
                             </Select>
                             <Select
@@ -222,22 +259,49 @@ const Home = () => {
                                 allowClear
                                 className="w-full lg:w-2/5"
                                 placeholder="Quận/Huyện"
+                                onChange={value => handleSelectDistrict(value)}
+                                value={currentDistrict}
                             >
-                                {dataDistricts.map((distr) => <Option key={distr.code} value={distr.name}>{distr.name}</Option>)}
+                                {/* <Option value={null} >Quận/Huyện</Option> */}
+                                {listDistricts.map((distr) => <Option key={distr.code} value={distr.name}>{distr.name}</Option>)}
                             </Select>
                             <button
-                                type='submit'
-                                class="text-white bg-yellow-500 hover:bg-yellow-400 focus:ring-4  focus:ring-red-500 font-medium rounded-lg text-lg w-full lg:w-44 lg:ml-2 px-5 py-2.5 text-center "
+                                onClick={searchWarehouse}
+                                class="text-white bg-yellow-500 hover:bg-yellow-400 focus:ring-2  focus:ring-red-500 font-medium rounded-lg text-lg w-full lg:w-44 lg:ml-2 px-5 py-2.5 text-center "
                             >Tìm kiếm
                             </button>
-                        </form>
+                        </div>
                     </TabPane>
-                    <TabPane tab={<div className="text-lg h-[30px] text-[#fcd535]" >Bảng giá</div>} key="bảng giá">
+                    <TabPane tab={<Link to='tra-cuu/cuoc-van-chuyen' className="text-lg h-[30px] text-[#fcd535]" >Bảng giá</Link>} key="bảng giá">
                     </TabPane>
                 </Tabs>
             </div>
 
-            <div className='flex flex-col justify-center items-center py-4'>
+            {/* Test searching */}
+
+            <div className=' container mt-4 grid grid-cols-1 lg:grid-cols-2 mx-auto gap-y-3 gap-x-6'>
+                {warehouses.map((warehouse, key) => (
+                    <div key={key} className='flex flex-col bg-[#FFFF00] bg-opacity-70 p-4 rounded-xl gap-y-2'>
+                        <div className='flex flex-row justify-between'>
+                            <span className='text-xl font-extrabold text-red-700'>{warehouse.name}</span>
+                            <a href={'https://www.google.com/maps?q=' + warehouse?.lon + warehouse?.lat} target="_blank" className='flex items-center text-red-600'>
+                                <FiMap className="w-4 h-4 inline-block mr-2" />
+                                <span className=' text-lg text-inherit font-semibold'>Tìm đường đi</span>
+                            </a>
+                        </div>
+                        <div className='flex items-stretch'>
+                            <IoLocationOutline className="w-4 h-4 inline-block mr-2" />
+                            <span className='font-semibold'>{warehouse.street}</span>
+                        </div>
+                    </div>
+                ))}
+
+
+
+            </div>
+            {/* Test searching */}
+
+            <div className='flex flex-col justify-center items-center py-4 mt-6'>
                 <span className='uppercase text-xl font-black'>mạng lưới phủ sóng các nước</span>
                 <span className='text-sm'>J&T Express tự hào đã & đang mở rộng mạng lưới quốc tế để mang đến trải nghiệm tốt nhất</span>
             </div>
@@ -253,7 +317,7 @@ const Home = () => {
             </div>
 
             <div className="flex flex-col lg:flex-row ">
-                <div className="flex flex-col items-center justify-center text-justify gap-y-7 w-full lg:max-w-[500px] py-6 px-3 bg-primary rounded-r-xl">
+                <div className="flex flex-col items-center justify-center text-justify gap-y-7 w-full lg:max-w-[500px] py-6 px-3 bg-[#F0B90B] rounded-r-xl">
                     <span className="text-4xl font-black container text-white">VỀ CHÚNG TÔI</span>
                     <span className=" text-base container tracking-wide px-4 lg:px-6 w-full">
                         J&T Express là thương hiệu chuyển phát nhanh dựa trên sự phát triển của công nghệ và Internet.
@@ -333,10 +397,10 @@ const Home = () => {
                 </div>
             </div>
             <div className='container mx-auto px-2 lg:px-0  my-10'>
-                <span className="text-4xl font-black">ĐỐI TÁC NÓI VỀ CHÚNG TÔI</span>
-                <div className='grid grid-cols-1 lg:grid-cols-[60%_35%] gap-x-10 mt-5'>
-                    <div className="flex flex-col justify-center items-center bg-[#fef9c3] rounded-xl p-2 text-justify">
-                        <span className='text-lg'>
+                <span className="block text-2xl sm:text-4xl lg:text-4xl font-black my-6 lg:my-0">ĐỐI TÁC NÓI VỀ CHÚNG TÔI</span>
+                <div className='grid grid-cols-1 lg:grid-cols-[60%_35%] gap-x-10 '>
+                    <div className="flex flex-col justify-center items-center  ">
+                        <span >
                             Từ khi đặt chân vào Việt Nam năm 2018, J&T Express luôn nỗ lực hết mình,
                             hoàn thành nghĩa vụ của một đối tác vận chuyển lớn trong khu vực,
                             mang lại dịch vụ tốt nhất cho tất cả khách hàng, nhận về nhiều lời khen và nhận xét tích cực.
@@ -368,15 +432,15 @@ const Home = () => {
                             </Carousel>
                         </div>
                     </div>
-                    <div className='bg-primary rounded-xl shadow-2xl lg:min-h-[450px] overflow-hidden  '>
+                    <div className='bg-[#F0B90B] rounded-xl shadow-2xl lg:min-h-[450px] overflow-hidden  '>
                         <div className="flex flex-col items-center px-4 py-8">
                             <div className='w-[134px] h-[134px]'>
                                 <img src={coops[person - 1].image} className=' h-full w-full rounded-full object-cover' alt='' />
                             </div>
                             <span className='text-xl font-bold pt-4'>{coops[person - 1].name}</span>
                             <span>{coops[person - 1].job}</span>
-                            <div className=''>
-                                <span className='py-6 line-clamp-6 text-lg text-justify'>{coops[person - 1].comment}</span>
+                            <div className='mx-3 sm:mx-10 lg:mx-0'>
+                                <span className='py-6 line-clamp-6 text-justify'>{coops[person - 1].comment}</span>
                             </div>
                         </div>
                     </div>

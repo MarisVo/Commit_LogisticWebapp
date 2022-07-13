@@ -79,25 +79,6 @@ trackingRoute.get('/order/:lstOrderId', async (req, res) => {
 })
 
 /**
- * @route GET /api/tracking/warehouse
- * @description get list of warehouses by province and district query
- * @access public
- */
-trackingRoute.get('/warehouse', async (req, res) => {
-    const { province, district } = req.query
-    try {
-        const warehouses = await Warehouse.find({
-            province,
-            district
-        })
-        return sendSuccess(res, 'request successfully', warehouses)
-    } catch (error) {
-        console.log(error)
-        return sendServerError(res)
-    }
-})
-
-/**
  * @route GET /api/tracking/service/:serviceId
  * @description get pricelist of service by province
  * @access public
