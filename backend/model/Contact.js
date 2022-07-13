@@ -26,6 +26,10 @@ const ContactSchema = new Schema(
         },
         youtube: {
             type: String,
+        },
+        hr_mailbox: {
+            type: String,
+            required: true
         }
     },
     { timestamps: true }
