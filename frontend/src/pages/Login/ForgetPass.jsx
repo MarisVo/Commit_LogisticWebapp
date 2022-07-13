@@ -1,8 +1,8 @@
-import React from "react";
-import "antd/dist/antd.css";
-import { Form, Button, Input, Typography } from "antd";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import React from 'react'
+import 'antd/dist/antd.css'
+import { Form, Button, Input, Typography, message} from "antd";
+import styled from 'styled-components';
+import * as axios from 'axios'
 
 const ForgetForm = styled.div`
   .Forget {
@@ -58,7 +58,8 @@ const ForgetForm = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  .ant-btn-primary {
+.ant-btn-primary {
+    margin-top: 30px;
     height: 100%;
     width: 100%;
     border-radius: 5px;
@@ -74,75 +75,103 @@ const ButtonContainer = styled.div`
       background-color: #fbab7e;
       background-image: linear-gradient(250deg, #e3ed1f 0%, #f7ce68 100%);
     }
-  }
-`;
+}`;
+
+function isValidEmail(email) {
+  return /\S+@\S+\.\S+/.test(email);
+}
+
 const { Title } = Typography;
 function ForgetPass() {
-  return (
+  const [form] = Form.useForm();
+
+  const success = () => {
+    message.success({
+      content: 'Mật khẩu mới đã được gửi đến email hoặc số điện thoại của bạn',
+      className: 'custom-class',
+      style: {
+        marginTop: '20vh',
+      },
+    });
+  };
+
+  const failed404 = () => {
+    message.error({
+      content: 'Email hoặc số điện thoại không tồn tại',
+      className: 'custom-class',
+      style: {
+        marginTop: '20vh',
+      },
+    });
+  };
+
+  const failed400 = () => {
+    message.error({
+      content: 'Tạo mật khẩu mới không thành công',
+      className: 'custom-class',
+      style: {
+        marginTop: '20vh',
+      },
+    });
+  };
+
+  const emailphone = Form.useWatch('email/phone', form);
+  var email;
+  var phone;
+  (isValidEmail(emailphone)) ? email = emailphone : phone = emailphone
+
+  const onFinish = async() => {
+    try{ 
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:8000/api/auth/forgot-pw',
+        data: {
+          email: email,
+          phone: phone
+        }
+      })   
+      success();
+    } catch(error) {
+      if(error.message == "Request failed with status code 404") {
+        failed404();
+      }
+
+      if(error.message == "Request failed with status code 400") {
+        failed400();
+      }
+    }
+  };
+  return (   
     <ForgetForm>
-      <div className="Forget">
-        <div className="Forget-header">
-          <Form
-            autoComplete="off"
-            labelCol={{ span: 10 }}
-            wrapperCol={{ span: 14 }}
-            onFinish={(values) => {
-              console.log({ values });
-            }}
-            onFinishFailed={(error) => {
-              console.log({ error });
-            }}
-          >
-            <Title level={2} className="text-center">
-              Quên mật khẩu
-            </Title>
-
-            <Form.Item
-              name="email"
-              label="Email"
-              rules={[
-                { type: "email", message: "Vui lòng nhập email có thật" },
-                ({ getFieldValue }) => ({
-                  validator(_, email) {
-                    if (email || getFieldValue("phone")) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject(
-                      "Vui lòng nhập email hoặc số điện thoại"
-                    );
-                  },
-                }),
-              ]}
-              hasFeedback
+        <div className="Forget">
+          <div className="Forget-header">
+            <Form
+              form ={form}
+              autoComplete="off"
+              labelCol={{ span: 10 }}
+              wrapperCol={{ span: 14 }}
+              onFinish={(onFinish)}
+              onFinishFailed={(error) => {
+                console.log({ error });
+              } }
             >
-              <Input placeholder="Nhập email" />
-            </Form.Item>
+                <Title level={2} className="text-center">
+                    Quên mật khẩu
+                </Title>
 
-            <Form.Item
-              name="phone"
-              label="Số điện thoại"
-              rules={[
-                ({ getFieldValue }) => ({
-                  validator(_, phone) {
-                    if (phone || getFieldValue("email")) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject(
-                      "Vui lòng nhập email hoặc số điện thoại"
-                    );
-                  },
-                }),
-              ]}
-              hasFeedback
-            >
-              <Input placeholder="Nhập số điện thoại" />
-            </Form.Item>
-
-            <Form.Item wrapperCol={{ span: 24 }}>
-              <div className="sign">
-                <Link to="/dang-ki">Đăng ký tài khoản</Link>
-              </div>
-            </Form.Item>
+                <Form.Item
+                    name="email/phone"
+                    label="Email/Phone"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Vui lòng nhập email hoặc số điện thoại",
+                      },                  
+                    ]}
+                    hasFeedback
+                    >
+                    <Input placeholder="Nhập email hoặc số điện thoại" />
+                </Form.Item>
 
             <Form.Item wrapperCol={{ span: 24 }}>
               <ButtonContainer>
