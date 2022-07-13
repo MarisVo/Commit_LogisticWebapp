@@ -7,7 +7,7 @@ import { TOKEN } from "./adminToken";
 import { useEffect } from "react";
 import { useRef } from "react";
 export default function AdminAbout() {
-  const [contactState, setContactState] = useState({
+  const [aboutState, setAboutState] = useState({
     description: "string",
     vision: "string",
     values: "string",
@@ -26,17 +26,17 @@ export default function AdminAbout() {
       });
       console.log(result);
       if (result.status === 200) {
-        setContactState(result.data);
+        setAboutState(result.data);
       }
     } catch (error) {
       console.log(error.response);
     }
   };
   const normFile = (e) => {
-    console.log("Upload event:", e);
     if (Array.isArray(e)) {
       return e;
     }
+    // console.log("Upload event:", e?.fileList);
 
     return e?.fileList;
   };
@@ -48,12 +48,19 @@ export default function AdminAbout() {
   const onFinish = (values) => {
     console.log("Success:", values);
     alert("Thông tin được update");
-  
-    setContactState(() => {
-      
-      return { ...contactState, description: values.description, vision: values.vision, values: values.values };
+
+    setAboutState(() => {
+      let tempLogo;
+      let tempBanner;
+      if (values.logo) {
+        aboutState.logo = values.logo;
+      }
+      if (values.banners) {
+        aboutState.banners = values.banners;
+      }
+      return { ...aboutState, description: values.description, vision: values.vision, values: values.values };
     });
-    console.log(contactState);
+    console.log(aboutState);
   };
   const createFileList = (key, datavalue) => {
     let fileList = [];
@@ -85,12 +92,13 @@ export default function AdminAbout() {
 
   const renderInput = () => {
     let inputArray = [];
-    for (let [key, datavalue] of Object.entries(contactState)) {
+    for (let [key, datavalue] of Object.entries(aboutState)) {
       if (key === "banners" || key === "logo") {
         let fileList = createFileList(key, datavalue);
         inputArray.push(
           <Form.Item name={key} label={key} valuePropName="fileList" getValueFromEvent={normFile}>
             <Upload
+              key={key}
               name={key}
               action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
               maxCount={key === "logo" ? 1 : ""}

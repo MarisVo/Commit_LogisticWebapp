@@ -17,7 +17,7 @@ export default function AdminContactUs() {
   const callContactData = async () => {
     try {
       const result = await axios({
-        url: "https://api.openweathermap.org/data/2.5/weather?q=helsinki&appid=460863ced2e6b5f80cdca7445aec9faf&units=metric",
+        url: "",
         method: "get",
         headers: "Bears" + TOKEN,
       });

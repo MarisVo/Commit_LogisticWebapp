@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import "react-router-dom";
+import ScrollToTop from "./components/ScrollToTop";
 import {
   Home,
   About,
@@ -25,7 +26,7 @@ import {
   Purchase,
   PurchaseStage,
   PurchaseDetail,
-  Profile,
+  Profile, 
   Notification,
   PurchaseDriver,
   LayerStorekeeper,
@@ -43,6 +44,9 @@ import {
   AdminContactMessage,
   AdminDeliveryService,
   AdminPartner,
+  AdminCareer,
+  AdminApplicant,
+  AdminDepartment
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainProvider from "./context/MainContext";
@@ -51,8 +55,10 @@ const App = () => {
     <MainProvider>
       <BrowserRouter>
         <div className="wrapper">
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<DefaultLayout />}>
+
               <Route index element={<Home />}></Route>
               <Route path="ve-chung-toi" element={<About />} />
               <Route path="cam-ket" element={<Commit />} />
@@ -126,8 +132,12 @@ const App = () => {
               <Route path="message" element={<AdminContactMessage />}></Route>
               <Route path="service" element={<AdminDeliveryService />}></Route>
               <Route path="partner" element={<AdminPartner />}></Route>
+              <Route path="career" element={<AdminCareer />}></Route>
+              <Route path="applicant" element={<AdminApplicant />}></Route>
+              <Route path="department" element={<AdminDepartment />}></Route>
             </Route>
           </Routes>
+
         </div>
       </BrowserRouter>
     </MainProvider>

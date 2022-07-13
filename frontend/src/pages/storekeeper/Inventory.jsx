@@ -49,6 +49,7 @@ const columnsSummary = [
 
     },
 ];
+
 const columnsDetail = [
     {
         title: 'Mã vận đơn',
@@ -138,11 +139,11 @@ function Inventory() {
                         >
                             <Option value='HCM'>Thành phố Hồ Chí Minh</Option>
                         </Select>
-                        <DatePicker
+                        {/* <DatePicker
                             placeholder='Chọn ngày'
                             onChange={value => handleDate(value)}
                         >
-                        </DatePicker>
+                        </DatePicker> */}
                         <button
                             className="text-white bg-yellow-500 hover:bg-yellow-400 focus:ring-2  font-medium rounded-lg text-lg w-1/3 py-1.5 text-center  "
                         >Tìm kiếm
