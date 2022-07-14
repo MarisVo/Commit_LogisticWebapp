@@ -175,7 +175,7 @@ function AdminCareer() {
     const fetchData = async () => {
         setLoading(true)
         try {
-            await setTimeout(() => {
+            await setTimeout(() => { //thay bằng GET method
                 setLoading(false)
                 setData(data2)
             }, 2000)

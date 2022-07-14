@@ -1,3 +1,5 @@
+//Component này dùng để xác minh hành động nào đó trước khi submit
+
 import {Button} from 'antd'
 
 function ConfirmDeleteModal({ isVisible, onClose, onOk, text = "xóa Item",loading,disable }) {
@@ -22,17 +24,6 @@ function ConfirmDeleteModal({ isVisible, onClose, onOk, text = "xóa Item",loadi
                         <div className="h-[2px] w-3/4 bg-red-600 mb-4"></div>
                         <div className="text-sm">Bạn có chắc muốn {text} này không?</div>
                         <div className='flex justify-end mt-2 text-sm gap-x-6'>
-                            {/* <button
-                                className="px-6 py-2 border rounded-md hover:bg-red-600 hover:text-white duration-300"
-                                onClick={onClose}
-                            >
-                                Hủy
-                            </button> */}
-                            {/* <button
-                                className='ml-5 px-4 py-2 text-white border rounded-md bg-blue-500 hover:opacity-70 duration-300'
-                                onClick={onClose}
-                            >Xác nhận
-                            </button> */}
                             <Button
                             size="large"
                             disabled={disable}
