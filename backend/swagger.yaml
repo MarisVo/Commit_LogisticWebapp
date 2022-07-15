@@ -528,6 +528,14 @@ paths:
           name: limit
           type: string
           description: limit number of commitment
+        - in: query
+          name: sortBy
+          type: string
+          description: sort in order (heading, -updatedAt)
+        - in: query
+          name: keyword
+          type: string
+          description: search by keyword
       responses:
         200:
           description: get commitments successfully.
@@ -708,9 +716,21 @@ paths:
         - application/json
       parameters:
         - in: query
-          name: limit
+          name: page
           type: string
-          description: limit number of partners 
+          description: num of page
+        - in: query
+          name: pageSize
+          type: string
+          description: number of partner in a page  
+        - in: query
+          name: sortBy
+          type: string
+          description: sort in order (name, -updatedAt)
+        - in: query
+          name: keyword
+          type: string
+          description: search by keyword
       responses:
         200:
           description: get partners successfully.
@@ -882,7 +902,19 @@ paths:
         - in: query
           name: pageSize
           type: string
-          description: number of message in a page  
+          description: number of message in a page          
+        - in: query
+          name: sortBy
+          type: string
+          description: sort in order (name, -updatedAt)
+        - in: query
+          name: keyword
+          type: string
+          description: search by keyword
+        - in: query
+          name: status
+          type: string
+          description: filter by status (seen/unseen)
       responses:
         200:
           description: get message successfully.
@@ -1118,6 +1150,10 @@ paths:
           name: province
           type: string
           description: province
+        - in: query
+          name: sortBy
+          type: string
+          description: sort in order (name, -updatedAt)
       responses:
         200:
           description: get warehouse successfully.
@@ -1172,6 +1208,19 @@ paths:
       summary: get all participant
       produces:
         - application/json
+      parameters:        
+        - in: query
+          name: limit
+          type: string
+          description: number of participant in a page         
+        - in: query
+          name: keyword
+          type: string
+          description: search by keyword
+        - in: query
+          name: sortBy
+          type: string
+          description: sort in order (name, -updatedAt)
       responses:
         200:
           description: get participant successfully.
@@ -1372,6 +1421,19 @@ paths:
       summary: get all quote
       produces:
         - application/json
+      parameters:        
+        - in: query
+          name: limit
+          type: string
+          description: number of participant in a page         
+        - in: query
+          name: keyword
+          type: string
+          description: search by keyword
+        - in: query
+          name: sortBy
+          type: string
+          description: sort in order (name, -updatedAt)
       responses:
         200:
           description: get quote successfully.

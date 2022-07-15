@@ -12,9 +12,13 @@ const commitmentRoute = express.Router()
 
 commitmentRoute.get('/',
     async(req, res) => {
-        const {limit} = req.query
         try {
-            const commits = await Commitment.find({}).limit(limit).sort('-updatedAt')
+            const {limit, sortBy, keyword} = req.query
+            var keywordCondition = keyword ? { $or:[
+                { heading: { $regex: keyword, $options: 'i'} },
+                { detail: { $regex: keyword, $options: 'i'} },
+            ]} : {}            
+            const commits = await Commitment.find(keywordCondition).limit(limit).sort(`${sortBy}`)
             if (commits) return sendSuccess(res, "Get commitment successful.", commits)
             return sendError(res, "Not information found.")
         } catch(error){

@@ -135,3 +135,8 @@ export const INTEREST_SOURCE = {
     REC_EVENT: 'event',
     REC_OTHER: 'other',
 }
+
+export const MESSAGE_STATUS = {
+    unseen: 'unseen',
+    seen: 'seen',
+}
