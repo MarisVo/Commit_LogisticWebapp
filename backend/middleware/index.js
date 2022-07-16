@@ -32,10 +32,10 @@ export const createLogoDir = (req, res, next) => {
 }
 
 export const createImageDir = (req, res, next) => {
-    mkdir(`public/image`, { recursive: true }, (err) => {
+    mkdir(`public/images`, { recursive: true }, (err) => {
         if(err) return sendError(res, 'Cannot upload file.')
     })
-    req.dirName = 'image'
+    req.dirName = 'images'
     next()
 }
 

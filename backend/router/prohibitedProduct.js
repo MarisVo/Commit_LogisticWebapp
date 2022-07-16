@@ -9,30 +9,40 @@ const prohibitedProductRoute = express.Router()
  * @description get all prohibited product
  * @access public
  */
- prohibitedProductRoute.get('/',
-    async(req, res) => {
-        const {limit} = req.query
+prohibitedProductRoute.get('/',
+    async (req, res) => {
         try {
-            const prohibitedProduct = await ProhibitedProduct.find({}).limit(limit).sort('-updatedAt')
-            if (prohibitedProduct) 
-                return sendSuccess(res, "Get prohibited product successful.", prohibitedProduct)
+            const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0
+            const page = req.query.page ? parseInt(req.query.page) : 0
+            const { limit, sortBy, keyword } = req.query
+            console.log(limit, sortBy, keyword)
+
+            var listKeyword = keyword ? {
+                $or: [
+                    { name: { $regex: keyword, $options: 'i' } },
+                ]
+            } : {}
+            const listCar = await ProhibitedProduct.find(listKeyword)            
+            .limit(pageSize)
+            .skip(pageSize*page)
+            .sort(`${sortBy}`)
             
-                return sendError(res, "Not information found.")
-        } catch(error){
+            if (listCar) return sendSuccess(res, "Get prohobited product successful.", listCar)
+            return sendError(res, "Information not found.")
+        } catch (error) {
             console.log(error)
             return sendServerError(res)
         }
-    }
-)
+    })
 
 /**
  * @route GET /api/prohibited-product/:id
  * @description get a prohibited product by id
  * @access public
  */
- prohibitedProductRoute.get('/:id', async (req, res) => {
+prohibitedProductRoute.get('/:id', async (req, res) => {
     try {
-        const {id} = req.params;
+        const { id } = req.params;
         const prohibitedProduct = await ProhibitedProduct.findById(id)
         if (prohibitedProduct)
             return sendSuccess(res, 'get information of prohibited product successfully.', prohibitedProduct)

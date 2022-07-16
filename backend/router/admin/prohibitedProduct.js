@@ -2,7 +2,7 @@ import express from "express"
 import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
 import ProhibitedProduct from "../../model/ProhibitedProduct.js"
 import { handleFilePath, uploadResources } from '../../constant.js'
-import { createImageDir } from "../../middleware/index.js"
+import { createImageDir, createLogoDir, createUploadDir } from "../../middleware/index.js"
 
 
 const prohibitedProductAdminRoute = express.Router()
@@ -17,15 +17,14 @@ const prohibitedProductAdminRoute = express.Router()
     async (req, res) => {    
 
         try {            
-            const image = handleFilePath(req.file) 
+            const images = handleFilePath(req.file) 
             const {name, detail} = req.body;
             const isExist = await ProhibitedProduct.exists({name})
             if (isExist) {
                 return sendError(res, "Name is already existed.")
             }              
-                        
-            await ProhibitedProduct.create({name: name, image: image , detail: detail});
-            return sendSuccess(res, 'Create prohibied product successfully.', {name, image, detail})
+            await ProhibitedProduct.create({name: name, images: images, detail: detail})
+            return sendSuccess(res, 'Create prohibied product successfully.', {name, images, detail})
             
         } catch (error) {
             console.log(error)

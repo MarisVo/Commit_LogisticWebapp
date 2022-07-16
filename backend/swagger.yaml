@@ -8,7 +8,6 @@ info:
 host: "localhost:8000"
 basePath: "/api"
 schemes:
-- "https"
 - "http"
 tags:
 - name: "auth"
@@ -31,14 +30,8 @@ tags:
   description: "Endpoint Warehouse"
 - name: "user"
   description: "Endpoint User"
-- name: "road"
-  description: "Endpoint Road"
 - name: "car"
   description: "Endpoint Car"
-- name: "bill"
-  description: "Endpoint Bill"
-- name: "product-shipment"
-  description: "Endpoint Product Shipment"
 - name: "prohibited-product"
 description: "Endpoint Prohibited Product"
 
@@ -1012,20 +1005,29 @@ paths:
         - application/json
       parameters:
         - in: query
-          name: limit
+          name: keyword
           type: string
-          description: limit number of partners 
+          description: keyword of users 
+        - in: query
+          name: page
+          type: string
+          description: number of page 
+        - in: query
+          name: pageSize
+          type: string
+          description: number of page size 
       responses:
         200:
           description: get user successfully.
           schema:
             type: object
             example: {
+              "name": "string",
               "email": "string",
               "phone": "string",
             }
         400:
-          description: partner is not found.
+          description: user is not found.
   /user/{userId}:
     get:
       tags:
@@ -1046,6 +1048,8 @@ paths:
             type: object
             example: {
               "name": "string",
+              "email": "string",
+              "phone": "string",
             }
         400:
           description: UserId is not found.  
@@ -1056,7 +1060,7 @@ paths:
         - "user"
       summary: "Update a existing staff"
       consumes:
-        - multipart/form-data
+        - application/json
       parameters:
         - in: path
           name: userId
@@ -1107,7 +1111,7 @@ paths:
         - "user"
       summary: "Update a existing customer"
       consumes:
-        - multipart/form-data
+        - application/json
       parameters:
         - in: path
           name: userId
@@ -1157,7 +1161,7 @@ paths:
         - "user"
       summary: "Update a active user"
       consumes:
-        - multipart/form-data
+        - application/json
       parameters:
         - in: path
           name: userId
@@ -1167,29 +1171,33 @@ paths:
           description: user id
         - in: body
           name: user
-          description: a existing customer.
+          description: a existing user.
           schema:
             type: object
             required:
               - isActive
             properties:
               isActive:
-                type: Boolean
+                type: string
+             
       requestBody:
         content: 
           multipart/form-data: 
             schema:            
               type: object
               properties:      
-                isActive:
-                  type: Boolean
+                name:           
+                  type: string
       responses:
         200:
           description: Update active user successfully.
           schema:
             type: object
             example: {
-              "isActive": "Boolean",
+              "name": "string",
+              "email": "string",
+              "phone": "string",
+              "isActive": "string",
             }
         400:
           description: Update active user failed.
@@ -1272,128 +1280,6 @@ paths:
           400:
             description: Update user failed.    
   
-  /road:
-    get:
-      tags:
-        - "road"
-      summary: get roads
-      produces:
-        - application/json
-      parameters:
-        - in: query
-          name: limit
-          type: string
-          description: limit number of road
-      responses:
-        200:
-          description: get road successfully.
-          schema:
-            type: object
-            example: {
-
-            }
-        400:
-          description: road in not found.
-  /road/{roadId}:
-    get:
-      tags:
-        - "road"
-      summary: get road by id
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          name: roadId
-          type: string
-          required: true
-          description: Id of a road 
-      responses:
-        200:
-          description: get road successfully.
-          schema:
-            type: object
-            example: {
-            }
-        400:
-          description: RoadId is not found. 
-
-  /road/create:
-    post:
-      tags:
-        - "road"
-      summary: "Create a new road"
-      consumes:
-        - multipart/form-data
-      parameters:
-        - in: body
-          name: road
-          description: a new road.
-          schema:
-            type: object
-            required:
-              - destination
-              - driver
-            properties:
-              destination:           
-                  type: string
-              driver: 
-                  type: string
-        - in: formData
-      requestBody:
-        content: 
-          application/json:
-            schema:            
-              type: object
-              properties:      
-                origin:           
-                  type: string
-                destination: 
-                  type: string
-                car: 
-                  type: string
-                driver: 
-                  type: string
-      responses:
-        200:
-          description: Create road successfully.
-          schema:
-            type: object
-            example: {
-              "origin": "string",
-              "destination": "string",
-              "car": "string",
-              "driver": "string",
-            }
-        400:
-          description: Create road failed. 
-
-  /admin/road/{roadId}:
-    delete:
-      tags:
-        - "road"
-      sumary: "Delete a existing road"
-      produces:
-        - application/json
-      parameter:
-        - in: path
-          name: roadID
-          type: string
-          required: true
-          description: road Id
-      responses:
-        200:
-          description: Delete road successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties: 
-                  message:
-                    type: string
-                    description: Success message
-        400: 
-          description: Delete road failed.
-
   /car:
     get:
       tags:
@@ -1403,16 +1289,27 @@ paths:
         - application/json
       parameters:
         - in: query
-          name: limit
+          name: keyword
           type: string
-          description: limit number of car
+          description: keyword of car 
+        - in: query
+          name: page
+          type: string
+          description: number of page 
+        - in: query
+          name: pageSize
+          type: string
+          description: number of page size 
       responses:
         200:
           description: get car successfully.
           schema:
             type: object
             example: {
-
+                "plate": "string",
+                "car_type": "string",
+                "volumn": "string",
+                "tonnage": "string",
             }
         400:
           description: car in not found.
@@ -1435,6 +1332,10 @@ paths:
           schema:
             type: object
             example: {
+                "plate": "string",
+                "car_type": "string",
+                "volumn": "string",
+                "tonnage": "string",
             }
         400:
           description: CarId is not found.
@@ -1445,40 +1346,34 @@ paths:
         - "car"
       summary: "Create a new car"
       consumes:
-        - multipart/form-data
+        - application/json
       parameters:
         - in: body
           name: car
           description: a new car.
           schema:
             type: object
-            required:
-              - car_plate
-              - car_type
             properties:
-              car_plate:           
-                  type: string
-              car_type: 
-                  type: string
+              plate:
+                type: string 
+              car_type:
+                type: string
+                enum: ['8_ton', '20_ton']
+              volumn:
+                type: number 
+              tonnage:
+                type: number 
         - in: formData
-      requestBody:
-        content: 
-          application/json:
-            schema:            
-              type: object
-              properties:      
-                car_plate:           
-                  type: string
-                car_type: 
-                  type: string
       responses:
         200:
           description: Create car successfully.
           schema:
             type: object
             example: {
-              "car_plate": "string",
-              "car_type": "string",
+                "plate": "string",
+                "car_type": "string",
+                "volumn": "string",
+                "tonnage": "string",
             }
         400:
           description: Create car failed.
@@ -1489,54 +1384,52 @@ paths:
         - "car"
       summary: "Update a existing car"
       consumes:
-        - multipart/form-data
+        - application/json
       parameters:
         - in: path
-          name: carId
-          schema: 
-            type: string
+          name: car id
+          type: string
           required: true
-          description: car id
+          description: Id of a car 
         - in: body
           name: car
-          description: a existing car.
+          description: a new car.
           schema:
             type: object
-            required:
-              - name
-              - email
             properties:
-              name:
+              plate:
+                type: string 
+              car_type:
                 type: string
-              email:
-                type: string
-      requestBody:
-        content: 
-          multipart/form-data: 
-            schema:            
-              type: object
-              properties:      
-                name:           
-                  type: string
+                enum: ['8_ton', '20_ton']
+              volumn:
+                type: number 
+              tonnage:
+                type: number 
+        - in: formData
       responses:
         200:
           description: Update car successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "email": "string",
+                "plate": "string",
+                "car_type": "string",
+                "volumn": "string",
+                "tonnage": "string",
             }
         400:
           description: Update car failed.
+    
     delete:
       tags:
         - "car"
       summary: "Delete a existing car"
       produces:
         - application/json
-      parameter:
-        - name: carID
+      parameters:
+        - in: path
+          name: carId 
           type: string
           required: true
           description: car Id
@@ -1547,312 +1440,13 @@ paths:
             application/json:
               schema:
                 type: object
-                properties: 
+                properties:
                   message:
                     type: string
                     description: Success message
-        400: 
-          description: Delete car failed.
-    
-  /bill:
-    get:
-      tags:
-        - "bill"
-      summary: get bills
-      produces:
-        - application/json
-      parameters:
-        - in: query
-          name: limit
-          type: string
-          description: limit number of bill
-      responses:
-        200:
-          description: get bill successfully.
-          schema:
-            type: object
-            example: {
+        400:
+          description: Update car failed.
 
-            }
-        400:
-          description: bill in not found.    
-  /bill/{billId}:
-    get:
-      tags:
-        - "bill"
-      summary: get bill by id
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          name: billId
-          type: string
-          required: true
-          description: Id of a bill 
-      responses:
-        200:
-          description: get bill successfully.
-          schema:
-            type: object
-            example: {
-            }
-        400:
-          description: BillId is not found. 
-
-  admin/bill/create:
-    post:
-      tags:
-        - "bill"
-      summary: "Create a new bill"
-      consumes:
-        - multipart/form-data
-      parameters:
-        - in: body
-          name: bill
-          description: a new bill.
-          schema:
-            type: object
-            required:
-              - product_shipments
-            properties:
-              product_shipments:           
-                  type: string
-        - in: formData
-      requestBody:
-        content: 
-          application/json:
-            schema:            
-              type: object
-              properties:      
-                product_shipments:           
-                  type: string
-      responses:
-        200:
-          description: Create bill successfully.
-          schema:
-            type: object
-            example: {
-              "product_shipments": "string",
-            }
-        400:
-          description: Create bill failed.
-
-  /admin/bill/{billId}:
-    put:
-      tags:
-        - "bill"
-      summary: "Update a existing bill"
-      consumes:
-        - multipart/form-data
-      parameters:
-        - in: path
-          name: billId
-          schema: 
-            type: string
-          required: true
-          description: bill id
-        - in: body
-          name: bill
-          description: a existing bill.
-          schema:
-            type: object
-            required:
-              - product_shipments
-            properties:
-              product_shipments:
-                type: string
-      requestBody:
-        content: 
-          multipart/form-data: 
-            schema:            
-              type: object
-              properties:      
-                product_shipments:           
-                  type: string
-      responses:
-        200:
-          description: Update bill successfully.
-          schema:
-            type: object
-            example: {
-              "product_shipments": "string",
-            }
-        400:
-          description: Update bill failed.
-    delete:
-      tags:
-        - "bill"
-      summary: "Delete a existing bill"
-      produces:
-        - application/json
-      parameter:
-        - name: billID
-          type: string
-          required: true
-          description: bill Id
-      responses:
-        200:
-          description: Delete bill successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties: 
-                  message:
-                    type: string
-                    description: Success message
-        400: 
-          description: Delete bill failed.
-
-  /product-shipment:
-    get:
-      tags:
-        - "product-shipment"
-      summary: get product-shipments
-      produces:
-        - application/json
-      parameters:
-        - in: query
-          name: limit
-          type: string
-          description: limit number of product shipment
-      responses:
-        200:
-          description: get product shipment successfully.
-          schema:
-            type: object
-            example: {
-
-            }
-        400:
-          description: product shipment in not found.    
-  /product-shipment/{product-shipmentId}:
-    get:
-      tags:
-        - "product-shipment"
-      summary: get product shipment by id
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          name: product-shipmentId
-          type: string
-          required: true
-          description: Id of a product shipment 
-      responses:
-        200:
-          description: get product shipment successfully.
-          schema:
-            type: object
-            example: {
-            }
-        400:
-          description: Product-shipmentId is not found.
-
-  /admin/product-shipment/create:
-    post:
-      tags:
-        - "product-shipment"
-      summary: "Create a new product shipment"
-      consumes:
-        - multipart/form-data
-      parameters:
-        - in: body
-          name: product shipment
-          description: a new product shipment.
-          schema:
-            type: object
-            required:
-              - quantity
-            properties:
-              quantity:           
-                  type: string
-        - in: formData
-      requestBody:
-        content: 
-          application/json:
-            schema:            
-              type: object
-              properties:      
-                quantity:           
-                  type: string
-      responses:
-        200:
-          description: Create product shipment successfully.
-          schema:
-            type: object
-            example: {
-              "quantity": "string",
-            }
-        400:
-          description: Create product shipment failed.    
-
-  /admin/product-shipment/{product-shipmentId}: 
-    put:
-      tags:
-        - "product-shipment"
-      summary: "Update a existing product shipment"
-      consumes:
-        - multipart/form-data
-      parameters:
-        - in: path
-          name: product-shipmentId
-          schema: 
-            type: string
-          required: true
-          description: product-shipment id
-        - in: body
-          name: product-shipment
-          description: a existing product shipment.
-          schema:
-            type: object
-            required:
-              - quantity
-            properties:
-              quantity:
-                type: string
-      requestBody:
-        content: 
-          multipart/form-data: 
-            schema:            
-              type: object
-              properties:      
-                quantity:           
-                  type: string
-      responses:
-        200:
-          description: Update product shipment successfully.
-          schema:
-            type: object
-            example: {
-              "quantity": "string",
-            }
-        400:
-          description: Update product shipment failed.
-    delete:
-      tags:
-        - "product-shipment"
-      summary: "Delete a existing product shipment"
-      produces:
-        - application/json
-      parameter:
-        - name: product-shipmentID
-          type: string
-          required: true
-          description: product shipment Id
-      responses:
-        200:
-          description: Delete product shipment successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties: 
-                  message:
-                    type: string
-                    description: Success message
-        400: 
-          description: Delete product shipment failed.
   /prohibited-product:
     get:
       tags:
@@ -1862,16 +1456,26 @@ paths:
         - application/json
       parameters:
         - in: query
-          name: limit
+          name: keyword
           type: string
-          description: limit number of prohibited product
+          description: keyword of prohibited product 
+        - in: query
+          name: page
+          type: string
+          description: number of page 
+        - in: query
+          name: pageSize
+          type: string
+          description: number of page size 
       responses:
         200:
           description: get prohibited product successfully.
           schema:
             type: object
             example: {
-
+                "name": "string",
+                "detail": "string",
+                "image": "path",
             }
         400:
           description: Prohibited product in not found.    
@@ -1884,7 +1488,7 @@ paths:
         - application/json
       parameters:
         - in: path
-          name: Id
+          name: id
           type: string
           required: true
           description: Id of a prohibited product 
@@ -1894,6 +1498,9 @@ paths:
           schema:
             type: object
             example: {
+                "name": "string",
+                "detail": "string",
+                "image": "path",
             }
         400:
           description: Id is not found. 
@@ -1904,7 +1511,7 @@ paths:
         - "prohibited-product"
       summary: "Create a new prohibited product"
       consumes:
-        - multipart/form-data
+        - application/json
       parameters:
         - in: body
           name: prohibited product
@@ -1913,10 +1520,17 @@ paths:
             type: object
             required:
               - name
+              - detail
+              - image
             properties:
               name:           
                   type: string
+              detail:           
+                  type: string
         - in: formData
+          name: images
+          description: a images prohibited product.
+          type: file
       requestBody:
         content: 
           application/json:
@@ -1925,13 +1539,20 @@ paths:
               properties:      
                 name:           
                   type: string
+                images: 
+                  type: string
+                  format: base64
+                detail:   
+                  type: string
       responses:
         200:
           description: Create prohibited product successfully.
           schema:
             type: object
             example: {
-              "name": "string",
+                "name": "string",
+                "detail": "path",
+                "image": "string",
             }
         400:
           description: Create prohibited product failed.
@@ -1942,7 +1563,7 @@ paths:
         - "prohibited-product"
       summary: "Update a existing prohibited product"
       consumes:
-        - multipart/form-data
+        - application/json
       parameters:
         - in: path
           name: id
@@ -1957,16 +1578,28 @@ paths:
             type: object
             required:
               - name
+              - detail
             properties:
               name:
                 type: string
+              detail:
+                type: string
+        - in: formData
+          name: images
+          description: a images prohibited product.
+          type: file
       requestBody:
         content: 
           multipart/form-data: 
             schema:            
               type: object
               properties:      
-                name:           
+                name:
+                  type: string
+                images:
+                  type: string
+                  format: base64 
+                detail:
                   type: string
       responses:
         200:
@@ -1974,7 +1607,9 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
+                "name": "string",
+                "detail": "string",
+                "image": "path",
             }
         400:
           description: Update prohibited product failed.
@@ -1984,8 +1619,9 @@ paths:
       summary: "Delete a existing prohibited product"
       produces:
         - application/json
-      parameter:
-        - name: id
+      parameters:
+        - in: path
+          name: id 
           type: string
           required: true
           description: prohibited product Id
@@ -1996,12 +1632,12 @@ paths:
             application/json:
               schema:
                 type: object
-                properties: 
+                properties:
                   message:
                     type: string
                     description: Success message
-        400: 
-          description: Delete prohibited product failed.
+        400:
+          description: Update prohibited product failed.
 
   /admin/warehouse:
     post:

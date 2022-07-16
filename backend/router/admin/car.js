@@ -16,11 +16,11 @@ const carAdminRoute = express.Router()
         return sendError(res, errors)
 
     try {
-        const {car_plate, car_type } = req.body
-        const isExist = await Car.exists({ car_plate })
+        const {plate, car_type, volumn, tonnage } = req.body
+        const isExist = await Car.exists({ plate })
         if (isExist) 
             return sendError(res, "This car plate is already existed.")
-        else await Car.create({car_plate, car_type })
+        else await Car.create({plate, car_type, volumn, tonnage })
         return sendSuccess(res, 'set car information successfully.')
     }
     catch (error){

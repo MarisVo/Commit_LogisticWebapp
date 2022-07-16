@@ -112,3 +112,8 @@ export const ORDER_STATUS = {
     processing: 'processing',
     completed: 'completed'
 }
+
+export const CAR_TYPE = {
+    TON_8: '8_ton',
+    TON_20: '20_ton',
+}
