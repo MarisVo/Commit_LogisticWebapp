@@ -51,10 +51,6 @@ careerRoute.get("/", async (req, res) => {
           ],
         }
       : {};
-    // if (department) {
-    //   Department.find(careers) toutes
-    //   query.type = department;
-    // }
     if (type) {
       query.type = type;
     }

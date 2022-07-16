@@ -4,7 +4,6 @@ import Department from "../model/Department.js";
 
 const departmentRoute = express.Router();
 
-// post ?? Department def: contains array of departments, can be created, called within department so no need to access in public get(?)
 
 /**
  * @route GET /api/department/:id
