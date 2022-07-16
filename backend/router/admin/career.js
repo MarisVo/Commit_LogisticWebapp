@@ -11,20 +11,17 @@ import Department from "../../model/Department.js";
 const careerAdminRoute = express.Router();
 
 /**
- * @route POST /api/admin/career/
+ * @route POST /api/admin/career/:departmentId
  * @description register new career offer
  * @access private
  */
-careerAdminRoute.post("/", async (req, res) => {
+careerAdminRoute.post("/:departmentId", async (req, res) => {
   const errors = careerValidate(req.body);
   if (errors) return sendError(res, errors);
 
   let { name, type, description, location, state, bonus, deadline } = req.body;
 
   try {
-    const isExist = await Career.exists();
-    if (isExist) return sendError(res, "career already exists");
-
     const career = await Career.create({
       name,
       type,
@@ -44,7 +41,7 @@ careerAdminRoute.post("/", async (req, res) => {
           _id: department._id,
         },
         {
-          $push: { careers: { career } },
+          $push: { careers: career },
         }
       );
       return sendSuccess(res, "Added career in department file successfully");

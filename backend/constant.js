@@ -58,7 +58,7 @@ export const calculateShipmentFee = (distance, quantity, price) => {
 
 export const OTP_EXPIRED = 60000 // unit: milisecond
 
-export const JWT_EXPIRED = '2m'
+export const JWT_EXPIRED = '500m'
 export const JWT_REFRESH_EXPIRED = '24h'
 
 export const UTYPE = {

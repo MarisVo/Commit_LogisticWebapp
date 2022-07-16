@@ -38,18 +38,44 @@ applicantAdminRoute.put("/:id", async (req, res) => {
 /**
  * @route GET /api/admin/applicant
  * @description get applicant information
- * @access public
+ * @access private
  */
 applicantAdminRoute.get("/", async (req, res) => {
   try {
-    const applicant = await Applicant.find({});
+    const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0;
+    const page = req.query.page ? parseInt(req.query.page) : 0;
+    const { keyword, sortBy, location, state } = req.query;
+    var keywordCondition = keyword
+      ? {
+          $or: [
+            { firstName: { $regex: keyword, $options: "i" } },
+            { lastName: { $regex: keyword, $options: "i" } },
+            { phoneNumber: { $regex: keyword, $options: "i" } },
+            { email: { $regex: keyword, $options: "i" } },
+            { source: { $regex: keyword, $options: "i" } },
+            { message: { $regex: keyword, $options: "i" } },
+            { status: { $regex: keyword, $options: "i" } },
+          ],
+        }
+      : {};
+    var query = {};
+      if (location) {
+        query.location = location;
+      }
+      if (state) {
+        query.state = state;
+      }
+    const applicant = await Applicant.find({ $and: [query, keywordCondition] })
+      .limit(pageSize)
+      .skip(pageSize * page)
+      .sort(`${sortBy}`);
     if (applicant)
       return sendSuccess(
         res,
-        "get applicant information successfully.",
-        Applicant
+        "Get applicant information successfully.",
+        applicant
       );
-    return sendError(res, "applicant information is not found.");
+    return sendError(res, "Applicant information is not found.");
   } catch (error) {
     console.log(error);
     return sendServerError(res);
