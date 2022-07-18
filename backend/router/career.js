@@ -51,6 +51,20 @@ careerRoute.get("/", async (req, res) => {
           ],
         }
       : {};
+    if (department) {
+      var departmentQuery = {};
+      departmentQuery.name = department;
+      const departments = await Department.find(departmentQuery);
+      const ids = [];
+      for (let j = 0; j < departments.length; j++) {
+        for (let i = 0; i < departments[j].careers.length; i++) {
+          if (departments[j].careers.length) {
+            ids.push(departments[j].careers[i]);
+          }
+        }
+      }
+      query._id = ids;
+    }
     if (type) {
       query.type = type;
     }
