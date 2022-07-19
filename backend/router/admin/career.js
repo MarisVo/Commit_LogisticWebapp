@@ -47,6 +47,7 @@ careerAdminRoute.post("/:departmentId", async (req, res) => {
       return sendSuccess(res, "Added career in department file successfully");
     }
   } catch (error) {
+    console.log(error)
     return sendServerError(res);
   }
   return sendSuccess(res, "career registered successfully.");

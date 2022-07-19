@@ -6,7 +6,7 @@ const ParticipantSchema = new Schema(
         name: {
             type: String,
             required: true,
-            unique: true
+            //unique: true <- Many DeliveryService has differant participants having same name
         },
         banner: {
             type: String,

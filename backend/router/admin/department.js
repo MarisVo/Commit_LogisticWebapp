@@ -21,7 +21,7 @@ departmentAdminRoute.post("/", async (req, res) => {
   let { name, description, location, director, scale } = req.body;
 
   try {
-    
+
     await Department.create({
       name,
       description,
