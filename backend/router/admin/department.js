@@ -21,8 +21,6 @@ departmentAdminRoute.post("/", async (req, res) => {
   let { name, description, location, director, scale } = req.body;
 
   try {
-    const isExist = await Department.exists({name:name});
-    if (isExist) return sendError(res, "Department already exists");
 
     await Department.create({
       name,

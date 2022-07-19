@@ -22,10 +22,6 @@ careerAdminRoute.post("/:departmentId", async (req, res) => {
   let { name, type, description, location, state, bonus, deadline } = req.body;
 
   try {
-    const {departmentId} = req.params
-    const isExist = await Career.exists({name:name})
-    if (isExist) return sendError(res, "career already exists");
-
     const career = await Career.create({
       name,
       type,
