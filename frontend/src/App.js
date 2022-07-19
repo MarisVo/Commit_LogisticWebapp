@@ -32,6 +32,7 @@ import {
   LayerStorekeeper,
   ProductsManager,
   Inventory,
+  InventoryDetail,
   StandardService,
   Service,
   FastService,
@@ -124,6 +125,8 @@ const App = () => {
               <Route index element={<ProductsManager />} />
               <Route path="xuat-nhap" element={<ProductsManager />} />
               <Route path="ton-kho" element={<Inventory />} />
+              <Route path="ton-kho/1" element={<InventoryDetail />} />
+
             </Route>
             <Route path="admin" element={<AdminPage />}>
               <Route path="about" element={<AdminAbout />}></Route>

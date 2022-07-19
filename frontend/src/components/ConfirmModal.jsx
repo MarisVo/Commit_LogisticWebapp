@@ -2,7 +2,7 @@
 
 import {Button} from 'antd'
 
-function ConfirmDeleteModal({ isVisible, onClose, onOk, text = "xóa Item",loading,disable }) {
+function ConfirmModal({ isVisible, onClose, onOk, text = "xóa Item",loading,disable }) {
     return (
         <>
             {
@@ -50,4 +50,4 @@ function ConfirmDeleteModal({ isVisible, onClose, onOk, text = "xóa Item",loadi
     );
 }
 
-export default ConfirmDeleteModal;
+export default ConfirmModal;

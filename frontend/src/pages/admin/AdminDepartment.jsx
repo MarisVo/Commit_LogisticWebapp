@@ -1,5 +1,5 @@
-import {Table, Input} from 'antd'
-import { useState } from 'react';
+import { Table, Input } from 'antd'
+import { useState, useEffect } from 'react';
 
 const columns = [
     {
@@ -7,20 +7,25 @@ const columns = [
         dataIndex: 'name',
     },
     {
-        title: 'Giám đốc',
+        title: 'Trưởng ban',
         dataIndex: 'director',
     },
-    {
-        title: 'Vị trí',
-        dataIndex: 'location',
-    },
+    // {
+    //     title: 'Vị trí',
+    //     dataIndex: 'location',
+    // },
     {
         title: 'Số lượng nhân viên',
         dataIndex: 'scale',
     },
     {
         title: 'Danh sách việc làm',
-        dataIndex: 'department',
+        dataIndex: 'job',
+        render: (a, e) =>
+            <div
+                // onClick={() => { setIsModalVisible(true) }}
+                className='text-blue-700 cursor-pointer'
+            >Xem</div>
     },
 ];
 function AdminDepartment() {
@@ -32,14 +37,32 @@ function AdminDepartment() {
     });
     const [isAddVisible, setIsAddVisible] = useState(false);
 
-    const dataAfterFetch = [
+    const dataFetch = [
         {
-
+            key:1,
+            name:'Tài chính',
+            director:'Nguyen Van A',
+            scale:'59'
         }
     ]
-    return ( 
-    <div>
-        <div className="flex justify-between mb-4">
+    const fetchData = async () => {
+        setLoading(true)
+        try {
+            await setTimeout(() => { //thay bằng GET method
+                setLoading(false)
+                setData(dataFetch)
+            }, 2000)
+        }
+        catch {
+            //Code here
+        }
+    }
+    useEffect(() => {
+        fetchData()
+    }, []);
+    return (
+        <div>
+            <div className="flex justify-between mb-4">
                 <span className="text-3xl font-bold uppercase">Department</span>
 
                 <Input.Search
@@ -50,15 +73,14 @@ function AdminDepartment() {
                     onClick={() => setIsAddVisible(true)}
                 >+ Thêm mới</button>
             </div>
-        <Table
+            <Table
                 columns={columns}
-                rowKey={(record) => record.login.uuid}
-                // dataSource={data}
+                dataSource={data}
                 pagination={pagination}
                 loading={loading}
-                // onChange={handleTableChange}
+            // onChange={handleTableChange}
             />
-    </div> 
+        </div>
     );
 }
 

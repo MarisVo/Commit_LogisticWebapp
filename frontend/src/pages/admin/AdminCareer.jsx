@@ -33,7 +33,34 @@ const data2 = [
         job: "Nhân viên",
         locate: "Hồ Chí Minh",
         status: "Đã đóng"
-    }
+    },
+    {
+        key: 4,
+        name: 'Kế toán',
+        deadline: "14.10.2022",
+        department: "Nhân sự",
+        job: "Nhân viên",
+        locate: "Hồ Chí Minh",
+        status: "Đã đóng"
+    },
+    {
+        key: 5,
+        name: 'Kế toán',
+        deadline: "14.10.2022",
+        department: "Nhân sự",
+        job: "Nhân viên",
+        locate: "Hồ Chí Minh",
+        status: "Đã đóng"
+    },
+    {
+        key: 6,
+        name: 'Kế toán',
+        deadline: "14.10.2022",
+        department: "Nhân sự",
+        job: "Nhân viên",
+        locate: "Hồ Chí Minh",
+        status: "Đã đóng"
+    },
 ]
 const getRandomuserParams = (params) => ({
     results: params.pagination?.pageSize,
@@ -47,7 +74,7 @@ function AdminCareer() {
     const [loading, setLoading] = useState(false);
     const [pagination, setPagination] = useState({
         current: 1,
-        pageSize: 10,
+        pageSize: 5,
     });
     const [newJob, setNewJob] = useState([
         {
@@ -150,11 +177,11 @@ function AdminCareer() {
         {
             title: '',
             dataIndex: "action",
-            render: (a, b) => (
+            render: (_,record) => (
                 <div className='flex flex-row gap-y-1 gap-x-3'>
                     <button
                         className="flex items-baseline gap-x-1 hover:text-blue-600 "
-                        onClick={() => handleClickEdit(b)}
+                        onClick={() => handleClickEdit(record)}
                     >
                         <AiFillEdit className='translate-y-[1px]' />Sửa
                     </button >
@@ -162,7 +189,7 @@ function AdminCareer() {
                         className="flex items-baseline gap-x-1 hover:text-red-600"
                         onClick={() => {
                             setIsDeleteVisible(true)
-                            setValueCompare(b.name)
+                            setValueCompare(record.name)
                         }}
                     >
                         <AiOutlineDelete className='translate-y-[1px]' />Xóa
@@ -212,9 +239,9 @@ function AdminCareer() {
 
         }
     }
-    const handleClickEdit = (row) => {
+    const handleClickEdit = (record) => {
         setIsEditVisible(true)
-        const [dataEdit] = data.filter(ele => ele.key === row.key)
+        const [dataEdit] = data.filter(ele => ele.key === record.key)
         setDataForEdit(dataEdit)
     }
     const acceptAddNewCareer = async () => {

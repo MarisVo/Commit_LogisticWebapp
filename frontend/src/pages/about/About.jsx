@@ -1,8 +1,10 @@
 import axios from "axios";
-import { useState, useEffect } from 'react'
+import { useState, useEffect} from 'react'
 import { END_POINT } from "../../utils/constant"
-
+import {useLocation} from 'react-router-dom'
 function About() {
+    let {pathname} = useLocation()
+    console.log(pathname)
     const [data, setData] = useState({})
     const [banners, setBanners] = useState([])
     useEffect(() => {
@@ -84,7 +86,7 @@ function About() {
 
                     <div className=' scale-[0.55] sm:scale-100 flex flex-row xl:gap-x-3 justify-center xl:h-full mt-6 xl:mt-0'>
                         <div className='inline-flex flex-col items-center gap-y-1 '>
-                            <span class=" relative flex h-3 w-3">
+                            <span className=" relative flex h-3 w-3">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ff0000] opacity-75"></span>
                                 <span className="inline-flex rounded-full h-3 w-3 bg-[#ff0000]"></span>
                             </span>
@@ -94,7 +96,7 @@ function About() {
                             </div>
                         </div>
                         <div className='inline-flex flex-col items-center gap-y-1 justify-center '>
-                            <span class=" relative flex h-3 w-3">
+                            <span className=" relative flex h-3 w-3">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ff0000] opacity-75"></span>
                                 <span className="inline-flex rounded-full h-3 w-3 bg-[#ff0000]"></span>
                             </span>
@@ -105,7 +107,7 @@ function About() {
                         </div>
                         <div className='flex flex-col items-center justify-around'>
                             <div className='inline-flex flex-col items-center gap-y-1  '>
-                                <span class=" relative flex h-3 w-3">
+                                <span className=" relative flex h-3 w-3">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ff0000] opacity-75"></span>
                                     <span className="inline-flex rounded-full h-3 w-3 bg-[#ff0000]"></span>
                                 </span>
@@ -115,7 +117,7 @@ function About() {
                                 </div>
                             </div>
                             <div className='inline-flex flex-col items-center gap-y-1 '>
-                                <span class=" relative flex h-3 w-3">
+                                <span className=" relative flex h-3 w-3">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ff0000] opacity-75"></span>
                                     <span className="inline-flex rounded-full h-3 w-3 bg-[#ff0000]"></span>
                                 </span>
@@ -125,7 +127,7 @@ function About() {
                                 </div>
                             </div>
                             <div className='inline-flex flex-col items-center gap-y-1 '>
-                                <span class=" relative flex h-3 w-3">
+                                <span className=" relative flex h-3 w-3">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ff0000] opacity-75"></span>
                                     <span className="inline-flex rounded-full h-3 w-3 bg-[#ff0000]"></span>
                                 </span>
@@ -135,7 +137,7 @@ function About() {
                                 </div>
                             </div>
                             <div className='inline-flex flex-col items-center gap-y-1 '>
-                                <span class=" relative flex h-3 w-3">
+                                <span className=" relative flex h-3 w-3">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ff0000] opacity-75"></span>
                                     <span className="inline-flex rounded-full h-3 w-3 bg-[#ff0000]"></span>
                                 </span>
@@ -147,7 +149,7 @@ function About() {
                         </div>
                         <div className='flex flex-col justify-center gap-y-12 '>
                             <div className='inline-flex flex-col items-center gap-y-1 '>
-                                <span class=" relative flex h-3 w-3">
+                                <span className=" relative flex h-3 w-3">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ff0000] opacity-75"></span>
                                     <span className="inline-flex rounded-full h-3 w-3 bg-[#ff0000]"></span>
                                 </span>
@@ -157,7 +159,7 @@ function About() {
                                 </div>
                             </div>
                             <div className='inline-flex flex-col items-center gap-y-1 '>
-                                <span class=" relative flex h-3 w-3">
+                                <span className=" relative flex h-3 w-3">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ff0000] opacity-75"></span>
                                     <span className="inline-flex rounded-full h-3 w-3 bg-[#ff0000]"></span>
                                 </span>
@@ -173,7 +175,7 @@ function About() {
                                 <span>International Route</span>
                             </div>
                             <div className='inline-flex flex-col items-center gap-y-1 '>
-                                <span class=" relative flex h-3 w-3">
+                                <span className=" relative flex h-3 w-3">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ff0000] opacity-75"></span>
                                     <span className="inline-flex rounded-full h-3 w-3 bg-[#ff0000]"></span>
                                 </span>
@@ -183,7 +185,7 @@ function About() {
                                 </div>
                             </div>
                             <div className='inline-flex flex-col items-center gap-y-1 '>
-                                <span class=" relative flex h-3 w-3">
+                                <span className=" relative flex h-3 w-3">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ff0000] opacity-75"></span>
                                     <span className="inline-flex rounded-full h-3 w-3 bg-[#ff0000]"></span>
                                 </span>

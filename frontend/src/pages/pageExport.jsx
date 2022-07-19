@@ -1,3 +1,4 @@
+export { default as DefaultLayout } from "../layouts/DefaultLayout";
 export { default as Home } from "./home/Home";
 export { default as About } from "./about/About";
 export { default as Commit } from "./about/Commit";
@@ -28,8 +29,7 @@ export { default as PageNotFound } from "./PageNotFound";
 export { default as LayerStorekeeper } from "../layouts/StorekeeperLayout";
 export { default as ProductsManager } from "./storekeeper/ProductsManager";
 export { default as Inventory } from "./storekeeper/Inventory";
-export { default as DefaultLayout } from "../layouts/DefaultLayout";
-
+export {default as InventoryDetail} from "./storekeeper/InventoryDetail"
 //----------------------------------------------//
 export { default as Purchase } from "./Purchase/Purchase.jsx";
 export { default as PurchaseDriver } from "./Purchase/PurchaseDriver.jsx";

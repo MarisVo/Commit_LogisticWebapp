@@ -99,9 +99,10 @@ export default function AdminPage() {
         trigger={null}
         collapsible
         collapsed={collapsed}
-        className= 'uppercase'
+        className= 'uppercase hidden xl:block'
         style={{
           background: "#fff",
+          
         }}
       >
         <div className="logo">

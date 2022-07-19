@@ -1,6 +1,6 @@
 import logoJT from "../assets/icons/logo-J&T.svg";
 import { FaChevronDown, FaBars } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { Menu } from "antd";
 import "antd/dist/antd.css";
@@ -73,6 +73,13 @@ const Header = () => {
     setDefaultService(dichVu);
     navigate(`/track?type=${dichVu}`);
   }
+
+  let {pathname}=useLocation()
+  const comparePath=(path)=>{
+    if(pathname.includes(path)) return true
+    else return false
+  }
+  console.log(comparePath("/ve-chung-toi"))
   const [openKeys, setOpenKeys] = useState([]);
   //Logic mobile-navigation --- Còn lỗi
   const onOpenChange = (keys) => {
@@ -89,8 +96,6 @@ const Header = () => {
       setIsOpen(!isOpen);
     }
   };
-  // alert('render header')
-
   return (
     <div className="fixed bg-white inset-x-0 h-[65px]  z-20 shadow-xl">
       <div className=" flex justify-between items-center h-full px-4 lg:px-0 container mx-auto text-sm ">

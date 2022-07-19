@@ -152,11 +152,12 @@ const Home = () => {
     const [person, setPerson] = useState(1)
     const [warehouses, setWarehouse] = useState([])
 
-    const searchWarehouse = () => {
+    const searchWarehouse = (e) => {
+        e.preventDefault()
         if (currentDistrict && currentProvince) {
             const find = async () => {
                 try {
-                    const { data: response } = await axios.get(`${END_POINT}/tracking/warehouse`,
+                    const { data: response } = await axios.get(`${END_POINT}/warehouse`,
                         {
                             params: {
                                 province: currentProvince,
@@ -195,10 +196,6 @@ const Home = () => {
         const numberId = coops.find(coop => coop.id === id).id
         setPerson(numberId)
     }
-    console.log(`
-        province: ${currentProvince}
-        district: ${currentDistrict}
-    `)
     return (
         <div className="pt-[65px]">
             <Carousel autoplay autoplaySpeed={2000} effect="fade">
@@ -237,14 +234,14 @@ const Home = () => {
                                 </input>
                                 <button
                                     type='submit'
-                                    class="text-white bg-yellow-500 hover:bg-yellow-400 focus:ring-4  focus:ring-red-500 font-medium rounded-lg text-lg w-full lg:w-44 lg:ml-2 px-5 py-2.5 text-center "
+                                    className="text-white bg-yellow-500 hover:bg-yellow-400 focus:ring-4  focus:ring-red-500 font-medium rounded-lg text-lg w-full lg:w-44 lg:ml-2 px-5 py-2.5 text-center "
                                 >Tìm kiếm
                                 </button>
                             </form>
                         </div>
                     </TabPane>
                     <TabPane tab={<div className="text-lg h-[30px] text-[#fcd535]">Tra cứu bưu cục</div>} key="2">
-                        <div className="flex flex-col items-center lg:flex-row gap-y-3">
+                        <form className="flex flex-col items-center lg:flex-row gap-y-3">
                             <Select
                                 showSearch
                                 allowClear
@@ -269,10 +266,10 @@ const Home = () => {
                             </Select>
                             <button
                                 onClick={searchWarehouse}
-                                class="text-white bg-yellow-500 hover:bg-yellow-400 focus:ring-2  focus:ring-red-500 font-medium rounded-lg text-lg w-full lg:w-44 lg:ml-2 px-5 py-2.5 text-center "
+                                className="text-white bg-yellow-500 hover:bg-yellow-400 focus:ring-2  focus:ring-red-500 font-medium rounded-lg text-lg w-full lg:w-44 lg:ml-2 px-5 py-2.5 text-center "
                             >Tìm kiếm
                             </button>
-                        </div>
+                        </form>
                     </TabPane>
                     <TabPane tab={<Link to='tra-cuu/cuoc-van-chuyen' className="text-lg h-[30px] text-[#fcd535]" >Bảng giá</Link>} key="bảng giá">
                     </TabPane>
@@ -307,7 +304,7 @@ const Home = () => {
                 <span className='uppercase text-xl font-black'>mạng lưới phủ sóng các nước</span>
                 <span className='text-sm'>J&T Express tự hào đã & đang mở rộng mạng lưới quốc tế để mang đến trải nghiệm tốt nhất</span>
             </div>
-            <Fade bottom duration="1500">
+            <Fade bottom duration={1500}>
                 <div className="grid grid-cols-3 text-white text-center gap-y-12 mb-9">
                     {flags.map((flag, key) => (
                         <div className='relative flex flex-col justify-start items-center' key={key}>
@@ -320,7 +317,7 @@ const Home = () => {
 
             <div className="flex flex-col lg:flex-row ">
                 <div className="flex flex-col items-center justify-center text-justify gap-y-7 w-full lg:max-w-[500px] py-6 px-3 bg-[#F0B90B] rounded-r-xl">
-                    <Fade left duration='1500'>
+                    <Fade left duration={1500}>
                         <span className="text-4xl font-black container text-white">VỀ CHÚNG TÔI</span>
                         <span className=" text-base container tracking-wide px-4 lg:px-6 w-full">
                             J&T Express là thương hiệu chuyển phát nhanh dựa trên sự phát triển của công nghệ và Internet.
@@ -331,7 +328,7 @@ const Home = () => {
 
                 </div>
                 <div className="grid grid-cols-2 mx-auto gap-y-2 px-6 bg-yellow-100 rounded-l-2xl w-full">
-                    <Fade right duration="2000">
+                    <Fade right duration={2000}>
                         <div className="flex flex-col items-center text-center py-4">
                             <img src='https://jtexpress.vn/themes/jtexpress/assets/images/63tinh-thanh.png' alt="63-tinh-thanh-pic" />
                             <span className="text-xl font-extrabold">63 TỈNH THÀNH</span>
@@ -374,13 +371,13 @@ const Home = () => {
             </div>
 
             <div className="flex items-center justify-center my-6 container mx-auto">
-                <Zoom duration="1000">
+                <Zoom duration={1000}>
                     <iframe
                         width="731" height="411"
                         src="https://www.youtube.com/embed/99RCEdAP_yk"
                         title="J&T Express tự hào ra mắt Trung tâm trung chuyển lớn nhất Việt Nam"
-                        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen
+                        frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
                     >
                     </iframe>
                 </Zoom>

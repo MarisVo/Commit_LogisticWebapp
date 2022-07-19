@@ -37,7 +37,9 @@ function AddNewCareer({ isVisible, onClose, onOk, loading, disable }) {
                                 <Input />
                             </Item>
                             <Item label="Hạn nộp hồ sơ">
-                                <DatePicker />
+                                <DatePicker 
+                                placeholder="yyyy-mm-dd"
+                                />
                             </Item>
                             <Item label="Địa điểm làm việc">
                                 <Input />
