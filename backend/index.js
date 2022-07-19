@@ -20,6 +20,7 @@ import applicantRoute from "./router/applicant.js"
 import careerRoute from "./router/career.js"
 import departmentRoute from "./router/department.js"
 import participantRoute from "./router/participant.js"
+import featureRoute from "./router/feature.js"
 
 // swagger setup
 import swaggerUi from 'swagger-ui-express'
@@ -60,6 +61,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/career', careerRoute)
     .use('/api/department', departmentRoute)
     .use('/api/participant', participantRoute)
+    .use('/api/participant', featureRoute)
 
 app.listen(PORT, () => {
     console.log(`Server start at port: ${PORT}`)
