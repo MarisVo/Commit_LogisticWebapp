@@ -48,7 +48,7 @@ const MainProvider = ({ children }) => {
     }
   };
   
-/*   useEffect(() => {
+  useEffect(() => {
     const refreshToken = localStorage.getItem(
       process.env.REACT_APP_LOCALSTORAGE_TOKEN_NAME
     );
@@ -64,21 +64,22 @@ const MainProvider = ({ children }) => {
           );
           const { data } = res.data;
           console.log("res,",res)
-            localStorage.setItem(
+       /*      localStorage.setItem(
               "user",
               JSON.stringify(data.user)
             );
            const newuser = localStorage.getItem("user")
-            setUser(JSON.parse(newuser))
-            setUser(data.user)
+            setUser(JSON.parse(newuser)) */
             setAccessToken(data.accessToken);
+            setUser(data.user)
         } catch (error) {
           console.log(error);
         }
       };
       handleRefreshToken();
     } 
-  }, [accessToken]); */
+  }, []);
+
   /* useEffect(()=>{
     const userlocal = localStorage.getItem(
       "user"

@@ -47,7 +47,7 @@ import {
   AdminCareer,
   AdminApplicant,
   AdminDepartment,
-} from "./pages/PageExport";
+} from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainProvider, { MainContext } from "./context/MainContext";
 import ProtectedRoute from "./layouts/ProtectLayout";
@@ -128,7 +128,7 @@ const App = () => {
               <Route path="tu-van/dang-ki-tu-van" element={<SignUpAdvice />} />
               <Route path="*" element={<PageNotFound />} />
             </Route>
-            <Route element={<StaffRoute/>}>        
+         {/*    <Route element={<StaffRoute/>}>     */}    
               <Route path="storekeeper" element={<LayerStorekeeper />}>
                 <Route index element={<ProductsManager />} />
                 <Route path="xuat-nhap" element={<ProductsManager />} />
@@ -145,7 +145,7 @@ const App = () => {
                 <Route path="applicant" element={<AdminApplicant />}></Route>
                 <Route path="department" element={<AdminDepartment />}></Route>
               </Route>
-              </Route>
+            {/*   </Route> */}
           </Routes>
         </div>
       </BrowserRouter>
