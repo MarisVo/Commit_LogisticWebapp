@@ -1,5 +1,6 @@
 import express from "express";
 import { sendError, sendServerError, sendSuccess } from "../helper/client.js";
+import DeliveryService from "../model/DeliveryService.js";
 import Feature from "../model/Feature.js";
 
 const featureRoute = express.Router();
@@ -18,6 +19,39 @@ featureRoute.get("/:id", async (req, res) => {
 
     if (feature)
       return sendSuccess(res, "get feature information successfully.", feature);
+    return sendError(res, "feature information is not found.");
+  } catch (error) {
+    console.log(error);
+    return sendServerError(res);
+  }
+});
+
+/**
+ * @route GET /api/feature/
+ * @description get feature information for a given service id
+ * @access public
+ */
+
+featureRoute.get("/", async (req, res) => {
+  try {
+    const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0;
+    const page = req.query.page ? parseInt(req.query.page) : 0;
+    const { serviceId } = req.query;
+    const service = await DeliveryService.findById({ _id: serviceId });
+    if (!service) return sendError(res, "Service does not exist.");
+
+    if (service) {
+      const ids = [];
+      for (let i = 0; i < service.features.length; i++) {
+        if (service.features.length) {
+          ids.push(service.features[i]);
+        }
+      }
+      const feature = await Feature.find({ _id: ids })
+        .limit(pageSize)
+        .skip(pageSize * page);
+      return sendSuccess(res, "get feature information successfully.", feature);
+    }
     return sendError(res, "feature information is not found.");
   } catch (error) {
     console.log(error);
@@ -50,18 +84,14 @@ featureRoute.get("/", async (req, res) => {
     }
     if (detail) {
       query.detail = detail;
-      const feature = await Feature.find({ $and: [query, keywordCondition] })
-        .limit(pageSize)
-        .skip(pageSize * page)
-        .sort(`${sortBy}`);
-      if (feature)
-        return sendSuccess(
-          res,
-          "Get feature information successfully.",
-          feature
-        );
-      return sendError(res, "Feature information is not found.");
     }
+    const feature = await Feature.find({ $and: [query, keywordCondition] })
+      .limit(pageSize)
+      .skip(pageSize * page)
+      .sort(`${sortBy}`);
+    if (feature)
+      return sendSuccess(res, "Get feature information successfully.", feature);
+    return sendError(res, "Feature information is not found.");
   } catch (error) {
     console.log(error);
     return sendServerError(res);

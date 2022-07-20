@@ -1,29 +1,25 @@
 import express from "express";
 import { unlinkSync } from "fs";
-import {
-  handleFilePath,
-  uploadResources,
-} from "../../constant.js";
+import { handleFilePath, uploadResources } from "../../constant.js";
 import {
   sendError,
   sendServerError,
   sendSuccess,
 } from "../../helper/client.js";
-import {
-  createLogoDir,
-} from "../../middleware/index.js";
+import { createLogoDir } from "../../middleware/index.js";
 import Feature from "../../model/Feature.js";
 import { createFeatureValidate } from "../../validation/feature.js";
+import DeliveryService from "../../model/DeliveryService.js";
 
 const featureAdminRoute = express.Router();
 
 /**
- * @route POST /api/admin/feature/create
+ * @route POST /api/admin/feature/:serviceId
  * @description create new delivery feature
  * @access private
  */
 featureAdminRoute.post(
-  "/create",
+  "/:serviceId",
   createLogoDir,
   uploadResources.single("logo"),
   async (req, res) => {
@@ -31,7 +27,8 @@ featureAdminRoute.post(
     if (errors) return sendError(res, errors);
 
     const { name, detail } = req.body;
-    const logo = handleFilePath(req.file);
+    const file = handleFilePath(req.file);
+    const serviceId = req.params.serviceId;
 
     try {
       const isExist = await Feature.exists({ name });
@@ -40,16 +37,17 @@ featureAdminRoute.post(
       }
       const feature = await Feature.create({
         name: name,
-        logo: logo,
+        logo: file,
         detail: detail,
       });
+
       const service = await DeliveryService.exists({
-        _id: req.params.serviceId,
+        _id: serviceId,
       });
       if (service) {
         await DeliveryService.updateOne(
           {
-            _id: service._id,
+            _id: serviceId,
           },
           {
             $push: { features: feature },
@@ -58,8 +56,8 @@ featureAdminRoute.post(
         return sendSuccess(res, "create new feature successfully.");
       }
     } catch (error) {
-      if (req.files)
-        req.files.map(file => unlinkSync(file.path));
+      console.log(error);
+      if (req.files) req.files.map((file) => unlinkSync(file.path));
       return sendServerError(res);
     }
   }
@@ -80,7 +78,7 @@ featureAdminRoute.put(
     const { id } = req.params;
     const errors = createFeatureValidate(req.body);
     if (errors) return sendError(res, errors);
-    let { name, detail } = req.body;
+    const { name, detail } = req.body;
     const logo = handleFilePath(req.file);
     try {
       const feature = await Feature.findById(id);
@@ -98,8 +96,7 @@ featureAdminRoute.put(
       }
       return sendError(res, "Feature does not exist.");
     } catch (error) {
-      if (req.files)
-        req.files.map(file => unlinkSync(file.path));
+      if (req.files) req.files.map((file) => unlinkSync(file.path));
       console.log(error);
       return sendError(res);
     }

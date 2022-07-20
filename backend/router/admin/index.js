@@ -12,7 +12,7 @@ import quoteAdminRoute from "./quote.js"
 import applicantAdminRoute from "./applicant.js"
 import careerAdminRoute from "./career.js"
 import departmentAdminRoute from "./department.js"
-import featureAdminRoute from "./department.js"
+import featureAdminRoute from "./feature.js"
 
 const adminRoute = express.Router()
 

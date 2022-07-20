@@ -61,7 +61,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/career', careerRoute)
     .use('/api/department', departmentRoute)
     .use('/api/participant', participantRoute)
-    .use('/api/participant', featureRoute)
+    .use('/api/feature', featureRoute)
 
 app.listen(PORT, () => {
     console.log(`Server start at port: ${PORT}`)

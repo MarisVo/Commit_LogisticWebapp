@@ -5,7 +5,6 @@ export const createFeatureValidate = data => {
 
     error.isRequired(data.name, 'name')
     .isRequired(data.detail, 'detail')
-    //.isRequired(data.logo, 'logo')
     
     return error.get()
 }
