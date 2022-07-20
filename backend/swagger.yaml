@@ -39,6 +39,8 @@ tags:
   description: "Endpoint Department"
 - name: "applicant"
   description: "Endpoint Applicant"
+- name: "feature"
+  description: "Endpoint Feature"
 paths:
   /auth/verify-token:
     post:
@@ -2289,6 +2291,243 @@ paths:
           description: Delete department failed.
       security:
         - bearerAuth: [] 
+  /feature:
+    get:
+      tags:
+        - "feature"
+      summary: get feature information
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: pageSize
+          type: string
+          description: limit number of features on a page
+          parameters:
+        - in: query
+          name: page
+          type: string
+          description: num of page
+        - in: query
+          name: keyword
+          type: string
+          description: search by keyword
+        - in: query
+          name: name
+          type: string
+          description: filter by name
+        - in: query
+          name: detail
+          type: string
+          description: filter by detail 
+        - in: query
+          name: sortBy
+          type: string
+          description: sort in order (name, -updatedAt)
+      responses:
+        200:
+          description: get feature information successfully.
+          schema:
+            type: object
+            example: {
+                  "name": "string",
+                  "logo": "path",
+                  "detail": "string",
+            }
+        400:
+          description: career information is not found.  
+  /feature/{featureId}:
+    get:
+      tags:
+        - "feature"
+      summary: get feature by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: featureId
+          type: string
+          required: true
+          description: Id of a feature 
+      responses:
+        200:
+          description: get feature successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "logo": "path",
+              "detail": "string",              
+            }
+        400:
+          description: feature is not found.
+  /feature/service/{serviceId}:
+    get:
+      tags:
+        - "feature"
+      summary: get features by service id
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: pageSize
+          type: string
+          description: limit number of features on a page
+          parameters:
+        - in: query
+          name: page
+          type: string
+          description: num of page
+        - in: path
+          name: serviceId
+          type: string
+          required: true
+          description: Id of a service 
+      responses:
+        200:
+          description: get feature successfully.
+          schema:
+            type: object
+            example: {
+              "name": "string",
+              "logo": "path",
+              "detail": "string",              
+            }
+        400:
+          description: feature is not found.
+  /admin/feature:
+    post:
+      tags:
+        - "feature"
+      summary: "Create a new feature"
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: body
+          name: feature
+          description: a new feature.
+          schema:
+            type: object
+            required:
+              - heading
+            properties:
+              heading:
+                type: string
+              detail:
+                type: string  
+        - in: formData
+          name: logo
+          description: a logo for feature.
+          type: file
+      requestBody:
+        content: 
+          application/json:
+            schema:            
+              type: object
+              properties:      
+                name:           
+                  type: string
+                logo: 
+                  type: string
+                  format: base64
+                detail:   
+                  type: string
+      responses:
+        200:
+          description: Create feature successfully.
+          schema:
+            type: object
+            example: {
+              "heading": "string",
+              "logo": "path",
+              "detail": "string",
+            }
+        400:
+          description: Create feature failed.
+  /admin/feature/{featureId}:
+    put:
+      tags:
+        - "feature"
+      summary: "Update a existing feature"
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: featureId
+          schema: 
+            type: string
+          required: true
+          description: feature id
+        - in: body
+          name: feature
+          description: a existing feature.
+          schema:
+            type: object
+            required:
+              - heading
+            properties:
+              heading:
+                type: string
+              detail:
+                type: string
+        - in: formData
+          name: logo
+          description: a logo for feature.
+          type: file
+      requestBody:
+        content:
+          application/json:
+            schema:
+              schema:
+            type: object
+            required:
+              - heading
+            properties:
+              name:
+                type: string
+              logo:
+                type: string
+                format: base64 
+              detail:
+                type: string
+      responses:
+        200:
+          description: Update feature successfully.
+          schema:
+            type: object
+            example: {
+              "heading": "string",
+              "logo": "path",
+              "detail": "string",
+            }
+        400:
+          description: Update feature failed.
+
+    delete:
+      tags:
+        - "feature"
+      summary: "Delete a existing feature"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: featureId
+          type: string
+          required: true
+          description: Id of a feature 
+      responses:
+        200:
+          description: Delete feature successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+        400:
+          description: Update feature failed.
 
 securityDefinitions:
   bearerAuth:

@@ -27,16 +27,16 @@ featureRoute.get("/:id", async (req, res) => {
 });
 
 /**
- * @route GET /api/feature/
+ * @route GET /api/feature/service/:serviceId
  * @description get feature information for a given service id
  * @access public
  */
 
-featureRoute.get("/", async (req, res) => {
+featureRoute.get("/service/:serviceId", async (req, res) => {
   try {
     const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0;
     const page = req.query.page ? parseInt(req.query.page) : 0;
-    const { serviceId } = req.query;
+    const { serviceId } = req.params;
     const service = await DeliveryService.findById({ _id: serviceId });
     if (!service) return sendError(res, "Service does not exist.");
 
