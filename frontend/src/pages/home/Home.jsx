@@ -1,181 +1,192 @@
-import React, { useState, useEffect } from 'react'
-import 'antd/dist/antd.css'
-import { Carousel, Tabs, Select } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
-import appStore from '../../assets/images/appStore.png'
-import ggPlay from '../../assets/images/ggPlay.png'
+import React, { useState, useEffect } from "react";
+import "antd/dist/antd.css";
+import { Carousel, Tabs, Select } from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import appStore from "../../assets/images/appStore.png";
+import ggPlay from "../../assets/images/ggPlay.png";
 import { getDistrictsByProvinceCode, getProvinces } from "sub-vn";
-import { IoLocationOutline } from 'react-icons/io5'
-import { FiMap } from 'react-icons/fi'
-import axios from 'axios'
-import { END_POINT } from "../../utils/constant"
-import { Fade, Zoom, Reveal } from 'react-reveal';
+import { IoLocationOutline } from "react-icons/io5";
+import { FiMap } from "react-icons/fi";
+import axios from "axios";
+import { END_POINT } from "../../utils/constant";
+import { Fade, Zoom, Reveal } from "react-reveal";
 
-const { TabPane } = Tabs
-const { Option } = Select
+const { TabPane } = Tabs;
+const { Option } = Select;
 
 const flags = [
-    {
-        id: 1,
-        name: 'Indonesia',
-        url: 'https://jtexpress.vn/themes/jtexpress/assets/images/nation1.png'
-    },
-    {
-        id: 2,
-        name: 'Malaysia',
-        url: 'https://jtexpress.vn/themes/jtexpress/assets/images/nation2.jpg'
-    },
-    {
-        id: 3,
-        name: 'Philippines',
-        url: 'https://jtexpress.vn/themes/jtexpress/assets/images/nation3.jpg'
-    },
-    {
-        id: 4,
-        name: 'Thái Lan',
-        url: 'https://jtexpress.vn/themes/jtexpress/assets/images/nation4.jpg'
-    },
-    {
-        id: 5,
-        name: 'Singapore',
-        url: 'https://jtexpress.vn/themes/jtexpress/assets/images/nation5.jpg'
-    },
-    {
-        id: 6,
-        name: 'Campuchia',
-        url: 'https://jtexpress.vn/themes/jtexpress/assets/images/nation6.jpg'
-    },
-    {
-        id: 7,
-        name: 'Mexico',
-        url: 'https://jtexpress.vn/themes/jtexpress/assets/images/mexico.png'
-    },
-    {
-        id: 8,
-        name: 'Saudi Arabia',
-        url: 'https://jtexpress.vn/themes/jtexpress/assets/images/saudi.png'
-    },
-    {
-        id: 9,
-        name: 'UAE',
-        url: 'https://jtexpress.vn/themes/jtexpress/assets/images/uae.png'
-    },
-]
+  {
+    id: 1,
+    name: "Indonesia",
+    url: "https://jtexpress.vn/themes/jtexpress/assets/images/nation1.png",
+  },
+  {
+    id: 2,
+    name: "Malaysia",
+    url: "https://jtexpress.vn/themes/jtexpress/assets/images/nation2.jpg",
+  },
+  {
+    id: 3,
+    name: "Philippines",
+    url: "https://jtexpress.vn/themes/jtexpress/assets/images/nation3.jpg",
+  },
+  {
+    id: 4,
+    name: "Thái Lan",
+    url: "https://jtexpress.vn/themes/jtexpress/assets/images/nation4.jpg",
+  },
+  {
+    id: 5,
+    name: "Singapore",
+    url: "https://jtexpress.vn/themes/jtexpress/assets/images/nation5.jpg",
+  },
+  {
+    id: 6,
+    name: "Campuchia",
+    url: "https://jtexpress.vn/themes/jtexpress/assets/images/nation6.jpg",
+  },
+  {
+    id: 7,
+    name: "Mexico",
+    url: "https://jtexpress.vn/themes/jtexpress/assets/images/mexico.png",
+  },
+  {
+    id: 8,
+    name: "Saudi Arabia",
+    url: "https://jtexpress.vn/themes/jtexpress/assets/images/saudi.png",
+  },
+  {
+    id: 9,
+    name: "UAE",
+    url: "https://jtexpress.vn/themes/jtexpress/assets/images/uae.png",
+  },
+];
 const services = [
-    {
-        type: 'j&T Epress',
-        content: 'Chuyển phát tiêu chuẩn',
-        path: 'chuyen-phat-tieu-chuan',
-        images: {
-            front: 'https://jtexpress.vn/storage/app/uploads/public/627/5d6/892/6275d68928ffd381036854.png',
-            back: 'https://jtexpress.vn/storage/app/uploads/public/627/5d6/866/6275d6866e7c4229470575.png'
-        }
+  {
+    type: "j&T Epress",
+    content: "Chuyển phát tiêu chuẩn",
+    path: "chuyen-phat-tieu-chuan",
+    images: {
+      front:
+        "https://jtexpress.vn/storage/app/uploads/public/627/5d6/892/6275d68928ffd381036854.png",
+      back: "https://jtexpress.vn/storage/app/uploads/public/627/5d6/866/6275d6866e7c4229470575.png",
     },
-    {
-        type: 'j&T Fast',
-        content: 'Chuyển phát nhanh',
-        path: 'chuyen-phat-nhanh',
-        images: {
-            front: 'https://jtexpress.vn/storage/app/uploads/public/618/4e6/37b/6184e637b45ca442099845.png',
-            back: 'https://jtexpress.vn/storage/app/uploads/public/627/5d6/866/6275d6866e7c4229470575.png'
-        }
+  },
+  {
+    type: "j&T Fast",
+    content: "Chuyển phát nhanh",
+    path: "chuyen-phat-nhanh",
+    images: {
+      front:
+        "https://jtexpress.vn/storage/app/uploads/public/618/4e6/37b/6184e637b45ca442099845.png",
+      back: "https://jtexpress.vn/storage/app/uploads/public/627/5d6/866/6275d6866e7c4229470575.png",
     },
-    {
-        type: 'j&T Super',
-        content: 'Siêu dịch vụ giao hàng',
-        path: 'sieu-sich-vu-chuyen-phat',
-        images: {
-            front: 'https://jtexpress.vn/storage/app/uploads/public/618/4e6/872/6184e6872c887801133904.png',
-            back: 'https://jtexpress.vn/storage/app/uploads/public/627/5d6/866/6275d6866e7c4229470575.png'
-        }
+  },
+  {
+    type: "j&T Super",
+    content: "Siêu dịch vụ giao hàng",
+    path: "sieu-sich-vu-chuyen-phat",
+    images: {
+      front:
+        "https://jtexpress.vn/storage/app/uploads/public/618/4e6/872/6184e6872c887801133904.png",
+      back: "https://jtexpress.vn/storage/app/uploads/public/627/5d6/866/6275d6866e7c4229470575.png",
     },
-    {
-        type: 'j&T Fresh',
-        content: 'Giao hàng tươi sống',
-        path: 'chuyen-phat-hang-tuoi-song',
-        images: {
-            front: 'https://jtexpress.vn/storage/app/uploads/public/618/4e8/077/6184e8077e894431352453.png',
-            back: 'https://jtexpress.vn/storage/app/uploads/public/627/5d6/866/6275d6866e7c4229470575.png'
-        }
+  },
+  {
+    type: "j&T Fresh",
+    content: "Giao hàng tươi sống",
+    path: "chuyen-phat-hang-tuoi-song",
+    images: {
+      front:
+        "https://jtexpress.vn/storage/app/uploads/public/618/4e8/077/6184e8077e894431352453.png",
+      back: "https://jtexpress.vn/storage/app/uploads/public/627/5d6/866/6275d6866e7c4229470575.png",
     },
-
-]
+  },
+];
 const coops = [
-    {
-        id: 1,
-        name: 'Đỗ Thị Vân',
-        job: 'Chủ cửa hàng đồ gốm tại TP. Hà Nội',
-        image: 'https://jtexpress.vn/storage/app/uploads/public/628/374/58a/62837458a31d2598134718.jpg',
-        comment: 'Nhờ dịch vụ J&T International gửi đi hàng mẫu thành công, nhanh chóng mà vừa rồi tôi đã có được hợp đồng cung cấp sản phẩm cho một công ty ở Mỹ.'
-    },
-    {
-        id: 2,
-        name: 'Dương Hoàng Minh',
-        job: 'Giám đốc công ty dệt may tại Bắc Ninh',
-        image: 'https://jtexpress.vn/storage/app/uploads/public/628/599/24b/62859924bde0b670971722.jpg',
-        comment: 'J&T International là một trợ thủ đắc lực trong quá trình xuất khẩu thành phẩm sang các nước Đông Nam Á của công ty tôi, đặc biệt là gửi hàng trễ chuyến'
-    },
-    {
-        id: 3,
-        name: 'Trần Minh Trí',
-        job: 'Giám đốc công ty cà phê tại Buôn Ma Thuột',
-        image: 'https://jtexpress.vn/storage/app/uploads/public/628/374/c8b/628374c8ba994977079446.jpg',
-        comment: 'Gửi hàng mẫu cà phê đi nước ngoài không phải là chuyện dễ để cân đối thu chi, tối ưu chi phí cho công ty. May là công ty chúng tôi tìm được J&T International. Dịch vụ vượt mong đợi với giá cả phải chăng, lại còn hay có ưu đãi.'
-    },
-    {
-        id: 4,
-        name: 'Vũ An Phương',
-        job: 'Chủ cửa hàng thiết bị gia dụng tại Hà Nội',
-        image: 'https://jtexpress.vn/storage/app/uploads/public/628/5b6/c28/6285b6c28930f965243715.jpg',
-        comment: 'Nhờ J&T Express mà shop của tôi được nhiều khách hàng đánh giá tốt về thời gian ship hàng. Giá thành tiết kiệm, đội ngũ shipper chuyên nghiệp hỗ trợ rất nhiều cho công việc kinh doanh của tôi.'
-    },
-    {
-        id: 5,
-        name: 'Võ Ngọc Trâm',
-        job: 'Chủ shop quần áo tại Tp.HCM',
-        image: 'https://jtexpress.vn/storage/app/uploads/public/628/5ba/16a/6285ba16a1c9c707213911.jpg',
-        comment: 'Tôi đã từng hợp tác với nhiều đơn vị chuyển phát nhưng cuối cùng quyết định đồng hành cùng J&T Express. Phải nói rằng, hệ thống bưu cục đồng nhất về chất lượng khắp 63 tỉnh thành là điểm làm tôi hài lòng nhất.'
-    }
-]
+  {
+    id: 1,
+    name: "Đỗ Thị Vân",
+    job: "Chủ cửa hàng đồ gốm tại TP. Hà Nội",
+    image:
+      "https://jtexpress.vn/storage/app/uploads/public/628/374/58a/62837458a31d2598134718.jpg",
+    comment:
+      "Nhờ dịch vụ J&T International gửi đi hàng mẫu thành công, nhanh chóng mà vừa rồi tôi đã có được hợp đồng cung cấp sản phẩm cho một công ty ở Mỹ.",
+  },
+  {
+    id: 2,
+    name: "Dương Hoàng Minh",
+    job: "Giám đốc công ty dệt may tại Bắc Ninh",
+    image:
+      "https://jtexpress.vn/storage/app/uploads/public/628/599/24b/62859924bde0b670971722.jpg",
+    comment:
+      "J&T International là một trợ thủ đắc lực trong quá trình xuất khẩu thành phẩm sang các nước Đông Nam Á của công ty tôi, đặc biệt là gửi hàng trễ chuyến",
+  },
+  {
+    id: 3,
+    name: "Trần Minh Trí",
+    job: "Giám đốc công ty cà phê tại Buôn Ma Thuột",
+    image:
+      "https://jtexpress.vn/storage/app/uploads/public/628/374/c8b/628374c8ba994977079446.jpg",
+    comment:
+      "Gửi hàng mẫu cà phê đi nước ngoài không phải là chuyện dễ để cân đối thu chi, tối ưu chi phí cho công ty. May là công ty chúng tôi tìm được J&T International. Dịch vụ vượt mong đợi với giá cả phải chăng, lại còn hay có ưu đãi.",
+  },
+  {
+    id: 4,
+    name: "Vũ An Phương",
+    job: "Chủ cửa hàng thiết bị gia dụng tại Hà Nội",
+    image:
+      "https://jtexpress.vn/storage/app/uploads/public/628/5b6/c28/6285b6c28930f965243715.jpg",
+    comment:
+      "Nhờ J&T Express mà shop của tôi được nhiều khách hàng đánh giá tốt về thời gian ship hàng. Giá thành tiết kiệm, đội ngũ shipper chuyên nghiệp hỗ trợ rất nhiều cho công việc kinh doanh của tôi.",
+  },
+  {
+    id: 5,
+    name: "Võ Ngọc Trâm",
+    job: "Chủ shop quần áo tại Tp.HCM",
+    image:
+      "https://jtexpress.vn/storage/app/uploads/public/628/5ba/16a/6285ba16a1c9c707213911.jpg",
+    comment:
+      "Tôi đã từng hợp tác với nhiều đơn vị chuyển phát nhưng cuối cùng quyết định đồng hành cùng J&T Express. Phải nói rằng, hệ thống bưu cục đồng nhất về chất lượng khắp 63 tỉnh thành là điểm làm tôi hài lòng nhất.",
+  },
+];
 
 const Home = () => {
-    const navigate = useNavigate()
-    const [defaultService, setDefaultService] = useState("vận đơn")
-    function callback(dichVu) {
-        setDefaultService(dichVu);
-        navigate(`/track?type=${dichVu}`)
-    }
-    const [listProvinces, setListProvince] = useState([])
-    const [listDistricts, setListDistricts] = useState([])
-    const [currentProvince, setCurrentProvince] = useState(null)
-    const [currentDistrict, setCurrentDistrict] = useState(null)
-    const [person, setPerson] = useState(1)
-    const [warehouses, setWarehouse] = useState([])
+  const navigate = useNavigate();
+  const [defaultService, setDefaultService] = useState("vận đơn");
+  function callback(dichVu) {
+    setDefaultService(dichVu);
+    navigate(`/track?type=${dichVu}`);
+  }
+  const [listProvinces, setListProvince] = useState([]);
+  const [listDistricts, setListDistricts] = useState([]);
+  const [currentProvince, setCurrentProvince] = useState(null);
+  const [currentDistrict, setCurrentDistrict] = useState(null);
+  const [person, setPerson] = useState(1);
+  const [warehouses, setWarehouse] = useState([]);
 
-    const searchWarehouse = (e) => {
-        e.preventDefault()
-        if (currentDistrict && currentProvince) {
-            const find = async () => {
-                try {
-                    const { data: response } = await axios.get(`${END_POINT}/warehouse`,
-                        {
-                            params: {
-                                province: currentProvince,
-                                district: currentDistrict
-                            }
-                        })
-                    setWarehouse(response.data)
-                }
-                catch (error) {
-                    console.log(error.message)
-
-                }
+  const searchWarehouse = (e) => {
+    e.preventDefault()
+    if (currentDistrict && currentProvince) {
+      const find = async () => {
+        try {
+          const { data: response } = await axios.get(
+            `${END_POINT}/warehouse`,
+            {
+              params: {
+                province: currentProvince,
+                district: currentDistrict,
+              },
             }
-            find()
-        } else {
-            alert('Mời chọn đủ thông tin tra cứu')
-        }
+          );
+          setWarehouse(response.data);
+        } catch (error) {}
+      };
+      find();
+    } else {
+      alert("Mời chọn đủ thông tin tra cứu");
     }
+  };
 
 
     useEffect(() => {
@@ -469,8 +480,6 @@ const Home = () => {
                 </Carousel>
             </div>
         </div>
-
-
-    )
-}
-export default Home
+  );
+};
+export default Home;

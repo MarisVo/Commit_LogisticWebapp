@@ -5,7 +5,6 @@ import { lookupPostageValidate } from "../validation/tracking.js"
 import DeliveryService from '../model/DeliveryService.js'
 import Distance from '../model/Distance.js'
 import Order from "../model/Order.js"
-import Warehouse from '../model/Warehouse.js'
 
 const trackingRoute = express.Router()
 

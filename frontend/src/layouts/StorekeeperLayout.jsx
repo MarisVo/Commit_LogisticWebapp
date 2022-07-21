@@ -9,7 +9,7 @@ import { Layout, Menu } from 'antd';
 import React, { useState } from 'react';
 import { Link, Outlet } from "react-router-dom";
 import logo from '../assets/icons/logo-J&T.svg'
-import AvatarStorekeeper from '../pages/storekeeper/AvatarStorekeeper'
+import AvatarStorekeeper from '../pages/Storekeeper/AvatarStorekeeper'
 import SideBar from '../components/SideBar2';
 const { Header, Sider, Content } = Layout;
 function getItem(label, key, icon, children) {

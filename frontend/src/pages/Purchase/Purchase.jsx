@@ -17,6 +17,7 @@ import { TiDeleteOutline } from "react-icons/ti";
 import { Link } from "react-router-dom";
 
 import { Tabs } from "antd";
+import { axios } from "axios";
 const { TabPane } = Tabs;
 const Purchase = () => {
   const [open, setOpen] = useState(false);
@@ -71,6 +72,7 @@ const Purchase = () => {
     },
     total_price: 1000000,
   };
+  const [img, setImg] = useState("");
   /*  useEffect(() => {
     const getOrder = async () => {
       try {
@@ -94,6 +96,13 @@ const Purchase = () => {
 
   return (
     <div className="pt-[68px]">
+     {/*  <div className="w-20 h-20">
+        <img
+          src="http://localhost:8000/api/public/logo/z3189151135845_feecf773f56257376d4f14e1116d90df.jpg"
+          alt="#"
+          className="w-[100%] h-[100%] object-contain"
+        />
+      </div> */}
       <div className="bg-gray-100 relative ">
         <SideBar className="" handleOpen={handleOpen} open={open} />
         <div>

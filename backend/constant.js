@@ -58,7 +58,7 @@ export const calculateShipmentFee = (distance, quantity, price) => {
 
 export const OTP_EXPIRED = 60000 // unit: milisecond
 
-export const JWT_EXPIRED = '2m'
+export const JWT_EXPIRED = '7d'
 export const JWT_REFRESH_EXPIRED = '30d'
 
 export const UTYPE = {
@@ -111,4 +111,19 @@ export const ORDER_STATUS = {
     accepted: 'accepted',
     processing: 'processing',
     completed: 'completed'
+}
+
+
+export const BILL_STATUS = {
+    waiting: 'waiting',
+    processing: 'processing',
+    completed: 'completed'
+}
+
+export const NOTIFY_EVENT = {
+    connection: 'connection',
+    addSession: 'add-session',
+    send: 'send',
+    receive: 'receive',
+    disconnect: 'disconnect'
 }

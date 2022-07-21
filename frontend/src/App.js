@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./App.css";
 import "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop";
@@ -26,7 +26,7 @@ import {
   Purchase,
   PurchaseStage,
   PurchaseDetail,
-  Profile, 
+  Profile,
   Notification,
   PurchaseDriver,
   LayerStorekeeper,
@@ -47,11 +47,17 @@ import {
   AdminPartner,
   AdminCareer,
   AdminApplicant,
-  AdminDepartment
+  AdminDepartment,
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import MainProvider from "./context/MainContext";
+import MainProvider, { MainContext } from "./context/MainContext";
+import ProtectedRoute from "./layouts/ProtectLayout";
+import StaffRoute from "./layouts/StaffLayout";
+import CustomerRoute from "./layouts/CustomerRoute";
+
+
 const App = () => {
+
   return (
     <MainProvider>
       <BrowserRouter>
@@ -59,7 +65,6 @@ const App = () => {
           <ScrollToTop />
           <Routes>
             <Route path="/" element={<DefaultLayout />}>
-
               <Route index element={<Home />}></Route>
               <Route path="ve-chung-toi" element={<About />} />
               <Route path="cam-ket" element={<Commit />} />
@@ -99,48 +104,53 @@ const App = () => {
                 element={<FreshService />}
               />
               {/* ----------------------Profile------------------ */}
-              <Route path="user/account/profile" element={<Profile />} />
-              <Route path="user/purchase" element={<Purchase />} />
-              <Route path="driver/purchase" element={<PurchaseDriver />} />
-              <Route path="user/purchase/:id" element={<PurchaseDetail />} />
-              <Route
-                path="user/purchase/order/:id"
-                element={<PurchaseStage />}
-              />
-              <Route
-                path="user/notifications/order"
-                element={<Notification />}
-              />
+               <Route element={<CustomerRoute/>}>
+                  <Route path="user/account/profile" element={<Profile />} />
+                  <Route path="user/purchase" element={<Purchase />} />
+                  <Route path="driver/purchase" element={<PurchaseDriver />} />
+                  <Route path="user/purchase/:id" element={<PurchaseDetail />} />
+                  <Route
+                    path="user/purchase/order/:id"
+                    element={<PurchaseStage />}
+                  />
+                  <Route
+                    path="user/notifications/order"
+                    element={<Notification />}
+                  />
+
+               </Route>
               {/* -------------------------Đăng kí/Đăng nhập------------- */}
-              <Route path="dang-ki" element={<Register />} />
-              <Route path="dang-nhap" element={<Login />} />
+                <Route element={<ProtectedRoute/>}>
+              <Route path="dang-ki" element={<Register /> } />
+              <Route path="dang-nhap" element={<Login /> } />
               <Route path="quen-mat-khau" element={<ForgetPass />} />
               <Route path="xac-thuc-otp" element={<Register_OTP />} />
+                </Route>            
               {/* -----------------------Tư vấn----------------------- */}
               <Route path="tu-van/lien-he" element={<Contact />} />
               <Route path="tu-van/dang-ki-tu-van" element={<SignUpAdvice />} />
               <Route path="*" element={<PageNotFound />} />
             </Route>
-            <Route path="storekeeper" element={<LayerStorekeeper />}>
-              <Route index element={<ProductsManager />} />
-              <Route path="xuat-nhap" element={<ProductsManager />} />
-              <Route path="ton-kho" element={<Inventory />} />
-              <Route path="ton-kho/1" element={<InventoryDetail />} />
-
-            </Route>
-            <Route path="admin" element={<AdminPage />}>
-              <Route path="about" element={<AdminAbout />}></Route>
-              <Route path="contact-us" element={<AdminContactUs />}></Route>
-              <Route path="commitment" element={<AdminCommitment />}></Route>
-              <Route path="message" element={<AdminContactMessage />}></Route>
-              <Route path="service" element={<AdminDeliveryService />}></Route>
-              <Route path="partner" element={<AdminPartner />}></Route>
-              <Route path="career" element={<AdminCareer />}></Route>
-              <Route path="applicant" element={<AdminApplicant />}></Route>
-              <Route path="department" element={<AdminDepartment />}></Route>
-            </Route>
+            {/* <Route element={<StaffRoute/>}>   */}      
+              <Route path="storekeeper" element={<LayerStorekeeper />}>
+                <Route index element={<ProductsManager />} />
+                <Route path="xuat-nhap" element={<ProductsManager />} />
+                <Route path="xuat-nhap" element={<ProductsManager />} />
+                <Route path="ton-kho" element={<Inventory />} />
+              </Route>
+              <Route path="admin" element={<AdminPage />}>
+                <Route path="about" element={<AdminAbout />}></Route>
+                <Route path="contact-us" element={<AdminContactUs />}></Route>
+                <Route path="commitment" element={<AdminCommitment />}></Route>
+                <Route path="message" element={<AdminContactMessage />}></Route>
+                <Route path="service" element={<AdminDeliveryService />}></Route>
+                <Route path="partner" element={<AdminPartner />}></Route>
+                <Route path="career" element={<AdminCareer />}></Route>
+                <Route path="applicant" element={<AdminApplicant />}></Route>
+                <Route path="department" element={<AdminDepartment />}></Route>
+              </Route>
+              {/* </Route> */}
           </Routes>
-
         </div>
       </BrowserRouter>
     </MainProvider>
