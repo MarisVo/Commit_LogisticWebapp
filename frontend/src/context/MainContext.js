@@ -1,31 +1,53 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
+import { END_POINT } from "../utils/constant";
 
 export const MainContext = createContext();
 const MainProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState(null);
+  const [refreshToken, setRefreshToken] = useState(null);
   const [user, setUser] = useState(null);
+
+  const checkAuthenticated = async () => {
+    let token = null, refresh = null
+    if(!refreshToken)
+      refresh = localStorage.getItem(process.env.REACT_APP_LOCALSTORAGE_REFRESH_NAME)
+    if(!accessToken)
+      token = localStorage.getItem(process.env.REACT_APP_LOCALSTORAGE_TOKEN_NAME)
+    if(!token) return false
+    try {
+      const res = await axios.post(`${END_POINT}/auth/verify-token`, { accessToken: token, refreshToken: refresh })
+      const { data } = res.data
+      setUser(data.user)
+      if(data.accessToken)
+        setAccessToken(data.accessToken)
+      else
+        setAccessToken(token)
+      setRefreshToken(refresh)
+    } catch (error) {
+      return false
+    }
+    return true
+  }
 
   const loginHandle = (_accessToken, _refreshToken, user) => {
     setUser(user);
-    console.log("mm", user);
-    console.log(user.role.customer_type)
-    console.log("json", JSON.stringify(user));
     setAccessToken(_accessToken);
-
-      localStorage.setItem(
-      "user",
-      JSON.stringify(user)
+    setRefreshToken(_refreshToken)
+    localStorage.setItem(
+      process.env.REACT_APP_LOCALSTORAGE_REFRESH_NAME,
+      _refreshToken
     );
     localStorage.setItem(
       process.env.REACT_APP_LOCALSTORAGE_TOKEN_NAME,
-      _refreshToken
+      _accessToken
     );
   };
 
   const logoutHandle = async () => {
+    console.log(accessToken)
     const refreshToken = localStorage.getItem(
-      process.env.REACT_APP_LOCALSTORAGE_TOKEN_NAME
+      process.env.REACT_APP_LOCALSTORAGE_REFRESH_NAME
     );
     try {
       await axios.post(
@@ -38,8 +60,9 @@ const MainProvider = ({ children }) => {
         }
       );
       localStorage.removeItem(process.env.REACT_APP_LOCALSTORAGE_TOKEN_NAME);
-      localStorage.removeItem("user");
+      localStorage.removeItem(process.env.REACT_APP_LOCALSTORAGE_REFRESH_NAME);
       setAccessToken(null);
+      setRefreshToken(null)
       setUser(null);
       alert("logoutsuccess");
       window.location.href = "/";
@@ -48,56 +71,13 @@ const MainProvider = ({ children }) => {
     }
   };
   
-  useEffect(() => {
-    const refreshToken = localStorage.getItem(
-      process.env.REACT_APP_LOCALSTORAGE_TOKEN_NAME
-    );
-    if(refreshToken){
-      const handleRefreshToken = async () => {
-        try {
-          const res = await axios.post(
-            `http://localhost:8000/api/auth/verify-token`,
-            {
-              accessToken,
-              refreshToken,
-            }
-          );
-          const { data } = res.data;
-          console.log("res,",res)
-       /*      localStorage.setItem(
-              "user",
-              JSON.stringify(data.user)
-            );
-           const newuser = localStorage.getItem("user")
-            setUser(JSON.parse(newuser)) */
-            setAccessToken(data.accessToken);
-            setUser(data.user)
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      handleRefreshToken();
-    } 
-  }, []);
-
-  /* useEffect(()=>{
-    const userlocal = localStorage.getItem(
-      "user"
-    );
-    if(userlocal){
-      const newuser = JSON.parse(userlocal)
-      console.log(newuser)
-       setUser(user);
-    }
-  },[user]) */
-
   return (
     <MainContext.Provider
       value={{
-        accessToken,
         user,
         loginHandle,
         logoutHandle,
+        checkAuthenticated
       }}
     >
       {children}

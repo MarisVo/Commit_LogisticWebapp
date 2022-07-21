@@ -137,7 +137,7 @@ function Login() {
       success();
       const { data } = response.data;
       loginHandle(data.accessToken, data.refreshToken, data.user);
-       /* navigate("/", { replace: true }); */
+      navigate("/", { replace: true });
     } catch (error) {
       if (error.message === "Request failed with status code 403") {
         failed403();
