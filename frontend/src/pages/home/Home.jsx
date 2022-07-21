@@ -197,7 +197,7 @@ const Home = () => {
         setPerson(numberId)
     }
     return (
-        <div className="pt-[65px]">
+        <div className="">
             <Carousel autoplay autoplaySpeed={2000} effect="fade">
                 <div>
                     <a href="">

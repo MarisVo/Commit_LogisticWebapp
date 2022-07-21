@@ -1,10 +1,7 @@
 import axios from "axios";
 import { useState, useEffect} from 'react'
 import { END_POINT } from "../../utils/constant"
-import {useLocation} from 'react-router-dom'
 function About() {
-    let {pathname} = useLocation()
-    console.log(pathname)
     const [data, setData] = useState({})
     const [banners, setBanners] = useState([])
     useEffect(() => {
@@ -22,7 +19,7 @@ function About() {
     }, [])
 
     return (
-        <div className='pt-[65px]'>
+        <div className=''>
             <a href="">
                 <img src={banners[0]} alt="banner" className='w-full h-[143px] lg:h-[550px] object-cover' />
             </a>

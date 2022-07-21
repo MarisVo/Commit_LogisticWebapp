@@ -1,7 +1,7 @@
 import logoJT from "../assets/icons/logo-J&T.svg";
 import { FaChevronDown, FaBars } from "react-icons/fa";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu } from "antd";
 import "antd/dist/antd.css";
 
@@ -73,15 +73,14 @@ const Header = () => {
     setDefaultService(dichVu);
     navigate(`/track?type=${dichVu}`);
   }
-
+  // xử lý thêm màu menu
   let {pathname}=useLocation()
   const comparePath=(path)=>{
-    if(pathname.includes(path)) return true
-    else return false
+    if(pathname.includes(path)) return "text-yellow-500 border-b-2 border-yellow-400"
+    else return
   }
-  console.log(comparePath("/ve-chung-toi"))
-  const [openKeys, setOpenKeys] = useState([]);
   //Logic mobile-navigation --- Còn lỗi
+  const [openKeys, setOpenKeys] = useState([]);
   const onOpenChange = (keys) => {
     const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
     if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
@@ -96,28 +95,44 @@ const Header = () => {
       setIsOpen(!isOpen);
     }
   };
+  const [background, setBackground] = useState("bg-white") //bg-none nhưng màu chữ bị chìm => để tạm hoặc bỏ luôn
+  const [textColor, setTextColor] = useState("text-white")
+  useEffect(()=>{
+    window.addEventListener('scroll',listenScrollEvent)
+    return ()=>{window.removeEventListener('scroll',listenScrollEvent)}
+  },[])
+  const listenScrollEvent = e => {
+    if (window.scrollY > 150) {
+      setBackground("bg-white shadow-xl")
+      setTextColor("")
+    } else {
+      setBackground("bg-white") //bg-none nhưng màu chữ bị chìm => để tạm hoặc bỏ luôn
+      setTextColor("text-white")
+    }
+  }
+  
   return (
-    <div className="fixed bg-white inset-x-0 h-[65px]  z-20 shadow-xl">
+    <div className={`fixed inset-x-0 h-[65px] z-20 duration-1000 ${background}`}>
       <div className=" flex justify-between items-center h-full px-4 lg:px-0 container mx-auto text-sm ">
         <div className="bt lg:hidden" onClick={() => setIsOpen(!isOpen)}>
           <FaBars className="w-7 h-7" />
         </div>
         <Link to="/">
-          <img src={logoJT} className="" />
+          <img src={logoJT} className="" alt="logo-JnT"/>
         </Link>
         <ul className="hidden lg:flex h-full justify-center items-center m-0">
-          <li>
+          <div className="rounded-md hover:bg-yellow-200 ">
             <Link
               to="/"
-              className=" flex items-center px-4 py-2 rounded-md hover:bg-yellow-200"
+              className={`flex items-center  px-4 py-2 ${pathname==="/" && "text-yellow-500 border-b-2 border-yellow-400"}`}
             >
               Trang chủ
             </Link>
-          </li>
+          </div>
           <div className="group hover:bg-yellow-200 rounded-md">
             <Link
               to="ve-chung-toi"
-              className="inline-flex items-center px-4 py-2"
+              className={`inline-flex items-center px-4 py-2 ${comparePath("/ve-chung-toi")||comparePath("/cam-ket") }`}
             >
               Giới thiệu
               <FaChevronDown className="h-4 w-4 pl-[6px]" />
@@ -142,7 +157,7 @@ const Header = () => {
             </ul>
           </div>
           <div className="group hover:bg-yellow-200 rounded-md">
-            <Link to="tra-cuu" className="inline-flex items-center  px-4 py-2">
+            <Link to="tra-cuu" className={`inline-flex items-center  px-4 py-2 ${comparePath("/tra-cuu") }`}>
               Tra cứu
               <FaChevronDown className="h-4 w-4 pl-[6px]" />
             </Link>
@@ -199,7 +214,7 @@ const Header = () => {
             </ul>
           </div>
           <div className="group hover:bg-yellow-200 rounded-md">
-            <Link to="dich-vu" className="inline-flex items-center px-4 py-2">
+            <Link to="dich-vu" className={`inline-flex items-center px-4 py-2 ${comparePath("/dich-vu")||comparePath("chuyen-phat") }`}>
               Dịch vụ
               <FaChevronDown className="h-4 w-4 pl-[6px]" />
             </Link>
@@ -245,7 +260,7 @@ const Header = () => {
           <div className="group hover:bg-yellow-200 rounded-md">
             <Link
               to="tuyen-dung"
-              className="inline-flex items-center px-4 py-2"
+              className={`inline-flex items-center px-4 py-2 ${comparePath("/tuyen-dung") || comparePath("/cuoc-song")}`}
             >
               Tuyển dụng
               <FaChevronDown className="h-4 w-4 pl-[6px]" />
@@ -272,7 +287,7 @@ const Header = () => {
           <div className="group hover:bg-yellow-200 rounded-md">
             <Link
               to="tu-van/lien-he"
-              className="inline-flex items-center px-4 py-2"
+              className={`inline-flex items-center px-4 py-2 ${comparePath("/tu-van") }`}
             >
               Tư vấn
               <FaChevronDown className="h-4 w-4 pl-[6px]" />
