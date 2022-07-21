@@ -52,13 +52,12 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainProvider, { MainContext } from "./context/MainContext";
 import ProtectedRoute from "./layouts/ProtectLayout";
 import StaffRoute from "./layouts/StaffLayout";
+import CustomerRoute from "./layouts/CustomerRoute";
 
 
 const App = () => {
-/*     const {user} = useContext(MainContext)
-    console.log(user) */
+
   return (
-    
     <MainProvider>
       <BrowserRouter>
         <div className="wrapper">
@@ -104,18 +103,21 @@ const App = () => {
                 element={<FreshService />}
               />
               {/* ----------------------Profile------------------ */}
-              <Route path="user/account/profile" element={<Profile />} />
-              <Route path="user/purchase" element={<Purchase />} />
-              <Route path="driver/purchase" element={<PurchaseDriver />} />
-              <Route path="user/purchase/:id" element={<PurchaseDetail />} />
-              <Route
-                path="user/purchase/order/:id"
-                element={<PurchaseStage />}
-              />
-              <Route
-                path="user/notifications/order"
-                element={<Notification />}
-              />
+               <Route element={<CustomerRoute/>}>
+                  <Route path="user/account/profile" element={<Profile />} />
+                  <Route path="user/purchase" element={<Purchase />} />
+                  <Route path="driver/purchase" element={<PurchaseDriver />} />
+                  <Route path="user/purchase/:id" element={<PurchaseDetail />} />
+                  <Route
+                    path="user/purchase/order/:id"
+                    element={<PurchaseStage />}
+                  />
+                  <Route
+                    path="user/notifications/order"
+                    element={<Notification />}
+                  />
+
+               </Route>
               {/* -------------------------Đăng kí/Đăng nhập------------- */}
                 <Route element={<ProtectedRoute/>}>
               <Route path="dang-ki" element={<Register /> } />
@@ -128,7 +130,7 @@ const App = () => {
               <Route path="tu-van/dang-ki-tu-van" element={<SignUpAdvice />} />
               <Route path="*" element={<PageNotFound />} />
             </Route>
-         {/*    <Route element={<StaffRoute/>}>     */}    
+            {/* <Route element={<StaffRoute/>}>   */}      
               <Route path="storekeeper" element={<LayerStorekeeper />}>
                 <Route index element={<ProductsManager />} />
                 <Route path="xuat-nhap" element={<ProductsManager />} />
@@ -145,7 +147,7 @@ const App = () => {
                 <Route path="applicant" element={<AdminApplicant />}></Route>
                 <Route path="department" element={<AdminDepartment />}></Route>
               </Route>
-            {/*   </Route> */}
+              {/* </Route> */}
           </Routes>
         </div>
       </BrowserRouter>
