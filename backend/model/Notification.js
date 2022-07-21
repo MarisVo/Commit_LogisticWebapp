@@ -29,3 +29,4 @@ const NotificationSchema = new Schema(
 );
 
 export default mongoose.model("notifications", NotificationSchema);
+

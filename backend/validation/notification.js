@@ -10,3 +10,4 @@ export const sendNotificationValidate = (data) => {
 
   return error.get();
 };
+

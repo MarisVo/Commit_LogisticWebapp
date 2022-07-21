@@ -113,6 +113,13 @@ export const ORDER_STATUS = {
     completed: 'completed'
 }
 
+
+export const BILL_STATUS = {
+    waiting: 'waiting',
+    processing: 'processing',
+    completed: 'completed'
+}
+
 export const NOTIFY_EVENT = {
     connection: 'connection',
     addSession: 'add-session',

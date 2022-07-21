@@ -13,19 +13,9 @@ const OrderSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'delivery_services'
         },
-        products: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'products'
-            }
-        ],
         customer: {
             type: Schema.Types.ObjectId,
             ref: 'customers'
-        },
-        trip: {
-            type: Schema.Types.ObjectId,
-            ref: 'trips'
         },
         receiver: {
             type: Schema.Types.ObjectId,
@@ -48,13 +38,7 @@ const OrderSchema = new Schema(
         destination: {
             type: String,
             required: true
-        },
-        bills: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'bills'
-            }
-        ]
+        }
     },
     { timestamps: true }
 )

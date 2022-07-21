@@ -51,3 +51,4 @@ notificationRoute.get("/", async (req, res) => {
 });
 
 export default notificationRoute;
+
