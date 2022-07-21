@@ -47,7 +47,6 @@ careerRoute.get("/", async (req, res) => {
             { location: { $regex: keyword, $options: "i" } },
             { state: { $regex: keyword, $options: "i" } },
             { bonus: { $regex: keyword, $options: "i" } },
-            { department: { $regex: keyword, $options: "i" } },
           ],
         }
       : {};
