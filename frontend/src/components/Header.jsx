@@ -95,24 +95,8 @@ const Header = () => {
       setIsOpen(!isOpen);
     }
   };
-  const [background, setBackground] = useState("bg-white") //bg-none nhưng màu chữ bị chìm => để tạm hoặc bỏ luôn
-  const [textColor, setTextColor] = useState("text-white")
-  useEffect(()=>{
-    window.addEventListener('scroll',listenScrollEvent)
-    return ()=>{window.removeEventListener('scroll',listenScrollEvent)}
-  },[])
-  const listenScrollEvent = e => {
-    if (window.scrollY > 150) {
-      setBackground("bg-white shadow-xl")
-      setTextColor("")
-    } else {
-      setBackground("bg-white") //bg-none nhưng màu chữ bị chìm => để tạm hoặc bỏ luôn
-      setTextColor("text-white")
-    }
-  }
-  
   return (
-    <div className={`fixed inset-x-0 h-[65px] z-20 duration-1000 ${background}`}>
+    <div className='fixed bg-white inset-x-0 h-[65px] z-20'>
       <div className=" flex justify-between items-center h-full px-4 lg:px-0 container mx-auto text-sm ">
         <div className="bt lg:hidden" onClick={() => setIsOpen(!isOpen)}>
           <FaBars className="w-7 h-7" />
