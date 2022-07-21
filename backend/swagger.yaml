@@ -2395,7 +2395,7 @@ paths:
             }
         400:
           description: feature is not found.
-  /admin/feature:
+  /admin/feature/{serviceId}:
     post:
       tags:
         - "feature"
@@ -2403,6 +2403,12 @@ paths:
       consumes:
         - multipart/form-data
       parameters:
+        - in: path
+          name: serviceId
+          schema: 
+            type: string
+          required: true
+          description: service id to add feature in
         - in: body
           name: feature
           description: a new feature.
