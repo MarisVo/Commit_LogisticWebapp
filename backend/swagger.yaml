@@ -1692,12 +1692,12 @@ paths:
                   "location": "string",
                   "state": "string",
                   "bonus": "string",
-                  "deadline": "date",
+                  "deadline": "YYYY/MM/DD",
                   "applicants": "object",
             }
         400:
           description: career information is not found.        
-  /career/id/{careerId}:
+  /career/{careerId}:
     get:
       tags:
         - "career"
@@ -1722,7 +1722,7 @@ paths:
               "location": "string",
               "state": "string",
               "bonus": "string",
-              "deadline": "date",
+              "deadline": "YYYY/MM/DD",
               "applicants": "object",
             }
         400:
@@ -1730,12 +1730,17 @@ paths:
         402:
           description: career information is not found.
     
-  /admin/career/{careerId}:
+  /admin/career/{departmentId}:
     post:
         tags:
           - "career"
         summary: "Create a new career"
         parameters:
+          - in: path
+            name: departmentId
+            type: string
+            required: true
+            description: Id of a department to put career in 
           - in: body
             name: career
             description: a new career.
@@ -1757,8 +1762,7 @@ paths:
                   type: string
                 deadline:
                   type: string
-                departmentId:
-                  type: string
+                  format: date
         responses:
           200:
             description: Create career successfully.
@@ -1771,13 +1775,14 @@ paths:
                   "location": "string",
                   "state": "string",
                   "bonus": "string",
-                  "deadline": "date",
+                  "deadline": "YYYY/MM/DD",
                   "applicants": "object",
               }
           400:
             description: Create career failed.  
         security:
           - bearerAuth: []
+  /admin/career/{careerId}:
     put:
       tags:
         - "career"
@@ -1794,27 +1799,26 @@ paths:
           required: true
           description: Id of a career
         - in: body
-            name: career
-            description: a new career.
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                type:
-                  type: string
-                description:
-                  type: string
-                location:
-                  type: string
-                state:
-                  type: string
-                bonus:
-                  type: string
-                deadline:
-                  type: string
-                departmentId:
-                  type: string
+          name: career
+          description: a new career.
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              type:
+                type: string
+              description:
+                type: string
+              location:
+                type: string
+              state:
+                type: string
+              bonus:
+                type: string
+              deadline:
+                type: string
+                format: date
       responses:
         200:
           description: change career status successfully.
@@ -1845,183 +1849,8 @@ paths:
                   message:
                     type: string
                     description: Success message
-            400:
-              description: Delete career failed.      
-      security:
-        - bearerAuth: [] 
-
-  /applicant/{careerId}: 
-  
-    post:
-      tags:
-      - "applicant"
-      summary: "Register applicant"
-      produces:
-        - application/json
-      consumes:
-        - application/json
-        - multipart/form-data
-      parameters:
-      - in: path
-        name: careerId
-        type: string
-        description: careerId
-      - in: body
-        name: applicant
-        required: true
-        schema:
-          type: object
-          properties:
-            firstName:
-              type: string
-            lastName:
-              type: string
-            phoneNumber:
-              type: string
-            email:
-              type: string
-            source:
-              type: string
-              enum: ['friend', 'facebook', 'linkedin']
-            message:
-              type: string
-            status:
-              type: string
-              enum: ['pending', 'accepted', 'rejected']
-            careerId:
-              type: string
-      - in: formData
-        name: file
-        description: The CV file data to be sent by email
-        required: true
-        type: file         
-      responses:
-        200:
-          description: applicant created successfully
-          schema:
-            type: object
-            example: {
-              "userId":"verifyId",
-            }
         400:
-          description: send cv failed
-
-
-
-  /admin/applicant:
-        get:
-          tags:
-            - "applicant"
-          summary: get all applicants
-          produces:
-            - application/json
-          parameters:
-          - in: query
-            name: pageSize
-            type: string
-            description: limit number of careers on a page
-          - in: query
-            name: page
-            type: string
-            description: num of page
-          - in: query
-            name: keyword
-            type: string
-            description: keyword
-          - in: query
-            name: sortBy
-            type: string
-            description: sort by
-          - in: query
-            name: department
-            type: string
-            description:  department
-          - in: query
-            name: type
-            type: string
-            description: type
-          - in: query
-            name: location
-            type: string
-            description:  location
-          - in: query
-            name: state
-            type: string
-            description: state
-          responses:
-            200:
-              description: get applicants successfully.
-              schema:
-                type: object
-                example: {
-                  "firstName": "string",
-                  "lastName": "string",
-                  "phoneNumber": "string",
-                  "email": "string",
-                  "source": "string",
-                  "message": "string",
-                  "status": "string",
-                }
-            400:
-              description: applicants are not found.
-          security:
-            - bearerAuth: [] 
-  /admin/applicant/{applicantId}:
-    put:
-      tags:
-        - "applicant"
-      summary: admin change applicant status
-      produces:
-        - application/json
-      consumes:
-        - application/json
-        - multipart/form-data
-      parameters:
-        - in: path
-          name: applicantId
-          type: string
-          required: true
-          description: Id of an applicant 
-        - in: body
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                enum: ['pending', 'accepted', 'rejected']
-      responses:
-        200:
-          description: change applicant status successfully.
-        400:
-          description: applicant cannot be found.
-      security:
-        - bearerAuth: [] 
-          
-    delete:
-      tags:
-        - "applicant"
-      summary: "Delete an existing applicant"
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          name: applicantId
-          type: string
-          required: true
-          description: Id of an applicant 
-      responses:
-        200:
-          description: Delete applicant successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
-        400:
-          description: Delete applicant failed.
+          description: Delete career failed.      
       security:
         - bearerAuth: [] 
   /department:
@@ -2089,15 +1918,12 @@ paths:
         400:
           description: departmentId is not found.
 
-  /admin/department/{departmentId}:
+  /admin/department:
     post:
       tags:
         - "department"
       summary: "Create a new department"
       parameters:
-        - in: body
-          name: department
-          description: a new department.
         - in: body
           name: department
           schema:
@@ -2113,7 +1939,7 @@ paths:
               director:
                 type: string
               scale:
-                type: string
+                type: number
       responses:
         200:
           description: Create department successfully.
@@ -2124,13 +1950,14 @@ paths:
                 "description": "string",
                 "location": "string",
                 "director": "string",
-                "scale": "string",
+                "scale": "number",
                 "careers": "career",
             }
         400:
           description: Create department failed.
       security:
         - bearerAuth: [] 
+  /admin/department/{departmentId}:
     put:
       tags:
         - "department"
@@ -2161,7 +1988,7 @@ paths:
               director:
                 type: string
               scale:
-                type: string
+                type: number
       responses:
         200:
           description: change department update successfully.
