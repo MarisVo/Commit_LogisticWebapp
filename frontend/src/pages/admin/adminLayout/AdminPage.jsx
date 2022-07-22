@@ -3,6 +3,10 @@ import {
   MenuUnfoldOutlined,
   DesktopOutlined,
 } from "@ant-design/icons";
+import {MdGroup, MdOutlineContacts, MdOutlineDeliveryDining} from "react-icons/md"
+import {FaHandshake} from "react-icons/fa"
+import {AiOutlineMessage, AiOutlinePartition} from "react-icons/ai"
+import {BsFillPersonFill, BsPaperclip} from "react-icons/bs"
 import { Layout, Menu } from "antd";
 import React, { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
@@ -26,36 +30,36 @@ export default function AdminPage() {
         <Link to="about">About</Link>
       </div>,
       "1",
-      <DesktopOutlined> </DesktopOutlined>
+      <MdGroup />
     ),
     getItem(
       <div>
         <Link to="contact-us">Contact Us</Link>
       </div>,
       "2",
-      <DesktopOutlined> </DesktopOutlined>
+      <MdOutlineContacts />
     ),
-    getItem(<div>Commit</div>, "sub1", <DesktopOutlined> </DesktopOutlined>, [
+    
       getItem(
         <div>
-          <Link to="commitment">Main Commitment</Link>
+          <Link to="commitment">Commitment</Link>
         </div>,
-        "3"
+        "3",
+        <FaHandshake />
       ),
-    ]),
     getItem(
       <div>
         <Link to="message">Contact message</Link>
       </div>,
       "4",
-      <DesktopOutlined> </DesktopOutlined>
+      <AiOutlineMessage />
     ),
     getItem(
       <div>
-        <Link to="service">delivery service</Link>
+        <Link to="service">Delivery service</Link>
       </div>,
       "5",
-      <DesktopOutlined> </DesktopOutlined>
+      <MdOutlineDeliveryDining />
     ),
 
     getItem(
@@ -63,28 +67,28 @@ export default function AdminPage() {
         <Link to="partner">partner</Link>
       </div>,
       "6",
-      <DesktopOutlined> </DesktopOutlined>
+      <FaHandshake />
     ),
     getItem(
       <div>
         <Link to="career">career</Link>
       </div>,
       "7",
-      <DesktopOutlined> </DesktopOutlined>
+      <BsPaperclip />
     ),
     getItem(
       <div>
         <Link to="applicant">applicant</Link>
       </div>,
       "8",
-      <DesktopOutlined> </DesktopOutlined>
+      <BsFillPersonFill />
     ),
     getItem(
       <div>
         <Link to="department">department</Link>
       </div>,
       "9",
-      <DesktopOutlined> </DesktopOutlined>
+      <AiOutlinePartition />
     ),
     // getItem("User", "sub1", <UserOutlined />, [getItem("Tom", "3"), getItem("Bill", "4"), getItem("Alex", "5")]),
   ];
