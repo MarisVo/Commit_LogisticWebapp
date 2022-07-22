@@ -18,6 +18,9 @@ import contactMsgRoute from "./router/contactMsg.js"
 import consultancyRoute from "./router/consultancy.js"
 import quoteRoute from "./router/quote.js"
 import warehouseRoute from "./router/warehouse.js"
+import applicantRoute from "./router/applicant.js"
+import careerRoute from "./router/career.js"
+import departmentRoute from "./router/department.js"
 import participantRoute from "./router/participant.js"
 
 // swagger setup
@@ -25,6 +28,13 @@ import swaggerUi from 'swagger-ui-express'
 const swaggerDocument = YAML.load('./swagger.yaml')
 
 import { verifyAdmin, verifyToken } from "./middleware/index.js"
+import userRoute from "./router/user.js"
+import roadRoute from "./router/road.js"
+import carRoute from "./router/car.js"
+import billRoute from "./router/bill.js"
+import productShipmentRoute from "./router/productShipment.js"
+import prohibitedProductRoute from "./router/prohibitedProduct.js"
+
 import { clearTokenList } from "./service/jwt.js"
 import { NOTIFY_EVENT } from "./constant.js"
 import { handleDisconnect, sendNotify } from "./socket/handle.js"
@@ -67,6 +77,15 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/consultancy', consultancyRoute)
     .use('/api/quote', quoteRoute)
     .use('/api/warehouse', warehouseRoute)
+    .use('/api/user', userRoute)
+    .use('/api/road', roadRoute)
+    .use('/api/car', carRoute)
+    .use('/api/product-shipment', productShipmentRoute)
+    .use('/api/bill', billRoute)
+    .use('/api/prohibited-product', prohibitedProductRoute)
+    .use('/api/applicant', applicantRoute)
+    .use('/api/career', careerRoute)
+    .use('/api/department', departmentRoute)
     .use('/api/participant', participantRoute)
     .use('/api/notification', verifyToken, notificationRoute)
 

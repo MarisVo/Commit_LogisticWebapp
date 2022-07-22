@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import { MESSAGE_STATUS } from "../constant.js"
 const { Schema } = mongoose
 
 const MessageSchema = new Schema(
@@ -18,6 +19,11 @@ const MessageSchema = new Schema(
         message: {
             type: String,
             required: true
+        },
+        status: {
+            type: String,
+            enum: Object.values(MESSAGE_STATUS),
+            default: MESSAGE_STATUS.unseen,
         }
     },
     { timestamps: true }

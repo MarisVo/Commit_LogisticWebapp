@@ -12,7 +12,13 @@ const quoteRoute = express.Router()
 quoteRoute.get('/',
     async(req, res) => {
         try {
-            const quotes = await Quote.find({})
+            const {limit, sortBy, keyword} = req.query
+            var keywordCondition = keyword ? { $or:[
+                { name: { $regex: keyword, $options: 'i'} },
+                { description: { $regex: keyword, $options: 'i'} },
+                { quote: { $regex: keyword, $options: 'i'} },
+            ]} : {} 
+            const quotes = await Quote.find(keywordCondition).limit(limit).sort(`${sortBy}`)
             if (quotes) return sendSuccess(res, "get quote successful.", quotes)
             return sendError(res, "no information found.")
         } catch(error){
