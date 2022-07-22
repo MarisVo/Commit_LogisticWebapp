@@ -49,7 +49,7 @@ authAdminRoute.post('/register',
 )
 
 /**
- * @route POST /api/admin/auth/unaccepted-register
+ * @route GET /api/admin/auth/unaccepted-register
  * @description get list of unaccepted registers of business account
  * @access private
  */
@@ -70,16 +70,16 @@ authAdminRoute.get('/unaccepted-register',
 )
 
 /**
-* @route POST /api/admin/auth/accept-register/:customerId
+* @route PUT /api/admin/auth/accept-register/:customerId
 * @description accept active the business's register
 * @access private
 */
-authAdminRoute.post('/accept-register/:customerId',
+authAdminRoute.put('/accept-register/:customerId',
     async (req, res) => {
         try {
             const business = await Customer.findOneAndUpdate({ _id: req.params.customerId, accepted_business: false }, { accepted_business: true })
-            if (!business) return sendError(res, 'this customer does not exist or is accepted register.')
-            sendSuccess(res, 'request successfully.')
+            if (!business) return sendError(res, 'this customer does not exist or was accepted register.')
+            return sendSuccess(res, 'accepted successfully.')
         } catch (error) {
             console.log(error)
             return sendServerError(res)

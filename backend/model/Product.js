@@ -17,6 +17,11 @@ const ProductSchema = new Schema(
             enum: Object.values(PRODUCT_UNIT),
             required: true
         },
+        order: {
+            type: Schema.Types.ObjectId,
+            ref: 'orders',
+            required: true
+        },
         product_shipments: [
             {
                 type: Schema.Types.ObjectId,
