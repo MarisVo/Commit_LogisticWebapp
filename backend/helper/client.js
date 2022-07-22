@@ -45,7 +45,7 @@ export const sendRequest = async (url, method, headers = [], postData = {}) => {
 }
 
 export const sendAutoMail = async (options) => {
-    const service = process.env.MAIL_SERVICE || 'gmail'
+    const service = process.env.MAIL_SERVICE
     const transport = NodeMailer.createTransport({
         service: service,
         auth: {
