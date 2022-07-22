@@ -33,6 +33,8 @@ tags:
   description: "Endpoint Participant"
 - name: "quote"
   description: "Endpoint Quote"
+- name: "order"
+  description: "Endpoint Order"
 - name: "career"
   description: "Endpoint Career"
 - name: "department"
@@ -599,28 +601,30 @@ paths:
             }
         400:
           description: the service is not exist. / the service don't support this road.
-  /tracking/order/{lstOrderId}:
+  /tracking/warehouse:
     get:
       tags:
         - tracking
-      summary: get list of order
+      summary: get list of warehouses by province and district query
       produces:
         - application/json
       parameters:
-      - in: path
-        name: lstOrderId
+      - in: query
+        name: province
         type: string
         required: true
-        description: string of list of OrderIDs, which seperate by '&'
+      - in: query
+        name: district
+        type: string
+        required: true
+  
       responses:
         200:
           description: request successfully
           schema:
             type: object
             example: {
-              "orders": ["order1", "order2"],
-              "success": 5,
-              "failure": 2,
+              "warehouses": ['warehouse1', 'warehouse2']
             }
   /tracking/service/{serviceId}:
     get:
@@ -1418,7 +1422,6 @@ paths:
         - bearerAuth: []
   /admin/warehouse/{warehouseId}:
     put:
-      put:
       tags:
         - "warehouse"
       summary: "Update a existing warehouse"
@@ -1989,6 +1992,262 @@ paths:
       security:
         - bearerAuth: []
 
+  /order/create:
+    post:
+      tags:
+        - "order"
+      summary: "Customer create a new order"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: order
+          description: a new order.
+          schema:
+            type: object      
+            required: 
+            - serviceName, receiver, origin, destination     
+            properties:
+              serviceName:
+                type: string
+              receiver: 
+                type: object
+                properties:
+                  name:
+                    type: string
+                  phone:
+                    type: string
+                  identity:
+                    type: string                                   
+              origin:
+                type: string               
+              destination:
+                type: string               
+      responses:
+        200:
+          description: Create new order successfully.
+        400:
+          description: Create order failed.
+      security:
+        - bearerAuth: []
+  
+  /order:
+    get: 
+      tags:
+        - "order"
+      summary: Customer get list of their order
+      produces:
+        - application/json      
+      parameters:
+        - in: query
+          name: page
+          type: string
+          description: Number of page
+        - in: query
+          name: pageSize
+          type: string
+          description: Number of order in a page
+      responses:
+        200:
+          description: get order successfully.
+          schema:
+            type: object
+            example: {
+              "orderId": "string",
+              "service": "string", 
+              "total_price": "string",   
+              "status": "string",
+              "origin": "string", 
+              "destination": "string",   
+              "receiver" : "string",
+            }          
+        400:
+          description: order is not found.
+      security:
+        - bearerAuth: []
+  /order/{orderId}:    
+    get: 
+      tags:
+        - "order"
+      summary: Customer get information of an order
+      produces:
+        - application/json     
+      parameters:
+        - in: path
+          name: orderId
+          type: string
+          required: true
+          description: Id of a order 
+      responses:
+        200:
+          description: get order successfully.
+          schema:
+            type: object
+            example: {
+              "orderId": "string",
+              "service": "string", 
+              "total_price": "string",   
+              "status": "string",
+              "origin": "string", 
+              "destination": "string",   
+              "receiver" : "string",
+            }          
+        400:
+          description: order is not found.
+      security:
+        - bearerAuth: []
+
+  /admin/order:
+    get:
+      tags:
+        - "order"
+      summary: Admin get list of orders
+      produces:
+        - application/json      
+      parameters:
+        - in: query
+          name: page
+          type: string
+          description: Number of page
+        - in: query
+          name: pageSize
+          type: string
+          description: Number of order in a page
+      responses:
+        200:
+          description: get order successfully.
+          schema:
+            type: object
+            example: {
+              "orderId": "string",
+              "service": "string", 
+              "total_price": "string",   
+              "status": "string",
+              "origin": "string", 
+              "destination": "string",   
+              "receiver" : "string",
+            }          
+        400:
+          description: order is not found.
+      security:
+        - bearerAuth: []
+  /admin/order/{orderId}:
+    put:
+      tags:
+        - "order"
+      summary: Admin update order status
+      produces:
+        - application/json     
+      parameters:
+        - in: path
+          name: orderId
+          type: string
+          required: true
+          description: Id of a order 
+        - in: body
+          name: status
+          description: update status (waiting, accepted, processing, completed, refused)    
+          schema:
+            type: object                
+            properties:
+              status:
+                type: string
+      responses:
+        200:
+          description: update status successfully.
+          schema:
+            type: object
+            example: {
+              "orderId": "string",
+              "status": "string",              
+            }          
+        400:
+          description: order is not found.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "order"
+      summary: Admin delete order
+      produces:
+        - application/json     
+      parameters:
+        - in: path
+          name: orderId
+          type: string
+          required: true
+          description: Id of an order         
+      responses:
+        200:
+          description: delete order successfully.                  
+        400:
+          description: order is not found.
+      security:
+        - bearerAuth: []
+  /admin/order/create:
+    post:
+      tags:
+        - "order"
+      summary: "Admin create a new order for offline customer"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: order
+          description: a new order.
+          schema:
+            type: object      
+            required: 
+            - serviceName, receiver, origin, destination     
+            properties:
+              serviceName:
+                type: string
+              customerEmail:
+                type: string
+              receiver: 
+                type: object
+                properties:
+                  name:
+                    type: string
+                  phone:
+                    type: string
+                  identity:
+                    type: string                                   
+              origin:
+                type: string               
+              destination:
+                type: string               
+      responses:
+        200:
+          description: Create new order successfully.
+        400:
+          description: Create order failed.
+      security:
+        - bearerAuth: [] 
+  /order/tracking/{lstOrderId}:
+    get:
+      tags:
+        - "order"
+      summary: anyone can get list of order
+      produces:
+        - application/json
+      parameters:
+      - in: path
+        name: lstOrderId
+        type: string
+        required: true
+        description: string of list of OrderIDs, which seperate by '&'
+      responses:
+        200:
+          description: request successfully
+          schema:
+            type: object
+            example: {
+              "orders": ["order1", "order2"],
+              "success": 5,
+              "failure": 2,
+            }
+            
   /career:
     get:
       tags:

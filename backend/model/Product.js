@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import { PRODUCT_UNIT } from "../constant"
+import { PRODUCT_UNIT } from "../constant.js"
 const { Schema } = mongoose
 
 const ProductSchema = new Schema(

@@ -10,6 +10,7 @@ import contactMsgAdminRoute from "./contactMsg.js"
 import consultancyAdminRoute from "./consultancy.js"
 import participantAdminRoute from "./participant.js"
 import quoteAdminRoute from "./quote.js"
+import orderAdminRoute from "./order.js"
 import applicantAdminRoute from "./applicant.js"
 import careerAdminRoute from "./career.js"
 import departmentAdminRoute from "./department.js"
@@ -27,6 +28,7 @@ adminRoute.use('/auth', authAdminRoute)
     .use('/consultancy', consultancyAdminRoute)
     .use('/participant', participantAdminRoute)
     .use('/quote', quoteAdminRoute)
+    .use('/order', orderAdminRoute)
     .use("/applicant", applicantAdminRoute)
     .use("/career", careerAdminRoute)
     .use("/department", departmentAdminRoute);

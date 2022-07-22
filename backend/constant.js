@@ -110,8 +110,10 @@ export const ORDER_STATUS = {
     waiting: 'waiting',
     accepted: 'accepted',
     processing: 'processing',
-    completed: 'completed'
+    completed: 'completed',
+    refused: 'refused'
 }
+
 
 export const MAX_LENGTH =    5000 // maximum allowed number of characters
 
