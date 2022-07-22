@@ -16,7 +16,7 @@ carRoute.get('/',
             const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0
             const page = req.query.page ? parseInt(req.query.page) : 0
             const { limit, sortBy, keyword } = req.query
-            console.log(limit, sortBy, keyword)
+            //console.log(limit, sortBy, keyword)
 
             var listKeyword = keyword ? {
                 $or: [

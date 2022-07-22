@@ -35,7 +35,7 @@ userAdminRoute.delete('/:id', async(req, res) => {
  * @description update active of staff user
  * @access private
  */
- userAdminRoute.put('/acive/:id', async (req, res) => {
+ userAdminRoute.put('/active/:id', async (req, res) => {
     try{
         const {id} = req.params
         const {isActive} = req.body  

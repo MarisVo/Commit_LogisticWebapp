@@ -1601,7 +1601,6 @@ paths:
                 type: number 
               tonnage:
                 type: number 
-        - in: formData
       responses:
         200:
           description: Create car successfully.
@@ -1615,7 +1614,8 @@ paths:
             }
         400:
           description: Create car failed.
-
+      security:
+        - bearerAuth: []
   /admin/car/{carId}:     
     delete:
       tags:
@@ -1642,7 +1642,8 @@ paths:
                     description: Success message
         400:
           description: Update car failed.
-
+      security:
+        - bearerAuth: []
   /prohibited-product:
     get:
       tags:
@@ -1752,7 +1753,8 @@ paths:
             }
         400:
           description: Create prohibited product failed.
-
+      security:
+        - bearerAuth: []
   /admin/prohibited-product/{id}:
     put:
       tags:
@@ -1809,6 +1811,8 @@ paths:
             }
         400:
           description: Update prohibited product failed.
+      security:
+        - bearerAuth: []
     delete:
       tags:
         - "prohibited-product"
@@ -1834,7 +1838,8 @@ paths:
                     description: Success message
         400:
           description: Update prohibited product failed.
-  
+      security:
+        - bearerAuth: []
   /admin/consultancy:
     get:
       tags:
