@@ -110,5 +110,6 @@ export const ORDER_STATUS = {
     waiting: 'waiting',
     accepted: 'accepted',
     processing: 'processing',
-    completed: 'completed'
+    completed: 'completed',
+    refused: 'refused'
 }

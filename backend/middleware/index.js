@@ -61,3 +61,9 @@ export const verifyAdmin = async (req, res, next) => {
         sendError(res, 'Unauthorized.',401)
     next()    
 }
+
+export const verifyCustomer = async (req, res, next) => {
+    if (! req.user.role.hasOwnProperty('customer_type'))
+        sendError(res, 'Unauthorized.',401)
+    next()    
+}

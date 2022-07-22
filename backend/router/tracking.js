@@ -61,24 +61,6 @@ trackingRoute.post('/postage', async (req, res) => {
 })
 
 /**
- * @route GET /api/tracking/order/:lstOrderId
- * @description get list of order
- * @access public
- */
-trackingRoute.get('/order/:lstOrderId', async (req, res) => {
-    try {
-        const lstOrderId = req.params.lstOrderId.split('&')
-        const orders = await Order.find({
-            orderId: { $in: lstOrderId }
-        })
-        return sendSuccess(res, 'request successfully', { orders, success: orders.length, failure: lstOrderId.length - orders.length })
-    } catch (error) {
-        console.log(error)
-        return sendServerError(res)
-    }
-})
-
-/**
  * @route GET /api/tracking/service/:serviceId
  * @description get pricelist of service by province
  * @access public
