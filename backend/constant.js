@@ -126,3 +126,15 @@ export const NOTIFY_EVENT = {
     receive: 'receive',
     disconnect: 'disconnect'
 }
+
+export const COST = {
+    transportation: 'transportation',
+    repair: 'repair',
+    maintenance: 'maintenance',
+    incurred: 'incurred'
+}
+
+export const SHIPMENT_MANAGER = {
+    import: 'import',
+    export: 'export'
+}
