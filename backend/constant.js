@@ -148,6 +148,11 @@ export const BILL_STATUS = {
     completed: 'completed'
 }
 
+export const CAR_TYPE = {
+    TON_8: '8_ton',
+    TON_20: '20_ton',
+}
+
 export const NOTIFY_EVENT = {
     connection: 'connection',
     addSession: 'add-session',
