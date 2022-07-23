@@ -22,7 +22,7 @@ import applicantRoute from "./router/applicant.js"
 import careerRoute from "./router/career.js"
 import departmentRoute from "./router/department.js"
 import participantRoute from "./router/participant.js"
-
+import receiverRoute from "./router/admin/receiver.js"
 // swagger setup
 import swaggerUi from 'swagger-ui-express'
 const swaggerDocument = YAML.load('./swagger.yaml')
@@ -88,7 +88,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/department', departmentRoute)
     .use('/api/participant', participantRoute)
     .use('/api/notification', verifyToken, notificationRoute)
-
+    .use('/api/receiver', receiverRoute)
 io.on(NOTIFY_EVENT.connection, socket => {
     // console.log('Connected to a user successfully.')
 

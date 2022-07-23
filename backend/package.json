@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
     "dev-test": "nodemon test.js",
-    "start": "node index.js"
+    "start": "nodemon index.js"
   },
   "license": "ISC",
   "dependencies": {
