@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Menu } from "antd";
 import "antd/dist/antd.css";
+import { useContext } from "react";
+import { MainContext } from "../context/MainContext";
 
 function getItem(label, key, children) {
   return {
@@ -67,6 +69,7 @@ const items = [
 const rootSubmenuKeys = ["sub1", "sub2", "sub3", "sub4", "sub5", "sub6"];
 
 const Header = () => {
+  const { user, logoutHandle } = useContext(MainContext);
   const navigate = useNavigate();
   const [defaultService, setDefaultService] = useState("cước vận chuyển");
   function callback(dichVu) {
@@ -90,6 +93,9 @@ const Header = () => {
     }
   };
   // alert('render header')
+  const Logout = () => {
+    logoutHandle();
+  };
 
   return (
     <div className="fixed bg-white inset-x-0 h-[65px]  z-20 shadow-xl">
@@ -292,18 +298,41 @@ const Header = () => {
             </ul>
           </div>
         </ul>
-        <Link to="/dang-nhap">
-          <div className="px-4 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
-            <span className="font-semibold text-white">Đăng nhập</span>
+        {user ? (
+          <div className="hidden md:flex ">
+            <Link to="/user/account/profile">
+              <div className="px-4 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
+                Thông tin
+                <span className="font-semibold text-white"></span>
+              </div>
+            </Link>
+            <div>
+              <div
+                onClick={Logout}
+                className="px-6 ml-3 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer"
+              >
+                <span href="#" className="font-semibold text-white">
+                  Logout
+                </span>
+              </div>
+            </div>
           </div>
-        </Link>
-        <Link to="/dang-ki">
-          <div className="px-6 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
-            <span href="#" className="font-semibold text-white">
-              Đăng kí
-            </span>
+        ) : (
+          <div className="hidden md:flex">
+            <Link to="/dang-nhap">
+              <div className="px-4 py-2 mr-3 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
+                <span className="font-semibold text-white">Đăng nhập</span>
+              </div>
+            </Link>
+            <Link to="/dang-ki">
+              <div className="px-6 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
+                <span href="#" className="font-semibold text-white">
+                  Đăng kí
+                </span>
+              </div>
+            </Link>
           </div>
-        </Link>
+        )}
       </div>
 
       {/* Phần mobile menu */}

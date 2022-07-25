@@ -4,9 +4,10 @@ import SideBar from "../../components/SideBar";
 import {
   AiOutlineEye,
   AiOutlineEyeInvisible,
-  AiOutlineEdit,
 } from "react-icons/ai";
-import { axios } from "axios";
+import { useContext } from "react";
+import { MainContext } from "../../context/MainContext";
+import axios from "axios";
 
 export default function Profile() {
   const oldPwRef = useRef(null);
@@ -20,6 +21,7 @@ export default function Profile() {
     newPw: "",
     verify_password: "",
   });
+  const { accessToken } = useContext(MainContext);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [open, setOpen] = useState(false);
@@ -105,10 +107,26 @@ export default function Profile() {
       setFormErrors({});
     }
   }, [isModalVisible]);
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
+    console.log(cPassword)
     setFormErrors(validate);
-    setIsSubmit(true);
+    try {
+      const res = await axios.put(
+        "http://localhost:8000/api/auth/change-pw" ,
+        
+          cPassword
+        ,
+        {
+          headers: { authorization: `Bearer ${accessToken}` },
+        }
+      );
+      console.log(res)
+      setIsSubmit(true);
+    } catch (err) {
+      console.log(err);
+      setFormErrors({oldPw:"wrong current password"})
+    }
   };
   const validate = () => {
     const { oldPw, verify_password, newPw } = cPassword;
@@ -168,6 +186,7 @@ export default function Profile() {
     setInformation({ ...information, [name]: value });
     console.log(information);
   };
+
   return (
     <div>
       <>

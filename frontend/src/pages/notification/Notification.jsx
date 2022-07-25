@@ -1,15 +1,24 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useRef, useState } from "react";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
 import SideBar from "../../components/SideBar";
 import { Link } from "react-router-dom";
+import { io } from "socket.io-client";
 
 function Notification() {
   const [open, setOpen] = useState(false);
+  const socket = useRef();
   const handleOpen = () => {
     setOpen(!open);
     console.log(open);
   };
+  // socket.emit for send event to sever
+  // socket.on to take event from sever
+  useEffect(() => {
+    socket.current = io(`ws://localhost:5000`);
+    console.log(socket.current);
+    /* socket.current.emit("send",)
+  socket.current.on("receive",)    */
+  }, [socket]);
 
   return (
     <div className="pt-[72px]">
