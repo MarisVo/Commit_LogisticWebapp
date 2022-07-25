@@ -39,7 +39,7 @@ receiverRoute.put('/search', async (req, res) => {
         identity: {$regex: keyword, $options: '$i'}
     }]})
     .then ((result) => {
-        res.send({ message: keyword, data: result })
+        res.send({ keyword: keyword, data: result })
     })
     .catch((err) => {res.send(err)});
 })
