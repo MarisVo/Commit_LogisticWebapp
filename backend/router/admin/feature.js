@@ -113,7 +113,7 @@ featureAdminRoute.delete("/:id", async (req, res) => {
   try {
     const isExist = await Feature.exists({ _id: id });
     if (!isExist) return sendError(res, "Feature does not exist.");
-    await DeliveryService.updateOne({}, { $pull: { features: id } });
+    await DeliveryService.findOneAndUpdate({features: id}, { $pull: { features: id } });
     await Feature.findByIdAndRemove(id)
       .then(() => {
         return sendSuccess(res, "Delete feature successfully.");

@@ -2415,41 +2415,45 @@ paths:
           schema:
             type: object
             required:
-              - heading
+              - name
+              - detail
             properties:
-              heading:
+              name:
                 type: string
               detail:
                 type: string  
         - in: formData
           name: logo
-          description: a logo for feature.
           type: file
+          description: a logo for feature.
+          required: true
       requestBody:
         content: 
-          application/json:
+          multipart/form-data:
             schema:            
               type: object
               properties:      
                 name:           
                   type: string
-                logo: 
-                  type: string
-                  format: base64
                 detail:   
                   type: string
+                logo: 
+                  type: string
+                  format: binary
       responses:
         200:
           description: Create feature successfully.
           schema:
             type: object
             example: {
-              "heading": "string",
+              "name": "string",
               "logo": "path",
               "detail": "string",
             }
         400:
           description: Create feature failed.
+      security:
+        - bearerAuth: []
   /admin/feature/{featureId}:
     put:
       tags:
@@ -2470,45 +2474,49 @@ paths:
           schema:
             type: object
             required:
-              - heading
+              - name
+              - detail
             properties:
-              heading:
+              name:
                 type: string
               detail:
                 type: string
         - in: formData
           name: logo
-          description: a logo for feature.
           type: file
+          description: a logo for feature.
+          required: true
       requestBody:
         content:
           application/json:
             schema:
-              schema:
-            type: object
-            required:
-              - heading
-            properties:
-              name:
-                type: string
-              logo:
-                type: string
-                format: base64 
-              detail:
-                type: string
+         #     schema:
+              type: object
+              required:
+                - name
+                - detail
+              properties:
+                name:
+                  type: string
+                logo:
+                  type: string
+                  format: base64 
+                detail:
+                  type: string
       responses:
         200:
           description: Update feature successfully.
           schema:
             type: object
             example: {
-              "heading": "string",
+              "name": "string",
               "logo": "path",
               "detail": "string",
             }
         400:
           description: Update feature failed.
-
+      security:
+        - bearerAuth: []
     delete:
       tags:
         - "feature"
@@ -2534,7 +2542,8 @@ paths:
                     description: Success message
         400:
           description: Update feature failed.
-
+      security:
+        - bearerAuth: []
 securityDefinitions:
   bearerAuth:
     type: "apiKey"
