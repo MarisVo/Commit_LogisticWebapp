@@ -212,6 +212,7 @@ function AdminApplicant() {
                 <div className='w-[200px]'></div>
             </div>
             <Table
+                rowKey={(record) => record._id}
                 columns={columns}
                 dataSource={data}
                 pagination={pagination}

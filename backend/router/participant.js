@@ -13,7 +13,12 @@ const participantRoute = express.Router()
 participantRoute.get('/',
     async(req, res) => {
         try {
-            const participants = await Participant.find({})
+            const {limit, sortBy, keyword} = req.query
+            var keywordCondition = keyword ? { $or:[
+                { name: { $regex: keyword, $options: 'i'} },
+                { description: { $regex: keyword, $options: 'i'} },
+            ]} : {} 
+            const participants = await Participant.find(keywordCondition).limit(limit).sort(`${sortBy}`)
             if (participants) return sendSuccess(res, "Get participant successful.", participants)
             return sendError(res, "Not information found.")
         } catch(error){

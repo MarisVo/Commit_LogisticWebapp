@@ -134,9 +134,9 @@ function Login() {
           password: password,
         }
       );
+      console.log(response)
       success();
       const { data } = response.data;
-      console.log(data)
       loginHandle(data.accessToken, data.refreshToken, data.user);
       navigate("/", { replace: true });
     } catch (error) {

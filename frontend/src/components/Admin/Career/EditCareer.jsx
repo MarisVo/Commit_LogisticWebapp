@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import { Form, Input, DatePicker, Button } from 'antd'
+import axios from 'axios'
+import { END_POINT } from '../../../utils/constant'
 
 const { Item } = Form
 function EditCareer({ onClose, onOk, data, refetchData }) {
-    const [editData, setEditData] = useState(data)
+    const [dataEdit, setDataEdit] = useState(data)
     const [loading, setLoading] = useState(false)
     const [disable, setDisable] = useState(false)
 
-    console.log('data là', editData)
+    console.log('data là', dataEdit)
     const acceptEditCareer = async () => {
         setLoading(true)
         setDisable(true)
@@ -18,6 +20,15 @@ function EditCareer({ onClose, onOk, data, refetchData }) {
                 onClose()
                 refetchData()
             }, 2000)
+            // await axios.put(`${END_POINT}/admin/career/${data._id}`,
+            // {
+            //     headers: { authorization: `Bearer ${accessToken}` },
+            //   }
+            // )
+            // setLoading(false)
+            //     setDisable(false)
+            //     onClose()
+            //     refetchData()
         }
         catch{
             //code
@@ -50,30 +61,36 @@ function EditCareer({ onClose, onOk, data, refetchData }) {
                     >
                         <Item label="Tên công việc">
                             <Input
-                                value={editData.name}
-                                onChange={e => setEditData({
-                                    ...editData,
+                                value={dataEdit.name}
+                                onChange={e => setDataEdit({
+                                    ...dataEdit,
                                     name: e.target.value
                                 })}
                             />
                         </Item>
                         <Item label="Vị trí công việc">
                             <Input
-                                value={editData.job}
-                                onChange={e => setEditData({
-                                    ...editData,
+                                value={dataEdit.job}
+                                onChange={e => setDataEdit({
+                                    ...dataEdit,
                                     job: e.target.value
                                 })}
                             />
                         </Item>
                         <Item label="Hạn nộp hồ sơ">
-                            <DatePicker />
+                            <DatePicker
+                            // defaultalue={dataEdit.deadline}
+                            onChange={(e,dateString)=>setDataEdit({
+                                ...dataEdit,
+                                deadline:dateString
+                            })}
+                            />
                         </Item>
                         <Item label="Địa điểm làm việc">
                             <Input
-                                value={editData.locate}
-                                onChange={e => setEditData({
-                                    ...editData,
+                                value={dataEdit.locate}
+                                onChange={e => setDataEdit({
+                                    ...dataEdit,
                                     locate: e.target.value
                                 })}
                             />

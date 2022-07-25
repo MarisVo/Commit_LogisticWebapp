@@ -1,9 +1,13 @@
 import { Table, Form, Input } from "antd";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AddNewCareer from "../../components/Admin/Career/AddNewCareer";
 import EditCareer from "../../components/Admin/Career/EditCareer";
 import ConfirmModal from "../../components/ConfirmModal";
 import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
+import { END_POINT } from "../../utils/constant";
+import axios from "axios";
+import { sendAPIRequest } from "../../utils/helpers";
+// import { MainContext } from "../../context/MainContext";
 
 const data2 = [
   {
@@ -48,23 +52,12 @@ function AdminCareer() {
     current: 1,
     pageSize: 10,
   });
-  const [newJob, setNewJob] = useState([
-    {
-      name: "",
-      deadline: "",
-      department: "",
-      job: "",
-      locate: "",
-      status: "Đang mở",
-    },
-  ]);
   const [isAddVisible, setIsAddVisible] = useState(false);
   const [isEditVisible, setIsEditVisible] = useState(false);
   const [isDeleteVisible, setIsDeleteVisible] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
   const [valueCompare, setValueCompare] = useState("");
   const [dataForEdit, setDataForEdit] = useState({});
-
   const columns = [
     {
       title: "Tên việc làm",
@@ -75,6 +68,7 @@ function AdminCareer() {
       title: "Hạn nộp hồ sơ",
       dataIndex: "deadline",
       sorter: true,
+      render:(a)=><div>{a.split('T')[0]}</div>
     },
     {
       title: "Phòng ban",
@@ -123,7 +117,7 @@ function AdminCareer() {
     },
     {
       title: "Trạng thái",
-      dataIndex: "status",
+      dataIndex: "state",
       filters: [
         {
           text: "Đang mở",
@@ -152,11 +146,11 @@ function AdminCareer() {
     {
       title: "",
       dataIndex: "action",
-      render: (a, b) => (
+      render: (a, record) => (
         <div className="flex flex-row gap-y-1 gap-x-3">
           <button
             className="flex items-baseline gap-x-1 hover:text-blue-600 "
-            onClick={() => handleClickEdit(b)}
+            onClick={() => handleClickEdit(record)}
           >
             <AiFillEdit className="translate-y-[1px]" />
             Sửa
@@ -165,7 +159,7 @@ function AdminCareer() {
             className="flex items-baseline gap-x-1 hover:text-red-600"
             onClick={() => {
               setIsDeleteVisible(true);
-              setValueCompare(b.name);
+              setValueCompare(record.name);
             }}
           >
             <AiOutlineDelete className="translate-y-[1px]" />
@@ -178,12 +172,12 @@ function AdminCareer() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      await setTimeout(() => {
-        setLoading(false);
-        setData(data2);
-      }, 2000);
-    } catch {
-      //Code here
+      const { data: response } = await axios.get(
+        `${END_POINT}/career`)
+      setData(response.data)
+      setLoading(false);
+    } catch(error) {
+      console.error(error.message)
     }
   };
   useEffect(() => {
@@ -202,19 +196,19 @@ function AdminCareer() {
     setLoading(true);
     setIsDisable(true);
     try {
-      await setTimeout(() => {
-        //thay bằng DELETE request
-        setLoading(false);
-        setIsDeleteVisible(false);
-        setIsDisable(false);
-        const newArray = data.filter((ele) => ele.name !== valueCompare);
-        setData(newArray);
-      }, 2000);
-    } catch {}
+      await axios.delete(
+        `${END_POINT}/admin/career/${valueCompare}`,
+        // {
+        //   headers: { authorization: `Bearer ${accessToken}` },
+        // }
+      )
+    } catch(error) {
+      console.log(error)
+    }
   };
-  const handleClickEdit = (row) => {
+  const handleClickEdit = (record) => {
     setIsEditVisible(true);
-    const [dataEdit] = data.filter((ele) => ele.key === row.key);
+    const [dataEdit] = data.filter((ele) => ele.key === record.key);
     setDataForEdit(dataEdit);
   };
   const acceptAddNewCareer = async () => {
@@ -244,11 +238,12 @@ function AdminCareer() {
       </div>
       <Table
         columns={columns}
-        // rowKey={(record) => record.login.uuid}
+        rowKey={(record) => record._id}
         dataSource={data}
         pagination={pagination}
         loading={loading}
         onChange={handleTableChange}
+        scroll={{ x: 700 }}
       />
       {/* Modal add,edit,delete career start*/}
       <AddNewCareer

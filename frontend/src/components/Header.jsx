@@ -76,10 +76,11 @@ const Header = () => {
     setDefaultService(dichVu);
     navigate(`/track?type=${dichVu}`);
   }
+
   // xử lý thêm màu menu
   let {pathname}=useLocation()
   const comparePath=(path)=>{
-    if(pathname.includes(path)) return "text-yellow-500 border-b-2 border-yellow-400"
+    if(pathname.includes(path)) return "text-yellow-500"
     else return
   }
   //Logic mobile-navigation --- Còn lỗi
@@ -116,7 +117,7 @@ const Header = () => {
           <div className="rounded-md hover:bg-yellow-200 ">
             <Link
               to="/"
-              className={`flex items-center  px-4 py-2 ${pathname==="/" && "text-yellow-500 border-b-2 border-yellow-400"}`}
+              className={`flex items-center  px-4 py-2 ${pathname==="/" && "text-yellow-500"}`}
             >
               Trang chủ
             </Link>

@@ -1,4 +1,6 @@
 import { Table, Input } from 'antd'
+import { END_POINT } from "../../utils/constant";
+import axios from "axios";
 import { useState, useEffect } from 'react';
 
 const columns = [
@@ -48,13 +50,13 @@ function AdminDepartment() {
     const fetchData = async () => {
         setLoading(true)
         try {
-            await setTimeout(() => { //thay bằng GET method
-                setLoading(false)
-                setData(dataFetch)
-            }, 2000)
+            const {data:response} = await axios.get(
+                `${END_POINT}/department`)
+                setData(response.data)
+                setLoading(false);         
         }
-        catch {
-            //Code here
+        catch(error) {
+            console.log(error)
         }
     }
     useEffect(() => {
@@ -74,6 +76,7 @@ function AdminDepartment() {
                 >+ Thêm mới</button>
             </div>
             <Table
+                rowKey={record=>record._id}
                 columns={columns}
                 dataSource={data}
                 pagination={pagination}
