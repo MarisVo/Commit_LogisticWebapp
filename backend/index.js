@@ -4,6 +4,7 @@ import mongoose from "mongoose"
 import cors from "cors"
 import YAML from 'yamljs'
 import { Server } from 'socket.io'
+import bodyParser from 'body-parser'
 
 import authRoute from "./router/auth.js"
 import adminRoute from "./router/admin/index.js"
@@ -22,7 +23,7 @@ import applicantRoute from "./router/applicant.js"
 import careerRoute from "./router/career.js"
 import departmentRoute from "./router/department.js"
 import participantRoute from "./router/participant.js"
-import receiverRoute from "./router/admin/receiver.js"
+import receiverAdminRoute from "./router/admin/receiver.js"
 // swagger setup
 import swaggerUi from 'swagger-ui-express'
 const swaggerDocument = YAML.load('./swagger.yaml')
@@ -62,7 +63,8 @@ const io = new Server(process.env.SOCKET_PORT, {
 app.use(express.json())
 app.use(express.static('public'))
 app.use(cors())
-
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/public', publicRoute)
     .use('/api/admin', verifyToken, verifyAdmin, adminRoute)
@@ -88,7 +90,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/department', departmentRoute)
     .use('/api/participant', participantRoute)
     .use('/api/notification', verifyToken, notificationRoute)
-    .use('/api/receiver', receiverRoute)
 io.on(NOTIFY_EVENT.connection, socket => {
     // console.log('Connected to a user successfully.')
 

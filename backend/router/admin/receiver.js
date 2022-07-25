@@ -2,35 +2,47 @@ import express from "express";
 import Receiver from "../../model/Receiver.js";
 import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
 
-const receiverRoute = express.Router();
+const receiverAdminRoute = express.Router();
 
-//! get all receivers---------
-receiverRoute.get('/', async (req, res) => {
+/**
+ * @route GET /api/admin/receiver/all
+ * @description get all receivers
+ * @access private
+ */
+
+receiverAdminRoute.get('/all', async (req, res) => {
     Receiver.find({})
     .then((result) => {
-        res.send({
-            message: 'ok',
-            data: result
-        })
+        sendSuccess(res, "ok", result);
     })
     .catch((err) => {
-        res.send(err)
+        sendError(res, err.message);
     })
 })
-//! get receivers by id--------------
-receiverRoute.get('/:id', async (req, res) => {
+/**
+ * @route GET /api/admin/receiver/:id
+ * @description get receiver by id
+ * @access private
+ */
+
+receiverAdminRoute.get('/get-by-id/:id', async (req, res) => {
     let id = req.params.id;
     Receiver.find({ _id: id })
     .then((result) => {
-        res.send({ message: 'ok', data: result })
+        sendSuccess(res, "ok", result);
     })
-    .catch((err) => {res.send(err)});
+    .catch((err) => {
+        sendError(res, err.message);
+    });
 })
+/**
+ * @route GET /api/admin/receiver/search?keyword={keyword}
+ * @description Search receivers by keyword
+ * @access private
+ */
 
-//! Search receivers by keyword --------------
-receiverRoute.put('/search', async (req, res) => {
+receiverAdminRoute.get('/search', async (req, res) => {
     const keyword = req.query.keyword;
-    console.log(keyword);
     Receiver.find({ $or: [{
         name: {$regex: keyword, $options: '$i'}
     },{
@@ -39,67 +51,67 @@ receiverRoute.put('/search', async (req, res) => {
         identity: {$regex: keyword, $options: '$i'}
     }]})
     .then ((result) => {
-        res.send({ keyword: keyword, data: result })
+        sendSuccess(res, "ok", result);
     })
-    .catch((err) => {res.send(err)});
+    .catch((err) => {sendError(res, err.message);});
 })
-//! Sort receiver : type 1: ascending type -1: descending
-receiverRoute.get('/sort/:type', (req, res) => {
-    let type = req.params.type || 1
+/**
+ * @route GET /api/admin/receiver/sort/:type
+ * @description Sort receiver, type 1: ascending type -1: descending
+ * @access private
+ */
+
+receiverAdminRoute.get('/sort/:type', (req, res) => {
+    let type = req.params.type == undefined ? 1 : req.params.type
     Receiver.find({}).sort({ name : type})
     .then((result) => {
-        res.send({ message: 'ok', data: result })
+        sendSuccess(res, "ok", result);
     })
-    .catch((err) => {res.send(err)});
+    .catch((err) => {sendError(res, err.message);});
 })
-//! Delete receiver
-receiverRoute.delete('/delete/:id', (req, res) => {
+/**
+ * @route  DELETE /api/admin/receiver/delete/:id
+ * @description Delete receiver by id
+ * @access private
+ */
+
+
+receiverAdminRoute.delete('/delete/:id', (req, res) => {
     let id = req.params.id;
     Receiver.deleteOne({_id: id}).then((result) => {
-        res.send({ message: "Receiver deleted" })
-    }).catch((err) => {res.send(err)});
+        sendSuccess(res, "ok", result);
+    }).catch((err) => {sendError(res, err.message)});
 })
+/**
+ * @route  PUT /api/admin/receiver/update?id={id}
+ * @description Update the receiver by id using request body.
+ * @access private
+ */
 
-
-
-//! Create receiver
-receiverRoute.post('/create/:name/:phone/:identity', async (req, res) => {
-    let {name, phone, identity} = req.params;
-    let receiver = new Receiver({
-        name: name,
-        phone: phone,
-        identity: identity
-    })
-    receiver.save()
-    .then((result) => {
-        res.send("receiver created successfully")
-    })
-    .catch((err) => {
-        res.send(err)
-    })
-})
-//! Update the receiver
-receiverRoute.put('/update', async (req, res) => {
+receiverAdminRoute.put('/update', async (req, res) => {
     let id = req.query.id;
-    let name = req.query.name ? req.query.name : null;
-    let phone = req.query.phone ? req.query.phone : null;
-    let identity = req.query.identity ? req.query.identity : null;
-    
-    if (name) {
-        Receiver.findByIdAndUpdate(id, {name: name}).then((result) => {res.send("receiver updated successfully")})
-        .catch((err) => {res.send(err)});
-    }
-    if (phone) {
-        Receiver.findByIdAndUpdate(id, {phone: phone}).then((result) => {res.send("receiver updated successfully")})
-        .catch((err) => {res.send(err)});
-    }
-    if (identity) {
-        Receiver.findByIdAndUpdate(id, {identity: identity}).then((result) => {res.send("receiver updated successfully")})
-        .catch((err) => {res.send(err)});
-    }
+    const {name, phone, identity} = req.body;            
+    Receiver.findByIdAndUpdate(id, {name: name, phone: phone, identity: identity}).then((result) => {sendSuccess(res,"receiver updated successfully")})
+    .catch((err) => {sendError(res,err.message)});
 })
 
+// //! Create receiver
+// receiverAdminRoute.post('/create/:name/:phone/:identity', async (req, res) => {
+//     let {name, phone, identity} = req.params;
+//     let receiver = new Receiver({
+//         name: name,
+//         phone: phone,
+//         identity: identity
+//     })
+//     receiver.save()
+//     .then((result) => {
+//         res.send("receiver created successfully")
+//     })
+//     .catch((err) => {
+//         res.send(err)
+//     })
+// })
 
 
 
-export default receiverRoute;
+export default receiverAdminRoute;
