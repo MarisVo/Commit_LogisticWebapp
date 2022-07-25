@@ -111,8 +111,8 @@ function ForgetPass() {
   };
 
   const emailphone = Form.useWatch('email/phone', form);
-  var email;
-  var phone;
+  let email;
+  let phone;
   (isValidEmail(emailphone)) ? email = emailphone : phone = emailphone
 
   const onFinish = async() => {

@@ -119,17 +119,17 @@ function Register() {
   };
   
   const emailphone = Form.useWatch('email/phone', form);
-  var email;
-  var phone;
+  let email;
+  let phone;
   (isValidEmail(emailphone)) ? email = emailphone : phone = emailphone
-  var name = Form.useWatch('name', form);
-  var address = Form.useWatch('address', form);
-  var customer_type = Form.useWatch('customer_type', form);
-  var tax = Form.useWatch('tax', form);
-  var description = Form.useWatch('description', form);
-  var password = Form.useWatch('password', form);
-  var verify_password = Form.useWatch('confirmPassword', form);
-  var verify_op;
+  let name = Form.useWatch('name', form);
+  let address = Form.useWatch('address', form);
+  let customer_type = Form.useWatch('customer_type', form);
+  let tax = Form.useWatch('tax', form);
+  let description = Form.useWatch('description', form);
+  let password = Form.useWatch('password', form);
+  let verify_password = Form.useWatch('confirmPassword', form);
+  let verify_op;
   (email) ? verify_op = "email" : verify_op = "phone"
 
   let navigate = useNavigate();

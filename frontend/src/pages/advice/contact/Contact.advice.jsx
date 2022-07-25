@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPhone, faEnvelope, faLocationDot } from '@fortawesome/free-solid-svg-icons'
+import { faPhone, faEnvelope, faLocationDot, faWheelchair } from '@fortawesome/free-solid-svg-icons'
+import * as axios from 'axios'
+
 
 export default function ContactAdvice() {
   const [fullName, setFullName] = useState(null);
@@ -8,9 +10,40 @@ export default function ContactAdvice() {
   const [email, setEmail] = useState(null)
   const [massage, setMassage] = useState(null)
   const [isValid, setIsValid] = useState(false);
-  const handleClick = () => {
-    if (
 
+  const [contactPhone, setContactPhone] = useState(null);
+  const [contactAddress, setContactAddress] = useState(null);
+  const [contactEmail, setContactEmail] = useState(null);
+  const [contactFacebook, setContactFacebook] = useState(null);
+  const [contactInsta, setContactInsta] = useState(null);
+  const [contactTiktok, setContactTiktok] = useState(null);
+  const [contactYoutube, setContactYoutube] = useState(null);
+  const getAboutUsInfo = async() =>{
+    try{ 
+      const info = await axios({
+        method: 'get',
+        url: 'http://localhost:8000/api/contactUs',
+      })   
+      console.log(info);
+      setContactPhone(info?.data?.data?.phone);
+      setContactAddress(info?.data?.data?.address);       
+      setContactEmail(info?.data?.data?.email); 
+      setContactFacebook(info?.data?.data?.facebook);
+      setContactInsta(info?.data?.data?.instagram);
+      setContactTiktok(info?.data?.data?.tiktok);
+      setContactYoutube(info?.data?.data?.youtube);
+    } catch(error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() =>{ 
+    getAboutUsInfo();
+  }, []);
+    
+  
+  const handleClick = async() => {
+    if (
       !fullName ||
       !phone ||
       !email ||
@@ -20,11 +53,25 @@ export default function ContactAdvice() {
       alert('Vui lòng nhập đầy đủ thông tin');
       return;
     } else {
-      alert("liên hệ thành công")
+      try{ 
+        const response = await axios({
+          method: 'post',
+          url: 'http://localhost:8000/api/message',
+          data: {
+              name: fullName,
+              email: email,
+              phone: phone,
+              message: massage
+          }  
+        })   
+        alert("Liên hệ thành công");
+      } catch(error) {
+        console.log(error);
+      }
     }
-
     setIsValid(true);
   }
+
   return (
     <div className='layoutContactAdvice'>
       <div className="thumbAdvice">
@@ -91,18 +138,18 @@ export default function ContactAdvice() {
                   Hotline
                 </span>
                 <span className="font-bold">
-                  1900 1088
+                  {contactPhone}
                 </span>
               </div>
             </div>
             <div className="flex items-start mt-[20px]">
               <FontAwesomeIcon icon={faEnvelope} className="mt-2" />
-              <div className="flex flex-col border-b pb-[20px] ml-3 mr-10 border-[#5D6A7A] flex-1">
+              <div className="flex flex-col border-b pb-[20px] ml-3 mr-10 border-[#5D6A7A] flex-1" >
                 <span className="block mb-2 text-base">
                   Email
                 </span>
                 <span className="font-bold">
-                  cskh@jtexpress.vn
+                  {contactEmail}
                 </span>
               </div>
             </div>
@@ -113,26 +160,23 @@ export default function ContactAdvice() {
                   Địa chỉ liên hệ
                 </span>
                 <span className="font-bold">
-                  10 Mai Chí Thọ, P. Thủ Thiêm, Thành phố Thủ Đức, TP. HCM
+                  {contactAddress}
                 </span>
               </div>
             </div>
             <h5 className="text-[24px] lg:text-[36px]  text-white mt-2 mb-3"> Mạng xã hội</h5>
             <div className="flex mb-2">
-              <a href="https://www.facebook.com/JTExpressVietnam/" target="_blank">
+              <a href={contactFacebook} target="_blank">
                 <img src="https://jtexpress.vn/themes/jtexpress/assets/images/facebook.png" alt="facebook" />
               </a>
-              <a href="https://www.instagram.com/jntexpressvn/" target="_blank">
+              <a href={contactInsta} target="_blank">
                 <img src="https://jtexpress.vn/themes/jtexpress/assets/images/Instagram.png" alt="Instagram" />
               </a>
-              <a href="https://www.tiktok.com/@jntexpressvn?" target="_blank">
+              <a href={contactTiktok} target="_blank">
                 <img src="https://jtexpress.vn/themes/jtexpress/assets/images/tiktok.png" alt="tiktok" />
               </a>
-              <a href="https://www.youtube.com/channel/UCY_EaSLbaf9Mn4BZGEQg0CA/featured" target="_blank">
+              <a href={contactYoutube} target="_blank">
                 <img src="https://jtexpress.vn/themes/jtexpress/assets/images/YT.png" alt="YT" />
-              </a>
-              <a href="https://oa.zalo.me/1837464433417511317" target="_blank">
-                <img src="https://jtexpress.vn/themes/jtexpress/assets/images/zing.png" alt="zing" />
               </a>
             </div>
             <div className="relative h-full lg:h-[276px]">

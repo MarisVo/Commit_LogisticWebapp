@@ -20,11 +20,13 @@ export { default as RecruitmentDetails } from "./RecruitmentDetails/RecruitmentD
 export { default as Login } from "./Login/Login.jsx";
 export { default as Register } from "./Login/Register.jsx";
 export { default as ForgetPass } from "./Login/ForgetPass.jsx";
-export { default as Register_OTP } from "./Login/Register_OTP.jsx";
+export { default as Register_OTP } from "./Login/Register_verify_OTP.jsx";
+export { default as StaffLogin } from "./Login/Staff_login.jsx";
+
 
 export { default as PageNotFound } from "./PageNotFound";
 
-export { default as LayerStorekeeper } from "./storekeeper/LayerStorekeeper";
+export { default as LayerStorekeeper } from "../layouts/StorekeeperLayout";
 export { default as ProductsManager } from "./storekeeper/ProductsManager";
 export { default as Inventory } from "./storekeeper/Inventory";
 export { default as DefaultLayout } from "../layouts/DefaultLayout";
@@ -50,3 +52,12 @@ export { default as AdminCommitment } from "./admin/AdminCommitment.jsx";
 export { default as AdminContactMessage } from "./admin/AdminContactMessage.jsx";
 export { default as AdminDeliveryService } from "./admin/AdminDeliveryService.jsx";
 export { default as AdminPartner } from "./admin/AdminPartner.jsx";
+export { default as AdminCareer } from "./admin/AdminCareer.jsx";
+export { default as AdminApplicant } from "./admin/AdminApplicant.jsx";
+export { default as AdminDepartment } from "./admin/AdminDepartment.jsx";
+export { default as AdminWarehouse } from "./admin/AdminWarehouse.jsx";
+export { default as AdminCar } from "./admin/AdminCar.jsx";
+export { default as AdminRoad } from "./admin/AdminRoad.jsx";
+
+
+

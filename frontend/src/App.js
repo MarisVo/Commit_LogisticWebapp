@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import "react-router-dom";
+import ScrollToTop from "./components/ScrollToTop";
 import {
   Home,
   About,
@@ -20,12 +21,13 @@ import {
   Login,
   Register,
   Register_OTP,
+  StaffLogin,
   ForgetPass,
   RecruitmentDetails,
   Purchase,
   PurchaseStage,
   PurchaseDetail,
-  Profile,
+  Profile, 
   Notification,
   PurchaseDriver,
   LayerStorekeeper,
@@ -43,6 +45,12 @@ import {
   AdminContactMessage,
   AdminDeliveryService,
   AdminPartner,
+  AdminCareer,
+  AdminApplicant,
+  AdminDepartment,
+  AdminWarehouse,
+  AdminCar,
+  AdminRoad
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainProvider from "./context/MainContext";
@@ -51,8 +59,10 @@ const App = () => {
     <MainProvider>
       <BrowserRouter>
         <div className="wrapper">
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<DefaultLayout />}>
+
               <Route index element={<Home />}></Route>
               <Route path="ve-chung-toi" element={<About />} />
               <Route path="cam-ket" element={<Commit />} />
@@ -109,10 +119,10 @@ const App = () => {
               <Route path="dang-nhap" element={<Login />} />
               <Route path="quen-mat-khau" element={<ForgetPass />} />
               <Route path="xac-thuc-otp" element={<Register_OTP />} />
+              <Route path="nhan-vien-dang-nhap" element={<StaffLogin />} />
               {/* -----------------------Tư vấn----------------------- */}
               <Route path="tu-van/lien-he" element={<Contact />} />
               <Route path="tu-van/dang-ki-tu-van" element={<SignUpAdvice />} />
-
               <Route path="*" element={<PageNotFound />} />
             </Route>
             <Route path="storekeeper" element={<LayerStorekeeper />}>
@@ -127,8 +137,15 @@ const App = () => {
               <Route path="message" element={<AdminContactMessage />}></Route>
               <Route path="service" element={<AdminDeliveryService />}></Route>
               <Route path="partner" element={<AdminPartner />}></Route>
+              <Route path="career" element={<AdminCareer />}></Route>
+              <Route path="applicant" element={<AdminApplicant />}></Route>
+              <Route path="department" element={<AdminDepartment />}></Route>
+              <Route path="warehouse" element={<AdminWarehouse />}></Route>
+              <Route path="car" element={<AdminCar />}></Route>
+              <Route path="road" element={<AdminRoad />}></Route>
             </Route>
           </Routes>
+
         </div>
       </BrowserRouter>
     </MainProvider>

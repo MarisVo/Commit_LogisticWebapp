@@ -78,7 +78,7 @@ function isValidEmail(email) {
 
 const { Title } = Typography;
 
-function Login() {
+function StaffLogin() {
   const [form] = Form.useForm();
 
   const success = () => {
@@ -121,7 +121,7 @@ function Login() {
     try{ 
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:8000/api/auth/login',
+        url: 'http://localhost:8000/api/auth/staff-login',
         data: {
           email: email,
           phone: phone,
@@ -196,15 +196,6 @@ function Login() {
 
                 <Form.Item wrapperCol={{ span: 24 }}>
                     <div className='sign'>
-                        Bạn chưa có tài khoản?  
-                        <Link to="/dang-ki" className="font-semibold text-blue-700">
-                            Đăng ký tài khoản
-                        </Link>
-                    </div>
-                </Form.Item>
-
-                <Form.Item wrapperCol={{ span: 24 }}>
-                    <div className='sign'>
                         <Link to="/quen-mat-khau" className="font-semibold text-blue-700">
                             Quên mật khẩu
                         </Link>
@@ -225,4 +216,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default StaffLogin;
