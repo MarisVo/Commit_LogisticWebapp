@@ -5,7 +5,6 @@ import { lookupPostageValidate } from "../validation/tracking.js"
 import DeliveryService from '../model/DeliveryService.js'
 import Distance from '../model/Distance.js'
 import Order from "../model/Order.js"
-import Warehouse from '../model/Warehouse.js'
 
 const trackingRoute = express.Router()
 
@@ -54,24 +53,6 @@ trackingRoute.post('/postage', async (req, res) => {
             result = calculateShipmentFee(distance, quantity, sv.price.uM3)
         }
         return sendSuccess(res, 'calculate shipment fee successfully.', { result })
-    } catch (error) {
-        console.log(error)
-        return sendServerError(res)
-    }
-})
-
-/**
- * @route GET /api/tracking/order/:lstOrderId
- * @description get list of order
- * @access public
- */
-trackingRoute.get('/order/:lstOrderId', async (req, res) => {
-    try {
-        const lstOrderId = req.params.lstOrderId.split('&')
-        const orders = await Order.find({
-            orderId: { $in: lstOrderId }
-        })
-        return sendSuccess(res, 'request successfully', { orders, success: orders.length, failure: lstOrderId.length - orders.length })
     } catch (error) {
         console.log(error)
         return sendServerError(res)

@@ -14,21 +14,8 @@ const RoadSchema = new Schema(
             required: true
         },
         distance: {
-            type: Number
-        },
-        car: {
-            type: Schema.Types.ObjectId,
-            ref: 'cars',
+            type: Number,
             required: true
-        },
-        driver: {
-            type: Schema.Types.ObjectId,
-            ref: 'staffs',
-            required: true
-        },
-        bill: {
-            type: Schema.Types.ObjectId,
-            ref: 'bills',
         }
     },
     { timestamps: true }

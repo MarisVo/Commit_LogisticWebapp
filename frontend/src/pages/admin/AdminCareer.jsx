@@ -1,7 +1,7 @@
 import { Table, Form, Input } from 'antd';
 import { useEffect, useState } from 'react';
-import AddNewCareer from '../../components/Admin/career/AddNewCareer';
-import EditCareer from '../../components/Admin/career/EditCareer';
+import AddNewCareer from '../../components/Admin/Career/AddNewCareer';
+import EditCareer from '../../components/Admin/Career/EditCareer';
 import ConfirmModal from '../../components/ConfirmModal';
 import { AiFillEdit, AiOutlineDelete } from 'react-icons/ai'
 
