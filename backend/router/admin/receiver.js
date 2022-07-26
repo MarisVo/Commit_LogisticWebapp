@@ -5,70 +5,50 @@ import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
 const receiverAdminRoute = express.Router();
 
 /**
- * @route GET /api/admin/receiver/all
- * @description get all receivers
+ * @route GET /api/admin/receiver/:method
+ * @description get all receivers, get a receiver by id, sort by name and search by keyword
  * @access private
  */
 
-receiverAdminRoute.get('/all', async (req, res) => {
-    Receiver.find({})
-    .then((result) => {
-        sendSuccess(res, "ok", result);
-    })
-    .catch((err) => {
-        sendError(res, err.message);
-    })
+receiverAdminRoute.get('/:method', async (req, res) => {
+    const method = req.params.method || 'get';
+    const id = req.query.id ? req.query.id : null;
+    const keyword = req.query.keyword ? req.query.keyword : null;
+    const sort = req.query.sort || 1;
+    let query;
+    if (method === 'get') {
+        query = {};
+        if (id) {
+            query = {_id: id}
+        }
+    }
+    else if (method === 'search') {
+        query = { $or: [{
+            name: {$regex: keyword, $options: '$i'}
+        },{
+            phone: {$regex: keyword, $options:'$i'}
+        },{
+            identity: {$regex: keyword, $options: '$i'}
+        }]}
+    } 
+    if (method === 'sort') {
+        Receiver.find({}).sort({ name : sort})
+        .then((result) => {
+            sendSuccess(res, "ok", result);
+        })
+        .catch((err) => {sendError(res, err.message);});
+    } else {
+        Receiver.find(query)
+        .then((result) => {
+            sendSuccess(res, "ok", result);
+        })
+        .catch((err) => {
+            sendError(res, err.message);
+        })
+    }
+    
 })
-/**
- * @route GET /api/admin/receiver/:id
- * @description get receiver by id
- * @access private
- */
 
-receiverAdminRoute.get('/get-by-id/:id', async (req, res) => {
-    let id = req.params.id;
-    Receiver.find({ _id: id })
-    .then((result) => {
-        sendSuccess(res, "ok", result);
-    })
-    .catch((err) => {
-        sendError(res, err.message);
-    });
-})
-/**
- * @route GET /api/admin/receiver/search?keyword={keyword}
- * @description Search receivers by keyword
- * @access private
- */
-
-receiverAdminRoute.get('/search', async (req, res) => {
-    const keyword = req.query.keyword;
-    Receiver.find({ $or: [{
-        name: {$regex: keyword, $options: '$i'}
-    },{
-        phone: {$regex: keyword, $options:'$i'}
-    },{
-        identity: {$regex: keyword, $options: '$i'}
-    }]})
-    .then ((result) => {
-        sendSuccess(res, "ok", result);
-    })
-    .catch((err) => {sendError(res, err.message);});
-})
-/**
- * @route GET /api/admin/receiver/sort/:type
- * @description Sort receiver, type 1: ascending type -1: descending
- * @access private
- */
-
-receiverAdminRoute.get('/sort/:type', (req, res) => {
-    let type = req.params.type == undefined ? 1 : req.params.type
-    Receiver.find({}).sort({ name : type})
-    .then((result) => {
-        sendSuccess(res, "ok", result);
-    })
-    .catch((err) => {sendError(res, err.message);});
-})
 /**
  * @route  DELETE /api/admin/receiver/delete/:id
  * @description Delete receiver by id
