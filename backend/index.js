@@ -23,7 +23,7 @@ import applicantRoute from "./router/applicant.js"
 import careerRoute from "./router/career.js"
 import departmentRoute from "./router/department.js"
 import participantRoute from "./router/participant.js"
-import receiverAdminRoute from "./router/admin/receiver.js"
+
 // swagger setup
 import swaggerUi from 'swagger-ui-express'
 const swaggerDocument = YAML.load('./swagger.yaml')
