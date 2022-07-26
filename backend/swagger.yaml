@@ -2019,11 +2019,8 @@ paths:
       tags:
         - "road"
       summary: Admin update road 
-      produces:
-        - application/json
       consumes:
         - application/json
-        - multipart/form-data
       parameters:
         - in: path
           name: roadId
@@ -2035,10 +2032,6 @@ paths:
           description: a new road.
           schema:
             type: object
-            required:
-              - distance
-              - origin 
-              - destination
             properties:
               distance: 
                   type: number
@@ -2046,7 +2039,6 @@ paths:
                   type: string
               destination: 
                   type: string
-        - in: formData
       responses:
         200:
           description: Update road  successfully.
@@ -2259,7 +2251,6 @@ paths:
               status:
                 type: string
                 enum: ['waiting', 'accepted', 'processing', 'completed', 'refused']
-        - in: formData
       responses:
         200:
           description: Update bill  successfully.

@@ -86,10 +86,10 @@ roadAdminRoute.post('/create', async (req, res) => {
         const isExistOrigin = await Warehouse.exists({ origin })
         const isExistDestination = await Warehouse.exists({ destination })
 
-        if (!isExistOrigin)
-            return sendError(res, 'Origin does not exist.')
-        if (!isExistDestination)
-            return sendError(res, 'Destination does not exist.')
+        // if (!isExistOrigin)
+        //     return sendError(res, 'Origin does not exist.')
+        // if (!isExistDestination)
+        //     return sendError(res, 'Destination does not exist.')
 
         await Road.create({ distance, origin, destination })
         return sendSuccess(res, 'Set road information successfully.')
@@ -113,12 +113,15 @@ roadAdminRoute.put('/edit/:id', async (req, res) => {
         const errors = createRoadValidate(req.body)
         if (errors)
             return sendError(res, errors)
-        const isExistId = await Road.exists({ _id: id })
+        
+            const isExistId = await Road.exists({ _id: id })
         if (!isExistId)
             return sendError(res, "This road is not existed.")
+        
         const isExist = await Road.exists({ distance: distance, origin: origin, destination: destination })
         if (isExist)
             return sendError(res, "This road is existed.")
+            
         await Road.findByIdAndUpdate(id, { origin: origin, destination: destination, distance: distance })
         return sendSuccess(res, "Update road successfully", { origin, destination, distance })
 
