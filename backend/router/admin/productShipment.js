@@ -9,7 +9,7 @@ const productShipmentAdminRoute = express.Router()
 /**
  * @route GET /api/admin/product-shipment
  * @description get about information of product shipment
- * @access public
+ * @access private
  */
 productShipmentAdminRoute.get('/',
     async (req, res) => {
@@ -37,7 +37,7 @@ productShipmentAdminRoute.get('/',
 /**
 * @route GET /api/admin/product-shipment/:id
 * @description get about information of product shipment by id
-* @access public
+* @access private
 */
 productShipmentAdminRoute.get('/:id',
     async (req, res) => {

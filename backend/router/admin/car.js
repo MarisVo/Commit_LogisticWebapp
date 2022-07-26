@@ -9,7 +9,7 @@ const carAdminRoute = express.Router()
 /**
  * @route GET /api/admin/car
  * @description get car information
- * @access public
+ * @access private
  */
 carAdminRoute.get('/',
     async (req, res) => {
@@ -47,7 +47,7 @@ carAdminRoute.get('/',
 /**
 * @route GET /api/admin/car/:id
 * @description get about information by id
-* @access public
+* @access private
 */
 carAdminRoute.get('/:id',
     async (req, res) => {

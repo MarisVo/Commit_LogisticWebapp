@@ -10,7 +10,7 @@ const roadAdminRoute = express.Router()
 /**
  * @route GET /api/admin/road
  * @description get about information
- * @access public
+ * @access private
  */
 roadAdminRoute.get("/", async (req, res) => {
     try {
@@ -56,7 +56,7 @@ roadAdminRoute.get("/", async (req, res) => {
 /**
  * @route GET /api/admin/road/:id
  * @description get about information by id
- * @access public
+ * @access private
  */
 roadAdminRoute.get('/:id',
     async (req, res) => {

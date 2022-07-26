@@ -14,7 +14,7 @@ const billAdminRoute = express.Router()
 /**
  * @route GET /api/admin/bill
  * @description get about information
- * @access public
+ * @access private
  */
 billAdminRoute.get("/", async (req, res) => {
     try {
@@ -73,7 +73,7 @@ billAdminRoute.get("/", async (req, res) => {
 /**
  * @route GET /api/admin/bill/:id
  * @description get about information of bill by id
- * @access public
+ * @access private
  */
 billAdminRoute.get('/:id',
     async (req, res) => {
@@ -128,7 +128,7 @@ billAdminRoute.post('/create', async (req, res) => {
 /**
  * @route DELETE /api/admin/product-shipment/:id
  * @description delete a product shipment existing 
- * @access public
+ * @access private
  */
 billAdminRoute.delete('/delete/:id', async (req, res) => {
     const { id } = req.params;
