@@ -103,7 +103,6 @@ paths:
         - application/json
       consumes:
         - application/json
-        - multipart/form-data
       parameters:
       - in: body
         name: customer
@@ -132,11 +131,6 @@ paths:
       responses:
         200:
           description: send otp code successfully.
-          schema:
-            type: object
-            example: {
-              "userId":"verifyId",
-            }
         400:
           description: Send OTP failed.
   /auth/verify-otp:
@@ -153,8 +147,6 @@ paths:
         schema:
           type: object
           properties:
-            userId:
-              type: string
             otp:
               type: string
       responses:
@@ -163,29 +155,17 @@ paths:
         400:
           description: validate failed.
   /auth/update-otp:
-    post:
+    get:
       tags:
         - "auth"
       summary: Update OTP send through email/phone number.
       produces:
         - application/json
-      consumes:
-        - application/json
-      parameters:
-      - in: body
-        name: otp
-        required: true
-        schema:
-          type: object
-          properties:
-            userId:
-              type: string
-            verify_op:
-              type: string
-              enum: ['email','phone']
       responses:
         200:
           description: update otp successfully.
+        404:
+          description: verify option is invalid.
         400:
           description: Send OTP failed.
   /auth/login:
