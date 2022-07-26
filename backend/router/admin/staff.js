@@ -5,68 +5,48 @@ import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
 const staffAdminRoute = express.Router();
 
 /**
- * @route GET /api/admin/staff/all
- * @description get all staffs
+ * @route GET /api/admin/staff/:method
+ * @description get all staff, get a staff by id, sort by name and search by keyword
  * @access private
  */
 
-staffAdminRoute.get('/all', async (req, res) => {
-    Staff.find({})
-    .then((result) => {
-        sendSuccess(res, "ok", result);
-    })
-    .catch((err) => {
-        sendError(res, err.message);
-    })
+ staffAdminRoute.get('/:method', async (req, res) => {
+    const method = req.params.method || 'get';
+    const id = req.query.id ? req.query.id : null;
+    const keyword = req.query.keyword ? req.query.keyword : null;
+    const sort = req.query.sort || 1;
+    let query;
+    if (method === 'get') {
+        query = {};
+        if (id) {
+            query = {_id: id}
+        }
+    }
+    else if (method === 'search') {
+        query = { $or: [{
+            name: {$regex: keyword, $options: '$i'}
+        },{
+            staff_type: {$regex: keyword, $options:'$i'}
+        }]}
+    } 
+    if (method === 'sort') {
+        Staff.find({}).sort({ name : sort})
+        .then((result) => {
+            sendSuccess(res, "ok", result);
+        })
+        .catch((err) => {sendError(res, err.message);});
+    } else {
+        Staff.find(query)
+        .then((result) => {
+            sendSuccess(res, "ok", result);
+        })
+        .catch((err) => {
+            sendError(res, err.message);
+        })
+    }
+    
 })
-/**
- * @route GET /api/admin/staff/get-by-id
- * @description get staff by id
- * @access private
- */
 
-staffAdminRoute.get('/get-by-id/:id', async (req, res) => {
-    let id = req.params.id;
-    Staff.find({ _id: id })
-    .then((result) => {
-        sendSuccess(res, "ok", result);
-    })
-    .catch((err) => {
-        sendError(res, err.message);
-    });
-})
-/**
- * @route GET /api/admin/staff/search?keyword={keyword}
- * @description Search staffs by keyword
- * @access private
- */
-
-staffAdminRoute.get('/search', async (req, res) => {
-    const keyword = req.query.keyword;
-    Staff.find({ $or: [{
-        name: {$regex: keyword, $options: '$i'}
-    },{
-        staff_type: {$regex: keyword, $options:'$i'}
-    }]})
-    .then ((result) => {
-        sendSuccess(res, "ok", result);
-    })
-    .catch((err) => {sendError(res, err.message);});
-})
-/**
- * @route GET /api/admin/staff/sort/:type
- * @description Sort staffs, type 1: ascending type -1: descending
- * @access private
- */
-
-staffAdminRoute.get('/sort/:type', (req, res) => {
-    let type = req.params.type == undefined ? 1 : req.params.type
-    Staff.find({}).sort({ name : type})
-    .then((result) => {
-        sendSuccess(res, "ok", result);
-    })
-    .catch((err) => {sendError(res, err.message);});
-})
 /**
  * @route  POST /api/admin/staff/create/:name/:staffType
  * @description Update the staff by id using request body.
