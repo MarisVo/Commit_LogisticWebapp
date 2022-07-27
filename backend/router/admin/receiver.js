@@ -10,19 +10,15 @@ const receiverAdminRoute = express.Router();
  * @access private
  */
 
-receiverAdminRoute.get('/:method', async (req, res) => {
-    const method = req.params.method || 'get';
+receiverAdminRoute.get('/', async (req, res) => {
     const id = req.query.id ? req.query.id : null;
     const keyword = req.query.keyword ? req.query.keyword : null;
     const sort = req.query.sort || 1;
-    let query;
-    if (method === 'get') {
-        query = {};
-        if (id) {
-            query = {_id: id}
-        }
+    let query = {};
+    if (id) {
+        query = {_id: id}
     }
-    else if (method === 'search') {
+    else if (keyword) {
         query = { $or: [{
             name: {$regex: keyword, $options: '$i'}
         },{
@@ -30,50 +26,54 @@ receiverAdminRoute.get('/:method', async (req, res) => {
         },{
             identity: {$regex: keyword, $options: '$i'}
         }]}
-    } 
-    if (method === 'sort') {
-        Receiver.find({}).sort({ name : sort})
-        .then((result) => {
-            sendSuccess(res, "ok", result);
-        })
-        .catch((err) => {sendError(res, err.message);});
-    } else {
-        Receiver.find(query)
-        .then((result) => {
-            sendSuccess(res, "ok", result);
-        })
-        .catch((err) => {
-            sendError(res, err.message);
-        })
     }
-    
+    try {
+        const result = await Receiver.find(query).sort({ name : sort});
+        return sendSuccess(res, "ok", result);
+    }
+    catch (err) {
+        return sendError(res, err.message)
+    }
 })
 
 /**
- * @route  DELETE /api/admin/receiver/delete/:id
+ * @route  DELETE /api/admin/receiver/:id
  * @description Delete receiver by id
  * @access private
  */
 
 
-receiverAdminRoute.delete('/delete/:id', (req, res) => {
+receiverAdminRoute.delete('/:id', async (req, res) => {
     let id = req.params.id;
-    Receiver.deleteOne({_id: id}).then((result) => {
-        sendSuccess(res, "ok", result);
-    }).catch((err) => {sendError(res, err.message)});
+    try {
+        const result = await Receiver.deleteOne({_id: id})
+        return sendSuccess(res,"Receiver deleted successfully");
+    }
+    catch(error) {
+        return sendError(res, error.message);
+    }
 })
 /**
- * @route  PUT /api/admin/receiver/update?id={id}
+ * @route  PUT /api/admin/receiver/:id
  * @description Update the receiver by id using request body.
  * @access private
  */
 
-receiverAdminRoute.put('/update', async (req, res) => {
-    let id = req.query.id;
+receiverAdminRoute.put('/:id', async (req, res) => {
+    let id = req.params.id;
     const {name, phone, identity} = req.body;            
-    Receiver.findByIdAndUpdate(id, {name: name, phone: phone, identity: identity}).then((result) => {sendSuccess(res,"receiver updated successfully")})
-    .catch((err) => {sendError(res,err.message)});
-})
+    try {
+        const result = await Receiver.findByIdAndUpdate(id, {name: name, phone: phone, identity: identity});
+        return sendSuccess(res,"Receiver updated successfully");
+    }
+    catch (err) {
+        if (err.codeName == "DuplicateKey") {
+            sendError(res, (err.keyValue.identity + " identity value is existed") )
+        } else {
+            sendError(res, err.message)
+        }
+    }
+});
 
 // //! Create receiver
 // receiverAdminRoute.post('/create/:name/:phone/:identity', async (req, res) => {
@@ -88,7 +88,7 @@ receiverAdminRoute.put('/update', async (req, res) => {
 //         res.send("receiver created successfully")
 //     })
 //     .catch((err) => {
-//         res.send(err)
+//         res.send(err.keyValue.identity);
 //     })
 // })
 
