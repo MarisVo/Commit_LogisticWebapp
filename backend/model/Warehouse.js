@@ -29,10 +29,10 @@ const WarehouseSchema = new Schema(
             required: true
         },
         lon: {
-            type: String,
+            type: Number,
         },
         lat: {
-            type: String,
+            type: Number,
         },
         inventory_product_shipments: [
             {

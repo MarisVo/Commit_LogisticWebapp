@@ -1,17 +1,12 @@
 import mongoose from "mongoose"
 const { Schema } = mongoose
 
-const CareerSchema = new Schema(
+const DepartmentSchema = new Schema(
     {
         name: {
             type: String,
             required: true
         },
-        type: {
-            type: String,
-            default: null
-        },
-        
         description: {
             type: String,
             default: null
@@ -20,26 +15,21 @@ const CareerSchema = new Schema(
             type: String,
             default: null
         },
-        state: {
+        director: {
             type: String,
             default: null
         },
-        bonus: {
-            type: String,
-            default: null
+        scale: {
+            type: Number
         },
-        deadline: {
-            type: Date,
-            default: null
-        },
-        applicants: [
+        careers: [
             {
                 type: Schema.Types.ObjectId,
-                ref: 'applicants'
+                ref: 'careers'
             }
         ],
     },
     { timestamps: true }
 )
 
-export default mongoose.model('careers', CareerSchema)
+export default mongoose.model('department', DepartmentSchema)

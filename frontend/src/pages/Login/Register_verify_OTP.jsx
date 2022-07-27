@@ -162,7 +162,7 @@ function Register_OTP() {
                 otp: OTP
             }  
         });
-
+        console.log(response)
         success();
         navigate("/dang-nhap");
     } catch(error) {
