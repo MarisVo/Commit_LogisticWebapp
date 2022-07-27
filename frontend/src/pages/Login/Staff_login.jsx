@@ -1,11 +1,12 @@
 import React from 'react'
 import 'antd/dist/antd.css'
-import { Form, Button, Input, Typography, message} from "antd";
+import { Form, Button, Input, Typography, message } from "antd";
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import * as axios from 'axios'
 
-const ForgetForm = styled.div`
-  .Forget {
+const LoginForm = styled.div`
+  .Login {
     height: 100vh;
     display: flex;
     flex-direction: row;
@@ -23,8 +24,7 @@ const ForgetForm = styled.div`
     background-image: linear-gradient(62deg, #fbab7e 0%, #f7ce68 100%);
     overflow: auto;
   }
-
-  .Forget-header {
+  .Login-header {
     max-width: 500px;
     width: 100%;
     background-color: #fff;
@@ -32,13 +32,11 @@ const ForgetForm = styled.div`
     border-radius: 5px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
   }
-
   .ant-typography {
     font-size: 45px;
     font-weight: 500;
     position: relative;
   }
-
   .ant-input-affix-wrapper {
     box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px,
       rgba(0, 0, 0, 0.1) 0px 2px 4px 0px,
@@ -52,14 +50,10 @@ const ForgetForm = styled.div`
   .sign {
     text-align: right;
   }
-  a {
-    color: #348ceb;
-  }
 `;
 
 const ButtonContainer = styled.div`
-.ant-btn-primary {
-    margin-top: 30px;
+  .ant-btn-primary {
     height: 100%;
     width: 100%;
     border-radius: 5px;
@@ -75,19 +69,21 @@ const ButtonContainer = styled.div`
       background-color: #fbab7e;
       background-image: linear-gradient(250deg, #e3ed1f 0%, #f7ce68 100%);
     }
-}`;
+  }
+`;
 
 function isValidEmail(email) {
   return /\S+@\S+\.\S+/.test(email);
 }
 
 const { Title } = Typography;
-function ForgetPass() {
+
+function StaffLogin() {
   const [form] = Form.useForm();
 
   const success = () => {
     message.success({
-      content: 'Mật khẩu mới đã được gửi đến email hoặc số điện thoại của bạn',
+      content: 'Đăng nhập thành công',
       className: 'custom-class',
       style: {
         marginTop: '20vh',
@@ -95,9 +91,9 @@ function ForgetPass() {
     });
   };
 
-  const failed404 = () => {
+  const failed403 = () => {
     message.error({
-      content: 'Email hoặc số điện thoại không tồn tại',
+      content: 'Role của bạn chưa được xác nhận, từ chối đăng nhập',
       className: 'custom-class',
       style: {
         marginTop: '20vh',
@@ -107,33 +103,36 @@ function ForgetPass() {
 
   const failed400 = () => {
     message.error({
-      content: 'Tạo mật khẩu mới không thành công',
+      content: 'Email, số điện thoại hoặc mật khẩu không đúng',
       className: 'custom-class',
       style: {
         marginTop: '20vh',
       },
     });
   };
-
+  
   const emailphone = Form.useWatch('email/phone', form);
-  var email;
-  var phone;
+  let email;
+  let phone;
   (isValidEmail(emailphone)) ? email = emailphone : phone = emailphone
+  let password = Form.useWatch('password', form);
 
   const onFinish = async() => {
     try{ 
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:8000/api/auth/forgot-pw',
+        url: 'http://localhost:8000/api/auth/staff-login',
         data: {
           email: email,
-          phone: phone
+          phone: phone,
+          password: password
         }
       })   
+
       success();
     } catch(error) {
-      if(error.message == "Request failed with status code 404") {
-        failed404();
+      if(error.message == "Request failed with status code 403") {
+        failed403();
       }
 
       if(error.message == "Request failed with status code 400") {
@@ -141,10 +140,10 @@ function ForgetPass() {
       }
     }
   };
-  return (   
-    <ForgetForm>
-        <div className="Forget">
-          <div className="Forget-header">
+  return (
+    <LoginForm>
+        <div className="Login">
+          <div className="Login-header">
             <Form
               form ={form}
               autoComplete="off"
@@ -156,7 +155,7 @@ function ForgetPass() {
               } }
             >
                 <Title level={2} className="text-center">
-                    Quên mật khẩu
+                    Đăng nhập
                 </Title>
 
                 <Form.Item
@@ -173,18 +172,48 @@ function ForgetPass() {
                     <Input placeholder="Nhập email hoặc số điện thoại" />
                 </Form.Item>
 
+                <Form.Item
+                    name="password"
+                    label="Mật khẩu"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Vui lòng nhập mật khẩu",
+                        },
+                        { 
+                            min: 6 ,
+                            message: "Mật khẩu phải dài hơn 6 chữ số",
+                        },
+                        {
+                          max: 24,
+                          message: "Mật khẩu chỉ được tối đa 24 chữ số",
+                        },
+                    ]}
+                    hasFeedback
+                >
+                    <Input.Password placeholder="Nhập mật khẩu" />
+                </Form.Item>
+
+                <Form.Item wrapperCol={{ span: 24 }}>
+                    <div className='sign'>
+                        <Link to="/quen-mat-khau" className="font-semibold text-blue-700">
+                            Quên mật khẩu
+                        </Link>
+                    </div>
+                </Form.Item>
+
             <Form.Item wrapperCol={{ span: 24 }}>
               <ButtonContainer>
                 <Button block type="primary" htmlType="submit">
-                  Xác nhận
+                  Đăng nhập
                 </Button>
               </ButtonContainer>
             </Form.Item>
           </Form>
         </div>
       </div>
-    </ForgetForm>
+    </LoginForm>
   );
 }
 
-export default ForgetPass;
+export default StaffLogin;

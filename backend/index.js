@@ -4,6 +4,7 @@ import mongoose from "mongoose"
 import cors from "cors"
 import YAML from 'yamljs'
 import { Server } from 'socket.io'
+import session from 'express-session'
 
 import authRoute from "./router/auth.js"
 import adminRoute from "./router/admin/index.js"
@@ -58,7 +59,15 @@ const io = new Server(process.env.SOCKET_PORT, {
         origin: '*'
     }
 })
+const store = new session.MemoryStore()
 
+app.use(session({
+    secret: process.env.SESSION_NAME,
+    cookie: { maxAge: 30000 },
+    saveUninitialized: false,
+    store,
+    resave: true
+}))
 app.use(express.json())
 app.use(express.static('public'))
 app.use(cors())

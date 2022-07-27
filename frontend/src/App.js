@@ -21,6 +21,7 @@ import {
   Login,
   Register,
   Register_OTP,
+  StaffLogin,
   ForgetPass,
   RecruitmentDetails,
   Purchase,
@@ -47,6 +48,9 @@ import {
   AdminCareer,
   AdminApplicant,
   AdminDepartment,
+  AdminWarehouse,
+  AdminCar,
+  AdminRoad
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainProvider, { MainContext } from "./context/MainContext";
@@ -124,6 +128,7 @@ const App = () => {
               <Route path="dang-nhap" element={<Login /> } />
               <Route path="quen-mat-khau" element={<ForgetPass />} />
               <Route path="xac-thuc-otp" element={<Register_OTP />} />
+              <Route path="dang-nhap-nhan-vien" element={<StaffLogin /> } />
                 </Route>            
               {/* -----------------------Tư vấn----------------------- */}
               <Route path="tu-van/lien-he" element={<Contact />} />
@@ -146,6 +151,9 @@ const App = () => {
                 <Route path="career" element={<AdminCareer />}></Route>
                 <Route path="applicant" element={<AdminApplicant />}></Route>
                 <Route path="department" element={<AdminDepartment />}></Route>
+                <Route path="warehouse" element={<AdminWarehouse />}></Route>
+                <Route path="car" element={<AdminCar />}></Route>
+                <Route path="road" element={<AdminRoad />}></Route>
               </Route>
               {/* </Route> */}
           </Routes>
