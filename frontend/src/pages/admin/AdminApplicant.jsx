@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import { AiFillEdit, AiOutlineDelete } from 'react-icons/ai';
 import ConfirmModal from '../../components/ConfirmModal';
 import EditApplicant from '../../components/Admin/Applicant/EditApplicant';
+import axios from 'axios';
+import { END_POINT } from '../../utils/constant';
 
 
 
@@ -57,7 +59,10 @@ function AdminApplicant() {
         {
             title: 'Tên ứng viên',
             dataIndex: 'name',
-            sorter: true,
+            sorter: (a, b) => {
+                if(a.name.last < b.name.last) return -1
+                if(a.name.last > b.name.last) return 1
+              },
             render: (name) => `${name.first} ${name.last}`,
         },
         {
@@ -168,13 +173,17 @@ function AdminApplicant() {
     const fetchData = async () => {
         setLoading(true)
         try {
-            await setTimeout(() => { //thay bằng GET method
+                // const {data:response} = await axios.get(
+                //     `${END_POINT}/applicant`
+                // )
+                // console.log(response)
                 setLoading(false)
-                setData(dataFetch)
-            }, 2000)
+                
+                setData(dataFetch) //response.data
+
         }
-        catch {
-            //Code here
+        catch(error) {
+            console.log(error)
         }
     }
     useEffect(() => {

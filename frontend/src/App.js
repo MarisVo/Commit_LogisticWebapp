@@ -62,7 +62,7 @@ const App = () => {
     <MainProvider>
       <BrowserRouter>
         <div className="wrapper">
-          <ScrollToTop />
+          {/* <ScrollToTop /> */}
           <Routes>
             <Route path="/" element={<DefaultLayout />}>
               <Route index element={<Home />}></Route>
@@ -134,7 +134,6 @@ const App = () => {
             {/* <Route element={<StaffRoute/>}>   */}      
               <Route path="storekeeper" element={<LayerStorekeeper />}>
                 <Route index element={<ProductsManager />} />
-                <Route path="xuat-nhap" element={<ProductsManager />} />
                 <Route path="xuat-nhap" element={<ProductsManager />} />
                 <Route path="ton-kho" element={<Inventory />} />
               </Route>

@@ -1,7 +1,7 @@
 import logoJT from "../assets/icons/logo-J&T.svg";
 import { FaChevronDown, FaBars } from "react-icons/fa";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { /*useEffect,*/ useState } from "react";
 import { Menu } from "antd";
 import "antd/dist/antd.css";
 import { useContext } from "react";
@@ -71,17 +71,17 @@ const rootSubmenuKeys = ["sub1", "sub2", "sub3", "sub4", "sub5", "sub6"];
 const Header = () => {
   const { user, logoutHandle } = useContext(MainContext);
   const navigate = useNavigate();
-  const [defaultService, setDefaultService] = useState("cước vận chuyển");
-  function callback(dichVu) {
-    setDefaultService(dichVu);
-    navigate(`/track?type=${dichVu}`);
-  }
+  // const [defaultService, setDefaultService] = useState("cước vận chuyển");
+  // function callback(dichVu) {
+  //   console.log(dichVu)
+  //   setDefaultService(dichVu);
+  //   navigate(`/track?type=${dichVu}`);
+  // }
 
   // xử lý thêm màu menu
   let {pathname}=useLocation()
   const comparePath=(path)=>{
     if(pathname.includes(path)) return "text-yellow-500"
-    else return
   }
   //Logic mobile-navigation --- Còn lỗi
   const [openKeys, setOpenKeys] = useState([]);
@@ -99,7 +99,6 @@ const Header = () => {
       setIsOpen(!isOpen);
     }
   };
-  // alert('render header')
   const Logout = () => {
     logoutHandle();
   };
@@ -156,8 +155,7 @@ const Header = () => {
             </Link>
             <ul
               className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg animate-up"
-              defaultactivekey="cước vận chuyển"
-              onChange={callback}
+              // onChange={callback}
             >
               <li>
                 <Link

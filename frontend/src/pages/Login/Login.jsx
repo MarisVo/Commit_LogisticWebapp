@@ -136,7 +136,6 @@ function Login() {
       );
       success();
       const { data } = response.data;
-      console.log(data)
       loginHandle(data.accessToken, data.refreshToken, data.user);
       navigate("/", { replace: true });
     } catch (error) {

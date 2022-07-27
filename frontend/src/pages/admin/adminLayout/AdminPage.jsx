@@ -1,12 +1,16 @@
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  DesktopOutlined,
 } from "@ant-design/icons";
-import {MdGroup, MdOutlineContacts, MdOutlineDeliveryDining} from "react-icons/md"
-import {FaHandshake} from "react-icons/fa"
-import {AiOutlineMessage, AiOutlinePartition} from "react-icons/ai"
-import {BsFillPersonFill, BsPaperclip} from "react-icons/bs"
+import {
+  MdGroup,
+  MdConnectWithoutContact,
+  MdOutlineDeliveryDining,
+} from "react-icons/md";
+import { FaHandshake } from "react-icons/fa";
+import { AiOutlineMessage, AiOutlinePartition } from "react-icons/ai";
+import { BsFillPersonFill, BsPaperclip } from "react-icons/bs";
+import {ImProfile} from "react-icons/im"
 import { Layout, Menu } from "antd";
 import React, { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
@@ -37,16 +41,16 @@ export default function AdminPage() {
         <Link to="contact-us">Contact Us</Link>
       </div>,
       "2",
-      <MdOutlineContacts />
+      <MdConnectWithoutContact />
     ),
-    
-      getItem(
-        <div>
-          <Link to="commitment">Commitment</Link>
-        </div>,
-        "3",
-        <FaHandshake />
-      ),
+
+    getItem(
+      <div>
+        <Link to="commitment">Commitment</Link>
+      </div>,
+      "3",
+      <FaHandshake />
+    ),
     getItem(
       <div>
         <Link to="message">Contact message</Link>
@@ -81,7 +85,7 @@ export default function AdminPage() {
         <Link to="applicant">applicant</Link>
       </div>,
       "8",
-      <BsFillPersonFill />
+      <ImProfile />
     ),
     getItem(
       <div>
@@ -103,10 +107,9 @@ export default function AdminPage() {
         trigger={null}
         collapsible
         collapsed={collapsed}
-        className= 'uppercase hidden xl:block'
+        className="uppercase hidden xl:block"
         style={{
           background: "#fff",
-          
         }}
       >
         <div className="logo">
@@ -123,18 +126,21 @@ export default function AdminPage() {
           }}
         >
           <div className="flex flex-row justify-between pr-10">
-            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-              className: "trigger",
-              onClick: () => setCollapsed(!collapsed),
-              style: {
-                padding: " 0 24px",
-                fontSize: "18px",
-                lineHeight: "64px",
-                cursor: "pointer",
-                transition: "color 0.3s",
-                color: "orange",
-              },
-            })}
+            {React.createElement(
+              collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+              {
+                className: "trigger",
+                onClick: () => setCollapsed(!collapsed),
+                style: {
+                  padding: " 0 24px",
+                  fontSize: "18px",
+                  lineHeight: "64px",
+                  cursor: "pointer",
+                  transition: "color 0.3s",
+                  color: "orange",
+                },
+              }
+            )}
             <AdminDropDownAvatar></AdminDropDownAvatar>
           </div>
         </Header>

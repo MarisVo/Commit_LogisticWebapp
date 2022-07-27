@@ -1,25 +1,35 @@
 import { useState } from "react";
 import { Form, Input, DatePicker, Button } from "antd";
-import { END_POINT } from "../../../utils/constant";
 import axios from "axios";
+import { END_POINT } from "../../../utils/constant";
 
 const { Item } = Form;
-function AddNewDepartment({ onClose, refetchData }) {
-  const [data, setData] = useState();
+function EditDepartment({ onClose, data, refetchData }) {
+  const [dataEdit, setDataEdit] = useState(data);
   const [loading, setLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
-  const acceptAddNewDepartment = async () => {
+  console.log("data là", dataEdit);
+  const acceptEditDepartment = async () => {
     setLoading(true);
     setIsDisable(true);
     try {
-    //   await axios.post(`${END_POINT}/admin/career`, data, {
+      setTimeout(() => {
+        //sẽ thay bằng PUT request
+        setLoading(false);
+        setIsDisable(false);
+        onClose();
+        refetchData();
+      }, 2000);
+    //   await axios.put(`${END_POINT}/admin/career/${data._id}`, {
     //     headers: { authorization: `Bearer ${accessToken}` },
     //   });
-      setLoading(false);
-      setIsDisable(false);
-      onClose();
-      refetchData();
-    } catch {}
+    //   setLoading(false);
+    //   setDisable(false);
+    //   onClose();
+    //   refetchData();
+    } catch {
+      //code
+    }
   };
   return (
     <>
@@ -27,7 +37,7 @@ function AddNewDepartment({ onClose, refetchData }) {
         <div className="relative w-[700px] flex flex-col bg-white p-6 gap-y-3 animate-modal_in mx-4 rounded-xl overflow-auto">
           <div className="flex justify-between items-center gap-y-3">
             <span className="text-xl uppercase font-bold h-fit">
-              Thêm phòng ban mới
+              Chỉnh sửa Phòng ban
             </span>
             <Button
               size="large"
@@ -51,16 +61,49 @@ function AddNewDepartment({ onClose, refetchData }) {
             layout="horizontal"
           >
             <Item label="Tên phòng ban">
-              <Input />
+              <Input
+                value={dataEdit.name}
+                onChange={(e) =>
+                  setDataEdit({
+                    ...dataEdit,
+                    name: e.target.value,
+                  })
+                }
+              />
             </Item>
-            <Item label="Tên trưởng ban">
-              <Input />
+           
+            <Item label="Trưởng ban">
+              <Input
+                value={dataEdit.director}
+                onChange={(e) =>
+                  setDataEdit({
+                    ...dataEdit,
+                    director: e.target.value,
+                  })
+                }
+              />
             </Item>
             <Item label="Mô tả">
-              <Input />
+              <Input
+                value={dataEdit.description}
+                onChange={(e) =>
+                  setDataEdit({
+                    ...dataEdit,
+                    description: e.target.value,
+                  })
+                }
+              />
             </Item>
             <Item label="Địa điểm làm việc">
-              <Input />
+              <Input
+                value={dataEdit.location}
+                onChange={(e) =>
+                  setDataEdit({
+                    ...dataEdit,
+                    location: e.target.value,
+                  })
+                }
+              />
             </Item>
             <div className="flex justify-end mt-2 text-sm gap-x-6">
               <Button
@@ -78,7 +121,7 @@ function AddNewDepartment({ onClose, refetchData }) {
                 type="primary"
                 size="large"
                 loading={loading}
-                onClick={acceptAddNewDepartment}
+                onClick={acceptEditDepartment}
                 className="rounded-lg"
               >
                 Xác nhận
@@ -91,4 +134,4 @@ function AddNewDepartment({ onClose, refetchData }) {
   );
 }
 
-export default AddNewDepartment;
+export default EditDepartment;
