@@ -54,3 +54,6 @@ export { default as AdminPartner } from "./Admin/AdminPartner.jsx";
 export { default as AdminCareer } from "./Admin/AdminCareer.jsx";
 export { default as AdminApplicant } from "./Admin/AdminApplicant.jsx";
 export { default as AdminDepartment } from "./Admin/AdminDepartment.jsx";
+export { default as AdminWarehouse } from "./Admin/AdminWarehouse.jsx";
+export { default as AdminCar} from "./Admin/AdminCar.jsx";
+export { default as AdminRoad } from "./Admin/AdminRoad.jsx";

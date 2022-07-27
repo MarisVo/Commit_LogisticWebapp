@@ -3,11 +3,6 @@ import { useState } from 'react';
 import { AiFillEdit, AiOutlineDelete } from 'react-icons/ai'
 const columns = [
     {
-        title: 'Tên tài xế',
-        dataIndex: 'name',
-        sorter: (a, b) => a.name.localeCompare(b.name),
-    },
-    {
         title: 'Loại xe',
         dataIndex: 'type',
     },
@@ -17,32 +12,12 @@ const columns = [
         dataIndex: 'plate',
     },
     {
-        title: 'Đơn hàng',
-        dataIndex: 'order',
+        title: 'Dung tích',
+        dataIndex: 'volumn',
     },
     {
-        title: 'Trạng thái',
-        dataIndex: 'status',
-        filters: [
-            {
-                text: 'Đang rảnh',
-                value: 'Đang rảnh',
-            },
-            {
-                text: 'Đang giao hàng',
-                value: 'Đang giao hàng',
-            },
-        ],
-        onFilter: (value, record) => record.status === value,
-        render: (status) => (
-            <>
-                {status === "Đang rảnh" ?
-                    <div className="text-green-600 font-bold bg-green-200 text-center rounded-lg py-1">Đang rảnh</div>
-                    :
-                    <div className='text-red-600 font-bold bg-red-300 text-center rounded-lg py-1'>Đang giao hàng</div>
-                }
-            </>
-        )
+        title: 'Trọng tải',
+        dataIndex: 'tonnage',
     },
     {
         title: '',
@@ -73,25 +48,22 @@ const columns = [
 ];
 const dataFetch = [
     {
-        name: "ABC",
         type: "truck",
         plate: "09997-41A",
-        order: "112",
-        status: "Đang giao hàng"
+        volumn: "112",
+        tonnage: "123"
     },
     {
-        name: "1238C",
         type: "motorbike",
         plate: "0H57-41A64",
-        order: "87757",
-        status: "Đang giao hàng"
+        volumn: "112",
+        tonnage: "123"
     },
     {
-        name: 'XYZ',
         type: "truck",
         plate: "Ag638-12",
-        order: "l8328",
-        status: "Đang rảnh"
+        volumn: "112",
+        tonnage: "123"
     },
 ]
 function AdminCar() {

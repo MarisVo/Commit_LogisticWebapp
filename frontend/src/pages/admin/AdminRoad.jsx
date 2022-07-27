@@ -4,20 +4,20 @@ import { AiFillEdit, AiOutlineDelete } from 'react-icons/ai'
 const columns = [
     {
         title: 'Xe',
-        dataIndex: 'name',
+        dataIndex: 'car',
     },
     {
         title: 'Điểm bắt đầu',
-        dataIndex: 'start',
+        dataIndex: 'origin',
     },
    
     {
         title: 'Điểm kết thúc',
-        dataIndex: 'end',
+        dataIndex: 'destination',
     },
     {
-        title: 'Đơn hàng',
-        dataIndex: 'order',
+        title: 'Tài xế',
+        dataIndex: 'driver',
     },
     {
         title: '',
@@ -48,22 +48,22 @@ const columns = [
 ];
 const dataFetch = [
     {
-        name: "1234",
-        start:"1",
-        end: "2",
-        order: "41426"
+        car: "truck",
+        origin:"1",
+        destination: "2",
+        driver: "abc"
     },
     {
-        name: "126934",
-        start:"3",
-        end: "4",
-        order: "99999"
+        car: "bike",
+        origin:"1",
+        destination: "2",
+        driver: "xyz"
     },
     {
-        name: "5A52",
-        start:"10",
-        end: "20",
-        order: "12824"
+        car: "ship",
+        origin:"1",
+        destination: "2",
+        driver: "jkl"
     },
 ]
 function AdminRoad() {
