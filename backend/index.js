@@ -38,7 +38,7 @@ import prohibitedProductRoute from "./router/prohibitedProduct.js"
 
 import { clearTokenList } from "./service/jwt.js"
 import { NOTIFY_EVENT } from "./constant.js"
-import { handleDisconnect, sendNotify } from "./socket/handle.js"
+import { addSocketSession, handleDisconnect, sendNotify } from "./socket/handle.js"
 import notificationRoute from "./router/notification.js"
 dotenv.config()
 
@@ -106,7 +106,7 @@ io.on(NOTIFY_EVENT.connection, socket => {
     })
 
     socket.on(NOTIFY_EVENT.addSession, userId => {
-        SOCKET_SESSIONS.push({ socketId: socket.id, userId })
+        addSocketSession(socket, userId)
     })
 
     socket.on(NOTIFY_EVENT.send, (userId, data) => {
