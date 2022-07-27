@@ -1,99 +1,68 @@
 import express from "express";
 import Staff from "../../model/Staff.js";
 import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
-
+import { STAFF } from "../../constant.js";
 const staffAdminRoute = express.Router();
 
 /**
- * @route GET /api/admin/staff/:method
+ * @route GET /api/admin/staff/
  * @description get all staff, get a staff by id, sort by name and search by keyword
  * @access private
  */
-
- staffAdminRoute.get('/:method', async (req, res) => {
-    const method = req.params.method || 'get';
+ staffAdminRoute.get('/', async (req, res) => {
     const id = req.query.id ? req.query.id : null;
     const keyword = req.query.keyword ? req.query.keyword : null;
     const sort = req.query.sort || 1;
-    let query;
-    if (method === 'get') {
-        query = {};
-        if (id) {
-            query = {_id: id}
-        }
+    
+    let query = {};
+    if (id) {
+        query = {_id: id}
     }
-    else if (method === 'search') {
+    else if (keyword) {
         query = { $or: [{
             name: {$regex: keyword, $options: '$i'}
         },{
             staff_type: {$regex: keyword, $options:'$i'}
         }]}
     } 
-    if (method === 'sort') {
-        Staff.find({}).sort({ name : sort})
-        .then((result) => {
-            sendSuccess(res, "ok", result);
-        })
-        .catch((err) => {sendError(res, err.message);});
-    } else {
-        Staff.find(query)
-        .then((result) => {
-            sendSuccess(res, "ok", result);
-        })
-        .catch((err) => {
-            sendError(res, err.message);
-        })
+    try {
+        const result = await Staff.find(query).sort({ name : sort})
+        return sendSuccess(res, "Get staffs information successfully",result);
     }
-    
-})
-
-/**
- * @route  POST /api/admin/staff/create/:name/:staffType
- * @description Update the staff by id using request body.
- * @access private
- */
-
-staffAdminRoute.post('/create/:name/:staffType', async (req, res) => {
-    let {name, staffType} = req.params;
-    let staff = new Staff({
-        name: name,
-        staff_type: staffType,
-    })
-    staff.save()
-    .then((result) => {
-        sendSuccess(res,"Staff updated successfully",result)
-    })
-    .catch((err) => {
-        sendError(res,err.message)
-    })
+    catch (err) {sendError(res, err.message)}
+        
 })
 /**
- * @route  DELETE /api/admin/staff/delete/:id
+ * @route  DELETE /api/admin/staff/:id
  * @description Delete staff by id
  * @access private
  */
-
-
-staffAdminRoute.delete('/delete/:id', (req, res) => {
+staffAdminRoute.delete('/:id', async (req, res) => {
     let id = req.params.id;
-    Staff.deleteOne({_id: id}).then((result) => {
-        sendSuccess(res, "Staff deleted successfully", result);
-    }).catch((err) => {sendError(res, err.message)});
+    try {
+        const result = await Staff.deleteOne({_id: id})
+        sendSuccess(res, "Staff deleted successfully");
+    }
+    catch (err) {sendError(res, err.message)};
 })
 /**
- * @route  PUT /api/admin/staff/update?id={id}
+ * @route  PUT /api/admin/staff/:id
  * @description Update the staff by id using request body.
  * @access private
  */
+ staffAdminRoute.put('/:id', async (req, res) => {
+    let id = req.params.id;
+    const {name, staff_type} = req.body;
+    if (!(staff_type == STAFF.ADMIN || staff_type == STAFF.DRIVER || staff_type == STAFF.SHIPPER || staff_type == STAFF.STOREKEEPER || staff_type == STAFF.STAFF)) {
+        return sendError(res, "Staff-type not found")
+    }
+    try {
+        const result = await Staff.findByIdAndUpdate(id, {name: name, staff_type})
+        return sendSuccess(res, "Staff updated successfully")
+    }
+    catch (err) {
+        sendError(res, err.message)
+    }
 
- staffAdminRoute.put('/update', async (req, res) => {
-    let id = req.query.id;
-    const {name, staff_type} = req.body;            
-    Staff.findByIdAndUpdate(id, {name: name, staff_type}).then((result) => {sendSuccess(res,"Staff updated successfully")})
-    .catch((err) => {sendError(res,err.message)});
 })
-
-
-
-
 export default staffAdminRoute;
