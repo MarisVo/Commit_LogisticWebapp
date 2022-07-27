@@ -119,10 +119,10 @@ function Login() {
     } 
   }, [user]); */
   const emailphone = Form.useWatch("email/phone", form);
-  var email;
-  var phone;
+  let email;
+  let phone;
   isValidEmail(emailphone) ? (email = emailphone) : (phone = emailphone);
-  var password = Form.useWatch("password", form);
+  let password = Form.useWatch("password", form);
 
   const onFinish = async () => {
     try {

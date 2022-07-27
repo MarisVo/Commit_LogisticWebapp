@@ -6,10 +6,10 @@ import styled from 'styled-components';
 import * as axios from 'axios'
 
 const RegisForm = styled.div`
-  .Regis {
+.Regis{
     height: 150vh;
     display: flex;
-    flex-direction: row;
+    flex-direction:row;
     @media (max-width: 768px) {
       flex-direction: column;
       height: 140vh;
@@ -22,39 +22,36 @@ const RegisForm = styled.div`
     align-items: center;
     padding-top: 100px;
     padding-bottom: 50px;
-    background-color: #fbab7e;
-    background-image: linear-gradient(62deg, #fbab7e 0%, #f7ce68 100%);
-  }
+    background-color: #FBAB7E;
+    background-image: linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%);
+}
 
-  .Regis-header {
+.Regis-header{
     max-width: 500px;
     width: 100%;
     background-color: #fff;
     padding: 25px 30px;
     margin-top: 10px;
     border-radius: 5px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
-    overflow: auto;
-  }
+    box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+    overflow:auto;
+}
 
-  .ant-typography {
+.ant-typography{
     font-size: 45px;
     font-weight: 500;
     position: relative;
-  }
+}
 
-  .ant-input-affix-wrapper {
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px,
-      rgba(0, 0, 0, 0.1) 0px 2px 4px 0px,
-      rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
-  }
-  .sign {
-    text-align: right;
-  }
-`;
+.ant-input-affix-wrapper {
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+}
+.sign{
+    text-align:right;
+}`
 
 const ButtonContainer = styled.div`
-  .ant-btn-primary {
+.ant-btn-primary {
     height: 100%;
     width: 100%;
     border-radius: 5px;
@@ -65,10 +62,10 @@ const ButtonContainer = styled.div`
     letter-spacing: 1px;
     cursor: pointer;
     transition: all 0.3s ease;
-    background-color: #fbab7e;
-    &:hover {
-      background-color: #fbab7e;
-      background-image: linear-gradient(250deg, #e3ed1f 0%, #f7ce68 100%);
+    background-color: #FBAB7E;
+    &:hover{
+        background-color: #FBAB7E;
+        background-image: linear-gradient(250deg, #e3ed1f 0%, #F7CE68 100%);
     }
 }`;
 
@@ -122,17 +119,17 @@ function Register() {
   };
   
   const emailphone = Form.useWatch('email/phone', form);
-  var email;
-  var phone;
+  let email;
+  let phone;
   (isValidEmail(emailphone)) ? email = emailphone : phone = emailphone
-  var name = Form.useWatch('name', form);
-  var address = Form.useWatch('address', form);
-  var customer_type = Form.useWatch('customer_type', form);
-  var tax = Form.useWatch('tax', form);
-  var description = Form.useWatch('description', form);
-  var password = Form.useWatch('password', form);
-  var verify_password = Form.useWatch('confirmPassword', form);
-  var verify_op;
+  let name = Form.useWatch('name', form);
+  let address = Form.useWatch('address', form);
+  let customer_type = Form.useWatch('customer_type', form);
+  let tax = Form.useWatch('tax', form);
+  let description = Form.useWatch('description', form);
+  let password = Form.useWatch('password', form);
+  let verify_password = Form.useWatch('confirmPassword', form);
+  let verify_op;
   (email) ? verify_op = "email" : verify_op = "phone"
 
   let navigate = useNavigate();
@@ -155,10 +152,9 @@ function Register() {
         }
       });
 
-      /*console.log(JSON.stringify(response?.data));*/
-      const userId = response?.data?.data?.userId;
+      console.log(JSON.stringify(response?.data));
       success();
-      navigate("/xac-thuc-otp", {state:{userId: userId, verify_op: verify_op}});
+      navigate("/xac-thuc-otp");
     } catch(error){
       if(error.response.data.message == "user is exist"){
         existed();

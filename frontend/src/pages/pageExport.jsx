@@ -21,6 +21,7 @@ export { default as Login } from "./Login/Login.jsx";
 export { default as Register } from "./Login/Register.jsx";
 export { default as ForgetPass } from "./Login/ForgetPass.jsx";
 export { default as Register_OTP } from "./Login/Register_verify_OTP.jsx";
+export { default as StaffLogin } from "./Login/Staff_login.jsx";
 
 export { default as PageNotFound } from "./PageNotFound";
 
@@ -53,3 +54,6 @@ export { default as AdminPartner } from "./Admin/AdminPartner.jsx";
 export { default as AdminCareer } from "./Admin/AdminCareer.jsx";
 export { default as AdminApplicant } from "./Admin/AdminApplicant.jsx";
 export { default as AdminDepartment } from "./Admin/AdminDepartment.jsx";
+export { default as AdminWarehouse } from "./Admin/AdminWarehouse.jsx";
+export { default as AdminCar} from "./Admin/AdminCar.jsx";
+export { default as AdminRoad } from "./Admin/AdminRoad.jsx";
