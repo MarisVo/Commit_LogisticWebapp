@@ -9,9 +9,10 @@ import Staff from "../model/Staff.js"
 import CustomerVerifyOTP from '../model/CustomerVerifyOTP.js'
 import { JWT_EXPIRED, JWT_REFRESH_EXPIRED, OTP_EXPIRED, VERIFY_OP } from '../constant.js'
 import { createOTP, updateOTP } from '../service/otp.js'
-import { TOKEN_LIST } from "../index.js"
+import { TOKEN_BLACKLIST, TOKEN_LIST } from "../index.js"
 import { verifyToken } from "../middleware/index.js"
 import { renewPw } from "../service/password.js"
+import { clearTokenList } from '../service/jwt.js'
 
 const authRoute = express.Router()
 
@@ -23,6 +24,7 @@ const authRoute = express.Router()
 authRoute.post('/verify-token', (req, res) => {
     const { accessToken, refreshToken } = req.body
     try {
+        if (accessToken in TOKEN_LIST || accessToken in TOKEN_BLACKLIST) return sendError(res, "Unauthorzied.", 401)
         const { payload } = jwt.verify(accessToken, process.env.JWT_SECRET_KEY, {
             complete: true
         })
@@ -31,33 +33,40 @@ authRoute.post('/verify-token', (req, res) => {
         })
     }
     catch (error) {
-        if (refreshToken && refreshToken in TOKEN_LIST && TOKEN_LIST[refreshToken].accessToken === accessToken) {
+        if (refreshToken && refreshToken in TOKEN_LIST) {
             try {
-                const { payload } = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET_KEY, {
+                jwt.verify(TOKEN_LIST[refreshToken].accessToken, process.env.JWT_SECRET_KEY, {
                     complete: true
                 })
-                const newAccessToken = jwt.sign(
-                    {
-                        user: payload.user
-                    },
-                    process.env.JWT_SECRET_KEY,
-                    {
-                        expiresIn: JWT_EXPIRED
-                    }
-                )
-                TOKEN_LIST[refreshToken].accessToken = newAccessToken
-
-                return sendSuccess(res, "Verify token successfully.", {
-                    accessToken: newAccessToken,
-                    user: payload.user
-                })
-            }
-            catch (error) {
-                // console.log('refresh-token is expired.')
                 return sendError(res, "Unauthorzied.", 401)
             }
+            catch (error) {
+                try {
+                    const { payload } = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET_KEY, {
+                        complete: true
+                    })
+                    const newAccessToken = jwt.sign(
+                        {
+                            user: payload.user
+                        },
+                        process.env.JWT_SECRET_KEY,
+                        {
+                            expiresIn: JWT_EXPIRED
+                        }
+                    )
+                    TOKEN_LIST[refreshToken].accessToken = newAccessToken
+
+                    return sendSuccess(res, "Verify token successfully.", {
+                        accessToken: newAccessToken,
+                        user: payload.user
+                    })
+                } catch (error) {
+                    delete TOKEN_LIST[refreshToken]
+                    return sendError(res, "Unauthorzied.", 401)
+                }
+            }
         }
-        else{
+        else {
             // console.log('access-token is expired.')
             return sendError(res, "Unauthorzied.", 401)
         }
@@ -445,6 +454,26 @@ authRoute.put('/change-pw', verifyToken, async (req, res) => {
         console.log(error)
         return sendServerError(res)
     }
+})
+
+/**
+ * @route POST /api/auth/logout
+ * @description user log out
+ * @access private
+ */
+authRoute.post('/logout', verifyToken, async (req, res) => {
+    const { refreshToken } = req.body
+    if (refreshToken in TOKEN_LIST)
+        delete TOKEN_LIST[refreshToken]
+    else return sendError(res, 'refresh token is invalid.', 401)
+    try {
+        jwt.verify(req.verifyToken, process.env.JWT_SECRET_KEY, {
+            complete: true
+        })
+        TOKEN_BLACKLIST[req.verifyToken] = req.verifyToken
+        clearTokenList(TOKEN_BLACKLIST)
+    } catch (error) { }
+    return sendSuccess(res, 'log out successfully. see you soon.')
 })
 
 export default authRoute

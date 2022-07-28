@@ -1,14 +1,41 @@
 import mongoose from "mongoose"
+import { BILL_STATUS } from "../constant.js"
 const { Schema } = mongoose
 
 const BillSchema = new Schema(
     {
+        service: {
+            type: Schema.Types.ObjectId,
+            ref: 'delivery_services',
+            required: true
+        },
+        road: {
+            type: Schema.Types.ObjectId,
+            ref: 'roads',
+            required: true
+        },
+        car: {
+            type: Schema.Types.ObjectId,
+            ref: 'cars',
+            required: true
+        },
+        driver: {
+            type: Schema.Types.ObjectId,
+            ref: 'staffs',
+            required: true
+        },
         product_shipments: [
             {
                 type: Schema.Types.ObjectId,
                 ref: 'product_shipments'
             }
-        ]
+        ],
+        status: {
+            type: String,
+            enum: Object.values(BILL_STATUS),
+            default: BILL_STATUS.waiting,
+            required: true
+        }
     },
     { timestamps: true }
 )

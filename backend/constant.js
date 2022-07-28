@@ -58,8 +58,8 @@ export const calculateShipmentFee = (distance, quantity, price) => {
 
 export const OTP_EXPIRED = 60000 // unit: milisecond
 
-export const JWT_EXPIRED = '2m'
-export const JWT_REFRESH_EXPIRED = '24h'
+export const JWT_EXPIRED = '7d'
+export const JWT_REFRESH_EXPIRED = '30d'
 
 export const UTYPE = {
     STAFF: 'staff',
@@ -110,8 +110,10 @@ export const ORDER_STATUS = {
     waiting: 'waiting',
     accepted: 'accepted',
     processing: 'processing',
-    completed: 'completed'
+    completed: 'completed',
+    refused: 'refused'
 }
+
 
 export const MAX_LENGTH =    5000 // maximum allowed number of characters
 
@@ -139,4 +141,22 @@ export const INTEREST_SOURCE = {
 export const MESSAGE_STATUS = {
     unseen: 'unseen',
     seen: 'seen',
+}
+export const BILL_STATUS = {
+    waiting: 'waiting',
+    processing: 'processing',
+    completed: 'completed'
+}
+
+export const CAR_TYPE = {
+    TON_8: '8_ton',
+    TON_20: '20_ton',
+}
+
+export const NOTIFY_EVENT = {
+    connection: 'connection',
+    addSession: 'add-session',
+    send: 'send',
+    receive: 'receive',
+    disconnect: 'disconnect'
 }

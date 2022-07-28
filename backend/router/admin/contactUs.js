@@ -22,7 +22,7 @@ contactUsAdminRoute.post('/',
             if (isExist) {
                 await Contact.findOneAndUpdate({}, { address, phone, email, facebook, instagram, tiktok, youtube, hr_mailbox })
             }
-            else await Contact.create({ address, phone, email, facebook, instagram, tiktok, youtube,hr_mailbox })
+            else await Contact.create({ address, phone, email, facebook, instagram, tiktok, youtube, hr_mailbox })
             return sendSuccess(res, 'set contact-us information successfully.')
         } catch (error) {
             console.log(error)

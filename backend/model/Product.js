@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import { PRODUCT_UNIT } from "../constant"
+import { PRODUCT_UNIT } from "../constant.js"
 const { Schema } = mongoose
 
 const ProductSchema = new Schema(
@@ -15,6 +15,11 @@ const ProductSchema = new Schema(
         unit: {
             type: String,
             enum: Object.values(PRODUCT_UNIT),
+            required: true
+        },
+        order: {
+            type: Schema.Types.ObjectId,
+            ref: 'orders',
             required: true
         },
         product_shipments: [
