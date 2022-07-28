@@ -53,9 +53,13 @@ staffAdminRoute.delete('/:id', async (req, res) => {
  staffAdminRoute.put('/:id', async (req, res) => {
     let id = req.params.id;
     const {name, staff_type} = req.body;
-    if (!(staff_type == STAFF.ADMIN || staff_type == STAFF.DRIVER || staff_type == STAFF.SHIPPER || staff_type == STAFF.STOREKEEPER || staff_type == STAFF.STAFF)) {
+    if (staff_type === '') {
         return sendError(res, "Staff-type not found")
     }
+    if (!((staff_type == STAFF.ADMIN || staff_type == STAFF.DRIVER || staff_type == STAFF.SHIPPER || staff_type == STAFF.STOREKEEPER || staff_type == STAFF.STAFF))) {
+        return sendError(res, "Staff-type not found")
+    }
+
     try {
         const result = await Staff.findByIdAndUpdate(id, {name: name, staff_type})
         return sendSuccess(res, "Staff updated successfully")
