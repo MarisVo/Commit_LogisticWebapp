@@ -142,6 +142,7 @@ export const MESSAGE_STATUS = {
     unseen: 'unseen',
     seen: 'seen',
 }
+
 export const BILL_STATUS = {
     waiting: 'waiting',
     processing: 'processing',

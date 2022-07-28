@@ -302,17 +302,19 @@ const Header = () => {
           <div className="hidden md:flex ">
             <Link to="/user/account/profile">
               <div className="px-4 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
+                <span className="font-semibold ">
                 Thông tin
-                <span className="font-semibold text-white"></span>
+
+                </span>
               </div>
             </Link>
             <div>
               <div
                 onClick={Logout}
-                className="px-6 ml-3 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer"
+                className="px-4 ml-3 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer"
               >
-                <span href="#" className="font-semibold text-white">
-                  Logout
+                <span href="#" className="font-semibold ">
+                  Đăng xuất
                 </span>
               </div>
             </div>
@@ -321,12 +323,12 @@ const Header = () => {
           <div className="hidden md:flex">
             <Link to="/dang-nhap">
               <div className="px-4 py-2 mr-3 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
-                <span className="font-semibold text-white">Đăng nhập</span>
+                <span className="font-semibold ">Đăng nhập</span>
               </div>
             </Link>
             <Link to="/dang-ki">
               <div className="px-6 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
-                <span href="#" className="font-semibold text-white">
+                <span href="#" className="font-semibold ">
                   Đăng kí
                 </span>
               </div>

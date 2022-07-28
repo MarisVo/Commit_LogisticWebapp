@@ -25,7 +25,6 @@ const RegisForm = styled.div`
     background-color: #FBAB7E;
     background-image: linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%);
 }
-
 .Regis-header{
     max-width: 500px;
     width: 100%;
@@ -36,13 +35,11 @@ const RegisForm = styled.div`
     box-shadow: 0 5px 10px rgba(0,0,0,0.15);
     overflow:auto;
 }
-
 .ant-typography{
     font-size: 45px;
     font-weight: 500;
     position: relative;
 }
-
 .ant-input-affix-wrapper {
     box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
 }

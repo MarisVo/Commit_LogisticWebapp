@@ -1,6 +1,7 @@
 import { Outlet, Link, Navigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import logoJT from '../assets/icons/logo-J&T.svg'
+import { MainContext } from '../context/MainContext';
 
 const items = [
     {
@@ -13,7 +14,8 @@ const items = [
     },
 ]
 function LayerStorekeeper() {
-    
+      const {  logoutHandle } = useContext(MainContext);
+
     return (
         <>
             <div className='fixed left-0 right-0 top-0 flex flex-row justify-between px-4 items-center h-20 bg-gradient-to-l from-orange-400 to-yellow-400 z-10 '>
@@ -29,7 +31,7 @@ function LayerStorekeeper() {
                     </div>
                 </div>
                 <div className='peer rounded-full  bg-slate-400 w-[46px] text-white p-3 mr-12 '>TK</div>
-                <div className='hidden peer-hover:block absolute right-5 top-16 bg-white shadow-xl px-4 py-2 rounded-lg'>
+                <div className='peer-hover:block absolute right-5 top-16 bg-white shadow-xl px-4 py-2 rounded-lg' onClick={logoutHandle}>
                     Đăng xuất
                 </div>
             </div>

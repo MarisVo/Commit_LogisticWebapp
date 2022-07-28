@@ -2,7 +2,7 @@ import React from 'react'
 import 'antd/dist/antd.css'
 import { Form, Button, Input, message} from "antd";
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import * as axios from 'axios'
 
 const Register_OTP_Form = styled.div`
@@ -106,16 +106,6 @@ function Register_OTP() {
     });
   };
 
-  const failed500 = () => {
-    message.error({
-      content: 'Lỗi hệ thống',
-      className: 'custom-class',
-      style: {
-        marginTop: '20vh',
-      },
-    });
-  };
-
   const update_success = () => {
     message.success({
       content: 'Mã OTP mới đã được gửi đến email hoặc số điện thoại của bạn',
@@ -136,25 +126,21 @@ function Register_OTP() {
     });
   };
 
-  const update_failed404 = () => {
-    message.error({
-      content: 'Quyền xác thực không còn hiệu lực',
-      className: 'custom-class',
-      style: {
-        marginTop: '20vh',
-      },
-    });
-  };
 
   const OTP = Form.useWatch('OTP', form);
-  /*const regis_data = useLocation();
-  const user = regis_data.state;*/
+  const regis_data = useLocation();
+  const user = regis_data.state;
 
   const Update_OTP = async() =>{
     try{
+        console.log(user);
         const response = await axios({
-            method: 'get',
-            url: 'http://localhost:8000/api/auth/update-otp',          
+            method: 'post',
+            url: 'http://localhost:8000/api/auth/update-otp',
+            data: {
+                userId: user.userId,
+                verify_op: user.verify_op
+            }  
         });
         update_success();
 
@@ -162,33 +148,27 @@ function Register_OTP() {
         if(error.message == "Request failed with status code 400") {
             update_failed400();
         }
-
-        if(error.message == "Request failed with status code 404") {
-          update_failed404();
-      }
     }
   } 
 
   const onFinish = async() => {
+    console.log(user);
     try{
         const response = await axios({
             method: 'post',
             url: 'http://localhost:8000/api/auth/verify-otp',
             data: {
+                userId: user.userId,
                 otp: OTP
             }  
         });
-
+        console.log(response)
         success();
         navigate("/dang-nhap");
     } catch(error) {
         if(error.message == "Request failed with status code 400") {
             failed400();
         }
-
-        if(error.message == "Request failed with status code 500") {
-          failed500();
-      }
     }
   };
   return (   
@@ -196,7 +176,7 @@ function Register_OTP() {
         <div className="Register_OTP">
           <div className="Register_OTP-header">
             <Form
-              form ={form}
+              form ={form}q
               autoComplete="off"
               labelCol={{ span: 10 }}
               wrapperCol={{ span: 14 }}
