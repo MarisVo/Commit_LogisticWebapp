@@ -45,9 +45,9 @@ receiverAdminRoute.get('/', async (req, res) => {
 
 receiverAdminRoute.delete('/:id', async (req, res) => {
     let id = req.params.id;
+    const isExist = await Receiver.exists({_id: id})
+    if (!isExist) {return sendError(res,'Receiver does not exist')}
     try {
-        const isExist = await Receiver.exists({_id: id})
-        if (!isExist) {return sendError(res,'Receiver does not exist')}
         const result = await Receiver.deleteOne({_id: id})
         return sendSuccess(res,"Receiver deleted successfully");
     }

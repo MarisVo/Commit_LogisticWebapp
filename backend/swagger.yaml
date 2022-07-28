@@ -3338,7 +3338,7 @@ paths:
         - application/json
       parameters:
         - in: path
-          name: id
+          name: receiverId
           type: string
           description: id of receiver 
       responses:
@@ -3354,7 +3354,7 @@ paths:
         - application/json
       parameters:
         - in: path
-          name: id
+          name: receiverId
           type: string
           description: id of receiver
         - in: body
