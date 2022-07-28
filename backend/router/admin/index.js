@@ -46,4 +46,3 @@ adminRoute.use('/auth', authAdminRoute)
     .use("/department", departmentAdminRoute);
     
 export default adminRoute
-

@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import 'antd/dist/antd.css'
 import { Form, Button, Input, Typography, message } from "antd";
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as axios from 'axios'
+import { MainContext } from '../../context/MainContext';
+import { useEffect } from 'react';
 
 const LoginForm = styled.div`
   .Login {
@@ -79,8 +81,9 @@ function isValidEmail(email) {
 const { Title } = Typography;
 
 function StaffLogin() {
+   const { loginHandle, user,accestoken } = useContext(MainContext);
   const [form] = Form.useForm();
-
+ const navigate = useNavigate();
   const success = () => {
     message.success({
       content: 'Đăng nhập thành công',
@@ -117,6 +120,7 @@ function StaffLogin() {
   (isValidEmail(emailphone)) ? email = emailphone : phone = emailphone
   let password = Form.useWatch('password', form);
 
+  
   const onFinish = async() => {
     try{ 
       const response = await axios({
@@ -128,8 +132,16 @@ function StaffLogin() {
           password: password
         }
       })   
-
+      console.log(response)
       success();
+      const { data } = response.data;
+      loginHandle(data.accessToken, data.refreshToken, data.user);
+     if(data.user.role.staff_type==="admin"){
+       navigate("/admin", { replace: true });
+    }
+    else if(data.user.role.staff_type==="storekeeper") {
+       navigate("/storekeeper", { replace: true });
+    }
     } catch(error) {
       if(error.message == "Request failed with status code 403") {
         failed403();
@@ -155,7 +167,7 @@ function StaffLogin() {
               } }
             >
                 <Title level={2} className="text-center">
-                    Đăng nhập
+                    Đăng nhập staff
                 </Title>
 
                 <Form.Item

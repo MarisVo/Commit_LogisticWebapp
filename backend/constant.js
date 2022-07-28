@@ -126,7 +126,6 @@ export const APPLICANT_STATUS = {
     REJECTED: 'rejected',
 }
 
-
 export const INTEREST_SOURCE = {
     REC_STAFF: 'staff',
     REC_STAFF: 'friend',

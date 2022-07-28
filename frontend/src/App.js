@@ -135,7 +135,7 @@ const App = () => {
               <Route path="tu-van/dang-ki-tu-van" element={<SignUpAdvice />} />
               <Route path="*" element={<PageNotFound />} />
             </Route>
-            {/* <Route element={<StaffRoute/>}>   */}      
+            <Route element={<StaffRoute/>}>        
               <Route path="storekeeper" element={<LayerStorekeeper />}>
                 <Route index element={<ProductsManager />} />
                 <Route path="xuat-nhap" element={<ProductsManager />} />
@@ -155,7 +155,7 @@ const App = () => {
                 <Route path="car" element={<AdminCar />}></Route>
                 <Route path="road" element={<AdminRoad />}></Route>
               </Route>
-              {/* </Route> */}
+              </Route>
           </Routes>
         </div>
       </BrowserRouter>
