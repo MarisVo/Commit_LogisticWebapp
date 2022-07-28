@@ -20,6 +20,7 @@ import orderAdminRoute from "./order.js"
 import applicantAdminRoute from "./applicant.js"
 import careerAdminRoute from "./career.js"
 import departmentAdminRoute from "./department.js"
+import featureAdminRoute from "./feature.js"
 
 const adminRoute = express.Router()
 
@@ -43,6 +44,7 @@ adminRoute.use('/auth', authAdminRoute)
     .use('/order', orderAdminRoute)
     .use("/applicant", applicantAdminRoute)
     .use("/career", careerAdminRoute)
-    .use("/department", departmentAdminRoute);
+    .use("/department", departmentAdminRoute)
+    .use("/feature", featureAdminRoute);
 
 export default adminRoute
