@@ -13,6 +13,7 @@ function AdminCareer() {
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 2,
+    total:16
   });
   const [isAddVisible, setIsAddVisible] = useState(false);
   const [isEditVisible, setIsEditVisible] = useState(false);
@@ -78,14 +79,18 @@ function AdminCareer() {
       filters: [
         {
           text: "Hồ Chí Minh",
-          value: "Hồ Chí Minh",
+          value: "HCM",
         },
         {
           text: "Hà Nội",
-          value: "Hà Nội",
+          value: "HN",
         },
       ],
-      onFilter: (value, record) => record.locate === value,
+      // onFilter: (value, record) => record.locate === value,
+      // onFilter: (value, record) => fetchData({location:value}),
+      onFilter: (value, record) => console.log(value)
+
+
     },
     {
       title: "Trạng thái",
@@ -141,18 +146,27 @@ function AdminCareer() {
       ),
     },
   ];
-  const fetchData = async () => {
+  const fetchData = async (params={}) => {
     setLoading(true);
     try {
-      const { data: response } = await axios.get(`${END_POINT}/career`);
+      const { data: response } = await axios.get(`${END_POINT}/career`,{params:params});
+      console.log(response)
       setData(response.data);
       setLoading(false);
+      setPagination({
+        total:params?.total,
+        pageSize:params?.pageSize,
+        current:params?.page+1,
+      })
     } catch (error) {
       console.error(error.message);
     }
   };
   useEffect(() => {
-    fetchData();
+    fetchData({
+      ...pagination,
+      page:pagination.current-1
+    });
   }, []);
   const handleTableChange = (newPagination, filters, sorter) => {
     // fetchData({
@@ -162,6 +176,10 @@ function AdminCareer() {
     //     ...filters,
     // });
     // data.find(a=>a.)
+    fetchData({
+      ...newPagination,
+      page:newPagination.current-1
+    })
     console.log(newPagination)
     setPagination(newPagination)
   };
