@@ -1,5 +1,6 @@
-import express from "express";
+import express, { request } from "express";
 import Staff from "../../model/Staff.js";
+import User from "../../model/User.js";
 import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
 import { STAFF } from "../../constant.js";
 const staffAdminRoute = express.Router();
@@ -42,8 +43,12 @@ staffAdminRoute.delete('/:id', async (req, res) => {
     const isExist = await Staff.exists({_id: id})
     if (!isExist) {return sendError(res,'Staff does not exist')}
     try {
-        const result = await Staff.deleteOne({_id: id})
-        sendSuccess(res, "Staff deleted successfully");
+        const staff = await Staff.deleteOne({_id: id})
+        const userfind = await User.find({role: id})
+        await User.findByIdAndRemove(userfind[0]._id)
+            .then(() => {
+                return sendSuccess(res, "Delete staff user successfully.")
+            })
     }
     catch (err) {sendError(res, err.message)};
 })
@@ -57,9 +62,6 @@ staffAdminRoute.delete('/:id', async (req, res) => {
     const {name, staff_type} = req.body;
     const isExist = await Staff.exists({_id: id})
     if (!isExist) {return sendError(res,'Staff does not exist')}
-    if (staff_type === '') {
-        return sendError(res, "Staff-type not found")
-    }
     if (!((staff_type == STAFF.ADMIN || staff_type == STAFF.DRIVER || staff_type == STAFF.SHIPPER || staff_type == STAFF.STOREKEEPER || staff_type == STAFF.STAFF))) {
         return sendError(res, "Staff-type not found")
     }
@@ -73,4 +75,19 @@ staffAdminRoute.delete('/:id', async (req, res) => {
     }
 
 })
+//!----------------------------------------------------------------
+// staffAdminRoute.post('/create/:name/:staffType/', async (req, res) => {
+//     let {name, staffType} = req.params;
+//     let staff = new Staff({
+//         name: name,
+//         staff_type: staffType,
+//     })
+//     staff.save()
+//     .then((result) => {
+//         res.send("staff created successfully")
+//     })
+//     .catch((err) => {
+//         res.send(err.keyValue.identity);
+//     })
+// })
 export default staffAdminRoute;
