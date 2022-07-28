@@ -161,6 +161,11 @@ paths:
       summary: Update OTP send through email/phone number.
       produces:
         - application/json
+      parameters:
+        - in: query
+          name: verify_op
+          type: string
+          required: true
       responses:
         200:
           description: update otp successfully.
