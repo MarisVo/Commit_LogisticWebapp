@@ -14,7 +14,22 @@ contactMsgAdminRoute.get('/', async (req, res) => {
     try {
         const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0
         const page = req.query.page ? parseInt(req.query.page) : 0
-        const messages = await Message.find({}).limit(pageSize).skip(pageSize*page)
+        const {keyword, sortBy, status} = req.query
+        var keywordCondition = keyword ? { $or:[
+            { name: { $regex: keyword, $options: 'i'} },
+            { email: { $regex: keyword, $options: 'i'} },
+            { phone: { $regex: keyword, $options: 'i'} },
+            { message: { $regex: keyword, $options: 'i'} },            
+        ]} : {} 
+        var filterCondition = status ? {status: status} : {}
+        const messages = await Message.find(
+            {
+                $and: [            
+                    filterCondition,
+                    keywordCondition                
+                ]
+            }
+        ).skip(page*pageSize).limit(pageSize).sort(`${sortBy}`)
         if (messages)
             return sendSuccess(res, 'get message information successfully.', messages)
         return sendError(res, 'message information is not found.')
@@ -44,18 +59,18 @@ contactMsgAdminRoute.get('/:id', async (req, res) => {
 
 /**
  * @route PUT /api/admin/message/:id
- * @description update information of a message
+ * @description admin update status of a message
  * @access private
  */
 contactMsgAdminRoute.put('/:id',
     async (req, res) => {
         try{
             const {id} = req.params
-            const {name, email, phone, message} = req.body            
+            const {status} = req.body            
             const isExist = await Message.exists({_id: id})
             if (! isExist) return sendError(res, "This message is not existed.")
-            await Message.findByIdAndUpdate(id, {name, email, phone, message})
-            return sendSuccess(res, "Update message successfully",  {name, email, phone, message})            
+            await Message.findByIdAndUpdate(id, {status})
+            return sendSuccess(res, "Update message successfully",  {status})            
         } catch (error) {
             console.log(error)
             return sendServerError(res)

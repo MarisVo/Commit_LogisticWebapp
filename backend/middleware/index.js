@@ -32,6 +32,14 @@ export const createLogoDir = (req, res, next) => {
     next()
 }
 
+export const createImageDir = (req, res, next) => {
+    mkdir(`public/images`, { recursive: true }, (err) => {
+        if(err) return sendError(res, 'Cannot upload file.')
+    })
+    req.dirName = 'images'
+    next()
+}
+
 /**
  * header contain
  * Authorised : Bearer token
@@ -63,5 +71,11 @@ export const verifyToken = async (req, res, next) => {
 export const verifyAdmin = async (req, res, next) => {
     if (req.user.role.staff_type !== 'admin')
         return sendError(res, 'Forbidden.',403)
+    next()    
+}
+
+export const verifyCustomer = async (req, res, next) => {
+    if (! req.user.role.hasOwnProperty('customer_type'))
+        sendError(res, 'Unauthorized.',401)
     next()    
 }

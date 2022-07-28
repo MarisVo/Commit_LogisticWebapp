@@ -109,14 +109,50 @@ export const VERIFY_OP = {
 export const ORDER_STATUS = {
     waiting: 'waiting',
     accepted: 'accepted',
+    probablyProceed: 'probably proceed',
     processing: 'processing',
-    completed: 'completed'
+    completed: 'completed',
+    refused: 'refused',
+    cancel: 'cancel'
 }
 
+
+export const MAX_LENGTH =    5000 // maximum allowed number of characters
+
+
+export const MIN_LENGTH =  1 // minimum allowed number of characters
+
+export const APPLICANT_STATUS = {
+    APPROVED: 'approved',
+    PENDING: 'pending',
+    REJECTED: 'rejected',
+}
+
+export const INTEREST_SOURCE = {
+    REC_STAFF: 'staff',
+    REC_STAFF: 'friend',
+    REC_EMAIL: 'email',
+    REC_PHONE: 'phone',
+    REC_FB: 'facebook',
+    REC_LKD: 'linkedin',
+    REC_INT: 'search',
+    REC_EVENT: 'event',
+    REC_OTHER: 'other',
+}
+
+export const MESSAGE_STATUS = {
+    unseen: 'unseen',
+    seen: 'seen',
+}
 export const BILL_STATUS = {
     waiting: 'waiting',
     processing: 'processing',
     completed: 'completed'
+}
+
+export const CAR_TYPE = {
+    TON_8: '8_ton',
+    TON_20: '20_ton',
 }
 
 export const NOTIFY_EVENT = {
@@ -137,4 +173,11 @@ export const COST = {
 export const SHIPMENT_MANAGER = {
     import: 'import',
     export: 'export'
+}
+
+export const PAYMENT_METHOD = {
+    CASH: 'cash',
+    MOMO_WALLET: 'momo wallet',
+    ZALO_PAY: 'zalo pay',
+    PAYPAL: 'paypal'
 }
