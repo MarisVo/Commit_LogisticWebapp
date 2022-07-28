@@ -1,7 +1,33 @@
 import { faCity, faChartLine, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 const EmploymentInformation = () => {
+    const api = "http://localhost:8000/api/career?";
+    const [job,setJob] = useState([])
+
+    const getDataFromApi = async ()=>{
+        try{
+            const res = await axios({
+                url:api,
+                method:"get",
+                // headers: "Bears" + TOKEN,
+            })
+            console.log(res);
+            if(res.status===200){
+                setJob(res.data.data)
+            }
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
+    useEffect(()=>{
+        getDataFromApi()
+    })
+
+   
     const professions = [
         {
             id: 1,
@@ -10,79 +36,79 @@ const EmploymentInformation = () => {
         {
             id: 2,
             profession: 'Bưu cục',
-            numberOfRecruitment: 0,
+            numberOfRecruitment: job.filter(e=>e.type==="Bưu cục").length,
             type: 'văn phòng',
         },
         {
             id: 3,
             profession: 'Chăm sóc khách hàng',
-            numberOfRecruitment: 0,
+            numberOfRecruitment: job.filter(e=>e.type==="Chăm sóc khách hàng").length,
             type: 'văn phòng',
         },
         {
             id: 4,
             profession: 'Công nghệ thông tin',
-            numberOfRecruitment: 7,
+            numberOfRecruitment: job.filter(e=>e.type==="Công nghệ thông tin").length,
             type: 'văn phòng',
         },
         {
             id: 5,
             profession: 'Đào tạo',
-            numberOfRecruitment: 0,
+            numberOfRecruitment: job.filter(e=>e.type==="Đào tạo").length,
             type: 'văn phòng',
         },
         {
             id: 6,
             profession: 'Kế toán - Tài chính',
-            numberOfRecruitment: 4,
+            numberOfRecruitment: job.filter(e=>e.type==="Kế toán - Tài chính").length,
             type: 'văn phòng',
         },
         {
             id: 7,
             profession: 'Kiểm toán & Kiểm soát nội bộ',
-            numberOfRecruitment: 1,
+            numberOfRecruitment: job.filter(e=>e.type==="Kiểm toán & Kiểm soát nội bộ").length,
             type: 'văn phòng',
         },
         {
             id: 8,
             profession: 'Kinh doanh',
-            numberOfRecruitment: 1,
+            numberOfRecruitment: job.filter(e=>e.type==="Kinh doanh").length,
             type: 'kinh doanh',
         },
         {
             id: 9,
             profession: 'Nhân sự & Hành chính',
-            numberOfRecruitment: 1,
+            numberOfRecruitment: job.filter(e=>e.type==="Nhân sự & Hành chính").length,
             type: 'văn phòng',
         },
         {
             id: 10,
             profession: 'Quản lí chất lượng',
-            numberOfRecruitment: 3,
+            numberOfRecruitment: job.filter(e=>e.type==="Quản lí chất lượng").length,
             type: 'văn phòng',
         },
         {
             id: 11,
             profession: 'Thu mua',
-            numberOfRecruitment: 0,
+            numberOfRecruitment: job.filter(e=>e.type==="Thu mua").length,
             type: 'kinh doanh',
         },
         {
             id: 12,
             profession: 'Trợ lí',
-            numberOfRecruitment: 1,
+            numberOfRecruitment: job.filter(e=>e.type==="Trợ lí").length,
             type: 'văn phòng',
         },
         {
             id: 13,
             profession: 'Trung tâm khai thác',
-            numberOfRecruitment: 0,
+            numberOfRecruitment: job.filter(e=>e.type==="Trung tâm khai thác").length,
             type: 'văn phòng',
         },
         {
             id: 14,
             profession: 'Vận hành',
-            numberOfRecruitment: 0,
+            numberOfRecruitment: job.filter(e=>e.type==="Vận hành").length,
             type: 'văn phòng',
         },
     ];

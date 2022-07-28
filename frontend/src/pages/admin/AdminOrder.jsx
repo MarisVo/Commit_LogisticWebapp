@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useContext } from 'react'
+import { MainContext } from '../../context/MainContext';
 import { Button, Input, Table, Space } from "antd";
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
@@ -10,6 +11,8 @@ import { TOKEN } from "./adminToken";
 import axios from 'axios';
 
 export default function AdminOrder() {
+    const {accessToken} = useContext(MainContext)
+    console.log(accessToken);
     const api = "http://localhost:8000/api/admin/order";
     const apiListOrder = "http://localhost:8000/api/order/tracking/"
     const [id,setId] = useState()
@@ -26,51 +29,6 @@ export default function AdminOrder() {
 
 
     const [data, setData] = useState([
-        // {
-        //     id: 1,
-        //     receiver: "Le Van C",
-        //     total_price: "12093",
-        //     destination: "1243@gmail.com",
-        //     status: "Xác nhận",
-        //     service: "19989099",
-        //     product: [
-        //         {
-        //             bill: 1,
-        //         }
-        //     ]
-        // },
-        // {
-        //     id: 2,
-        //     receiver: "Tran Van B",
-        //     total_price: "1203",
-        //     destination: "abc@gmail.com",
-        //     status: "Từ chối",
-        //     service: "09851996",
-        //     product: [
-        //         {
-        //             bill: 1,
-        //         },
-        //         {
-        //             bill: 2,
-        //         }
-        //     ]
-        // },
-        // {
-        //     id: 3,
-        //     receiver: "Nguyen Van A",
-        //     total_price: "01234",
-        //     destination: "123@gmail.com",
-        //     status: "Xác nhận",
-        //     service: "03882000",
-        //     product: [
-        //         {
-        //             bill: 1,
-        //         },
-        //         {
-        //             bill: 2,
-        //         },
-        //     ]
-        // },
         {
             orderId: "string",
             service: "string",
@@ -82,7 +40,6 @@ export default function AdminOrder() {
           }
     
     ])
-
     // ____
     // const [data, setData] = useState()
     const [searchText, setSearchText] = useState('');
@@ -95,17 +52,17 @@ export default function AdminOrder() {
             const res = await axios({
                 url:api,
                 method: "get",
-                headers: "Bears" + TOKEN,
+                headers: {'Access-Control-Allow-Origin': `Bears${accessToken}`},
             });
             console.log(res);
             if (res.status === 200) {
                setData(res.data);
-               const id = res.map(e=>e.orderId);
-               console.log(id);
+            //    const id = res.map(e=>e.orderId);
+            //    console.log(id);
               }
         }
         catch(error){
-            // console.log(error);
+            console.log(error);
         }
     }
 
@@ -538,14 +495,14 @@ export default function AdminOrder() {
                 onClose={() => setOpenSplit(false)}
             />
 
-            <statusModal
+            {/* <statusModal
                 isVisible={openDel}
                 text={`xóa order`}
                 onClose={() => setOpenDel(false)}
                 loading={loading}
                 disable={isDisable}
                 onOk={acceptDelete}
-            />
+            /> */}
 
         </div>
     )

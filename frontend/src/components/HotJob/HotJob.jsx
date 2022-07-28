@@ -9,68 +9,6 @@ const HotJob = ({setDetail}) => {
     const api = "http://localhost:8000/api/career?sortBy=applicants.ref";
     const [hotJob,setJob] = useState([]);
 
-   const job = [
-        {
-            // name: '[HCM _ Q2] _ INTERNAL CONTROL SPECIALIST',
-            // location: 'Quận 2 - Hồ Chí Minh',
-            "name": "[HCM _ Q2] _ INTERNAL CONTROL SPECIALIST",
-            "type": "string",
-            "description": "string",
-            "location": "Quận 2 - Hồ Chí Minh",
-            "state": "string",
-            "bonus": "string",
-            "deadline": "YYYY/MM/DD",
-            "applicants": "object"
-        },
-        {
-            // name: '[HCM _ Q2] _ NHÂN VIÊN QUẢN LÝ TÀI SẢN',
-            // location: 'Quận Bình Thạnh - Hồ Chí Minh',
-            "name": "[HCM _ Q2] _ NHÂN VIÊN QUẢN LÝ TÀI SẢN",
-            "type": "string",
-            "description": "string",
-            "location": "Quận Bình Thạnh - Hồ Chí Minh",
-            "state": "string",
-            "bonus": "string",
-            "deadline": "YYYY/MM/DD",
-            "applicants": "object"
-        },
-        {
-            // name: 'Nhân viên Kinh doanh phần mềm (Công ty đối tác)',
-            // location: 'Quận 2 - Hồ Chí Minh',
-            "name": "Nhân viên Kinh doanh phần mềm (Công ty đối tác)",
-            "type": "string",
-            "description": "string",
-            "location": "Quận 2 - Hồ Chí Minh",
-            "state": "string",
-            "bonus": "string",
-            "deadline": "YYYY/MM/DD",
-            "applicants": "object"
-        },
-        {
-            // name: '[HCM_Q2] _ NHÂN VIÊN ĐÀO TẠO',
-            // location: 'Quận 2 - Hồ Chí Minh',
-            "name": "[HCM_Q2] _ NHÂN VIÊN ĐÀO TẠO",
-            "type": "string",
-            "description": "string",
-            "location": "Quận 2 - Hồ Chí Minh",
-            "state": "string",
-            "bonus": "string",
-            "deadline": "YYYY/MM/DD",
-            "applicants": "object"
-        },
-        {
-            // name: '[HCM_Q2] _ INTERNAL AUDITOR, SENIOR (FINANCE)',
-            // location: 'Quận 2 - Hồ Chí Minh',
-            "name": "[HCM_Q2] _ INTERNAL AUDITOR, SENIOR (FINANCE)",
-            "type": "string",
-            "description": "string",
-            "location": "Quận 2 - Hồ Chí Minh",
-            "state": "string",
-            "bonus": "string",
-            "deadline": "YYYY/MM/DD",
-            "applicants": "object"
-        },
-    ];
 
     const getDataFromApi = async ()=>{
         try{
