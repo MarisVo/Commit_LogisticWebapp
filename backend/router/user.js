@@ -26,7 +26,7 @@ userRoute.get('/',
                     { phone: { $regex: keyword, $options: 'i' } },
                 ]
             } : {}
-            const listUser = await User.find(listKeyword)
+            const listUser = await User.find({listKeyword}, {password: false})
             .limit(pageSize)
             .skip(pageSize*page)
             .sort(`${sortBy}`)
@@ -48,7 +48,7 @@ userRoute.get('/:id',
     async (req, res) => {
         try {
             const { id } = req.params
-            const user = await User.findById(id)
+            const user = await User.findById(id, {password: false})
             if (user) return sendSuccess(res, "Get user successful.", user)
             return sendError(res, "Not information found.")
         } catch (error) {

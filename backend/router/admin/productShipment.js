@@ -1,6 +1,7 @@
 import express from "express"
 import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
 import ProductShipment from "../../model/ProductShipment.js"
+import Product from "../../model/Product.js"
 import { createProductShipmentValidate } from "../../validation/productShipment.js"
 
 
@@ -65,11 +66,31 @@ productShipmentAdminRoute.post('/create', async (req, res) => {
 
     try {
         const { quantity } = req.body
-        const isExist = await ProductShipment.exists({ quantity })
-        if (isExist)
-            return sendError(res, "Quantity is exists")
-        ProductShipment.create({ quantity })
-        return sendSuccess(res, 'set product shipment information successfully.')
+
+        const sum = await ProductShipment.aggregate([{
+            $group: {
+                _id: '',
+                quantity: { $sum: '$quantity' }
+            }
+         }]
+        )
+        const quantityProduct = await Product.aggregate([
+            { 
+                $project: { 
+                    _id: 0,
+                    quantity: 1,
+                } 
+            }
+        ])
+        const number = parseInt(quantityProduct)
+        console.log(number)
+        console.log(sum)
+        // const isExist = await ProductShipment.exists({ quantity })
+        // if (isExist)
+        //     return sendError(res, "Quantity is exists")
+        // ProductShipment.create({ quantity })
+       
+        return sendSuccess(res, 'set product shipment information successfully')
     }
     catch (error) {
         console.log(error)
