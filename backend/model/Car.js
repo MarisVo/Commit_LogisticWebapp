@@ -23,26 +23,7 @@ const CarSchema = new Schema(
         tonnage: {
             type: Number,
             required: true
-        },
-        cost: [
-            {
-                cost_type: {
-                    type: String,
-                    enum: Object.values(COST),
-                    required: true
-                },
-                amount: {
-                    type: Number,
-                    required: true // amount of money
-                },
-                in_progress: {
-                    type: Schema.Types.ObjectId,
-                    ref: 'bills'
-                },
-                detail: String
-            },
-            { timestamps: true }
-        ]
+        }
     },
     { timestamps: true }
 )
