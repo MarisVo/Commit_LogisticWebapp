@@ -39,6 +39,8 @@ const staffAdminRoute = express.Router();
  */
 staffAdminRoute.delete('/:id', async (req, res) => {
     let id = req.params.id;
+    const isExist = await Staff.exists({_id: id})
+    if (!isExist) {return sendError(res,'Staff does not exist')}
     try {
         const result = await Staff.deleteOne({_id: id})
         sendSuccess(res, "Staff deleted successfully");
@@ -53,6 +55,8 @@ staffAdminRoute.delete('/:id', async (req, res) => {
  staffAdminRoute.put('/:id', async (req, res) => {
     let id = req.params.id;
     const {name, staff_type} = req.body;
+    const isExist = await Staff.exists({_id: id})
+    if (!isExist) {return sendError(res,'Staff does not exist')}
     if (staff_type === '') {
         return sendError(res, "Staff-type not found")
     }
