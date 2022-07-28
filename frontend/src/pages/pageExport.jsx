@@ -54,5 +54,10 @@ export { default as AdminPartner } from "./admin/AdminPartner.jsx";
 export { default as AdminCareer } from "./admin/AdminCareer.jsx";
 export { default as AdminApplicant } from "./admin/AdminApplicant.jsx";
 export { default as AdminDepartment } from "./admin/AdminDepartment.jsx";
+export { default as AdminCustomer } from "./admin/AdminCustomer.jsx";
+export { default as AdminStaff } from "./admin/AdminStaff.jsx";
+export { default as AdminOrder } from "./admin/AdminOrder.jsx";
+
+
 
 

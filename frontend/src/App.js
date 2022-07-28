@@ -46,7 +46,10 @@ import {
   AdminPartner,
   AdminCareer,
   AdminApplicant,
-  AdminDepartment
+  AdminDepartment,
+  AdminCustomer,
+  AdminStaff,
+  AdminOrder,
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainProvider from "./context/MainContext";
@@ -63,23 +66,23 @@ const App = () => {
               <Route path="ve-chung-toi" element={<About />} />
               <Route path="cam-ket" element={<Commit />} />
               {/* -----------------------Tra cứu---------------------- */}
-              <Route path="tra-cuu" element={<Track />}>
-                <Route path="cuoc-van-chuyen" element={<CuocVanChuyen />} />
-                <Route path="van-don" element={<VanDon />} />
-                <Route path="buu-cuc" element={<BuuCuc />} />
-                <Route path="bang-gia" element={<BangGia />} />
-                <Route path="hang-cam-gui" element={<HangCamGui />} />
-              </Route>
+              <Route path="tra-cuu" element={<Track number="cuoc-van-chuyen"/>}></Route>
+                <Route path="tra-cuu/cuoc-van-chuyen" element={<Track number="cuoc-van-chuyen"/>} />
+                <Route path="tra-cuu/van-don" element={<Track number="van-don"/>} />
+                <Route path="tra-cuu/buu-cuc" element={<Track number="buu-cuc"/>} />
+                <Route path="tra-cuu/bang-gia" element={<Track number="bang-gia"/>} />
+                <Route path="tra-cuu/hang-cam-gui" element={<Track number="hang-cam-gui"/>} />
+              
               {/* ------------------------Tuyển dụng------------------- */}
               <Route path="tuyen-dung" element={<CareerOpportunities />}>
                 <Route
                   path="chi-tiet-viec-lam-noi-bat"
                   element={<RecruitmentDetails />}
                 />
-                <Route
+                {/* <Route
                   path="chi-tiet-viec-lam-moi"
                   element={<RecruitmentDetails />}
-                />
+                /> */}
               </Route>
               <Route path="cuoc-song" element={<Life />} />
               {/* ------------------------Dịch vụ---------------------- */}
@@ -135,6 +138,10 @@ const App = () => {
               <Route path="career" element={<AdminCareer />}></Route>
               <Route path="applicant" element={<AdminApplicant />}></Route>
               <Route path="department" element={<AdminDepartment />}></Route>
+              <Route path="staff" element={<AdminStaff />}></Route>
+              <Route path="customer" element={<AdminCustomer/>}></Route>
+              <Route path="order" element={<AdminOrder/>}></Route>
+
             </Route>
           </Routes>
 

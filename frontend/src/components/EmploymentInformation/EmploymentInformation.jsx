@@ -87,7 +87,7 @@ const EmploymentInformation = () => {
         },
     ];
     return (
-        <div className="lg:grid  lg:grid-cols-3 border-[1px] border-[#e5a663] rounded-xl  bg-[#f2f2f2] mb-[60px]">
+        <div className="lg:grid  lg:grid-cols-3 border-[1px] border-[#e5a663] rounded-xl  bg-[#f2f2f2] mb-[60px] mt-[25px]">
             <div className="p-[20px] sm:p-[32px] ">
                 <div className="flex gap-4 font-bold">
                     <FontAwesomeIcon icon={faCity} />

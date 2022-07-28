@@ -2,30 +2,104 @@ import { RightOutlined } from '@ant-design/icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
-const HotJob = () => {
-    const hotJob = [
+const HotJob = ({setDetail}) => {
+    const api = "http://localhost:8000/api/career?sortBy=applicants.ref";
+    const [hotJob,setJob] = useState([]);
+
+   const job = [
         {
-            name: '[HCM _ Q2] _ INTERNAL CONTROL SPECIALIST',
-            location: 'Quận 2 - Hồ Chí Minh',
+            // name: '[HCM _ Q2] _ INTERNAL CONTROL SPECIALIST',
+            // location: 'Quận 2 - Hồ Chí Minh',
+            "name": "[HCM _ Q2] _ INTERNAL CONTROL SPECIALIST",
+            "type": "string",
+            "description": "string",
+            "location": "Quận 2 - Hồ Chí Minh",
+            "state": "string",
+            "bonus": "string",
+            "deadline": "YYYY/MM/DD",
+            "applicants": "object"
         },
         {
-            name: '[HCM _ Q2] _ NHÂN VIÊN QUẢN LÝ TÀI SẢN',
-            location: 'Quận Bình Thạnh - Hồ Chí Minh',
+            // name: '[HCM _ Q2] _ NHÂN VIÊN QUẢN LÝ TÀI SẢN',
+            // location: 'Quận Bình Thạnh - Hồ Chí Minh',
+            "name": "[HCM _ Q2] _ NHÂN VIÊN QUẢN LÝ TÀI SẢN",
+            "type": "string",
+            "description": "string",
+            "location": "Quận Bình Thạnh - Hồ Chí Minh",
+            "state": "string",
+            "bonus": "string",
+            "deadline": "YYYY/MM/DD",
+            "applicants": "object"
         },
         {
-            name: 'Nhân viên Kinh doanh phần mềm (Công ty đối tác)',
-            location: 'Quận 2 - Hồ Chí Minh',
+            // name: 'Nhân viên Kinh doanh phần mềm (Công ty đối tác)',
+            // location: 'Quận 2 - Hồ Chí Minh',
+            "name": "Nhân viên Kinh doanh phần mềm (Công ty đối tác)",
+            "type": "string",
+            "description": "string",
+            "location": "Quận 2 - Hồ Chí Minh",
+            "state": "string",
+            "bonus": "string",
+            "deadline": "YYYY/MM/DD",
+            "applicants": "object"
         },
         {
-            name: '[HCM_Q2] _ NHÂN VIÊN ĐÀO TẠO',
-            location: 'Quận 2 - Hồ Chí Minh',
+            // name: '[HCM_Q2] _ NHÂN VIÊN ĐÀO TẠO',
+            // location: 'Quận 2 - Hồ Chí Minh',
+            "name": "[HCM_Q2] _ NHÂN VIÊN ĐÀO TẠO",
+            "type": "string",
+            "description": "string",
+            "location": "Quận 2 - Hồ Chí Minh",
+            "state": "string",
+            "bonus": "string",
+            "deadline": "YYYY/MM/DD",
+            "applicants": "object"
         },
         {
-            name: '[HCM_Q2] _ INTERNAL AUDITOR, SENIOR (FINANCE)',
-            location: 'Quận 2 - Hồ Chí Minh',
+            // name: '[HCM_Q2] _ INTERNAL AUDITOR, SENIOR (FINANCE)',
+            // location: 'Quận 2 - Hồ Chí Minh',
+            "name": "[HCM_Q2] _ INTERNAL AUDITOR, SENIOR (FINANCE)",
+            "type": "string",
+            "description": "string",
+            "location": "Quận 2 - Hồ Chí Minh",
+            "state": "string",
+            "bonus": "string",
+            "deadline": "YYYY/MM/DD",
+            "applicants": "object"
         },
     ];
+
+    const getDataFromApi = async ()=>{
+        try{
+            const res = await axios({
+                url:api,
+                method:"get",
+                // headers: "Bears" + TOKEN,
+            })
+            console.log(res);
+            if(res.status===200){
+                let item = res.data.data;
+                let newItem = item.sort((a,b)=>a.applicants.length-b.applicants.length);
+                let items =[]
+                for(let i=newItem.length-1; i>=newItem.length-5;i--){
+                    items.push(newItem[i]);
+                }
+                setJob(items);
+                console.log(items);
+            }
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
+
+    useEffect(()=>{
+        getDataFromApi()
+    },[])
+
     return (
         <div className="w-[100%]">
             <h2 className="text-[24px] sm:text-[32px] font-bold mb-[16px] sm:mb-[28px] truncate">Việc làm nổi bật</h2>
@@ -43,15 +117,15 @@ const HotJob = () => {
                             <FontAwesomeIcon icon={faLocationDot} className=" pr-[16px]" />
                             {job.location}
                         </p>
-                        <Link to="chi-tiet-viec-lam-noi-bat">
+                        <div style={{cursor:'pointer'}}>
                             <span
                                 className="text-[14px] text-[#e5a663] tracking-wider flex items-center gap-2 font-bold"
-                                href="#"
+                                onClick={(e)=>setDetail(e,job)}
                             >
                                 <RightOutlined />
                                 XEM CHI TIẾT
                             </span>
-                        </Link>
+                        </div>
                     </div>
                 );
             })}

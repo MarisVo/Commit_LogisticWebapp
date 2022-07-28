@@ -86,6 +86,27 @@ export default function AdminPage() {
       "9",
       <DesktopOutlined> </DesktopOutlined>
     ),
+    getItem(
+      <div>
+        <Link to="customer">customer</Link>
+      </div>,
+      "10",
+      <DesktopOutlined> </DesktopOutlined>
+    ),
+    getItem(
+      <div>
+        <Link to="staff">staff</Link>
+      </div>,
+      "11",
+      <DesktopOutlined> </DesktopOutlined>
+    ),
+    getItem(
+      <div>
+        <Link to="order">order</Link>
+      </div>,
+      "12",
+      <DesktopOutlined> </DesktopOutlined>
+    ),
     // getItem("User", "sub1", <UserOutlined />, [getItem("Tom", "3"), getItem("Bill", "4"), getItem("Alex", "5")]),
   ];
   return (
