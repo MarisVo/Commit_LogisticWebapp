@@ -1,8 +1,8 @@
 import React from 'react'
 import { Tabs } from 'antd';
-import MienNam from './Area/TieuChuan/MienNam';
-import MienNamNhanh from './Area/Nhanh/MienNam.nhanh';
-import MienNamSuper from './Area/Super/MienNam.super';
+import MienNam from './area/tieuChuan/MienNam';
+import MienNamNhanh from './area/nhanh/MienNam.nhanh';
+import MienNamSuper from './area/Super/MienNam.super';
 
 const { TabPane } = Tabs;
 export default function BangGia() {

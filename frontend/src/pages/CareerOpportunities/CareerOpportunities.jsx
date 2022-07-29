@@ -24,6 +24,7 @@ const CareerOpportunities = () => {
     const [local, setLocal] = useState('')
     const [type, setType] = useState('')
     const [state, setState] = useState('')
+    const [department,setDepartment] = useState('')
     const [showAll, setShowAll] = useState(false)
     const [showDetail,setShowDeatail] = useState(false)
     const [dataDetail,setDataDetail]= useState({})
@@ -45,6 +46,10 @@ const CareerOpportunities = () => {
         setState(e.target.value)
     }
 
+    const onChangeDepartment = (e)=>{
+        setDepartment(e.target.value)
+    }
+
     const getDataFromApi = async (api) => {
         try {
             const res = await axios({
@@ -64,7 +69,7 @@ const CareerOpportunities = () => {
     const onSearch = (e) => {
 
         if (key === "" && (local === "" || local === "Tỉnh/Thành phố") && (type === "" || type === "Ngành nghề") &&
-            (state === "Chức vụ" || state === "")) {
+            (state === "Chức vụ" || state === "") &&(department === "Phòng ban" || department === "")) {
             setShowSearch(false)
             setShowDeatail(false)
         }
@@ -83,6 +88,9 @@ const CareerOpportunities = () => {
             }
             if (state !== "Chức vụ" && state !== "") {
                 newApi = `${newApi}&state=${state}`
+            }
+            if (department !== "Phòng ban" && department !== "") {
+                newApi = `${newApi}&department=${department}`
             }
 
             getDataFromApi(newApi)
@@ -133,6 +141,7 @@ const CareerOpportunities = () => {
                             onChangeLocation={onLocation}
                             onChangeState={onChangeState}
                             onChangeType={onChnageType}
+                            onChangeDepartment={onChangeDepartment}
                         />
                         <InputMobile  onSearch={onSearchMB} onChangeKey={onChangeKey}/>
                     </div>

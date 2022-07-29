@@ -88,35 +88,57 @@ export default function AdminPage() {
     ),
     getItem(
       <div>
-<<<<<<< HEAD
+
         <Link to="warehouse">warehouse</Link>
-=======
-        <Link to="customer">customer</Link>
->>>>>>> 8d450a7c2c585e7c874604b0d60cc7e89b029bfa
+
+
       </div>,
       "10",
       <DesktopOutlined> </DesktopOutlined>
     ),
     getItem(
       <div>
-<<<<<<< HEAD
+
         <Link to="car">car</Link>
-=======
-        <Link to="staff">staff</Link>
->>>>>>> 8d450a7c2c585e7c874604b0d60cc7e89b029bfa
+
       </div>,
       "11",
       <DesktopOutlined> </DesktopOutlined>
     ),
     getItem(
       <div>
-<<<<<<< HEAD
+
         <Link to="road">road</Link>
-=======
-        <Link to="order">order</Link>
->>>>>>> 8d450a7c2c585e7c874604b0d60cc7e89b029bfa
+
       </div>,
       "12",
+      <DesktopOutlined> </DesktopOutlined>
+    ),
+    getItem(
+      <div>
+
+        <Link to="customer">customer</Link>
+
+      </div>,
+      "13",
+      <DesktopOutlined> </DesktopOutlined>
+    ),
+    getItem(
+      <div>
+
+        <Link to="staff">staff</Link>
+
+      </div>,
+      "14",
+      <DesktopOutlined> </DesktopOutlined>
+    ),
+    getItem(
+      <div>
+
+        <Link to="order">order</Link>
+
+      </div>,
+      "15",
       <DesktopOutlined> </DesktopOutlined>
     ),
     // getItem("User", "sub1", <UserOutlined />, [getItem("Tom", "3"), getItem("Bill", "4"), getItem("Alex", "5")]),

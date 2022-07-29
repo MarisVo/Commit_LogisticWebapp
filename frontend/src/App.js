@@ -48,15 +48,14 @@ import {
   AdminCareer,
   AdminApplicant,
   AdminDepartment,
-<<<<<<< HEAD
   AdminWarehouse,
   AdminCar,
-  AdminRoad
-=======
+  AdminRoad,
   AdminCustomer,
   AdminStaff,
   AdminOrder,
->>>>>>> 8d450a7c2c585e7c874604b0d60cc7e89b029bfa
+  Staff_Register,
+
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainProvider, { MainContext } from "./context/MainContext";
@@ -135,13 +134,14 @@ const App = () => {
               <Route path="quen-mat-khau" element={<ForgetPass />} />
               <Route path="xac-thuc-otp" element={<Register_OTP />} />
               <Route path="dang-nhap-nhan-vien" element={<StaffLogin /> } />
+              <Route path="dang-ky-nhan-vien" element={<Staff_Register /> }/>
                 </Route>            
               {/* -----------------------Tư vấn----------------------- */}
               <Route path="tu-van/lien-he" element={<Contact />} />
               <Route path="tu-van/dang-ki-tu-van" element={<SignUpAdvice />} />
               <Route path="*" element={<PageNotFound />} />
             </Route>
-<<<<<<< HEAD
+
             <Route element={<StaffRoute/>}>        
               <Route path="storekeeper" element={<LayerStorekeeper />}>
                 <Route index element={<ProductsManager />} />
@@ -161,30 +161,12 @@ const App = () => {
                 <Route path="warehouse" element={<AdminWarehouse />}></Route>
                 <Route path="car" element={<AdminCar />}></Route>
                 <Route path="road" element={<AdminRoad />}></Route>
-              </Route>
-              </Route>
-=======
-            <Route path="storekeeper" element={<LayerStorekeeper />}>
-              <Route index element={<ProductsManager />} />
-              <Route path="xuat-nhap" element={<ProductsManager />} />
-              <Route path="ton-kho" element={<Inventory />} />
-            </Route>
-            <Route path="admin" element={<AdminPage />}>
-              <Route path="about" element={<AdminAbout />}></Route>
-              <Route path="contact-us" element={<AdminContactUs />}></Route>
-              <Route path="commitment" element={<AdminCommitment />}></Route>
-              <Route path="message" element={<AdminContactMessage />}></Route>
-              <Route path="service" element={<AdminDeliveryService />}></Route>
-              <Route path="partner" element={<AdminPartner />}></Route>
-              <Route path="career" element={<AdminCareer />}></Route>
-              <Route path="applicant" element={<AdminApplicant />}></Route>
-              <Route path="department" element={<AdminDepartment />}></Route>
-              <Route path="staff" element={<AdminStaff />}></Route>
+                <Route path="staff" element={<AdminStaff />}></Route>
               <Route path="customer" element={<AdminCustomer/>}></Route>
               <Route path="order" element={<AdminOrder/>}></Route>
+              </Route>
+              </Route>
 
-            </Route>
->>>>>>> 8d450a7c2c585e7c874604b0d60cc7e89b029bfa
           </Routes>
         </div>
       </BrowserRouter>

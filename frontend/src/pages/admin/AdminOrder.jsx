@@ -12,7 +12,7 @@ import axios from 'axios';
 
 export default function AdminOrder() {
     const {accessToken} = useContext(MainContext)
-    console.log(accessToken);
+    // console.log(accessToken)
     const api = "http://localhost:8000/api/admin/order";
     const apiListOrder = "http://localhost:8000/api/order/tracking/"
     const [id,setId] = useState()
@@ -36,7 +36,8 @@ export default function AdminOrder() {
             status: "string",
             origin: "string",
             destination: "string",
-            receiver: "string"
+            receiver: "string",
+            customer:"",
           }
     
     ])
@@ -52,11 +53,12 @@ export default function AdminOrder() {
             const res = await axios({
                 url:api,
                 method: "get",
-                headers: {'Access-Control-Allow-Origin': `Bears${accessToken}`},
+                headers:{ authorization: `Bearer ${accessToken}`},
             });
-            console.log(res);
+            // console.log(res);
             if (res.status === 200) {
-               setData(res.data);
+               setData(res.data.data);
+               console.log(data);
             //    const id = res.map(e=>e.orderId);
             //    console.log(id);
               }
@@ -126,6 +128,7 @@ export default function AdminOrder() {
 
     useEffect(()=>{
         getDataFromApi()
+        // console.log("Bears" + accessToken);
     },[])
 
     const handleSearch = (selectedKeys, status, dataIndex) => {
