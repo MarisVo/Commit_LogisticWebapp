@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import 'antd/dist/antd.css'
-import { Form, Button, Input, Select, Typography, message } from "antd";
+import { Form, Button, Input, Select, Typography, message, Modal } from "antd";
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import * as axios from 'axios'
@@ -76,7 +76,44 @@ function isValidEmail(email) {
 const { Title } = Typography;
 
 function Register() {
+
   const [form] = Form.useForm();
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [otp, setOtp] = useState(null);
+
+  const handleShowModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+  };
+
+
+  let navigate = useNavigate();
+  const otpsubmit = async () => {
+    try{
+      const response = await axios({
+          method: 'post',
+          url: 'http://localhost:8000/api/auth/verify-otp',
+          data: {
+              otp: otp
+          }  
+      });
+
+      success();
+      navigate("/dang-nhap");
+  } catch(error) {
+      if(error.message == "Request failed with status code 400") {
+          failed400();
+      }
+
+      if(error.message == "Request failed with status code 500") {
+        failed500();
+    }
+  }
+  }
 
   const success = () => {
     message.success({
@@ -132,9 +169,9 @@ function Register() {
   let verify_op;
   (email) ? verify_op = "email" : verify_op = "phone"
 
-  let navigate = useNavigate();
 
-  const onFinish = async() => {
+  const onFinish = async (e) => {
+    e.preventDefault();
     try{
       const response = await axios({
         method: 'post',
@@ -151,10 +188,8 @@ function Register() {
           verify_op: verify_op
         }
       });
-
-      console.log(JSON.stringify(response?.data));
       success();
-      navigate("/xac-thuc-otp");
+      handleShowModal();
     } catch(error){
       if(error.response.data.message == "user is exist"){
         existed();
@@ -171,6 +206,58 @@ function Register() {
   };
 
   return (
+    <div>
+      <>
+        <div
+          className={`${
+            isModalVisible ? `block` : `hidden`
+          } overflow-y-auto overflow-x-hidden fixed  z-50 w-full top-0 left-0   h-full bg-[#1114]`}
+        >
+          <div className="relative min-w-[350px] top-[15%] sm:min-w-[550px]  md:mx-auto flex justify-center items-center">
+            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 min-w-[350px] sm:min-w-[400px] mx-1 ">
+              <div className="flex item-center justify-end ">
+                <span
+                  className="cursor-pointer mr-1 text-2xl"
+                  onClick={handleCloseModal}
+                >
+                  X
+                </span>
+              </div>
+
+              <div className="pb-6 pt-[6px] px-6 ">
+                <h3 className="mb-3 text-xl font-semibold text-gray-900 dark:text-white ">
+                  Vui lòng nhập mã OTP, mã sẽ hết hạn sau 1 phút
+                </h3>
+                <form className="space-y-4" >
+                  <div>
+                    <div className="relative">
+                      <input                                         
+                        placeholder="Nhập mã OTP"   
+                        name="OTP"           
+                        onChange={(e) => setOtp(e.target.value)}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white relative"
+                      />                    
+                    </div>                 
+                  </div>
+
+                  <div className="text-right dark:text-white">
+                      Mã hết hạn?
+                      <span className="font-semibold text-blue-700">
+                        <Button type="link">Gửi lại OTP</Button>
+                      </span>
+                  </div>
+
+                  <ButtonContainer>
+                    <Button block type="primary" onClick={otpsubmit}>
+                      Xác nhận
+                    </Button>
+                  </ButtonContainer>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
     <RegisForm>
         <div className="Regis">
           <div className="Regis-header">
@@ -332,11 +419,11 @@ function Register() {
                         </Button>
                     </ButtonContainer>
                 </Form.Item>
-              
             </Form>
           </div>
         </div>
     </RegisForm>
+    </div>
   );
 }
 

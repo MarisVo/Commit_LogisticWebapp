@@ -66,6 +66,8 @@ export default function SignUpForAdvice() {
       alert("Vui lòng nhập đầy đủ thông tin");
       return;
     } else {
+      console.log(provinceCodeTo);
+      console.log(phone);
       alert("đăng kí tư vấn thành công");
     }
 
