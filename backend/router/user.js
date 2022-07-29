@@ -49,6 +49,7 @@ userRoute.get('/:id',
         try {
             const { id } = req.params
             const user = await User.findById(id, {password: false})
+
             if (user) return sendSuccess(res, "Get user successful.", user)
             return sendError(res, "Not information found.")
         } catch (error) {

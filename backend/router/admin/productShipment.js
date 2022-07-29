@@ -17,8 +17,23 @@ productShipmentAdminRoute.get('/',
         try {
             const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0
             const page = req.query.page ? parseInt(req.query.page) : 0
-            const { sortBy, limit } = req.body
-            const listProductShipment = await ProductShipment.find()
+            const { keyword, sortBy, limit, product_id } = req.query
+            console.log(product_id)
+
+            var query = {};
+            var keywordList = keyword
+                ? {
+                    $or: [
+                        { product_id: { $regex: keyword, $options: "i" } },
+                    ],
+                }
+                : {};
+
+            if (product_id) {
+                query.product_id = product_id;
+            }
+
+            const listProductShipment = await ProductShipment.find({ $and: [query, keywordList] })
                 .limit(pageSize)
                 .skip(pageSize * page)
                 .sort(`${sortBy}`)
@@ -65,31 +80,41 @@ productShipmentAdminRoute.post('/create', async (req, res) => {
         return sendError(res, errors)
 
     try {
-        const { quantity } = req.body
+        const { quantity, product_id } = req.body
 
         const sum = await ProductShipment.aggregate([{
             $group: {
-                _id: '',
+                _id: "$product_id",
                 quantity: { $sum: '$quantity' }
             }
-         }]
+        }]
         )
         const quantityProduct = await Product.aggregate([
-            { 
-                $project: { 
-                    _id: 0,
+            {
+                $project: {
+                    _id: "62e1f4381c33c682c167e8ec",
                     quantity: 1,
-                } 
+                }
             }
         ])
         const number = parseInt(quantityProduct)
-        console.log(number)
+
         console.log(sum)
-        // const isExist = await ProductShipment.exists({ quantity })
-        // if (isExist)
-        //     return sendError(res, "Quantity is exists")
-        // ProductShipment.create({ quantity })
-       
+        console.log("===for======")
+        console.log(sum[1].quantity)
+        console.log("===quantity product======")
+        console.log(quantityProduct)
+
+        // const isExist = await ProductShipment.exists({ product_id })
+        // if (!isExist)
+        //     return sendError(res, "Product is not exists")
+
+        const p1 = await Product.find({ _id: product_id })
+        console.log(p1)
+
+
+        ProductShipment.create({ quantity, product_id })
+
         return sendSuccess(res, 'set product shipment information successfully')
     }
     catch (error) {
