@@ -2,7 +2,7 @@ import express from "express"
 import Customer from "../../model/Customer.js"
 import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
 import {CUSTOMER} from "../../constant.js"
-
+import User from "../../model/User.js"
 /**
  * @route PUT /api/customer/:id
  * @description Update a customer
@@ -24,7 +24,7 @@ customerAdminRoute.put('/:id', async (req, res) => {
         .then(() => {return sendSuccess(res, 'Customer updated successfully')})
     }
     catch (err) {
-        return sendError(res, err);
+        return sendServerError(res, err);
     }
 })
 /**
@@ -39,10 +39,14 @@ customerAdminRoute.put('/:id', async (req, res) => {
 
     try {
         await Customer.findByIdAndRemove(id)
-        .then(() => {sendSuccess(res,"Delete Customer successfully")})
+        const userfind = await User.find({role: id})
+        await User.findByIdAndRemove(userfind[0]._id)
+        .then(() => {
+            return sendSuccess(res, "Delete customer user successfully.")
+        })
     }
     catch (err) {
-        sendError(res, err)
+        sendServerError(res, err)
     }
 })
 export default customerAdminRoute;

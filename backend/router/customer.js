@@ -36,7 +36,7 @@ customerRoute.get('/', async (req, res) => {
         sendSuccess(res, "Get customers successfully", result)
     }
     catch (err) {
-        sendError(res, err);
+        sendServerError(res, err);
     }
 })
 /**
