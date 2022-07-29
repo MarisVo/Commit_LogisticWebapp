@@ -35,6 +35,12 @@ const BillSchema = new Schema(
             enum: Object.values(BILL_STATUS),
             default: BILL_STATUS.waiting,
             required: true
+        },
+        actual_fuel: {
+            type: Number
+        },
+        theoretical_fuel: {
+            type: Number
         }
     },
     { timestamps: true }

@@ -37,8 +37,8 @@ import productShipmentRoute from "./router/productShipment.js"
 import prohibitedProductRoute from "./router/prohibitedProduct.js"
 
 import { clearTokenList } from "./service/jwt.js"
-import { NOTIFY_EVENT } from "./constant.js"
-import { handleDisconnect, sendNotify } from "./socket/handle.js"
+import { NOTIFY_EVENT, SESSION_AGE } from "./constant.js"
+import { addSocketSession, handleDisconnect, sendNotify } from "./socket/handle.js"
 import notificationRoute from "./router/notification.js"
 dotenv.config()
 
@@ -63,7 +63,7 @@ const store = new session.MemoryStore()
 
 app.use(session({
     secret: process.env.SESSION_NAME,
-    cookie: { maxAge: 30000 },
+    cookie: { maxAge: SESSION_AGE },
     saveUninitialized: false,
     store,
     resave: true
@@ -106,7 +106,7 @@ io.on(NOTIFY_EVENT.connection, socket => {
     })
 
     socket.on(NOTIFY_EVENT.addSession, userId => {
-        SOCKET_SESSIONS.push({ socketId: socket.id, userId })
+        addSocketSession(socket, userId)
     })
 
     socket.on(NOTIFY_EVENT.send, (userId, data) => {

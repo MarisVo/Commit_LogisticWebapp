@@ -61,6 +61,8 @@ export const OTP_EXPIRED = 60000 // unit: milisecond
 export const JWT_EXPIRED = '7d'
 export const JWT_REFRESH_EXPIRED = '30d'
 
+export const SESSION_AGE = 600000 // unit: milisecond
+
 export const UTYPE = {
     STAFF: 'staff',
     CUSTOMER: 'customer'
@@ -109,9 +111,11 @@ export const VERIFY_OP = {
 export const ORDER_STATUS = {
     waiting: 'waiting',
     accepted: 'accepted',
+    probablyProceed: 'probably proceed',
     processing: 'processing',
     completed: 'completed',
-    refused: 'refused'
+    refused: 'refused',
+    cancel: 'cancel'
 }
 
 
@@ -159,4 +163,23 @@ export const NOTIFY_EVENT = {
     send: 'send',
     receive: 'receive',
     disconnect: 'disconnect'
+}
+
+export const COST = {
+    transportation: 'transportation',
+    repair: 'repair',
+    maintenance: 'maintenance',
+    incurred: 'incurred'
+}
+
+export const SHIPMENT_MANAGER = {
+    import: 'import',
+    export: 'export'
+}
+
+export const PAYMENT_METHOD = {
+    CASH: 'cash',
+    MOMO_WALLET: 'momo wallet',
+    ZALO_PAY: 'zalo pay',
+    PAYPAL: 'paypal'
 }
