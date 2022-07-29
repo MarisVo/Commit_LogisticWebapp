@@ -48,9 +48,15 @@ import {
   AdminCareer,
   AdminApplicant,
   AdminDepartment,
+<<<<<<< HEAD
   AdminWarehouse,
   AdminCar,
   AdminRoad
+=======
+  AdminCustomer,
+  AdminStaff,
+  AdminOrder,
+>>>>>>> 8d450a7c2c585e7c874604b0d60cc7e89b029bfa
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainProvider, { MainContext } from "./context/MainContext";
@@ -72,23 +78,23 @@ const App = () => {
               <Route path="ve-chung-toi" element={<About />} />
               <Route path="cam-ket" element={<Commit />} />
               {/* -----------------------Tra cứu---------------------- */}
-              <Route path="tra-cuu" element={<Track />}>
-                <Route path="cuoc-van-chuyen" element={<CuocVanChuyen />} />
-                <Route path="van-don" element={<VanDon />} />
-                <Route path="buu-cuc" element={<BuuCuc />} />
-                <Route path="bang-gia" element={<BangGia />} />
-                <Route path="hang-cam-gui" element={<HangCamGui />} />
-              </Route>
+              <Route path="tra-cuu" element={<Track number="cuoc-van-chuyen"/>}></Route>
+                <Route path="tra-cuu/cuoc-van-chuyen" element={<Track number="cuoc-van-chuyen"/>} />
+                <Route path="tra-cuu/van-don" element={<Track number="van-don"/>} />
+                <Route path="tra-cuu/buu-cuc" element={<Track number="buu-cuc"/>} />
+                <Route path="tra-cuu/bang-gia" element={<Track number="bang-gia"/>} />
+                <Route path="tra-cuu/hang-cam-gui" element={<Track number="hang-cam-gui"/>} />
+              
               {/* ------------------------Tuyển dụng------------------- */}
               <Route path="tuyen-dung" element={<CareerOpportunities />}>
                 <Route
                   path="chi-tiet-viec-lam-noi-bat"
                   element={<RecruitmentDetails />}
                 />
-                <Route
+                {/* <Route
                   path="chi-tiet-viec-lam-moi"
                   element={<RecruitmentDetails />}
-                />
+                /> */}
               </Route>
               <Route path="cuoc-song" element={<Life />} />
               {/* ------------------------Dịch vụ---------------------- */}
@@ -135,6 +141,7 @@ const App = () => {
               <Route path="tu-van/dang-ki-tu-van" element={<SignUpAdvice />} />
               <Route path="*" element={<PageNotFound />} />
             </Route>
+<<<<<<< HEAD
             <Route element={<StaffRoute/>}>        
               <Route path="storekeeper" element={<LayerStorekeeper />}>
                 <Route index element={<ProductsManager />} />
@@ -156,6 +163,28 @@ const App = () => {
                 <Route path="road" element={<AdminRoad />}></Route>
               </Route>
               </Route>
+=======
+            <Route path="storekeeper" element={<LayerStorekeeper />}>
+              <Route index element={<ProductsManager />} />
+              <Route path="xuat-nhap" element={<ProductsManager />} />
+              <Route path="ton-kho" element={<Inventory />} />
+            </Route>
+            <Route path="admin" element={<AdminPage />}>
+              <Route path="about" element={<AdminAbout />}></Route>
+              <Route path="contact-us" element={<AdminContactUs />}></Route>
+              <Route path="commitment" element={<AdminCommitment />}></Route>
+              <Route path="message" element={<AdminContactMessage />}></Route>
+              <Route path="service" element={<AdminDeliveryService />}></Route>
+              <Route path="partner" element={<AdminPartner />}></Route>
+              <Route path="career" element={<AdminCareer />}></Route>
+              <Route path="applicant" element={<AdminApplicant />}></Route>
+              <Route path="department" element={<AdminDepartment />}></Route>
+              <Route path="staff" element={<AdminStaff />}></Route>
+              <Route path="customer" element={<AdminCustomer/>}></Route>
+              <Route path="order" element={<AdminOrder/>}></Route>
+
+            </Route>
+>>>>>>> 8d450a7c2c585e7c874604b0d60cc7e89b029bfa
           </Routes>
         </div>
       </BrowserRouter>

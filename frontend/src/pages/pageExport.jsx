@@ -44,6 +44,7 @@ export { default as FastService } from "./Services/FastService.jsx";
 export { default as SuperService } from "./Services/SuperService.jsx";
 export { default as FreshService } from "./Services/FreshService.jsx";
 //---------------------------------------------//
+<<<<<<< HEAD
 export { default as AdminPage } from "./Admin/AdminLayout/AdminPage.jsx";
 export { default as AdminAbout } from "./Admin/AdminAbout.jsx";
 export { default as AdminContactUs } from "./Admin/AdminContactUs.jsx";
@@ -57,4 +58,22 @@ export { default as AdminDepartment } from "./Admin/AdminDepartment.jsx";
 export { default as AdminWarehouse } from "./Admin/AdminWarehouse.jsx";
 export { default as AdminCar} from "./Admin/AdminCar.jsx";
 export { default as AdminRoad } from "./Admin/AdminRoad.jsx";
+=======
+export { default as AdminPage } from "./admin/adminLayout/AdminPage.jsx";
+export { default as AdminAbout } from "./admin/AdminAbout.jsx";
+export { default as AdminContactUs } from "./admin/AdminContactUs.jsx";
+export { default as AdminCommitment } from "./admin/AdminCommitment.jsx";
+export { default as AdminContactMessage } from "./admin/AdminContactMessage.jsx";
+export { default as AdminDeliveryService } from "./admin/AdminDeliveryService.jsx";
+export { default as AdminPartner } from "./admin/AdminPartner.jsx";
+export { default as AdminCareer } from "./admin/AdminCareer.jsx";
+export { default as AdminApplicant } from "./admin/AdminApplicant.jsx";
+export { default as AdminDepartment } from "./admin/AdminDepartment.jsx";
+export { default as AdminCustomer } from "./admin/AdminCustomer.jsx";
+export { default as AdminStaff } from "./admin/AdminStaff.jsx";
+export { default as AdminOrder } from "./admin/AdminOrder.jsx";
+
+
+
+>>>>>>> 8d450a7c2c585e7c874604b0d60cc7e89b029bfa
 
