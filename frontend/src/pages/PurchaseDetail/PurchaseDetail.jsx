@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, {  useContext, useState } from "react";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
 import SideBar from "../../components/SideBar";
 import { IoLocationOutline } from "react-icons/io5";
-
 import { AiOutlineGift, AiOutlineUser, AiOutlineInbox } from "react-icons/ai";
 import { TbSteeringWheel } from "react-icons/tb";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
@@ -11,18 +10,26 @@ import { BsCoin } from "react-icons/bs";
 import { AiOutlinePhone } from "react-icons/ai";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { axios } from 'axios';
+import { MainContext } from "../../context/MainContext";
 const PurchaseDetail = () => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
-
+  const {accessToken} = useContext(MainContext)
   const handleOpen = () => {
-    setOpen(!open);
+    setOpen(!open);     
     console.log(open);
   };
-
+  console.log(accessToken)
   useEffect(() => {
-    console.log(location);
-  });
+    const getData = async()=>{
+      const res = await axios.get("http://localhost:8000/api/order/62e1f5a74ab8e1ebd837fd2e",{
+         headers: { authorization: `Bearer ${accessToken}` },
+      })
+      console.log(res)
+
+    }
+  },[]);
   const order = {
     formProvince: "Ho Chi Minh",
     fromDistrict: "Quan 2",
@@ -35,6 +42,7 @@ const PurchaseDetail = () => {
     serviceId: "string",
     serviceName: "string",
   };
+
 
   return (
     <div className="pt-[68px]">
