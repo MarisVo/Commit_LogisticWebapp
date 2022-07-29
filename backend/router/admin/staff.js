@@ -43,12 +43,19 @@ staffAdminRoute.delete('/:id', async (req, res) => {
     const isExist = await Staff.exists({_id: id})
     if (!isExist) {return sendError(res,'Staff does not exist')}
     try {
+<<<<<<< Updated upstream
         const staff = await Staff.deleteOne({_id: id})
         const userfind = await User.find({role: id})
         await User.findByIdAndRemove(userfind[0]._id)
             .then(() => {
                 return sendSuccess(res, "Delete staff user successfully.")
             })
+=======
+        const isExist = await Staff.exists({_id: id})
+        if (!isExist) {return sendError(res,'Staff does not exist')}
+        const result = await Staff.deleteOne({_id: id})
+        sendSuccess(res, "Staff deleted successfully");
+>>>>>>> Stashed changes
     }
     catch (err) {sendError(res, err.message)};
 })
@@ -62,6 +69,12 @@ staffAdminRoute.delete('/:id', async (req, res) => {
     const {name, staff_type} = req.body;
     const isExist = await Staff.exists({_id: id})
     if (!isExist) {return sendError(res,'Staff does not exist')}
+<<<<<<< Updated upstream
+=======
+    if (staff_type === '') {
+        return sendError(res, "Staff-type not found")
+    }
+>>>>>>> Stashed changes
     if (!((staff_type == STAFF.ADMIN || staff_type == STAFF.DRIVER || staff_type == STAFF.SHIPPER || staff_type == STAFF.STOREKEEPER || staff_type == STAFF.STAFF))) {
         return sendError(res, "Staff-type not found")
     }
