@@ -3602,7 +3602,7 @@ paths:
           description: create customer successfully.
       security:
         - bearerAuth: []
-  /customer/{id}:
+  /admin/customer/{id}:
     put:
       tags:
         - customer
