@@ -32,7 +32,7 @@ receiverAdminRoute.get('/', async (req, res) => {
         return sendSuccess(res, "ok", result);
     }
     catch (err) {
-        return sendError(res, err.message)
+        return sendServerError(res, err.message)
     }
 })
 
@@ -52,7 +52,7 @@ receiverAdminRoute.delete('/:id', async (req, res) => {
         return sendSuccess(res,"Receiver deleted successfully");
     }
     catch(error) {
-        return sendError(res, error.message);
+        return sendServerError(res, error.message);
     }
 })
 /**
@@ -72,9 +72,9 @@ receiverAdminRoute.put('/:id', async (req, res) => {
     }
     catch (err) {
         if (err.codeName == "DuplicateKey") {
-            sendError(res, (err.keyValue.identity + " identity value is existed") )
+            sendServerError(res, (err.keyValue.identity + " identity value is existed") )
         } else {
-            sendError(res, err.message)
+            sendServerError(res, err.message)
         }
     }
 });
