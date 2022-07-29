@@ -30,7 +30,7 @@ const staffAdminRoute = express.Router();
         const result = await Staff.find(query).sort({ name : sort})
         return sendSuccess(res, "Get staffs information successfully",result);
     }
-    catch (err) {sendError(res, err.message)}
+    catch (err) {sendServerError(res, err.message)}
         
 })
 /**
@@ -50,7 +50,7 @@ staffAdminRoute.delete('/:id', async (req, res) => {
                 return sendSuccess(res, "Delete staff user successfully.")
             })
     }
-    catch (err) {sendError(res, err.message)};
+    catch (err) {sendServerError(res, err.message)};
 })
 /**
  * @route  PUT /api/admin/staff/:id
@@ -74,7 +74,7 @@ staffAdminRoute.delete('/:id', async (req, res) => {
         return sendSuccess(res, "Staff updated successfully")
     }
     catch (err) {
-        sendError(res, err.message)
+        sendServerError(res, err.message)
     }
 
 })
