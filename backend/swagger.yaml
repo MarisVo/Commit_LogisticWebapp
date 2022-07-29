@@ -53,6 +53,8 @@ tags:
   description: "Endpoint Consultancy"
 - name: "notification"
   description: "Endpoint Notification for user's realtime interaction"
+- name: "customer"
+  description: "Endpoint Customer"
 paths:
   /auth/verify-token:
     post:
@@ -3542,6 +3544,112 @@ paths:
           description: send the notification successfully.
         404:
           description: receiver's ID didn't exist.
+      security:
+        - bearerAuth: []
+  /customer:
+    get:
+      tags:
+        - customer
+      summary: Get list of customers, get customer by id, search and sort
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: id
+          type: string
+          description: id of customer
+        - in: query
+          name: keyword
+          type: string
+          description: keyword to search
+        - in: query
+          name: sort
+          type: string
+          description: sort by 1 or -1 (ascending or descending)
+      responses:
+        200:
+          description: request successfully.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - customer
+      summary: Create a customer
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: Customer information
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              address:
+                type: string
+              description:
+                type: string
+              customer_type:
+                type: string
+              rank_passers:
+                type: object
+              companyTaxcode_business:
+                type: string
+              accepted_business:
+                type: boolean
+      responses:
+        200:
+          description: create customer successfully.
+      security:
+        - bearerAuth: []
+  /customer/{id}:
+    put:
+      tags:
+        - customer
+      summary: Update a customer
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          type: string
+        - in: body
+          name: Customer information to update
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              address:
+                type: string
+              description:
+                type: string
+              customer_type:
+                type: string
+              rank_passers:
+                type: object
+              companyTaxcode_business:
+                type: string
+              accepted_business:
+                type: boolean
+      responses:
+        200:
+          description: Update customer successfully.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - customer
+      summary: Delete a customer
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          type: string
+      responses:
+        200:
+          description: Delete customer successfully.
       security:
         - bearerAuth: []
 securityDefinitions:
