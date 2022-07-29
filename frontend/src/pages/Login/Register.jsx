@@ -3,7 +3,7 @@ import 'antd/dist/antd.css'
 import { Form, Button, Input, Select, Typography, message, Modal } from "antd";
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import * as axios from 'axios'
+import axios from 'axios'
 
 const RegisForm = styled.div`
 .Regis{
@@ -96,6 +96,7 @@ function Register() {
     try{
       const response = await axios({
           method: 'post',
+          withCredentials: true,
           url: 'http://localhost:8000/api/auth/verify-otp',
           data: {
               otp: otp
@@ -170,11 +171,11 @@ function Register() {
   (email) ? verify_op = "email" : verify_op = "phone"
 
 
-  const onFinish = async (e) => {
-    e.preventDefault();
+  const onFinish = async () => {
     try{
       const response = await axios({
         method: 'post',
+        withCredentials: true,
         url: 'http://localhost:8000/api/auth/register',
         data: {
           name: name,

@@ -66,11 +66,14 @@ app.use(session({
     cookie: { maxAge: SESSION_AGE },
     saveUninitialized: false,
     store,
-    resave: true
+    resave: false
 }))
 app.use(express.json())
 app.use(express.static('public'))
-app.use(cors())
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}))
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/public', publicRoute)
