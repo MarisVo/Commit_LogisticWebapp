@@ -2,6 +2,7 @@ import express from "express"
 import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
 import ProductShipment from "../../model/ProductShipment.js"
 import Product from "../../model/Product.js"
+import User from "../../model/User.js";
 import { createProductShipmentValidate } from "../../validation/productShipment.js"
 
 
@@ -81,41 +82,43 @@ productShipmentAdminRoute.post('/create', async (req, res) => {
 
     try {
         const { quantity, product_id } = req.body
+        if (quantity < 1)
+         return sendError(res, "Quantity is not less than 1")
+        const isExist = await ProductShipment.exists({ product_id })
+        if (!isExist)
+            return sendError(res, "Product is not exists")
 
-        const sum = await ProductShipment.aggregate([{
-            $group: {
-                _id: "$product_id",
-                quantity: { $sum: '$quantity' }
+        //get quantity of product
+        const productid = await Product.findById({ _id: product_id }, { quantity: true })
+        const productQuantity = productid.quantity
+        console.log(productQuantity)
+
+        //get all product by productID in productshipment
+        const productShipmentQuantity = await ProductShipment.find({ product_id: product_id })
+        let temp = 0
+        for (let i = 0; i < productShipmentQuantity.length; i++) {
+            temp = temp + productShipmentQuantity[i].quantity
+        }
+        let quantityPresent = Number(quantity) + temp
+        console.log(quantityPresent)
+        // Compare
+        if (productQuantity >= quantityPresent) {
+            await ProductShipment.create({ quantity, product_id })
+            //update product
+            const productShipmentQuantity = await ProductShipment.find({ product_id: product_id })
+            //traverse id productshipment
+            const product_shipments = [];
+            for (let i = 0; i < productShipmentQuantity.length; i++) {
+                product_shipments.push(productShipmentQuantity[i]._id);
             }
-        }]
-        )
-        const quantityProduct = await Product.aggregate([
-            {
-                $project: {
-                    _id: "62e1f4381c33c682c167e8ec",
-                    quantity: 1,
-                }
-            }
-        ])
-        const number = parseInt(quantityProduct)
-
-        console.log(sum)
-        console.log("===for======")
-        console.log(sum[1].quantity)
-        console.log("===quantity product======")
-        console.log(quantityProduct)
-
-        // const isExist = await ProductShipment.exists({ product_id })
-        // if (!isExist)
-        //     return sendError(res, "Product is not exists")
-
-        const p1 = await Product.find({ _id: product_id })
-        console.log(p1)
-
-
-        ProductShipment.create({ quantity, product_id })
-
-        return sendSuccess(res, 'set product shipment information successfully')
+            console.log(product_shipments)
+            const updateProduct = await Product.findByIdAndUpdate({_id: product_id}, {product_shipments: product_shipments})
+            if (!updateProduct)
+                return sendServerError(res, "Update failed")
+            return sendSuccess(res, 'Set product shipment information successfully')
+        }
+        else
+            return sendError(res, "Product_shipment quantity over load current product quantity. Current product quantity: " + productQuantity)
     }
     catch (error) {
         console.log(error)
