@@ -4,18 +4,20 @@ import { Button, Input, Table, Space } from "antd";
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import { AiFillEdit, AiOutlineDelete } from 'react-icons/ai'
-import AddNewOrder from '../../components/Admin/Order/AddNewOrder';
+import AddNewOrder from '../../components/Admin/Order/AddNewOrder'
+import ConfirmModal from '../../components/ConfirmModal';
 import EditOrder from '../../components/Admin/Order/EditOrder';
+import axios from 'axios';
 import SplitProduct from '../../components/Admin/Order/SplitProduct';
 import { TOKEN } from "./adminToken";
-import axios from 'axios';
+
 
 export default function AdminOrder() {
-    const {accessToken} = useContext(MainContext)
+    const { accessToken } = useContext(MainContext)
     // console.log(accessToken)
     const api = "http://localhost:8000/api/admin/order";
     const apiListOrder = "http://localhost:8000/api/order/tracking/"
-    const [id,setId] = useState()
+    const [id, setId] = useState()
     const [dataEdit, setDataEdit] = useState()
     const [openEdit, setOpenEdit] = useState(false)
     const [openDel, setOpenDel] = useState(false)
@@ -23,9 +25,10 @@ export default function AdminOrder() {
     const [isDisable, setIsDisable] = useState(false)
 
     const [openSplit, setOpenSplit] = useState(false)
-    const [dataSplit,setDataSplit] = useState()
+    const [dataSplit, setDataSplit] = useState()
 
     const [open, setOpen] = useState(false)
+    const [change,setChange] = useState("");
 
 
     const [data, setData] = useState([
@@ -37,9 +40,9 @@ export default function AdminOrder() {
             origin: "string",
             destination: "string",
             receiver: "string",
-            customer:"",
-          }
-    
+            customer: "",
+        }
+
     ])
     // ____
     // const [data, setData] = useState()
@@ -48,88 +51,89 @@ export default function AdminOrder() {
     const searchInput = useRef(null);
 
     // Get data from api
-    const getDataFromApi = async ()=>{
-        try{
+    const getDataFromApi = async () => {
+        try {
             const res = await axios({
-                url:api,
+                url: api,
                 method: "get",
-                headers:{ authorization: `Bearer ${accessToken}`},
+                headers: { authorization: `Bearer ${accessToken}` },
             });
             // console.log(res);
             if (res.status === 200) {
-               setData(res.data.data);
-               console.log(data);
-            //    const id = res.map(e=>e.orderId);
-            //    console.log(id);
-              }
+                setData(res.data.data);
+                console.log(data);
+                //    const id = res.map(e=>e.orderId);
+                //    console.log(id);
+            }
         }
-        catch(error){
+        catch (error) {
             console.log(error);
         }
     }
 
     // Post data:
-    const postDataToApi = async (items)=>{
-        try{
+    const postDataToApi = async (items) => {
+        try {
             const res = await axios({
-                url:api,
+                url: "http://localhost:8000/api/admin/order/create",
                 method: "post",
-                headers: "Bears" + TOKEN,
-                data:items
+                headers: { authorization: `Bearer ${accessToken}` },
+                data: items
             });
             console.log(res);
             if (res.status === 200) {
-               console.log(id);
-              }
+                setData(res.data.data);
+                console.log(id);
+            }
         }
-        catch(error){
+        catch (error) {
             // console.log(error);
         }
     }
 
     // Edit data:
-    const editDataToApi = async (items,id)=>{
-        try{
+    const editDataToApi = async (items, id) => {
+        try {
             const res = await axios({
-                url:`${api}/${id}`,
+                url: `${api}/${id}`,
                 method: "put",
-                headers: "Bears" + TOKEN,
-                data:items
+                headers: { authorization: `Bearer ${accessToken}` },
+                data: items
             });
             console.log(res);
             if (res.status === 200) {
-               console.log(id);
-              }
+                setData(res.data.data)
+            }
         }
-        catch(error){
+        catch (error) {
             // console.log(error);
         }
     }
 
     // Delete data
-    const delDataToApi = async (id)=>{
-        try{
+    const delDataToApi = async (id) => {
+        try {
             const res = await axios({
-                url:`${api}/${id}`,
-                method: "post",
-                headers: "Bears" + TOKEN,
+                url: `${api}/${id}`,
+                method: "delete",
+                headers: { authorization: `Bearer ${accessToken}` },
             });
-            console.log(res);
+            // console.log(res);
             if (res.status === 200) {
-               console.log(id);
-              }
+                // setData(res.data.data)
+            }
         }
-        catch(error){
+        catch (error) {
             // console.log(error);
         }
     }
 
 
 
-    useEffect(()=>{
+    useEffect(() => {
         getDataFromApi()
         // console.log("Bears" + accessToken);
-    },[])
+    }, [change])
 
     const handleSearch = (selectedKeys, status, dataIndex) => {
         status();
@@ -143,27 +147,29 @@ export default function AdminOrder() {
     };
 
     const handledit = (e, id) => {
-        const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('td');
+        // const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('td');
         const items = data.filter(e => {
-            return e.id === id;
+            return e._id === id;
         })
         console.log(items);
         const oldData = {
-            receiver: tableData[0].innerHTML,
-            total_price: tableData[1].innerHTML,
-            destination: tableData[2].innerHTML,
-            service: tableData[3].innerHTML,
-            status: tableData[5].querySelector("div").innerHTML,
-            product: items[0].product
+            // receiver: tableData[0].innerHTML,
+            // total_price: tableData[1].innerHTML,
+            // destination: tableData[2].innerHTML,
+            // service: tableData[3].innerHTML,
+            // origin: tableData[4].innerHTML,
+            status: items[0].status,
+            // product: items[0].product
         }
         setDataEdit(oldData);
         setId(id)
         setOpenEdit(true);
-        console.log(dataEdit);
+        // console.log(oldData);
     }
 
-    const handleDel = (e,id) => {
+    const handleDel = (e, id) => {
         setId(id)
+        // console.log(id);
         setOpenDel(true)
     }
 
@@ -360,17 +366,17 @@ export default function AdminOrder() {
         {
             title: '',
             dataIndex: "action",
-            // width: "14%",
+            width: "14.2%",
             render: (e, data) => (
                 <div className="flex flex-row justify-around">
-                    <button className="flex flex-row " role="button" onClick={(e) => handledit(e, data.id)}>
+                    <button className="flex flex-row " role="button" onClick={(e) => handledit(e, data._id)}>
                         <AiFillEdit style={{
                             marginTop: "0.2rem",
                             marginRight: "0.5rem"
                         }} />
                         Sửa
                     </button>
-                    <button className="flex flex-row " role="button" onClick={(e) => handleDel(e, data.id)}>
+                    <button className="flex flex-row " role="button" onClick={(e) => handleDel(e, data._id)}>
                         <AiOutlineDelete style={{
                             marginTop: "0.2rem",
                             marginRight: "0.5rem"
@@ -386,12 +392,27 @@ export default function AdminOrder() {
         console.log('params', pagination, filters, sorter, extra);
     };
 
-    const acceptAddNewOrder = async () => {
+    const acceptAddNewOrder = async (e) => {
         setLoading(true)
         setIsDisable(true)
-
+        const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('input')
+        const newItem = {
+            receiver: {
+                "name": tableData[0].value,
+                "phone": tableData[7].value,
+                "identity": tableData[3].value,
+            },
+            total_price: tableData[5].value,
+            destination: tableData[2].value,
+            serviceName: tableData[4].value,
+            origin: tableData[1].value,
+            // status: tableData[3].value,
+            customerEmail: tableData[6].value
+        }
         try {
             await setTimeout(() => {
+                postDataToApi(newItem)
+                console.log(newItem);
                 setLoading(false)
                 setOpen(false)
                 setIsDisable(false)
@@ -408,6 +429,9 @@ export default function AdminOrder() {
         setIsDisable(true)
         try {
             await setTimeout(() => {
+                delDataToApi(id)
+                setChange("del")
+                // console.log(id);
                 setLoading(false)
                 setOpenDel(false)
                 setIsDisable(false)
@@ -418,12 +442,17 @@ export default function AdminOrder() {
         }
     }
 
-    const acceptEditNewOrder = async () => {
+    const acceptEditNewOrder = async (e) => {
         setLoading(true)
         setIsDisable(true)
+        const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('input')
+        const items = {
+            status:tableData[0].value,
+        }
 
         try {
             await setTimeout(() => {
+                editDataToApi(items,id)
                 setLoading(false)
                 setOpenEdit(false)
                 setIsDisable(false)
@@ -435,22 +464,22 @@ export default function AdminOrder() {
         }
     }
 
-    const acceptSplit = async () => {
-        setLoading(true)
-        setIsDisable(true)
+    // const acceptSplit = async () => {
+    //     setLoading(true)
+    //     setIsDisable(true)
 
-        try {
-            await setTimeout(() => {
-                setLoading(false)
-                setOpenSplit(false)
-                setIsDisable(false)
+    //     try {
+    //         await setTimeout(() => {
+    //             setLoading(false)
+    //             setOpenSplit(false)
+    //             setIsDisable(false)
 
-            }, 2000)
-        }
-        catch {
+    //         }, 2000)
+    //     }
+    //     catch {
 
-        }
-    }
+    //     }
+    // }
 
 
 
@@ -489,23 +518,23 @@ export default function AdminOrder() {
                 onClose={() => setOpenEdit(false)}
             />
 
-            <SplitProduct
+            {/* <SplitProduct
                 isVisible={openSplit}
                 onOk={acceptSplit}
                 loading={loading}
                 disable={isDisable}
                 data={dataSplit}
                 onClose={() => setOpenSplit(false)}
-            />
+            /> */}
 
-            {/* <statusModal
+            <ConfirmModal
                 isVisible={openDel}
                 text={`xóa order`}
                 onClose={() => setOpenDel(false)}
                 loading={loading}
                 disable={isDisable}
                 onOk={acceptDelete}
-            /> */}
+            />
 
         </div>
     )

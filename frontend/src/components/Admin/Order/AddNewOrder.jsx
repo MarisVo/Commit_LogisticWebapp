@@ -30,17 +30,26 @@ function AddNewOrder({ isVisible, onClose, onOk, loading, disable }) {
                             }}
                             layout="horizontal"
                         >
-                            <Item label="Họ tên">
+                            <Item label="Người nhận">
+                                <Input  />
+                            </Item>
+                            <Item label="Xuất phát">
                                 <Input />
                             </Item>
-                            <Item label="Mã order">
-                                <Input />
-                            </Item>
-                            <Item label="Email">
+                            <Item label="Điểm đến">
                                 <Input />
                             </Item>
                             <Item label="Tình trạng">
                                 <Input />
+                            </Item>
+                            <Item label="Thiết bị">
+                                <Input />
+                            </Item>
+                            <Item label="Tổng giá tiền">
+                                <InputNumber />
+                            </Item>
+                            <Item label="Email khách hàng">
+                                <Input/>
                             </Item>
                             <Item label="Số điện thoại">
                                 <InputNumber />

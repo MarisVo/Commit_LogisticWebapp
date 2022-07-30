@@ -30,7 +30,7 @@ function EditOrder({ isVisible, onClose, onOk, loading, disable, data }) {
                             }}
                             layout="horizontal"
                         >
-                            <Item label="Người nhận">
+                            {/* <Item label="Người nhận">
                                 <Input defaultValue={data.receiver} />
                             </Item>
                             <Item label="Xuất phát">
@@ -38,16 +38,16 @@ function EditOrder({ isVisible, onClose, onOk, loading, disable, data }) {
                             </Item>
                             <Item label="Điểm đến">
                                 <Input defaultValue={data.destination} />
-                            </Item>
+                            </Item> */}
                             <Item label="Tình trạng">
                                 <Input defaultValue={data.status} />
                             </Item>
-                            <Item label="Thiết bị">
-                                <Input defaultValue={data.service} />
+                            {/* <Item label="Thiết bị">
+                                <Input disabled={true} defaultValue={data.service} />
                             </Item>
                             <Item label="Tổng giá tiền">
-                                <Input defaultValue={data.total_price} />
-                            </Item>
+                                <InputNumber defaultValue={data.total_price} />
+                            </Item> */}
                             {/* <Item label="Sản phẩm">
                                 <Button>Tách</Button>
                                 <div>{data.product.map(e => (
