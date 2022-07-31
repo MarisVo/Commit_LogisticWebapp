@@ -14,6 +14,7 @@ customerRoute.get('/', async (req, res) => {
     const id = req.query.id ? req.query.id : null;
     const keyword = req.query.keyword ? req.query.keyword : null;
     const sort = req.query.sort || 1;
+    const filter = req.query.filter
     let query = {};
     if (id) {
         query = {_id: id}
@@ -30,6 +31,8 @@ customerRoute.get('/', async (req, res) => {
         },{
             companyTaxcode_business: {$regex: keyword, $options:'$i'}
         }]}
+    } else if (filter) {
+        query = { customer_type: filter}
     }
     try {
         const result = await Customer.find(query).sort({name: sort})
