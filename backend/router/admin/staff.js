@@ -7,14 +7,14 @@ const staffAdminRoute = express.Router();
 
 /**
  * @route GET /api/admin/staff/
- * @description get all staff, get a staff by id, sort by name and search by keyword
+ * @description get all staff, get a staff by id, sort by name and search by keyword, filter by staff type
  * @access private
  */
  staffAdminRoute.get('/', async (req, res) => {
     const id = req.query.id ? req.query.id : null;
     const keyword = req.query.keyword ? req.query.keyword : null;
     const sort = req.query.sort || 1;
-    
+    const filter = req.query.filter;
     let query = {};
     if (id) {
         query = {_id: id}
@@ -25,12 +25,14 @@ const staffAdminRoute = express.Router();
         },{
             staff_type: {$regex: keyword, $options:'$i'}
         }]}
-    } 
+    } else if (filter) {
+        query = {staff_type: filter}
+    }
     try {
         const result = await Staff.find(query).sort({ name : sort})
         return sendSuccess(res, "Get staffs information successfully",result);
     }
-    catch (err) {sendServerError(res, err.message)}
+    catch (err) {sendServerError(res)}
         
 })
 /**
@@ -50,7 +52,7 @@ staffAdminRoute.delete('/:id', async (req, res) => {
                 return sendSuccess(res, "Delete staff user successfully.")
             })
     }
-    catch (err) {sendServerError(res, err.message)};
+    catch (err) {sendServerError(res)};
 })
 /**
  * @route  PUT /api/admin/staff/:id
@@ -74,7 +76,7 @@ staffAdminRoute.delete('/:id', async (req, res) => {
         return sendSuccess(res, "Staff updated successfully")
     }
     catch (err) {
-        sendServerError(res, err.message)
+        sendServerError(res)
     }
 
 })
