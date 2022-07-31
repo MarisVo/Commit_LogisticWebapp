@@ -3550,7 +3550,7 @@ paths:
     get:
       tags:
         - customer
-      summary: Get list of customers, get customer by id, search and sort
+      summary: Get list of customers, get customer by id, search and sort, filter by customer type
       produces:
         - application/json
       parameters:
@@ -3566,6 +3566,10 @@ paths:
           name: sort
           type: string
           description: sort by 1 or -1 (ascending or descending)
+        - in: query
+          name: filter
+          type: string
+          description: business, passers or intermediary
       responses:
         200:
           description: request successfully.
