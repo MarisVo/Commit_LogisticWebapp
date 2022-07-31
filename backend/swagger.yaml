@@ -3315,6 +3315,10 @@ paths:
           name: sort
           type: number
           description: sort staff by order
+        - in: query
+          name: filter
+          type: string
+          description: admin, driver, shipper, storekeeper or staff
       responses:
         200:
           description: Get staff information successfully.
