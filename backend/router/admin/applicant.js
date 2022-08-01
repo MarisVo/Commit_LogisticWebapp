@@ -83,20 +83,13 @@ applicantAdminRoute.get("/", async (req, res) => {
         }
       }
       if (ids.length) {
-      const r = idsComp.filter(({ id: idv }) => ids.every(({ id: idc }) => idv !== idc));
-      const newArr = ids.concat(r).map((v) => v.position ? v : { ...v, position: null });
-      console.log(newArr);
-      ids = newArr;
+        for (let i = 0; i < idsComp.length; i++){
+          if (!ids.every((value) => value === idsComp[i])) {
+            idsComp.splice(idsComp[i], 1);
+          }
+        }
       }
-      else{
-        ids = idsComp;
-      }
-      
-      
-      // else {
-      //   ids.filter(val=>idsComp.includes(val));
-      // }
-      //query._id = ids;
+      ids = idsComp;
     }
     if (type) {
       var careerQuery = {};
@@ -111,21 +104,13 @@ applicantAdminRoute.get("/", async (req, res) => {
         }
       }
       if (ids.length) {
-        const r = idsComp.filter(({ id: idv }) => ids.every(({ id: idc }) => idv !== idc));
-        const newArr = ids.concat(r).map((v) => v.position ? v : { ...v, position: null });
-        console.log(newArr);
-        ids = newArr;
+        for (let i = 0; i < idsComp.length; i++){
+          if (!ids.every((value) => value === idsComp[i])) {
+            idsComp.splice(idsComp[i], 1);
+          }
+        }
       }
-      else{
-          ids = idsComp;
-      }
-      // if (!ids.length) {
-       // ids.concat(idsComp);
-      // }
-      // else {
-      //   ids.filter(val=>idsComp.includes(val));
-      // }
-      //query._id = ids;
+      ids = idsComp;
     }
     if (location) {
       var careerQuery = {};
@@ -140,21 +125,13 @@ applicantAdminRoute.get("/", async (req, res) => {
         }
       }
       if (ids.length) {
-        const r = idsComp.filter(({ id: idv }) => ids.every(({ id: idc }) => idv !== idc));
-        const newArr = ids.concat(r).map((v) => v.position ? v : { ...v, position: null });
-        console.log(newArr);
-        ids = newArr;
+        for (let i = 0; i < idsComp.length; i++){
+          if (!ids.every((value) => value === idsComp[i])) {
+            idsComp.splice(idsComp[i], 1);
+          }
+        }
       }
-      else{
-          ids = idsComp;
-      }
-      // if (!ids.length) {
-        //ids.concat(idsComp);
-      // }
-      // else {
-      //   ids.filter(val=>idsComp.includes(val));
-      // }
-      //query._id = ids;
+      ids = idsComp;
     }
     if (state) {
       var careerQuery = {};
@@ -169,21 +146,13 @@ applicantAdminRoute.get("/", async (req, res) => {
         }
       }
       if (ids.length) {
-        const r = idsComp.filter(({ id: idv }) => ids.every(({ id: idc }) => idv !== idc));
-        const newArr = ids.concat(r).map((v) => v.position ? v : { ...v, position: null });
-        console.log(newArr);
-        ids = newArr;
+        for (let i = 0; i < idsComp.length; i++){
+          if (!ids.every((value) => value === idsComp[i])) {
+            idsComp.splice(idsComp[i], 1);
+          }
+        }
       }
-      else{
-          ids = idsComp;
-      }
-      //if (!ids.length) {
-        //ids.concat(idsComp);
-      // }
-      // else {
-      //   ids.filter(val=>idsComp.includes(val));
-      // }
-      //query._id = ids;
+      ids = idsComp;
     }
     if (ids.length) {
       console.log(ids);
