@@ -4,9 +4,9 @@ import { MainContext } from '../context/MainContext';
 
 function  StaffRoute ()  {
    const { user } = useContext(MainContext)
-  if (user && user.role.customer_type) {
+  if (user && user.role.staff_type) {
     return <Outlet />;
   }
-  return <Navigate to="/" />;
+  return <Navigate to="/dang-nhap-nhan-vien" />;
 };
 export default StaffRoute
