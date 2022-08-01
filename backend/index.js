@@ -25,6 +25,10 @@ import careerRoute from "./router/career.js"
 import departmentRoute from "./router/department.js"
 import participantRoute from "./router/participant.js"
 import featureRoute from "./router/feature.js"
+import distanceRoute from "./router/distance.js"
+import priceRoute from "./router/price.js"
+import priceListRoute from "./router/pricelist.js"
+import serviceRoute from "./router/service.js"
 import customerRoute from "./router/customer.js"
 
 // swagger setup
@@ -95,6 +99,10 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/participant', participantRoute)
     .use('/api/feature', featureRoute)
     .use('/api/notification', verifyToken, notificationRoute)
+    .use('/api/distance', distanceRoute)
+    .use('/api/price', priceRoute)
+    .use('/api/pricelist', priceListRoute)
+    .use('/api/service', serviceRoute)
     .use('/api/customer', customerRoute)
 
 io.on(NOTIFY_EVENT.connection, socket => {
