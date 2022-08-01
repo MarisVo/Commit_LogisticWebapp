@@ -60,6 +60,7 @@ applicantAdminRoute.get("/", async (req, res) => {
         }
       : {};
     var query = {};
+    var ids = [];
     if (department) {
       var departmentQuery = {};
       departmentQuery.name = department;
@@ -73,56 +74,119 @@ applicantAdminRoute.get("/", async (req, res) => {
         }
       }
       const careers = await Career.find({_id: idsDep});
-      const ids = [];
+      const idsComp = [];
       for (let j = 0; j < careers.length; j++) {
         for (let i = 0; i < careers[j].applicants.length; i++) {
           if (careers[j].applicants.length) {
-            ids.push(careers[j].applicants[i]);
+            idsComp.push(careers[j].applicants[i]);
           }
         }
       }
-      query._id = ids;
+      if (ids.length) {
+      const r = idsComp.filter(({ id: idv }) => ids.every(({ id: idc }) => idv !== idc));
+      const newArr = ids.concat(r).map((v) => v.position ? v : { ...v, position: null });
+      console.log(newArr);
+      ids = newArr;
+      }
+      else{
+        ids = idsComp;
+      }
+      
+      
+      // else {
+      //   ids.filter(val=>idsComp.includes(val));
+      // }
+      //query._id = ids;
     }
     if (type) {
       var careerQuery = {};
       careerQuery.type = type;
       const careers = await Career.find(careerQuery);
-      const ids = [];
+      const idsComp = [];
       for (let j = 0; j < careers.length; j++) {
         for (let i = 0; i < careers[j].applicants.length; i++) {
           if (careers[j].applicants.length) {
-            ids.push(careers[j].applicants[i]);
+            idsComp.push(careers[j].applicants[i]);
           }
         }
       }
-      query._id = ids;
+      if (ids.length) {
+        const r = idsComp.filter(({ id: idv }) => ids.every(({ id: idc }) => idv !== idc));
+        const newArr = ids.concat(r).map((v) => v.position ? v : { ...v, position: null });
+        console.log(newArr);
+        ids = newArr;
+      }
+      else{
+          ids = idsComp;
+      }
+      // if (!ids.length) {
+       // ids.concat(idsComp);
+      // }
+      // else {
+      //   ids.filter(val=>idsComp.includes(val));
+      // }
+      //query._id = ids;
     }
     if (location) {
       var careerQuery = {};
       careerQuery.location = location;
       const careers = await Career.find(careerQuery);
-      const ids = [];
+      const idsComp = [];
       for (let j = 0; j < careers.length; j++) {
         for (let i = 0; i < careers[j].applicants.length; i++) {
           if (careers[j].applicants.length) {
-            ids.push(careers[j].applicants[i]);
+            idsComp.push(careers[j].applicants[i]);
           }
         }
       }
-      query._id = ids;
+      if (ids.length) {
+        const r = idsComp.filter(({ id: idv }) => ids.every(({ id: idc }) => idv !== idc));
+        const newArr = ids.concat(r).map((v) => v.position ? v : { ...v, position: null });
+        console.log(newArr);
+        ids = newArr;
+      }
+      else{
+          ids = idsComp;
+      }
+      // if (!ids.length) {
+        //ids.concat(idsComp);
+      // }
+      // else {
+      //   ids.filter(val=>idsComp.includes(val));
+      // }
+      //query._id = ids;
     }
     if (state) {
       var careerQuery = {};
       careerQuery.state = state;
       const careers = await Career.find(careerQuery);
-      const ids = [];
+      const idsComp = [];
       for (let j = 0; j < careers.length; j++) {
         for (let i = 0; i < careers[j].applicants.length; i++) {
           if (careers[j].applicants.length) {
-            ids.push(careers[j].applicants[i]);
+            idsComp.push(careers[j].applicants[i]);
           }
         }
       }
+      if (ids.length) {
+        const r = idsComp.filter(({ id: idv }) => ids.every(({ id: idc }) => idv !== idc));
+        const newArr = ids.concat(r).map((v) => v.position ? v : { ...v, position: null });
+        console.log(newArr);
+        ids = newArr;
+      }
+      else{
+          ids = idsComp;
+      }
+      //if (!ids.length) {
+        //ids.concat(idsComp);
+      // }
+      // else {
+      //   ids.filter(val=>idsComp.includes(val));
+      // }
+      //query._id = ids;
+    }
+    if (ids.length) {
+      console.log(ids);
       query._id = ids;
     }
     const applicant = await Applicant.find({ $and: [query, keywordCondition] })
@@ -163,96 +227,6 @@ applicantAdminRoute.delete("/:id", async (req, res) => {
   } catch (error) {
     console.log(error);
     return sendError(res);
-  }
-});
-
-/**
- * @route GET /api/admin/applicant/search/:keyword
- * @description get applicant information by keyword
- * @access public
- */
-
-applicantAdminRoute.get("/search/:keyword", async (req, res) => {
-  try {
-    const { keyword } = req.params;
-    const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0;
-    const page = req.query.page ? parseInt(req.query.page) : 0;
-    const applicant = await Applicant.find({ $in: [keyword] })
-      .limit(pageSize)
-      .skip(pageSize * page);
-    if (applicant)
-      return sendSuccess(
-        res,
-        "get applicant information successfully.",
-        applicant
-      );
-    return sendError(res, "applicant information is not found.");
-  } catch (error) {
-    console.log(error);
-    return sendServerError(res);
-  }
-});
-
-/**
- * @route GET /api/admin/applicant/filter
- * @description filter applicant information
- * @access public
- */
-
-applicantAdminRoute.get("/filter", async (req, res) => {
-  try {
-    const { department, type, location, state } = req.query;
-
-    const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0;
-    const page = req.query.page ? parseInt(req.query.page) : 0;
-    const applicant = await Applicant.find({
-      $or: [
-        { department: department },
-        { type: type },
-        { location: location },
-        { state: state },
-      ],
-    })
-      .limit(pageSize)
-      .skip(pageSize * page);
-    if (applicant)
-      return sendSuccess(
-        res,
-        "get applicant information successfully.",
-        applicant
-      );
-    return sendError(res, "applicant information is not found.");
-  } catch (error) {
-    console.log(error);
-    return sendServerError(res);
-  }
-});
-
-/**
- * @route GET /api/admin/applicant/sort
- * @description sort applicant information
- * @access public
- */
-
-applicantAdminRoute.get("/sort", async (req, res) => {
-  try {
-    const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0;
-    const page = req.query.page ? parseInt(req.query.page) : 0;
-    const sortBy = req.query.sortBy;
-    const applicant = await Applicant.find({})
-      .limit(pageSize)
-      .skip(pageSize * page)
-      .sort(-sortBy);
-    if (applicant)
-      return sendSuccess(
-        res,
-        "get applicant information successfully.",
-        applicant
-      );
-    return sendError(res, "applicant information is not found.");
-  } catch (error) {
-    console.log(error);
-    return sendServerError(res);
   }
 });
 
