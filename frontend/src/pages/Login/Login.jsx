@@ -83,7 +83,7 @@ const { Title } = Typography;
 function Login() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const { loginHandle, user,accestoken } = useContext(MainContext);
+  const { loginHandle } = useContext(MainContext);
   const success = () => {
     message.success({
       content: "Đăng nhập thành công",
@@ -119,10 +119,10 @@ function Login() {
     } 
   }, [user]); */
   const emailphone = Form.useWatch("email/phone", form);
-  var email;
-  var phone;
+  let email;
+  let phone;
   isValidEmail(emailphone) ? (email = emailphone) : (phone = emailphone);
-  var password = Form.useWatch("password", form);
+  let password = Form.useWatch("password", form);
 
   const onFinish = async () => {
     try {

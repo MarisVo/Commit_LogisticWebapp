@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Form, Input, DatePicker, Button } from "antd";
 import axios from "axios";
 import { END_POINT } from "../../../utils/constant";
+import { MainContext } from "../../../context/MainContext";
 
 const { Item } = Form;
 function EditDepartment({ onClose, data, refetchData }) {
+  const {accessToken} = useContext(MainContext)
   const [dataEdit, setDataEdit] = useState(data);
   const [loading, setLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
@@ -13,22 +15,15 @@ function EditDepartment({ onClose, data, refetchData }) {
     setLoading(true);
     setIsDisable(true);
     try {
-      setTimeout(() => {
-        //sẽ thay bằng PUT request
-        setLoading(false);
-        setIsDisable(false);
-        onClose();
-        refetchData();
-      }, 2000);
-    //   await axios.put(`${END_POINT}/admin/career/${data._id}`, {
-    //     headers: { authorization: `Bearer ${accessToken}` },
-    //   });
-    //   setLoading(false);
-    //   setDisable(false);
-    //   onClose();
-    //   refetchData();
-    } catch {
-      //code
+      await axios.put(`${END_POINT}/admin/department/${data._id}`, dataEdit, {
+        headers: { authorization: `Bearer ${accessToken}` },
+      });
+      setLoading(false);
+      setIsDisable(false);
+      onClose();
+      refetchData();
+    } catch(error) {
+      console.log(error)
     }
   };
   return (

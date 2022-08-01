@@ -1,24 +1,33 @@
-import { useState } from "react";
-import { Form, Input, DatePicker, Button } from "antd";
+import { useContext, useState } from "react";
+import { Form, Input, Button } from "antd";
 import { END_POINT } from "../../../utils/constant";
 import axios from "axios";
+import { MainContext } from "../../../context/MainContext";
 
 const { Item } = Form;
 function AddNewDepartment({ onClose, refetchData }) {
-  const [data, setData] = useState();
+  const { accessToken } = useContext(MainContext);
+  const [data, setData] = useState({
+    name: "",
+    director: "",
+    description: "",
+    location: "",
+    scale: "",
+  });
+  console.log(data);
   const [loading, setLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
   const acceptAddNewDepartment = async () => {
     setLoading(true);
-    setIsDisable(true);
+    // setIsDisable(true);
     try {
-    //   await axios.post(`${END_POINT}/admin/career`, data, {
-    //     headers: { authorization: `Bearer ${accessToken}` },
-    //   });
+      await axios.post(`${END_POINT}/admin/department`, data, {
+        headers: { authorization: `Bearer ${accessToken}` },
+      });
       setLoading(false);
       setIsDisable(false);
-      onClose();
       refetchData();
+      onClose();
     } catch {}
   };
   return (
@@ -42,6 +51,8 @@ function AddNewDepartment({ onClose, refetchData }) {
             </Button>
           </div>
           <Form
+            autoComplete="off"
+            onFinish={acceptAddNewDepartment}
             labelCol={{
               span: 6,
             }}
@@ -50,17 +61,99 @@ function AddNewDepartment({ onClose, refetchData }) {
             }}
             layout="horizontal"
           >
-            <Item label="Tên phòng ban">
-              <Input />
+            <Item
+              label="Tên phòng ban"
+              name="name"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập tên phòng ban",
+                },
+              ]}
+            >
+              <Input
+                value={data.name}
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    name: e.target.value,
+                  })
+                }
+              />
             </Item>
-            <Item label="Tên trưởng ban">
-              <Input />
+            <Item
+              label="Tên trưởng ban"
+              name="director"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập tên trưởng ban",
+                },
+              ]}
+            >
+              <Input
+                value={data.director}
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    director: e.target.value,
+                  })
+                }
+              />
             </Item>
-            <Item label="Mô tả">
-              <Input />
+            <Item label="Mô tả" name="description">
+              <Input
+                value={data.description}
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    description: e.target.value,
+                  })
+                }
+              />
             </Item>
-            <Item label="Địa điểm làm việc">
-              <Input />
+            <Item
+              label="Địa điểm làm việc"
+              name="location"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập địa điểm",
+                },
+              ]}
+            >
+              <Input
+                value={data.location}
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    location: e.target.value,
+                  })
+                }
+              />
+            </Item>
+            <Item
+              label="Scale"
+              name="scale"
+              rules={[
+                {
+                  // type:"number",
+                  required: true,
+                  message: "Vui lòng nhập số",
+                },
+              ]}
+            >
+              <Input
+                type="number"
+                value={data.scale}
+                onChange={(e) =>{
+                  console.log(e)
+                  setData({
+                    ...data,
+                    scale: +e.target.value,
+                  })
+                }}
+              />
             </Item>
             <div className="flex justify-end mt-2 text-sm gap-x-6">
               <Button
@@ -76,9 +169,9 @@ function AddNewDepartment({ onClose, refetchData }) {
               </Button>
               <Button
                 type="primary"
+                htmlType="submit"
                 size="large"
                 loading={loading}
-                onClick={acceptAddNewDepartment}
                 className="rounded-lg"
               >
                 Xác nhận

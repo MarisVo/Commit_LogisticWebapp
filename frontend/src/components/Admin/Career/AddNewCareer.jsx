@@ -2,19 +2,18 @@ import { useState, useEffect, useContext } from "react";
 import { Form, Input, DatePicker, Button, Select } from "antd";
 import { END_POINT } from "../../../utils/constant";
 import axios from "axios";
-// import { MainContext } from "../../context/MainContext";
-
+import { MainContext } from "../../../context/MainContext";
 const { Option } = Select;
 const { Item } = Form;
 const { TextArea } = Input;
 function AddNewCareer({ onClose, refetchData }) {
-  // const {accessToken} = useContext(MainContext)
+  const { accessToken } = useContext(MainContext);
   const [data, setData] = useState({
     name: "",
     type: "",
     description: "",
     location: "",
-    state: "",
+    state: "Đang mở",
     bonus: "",
     deadline: "",
   });
@@ -22,8 +21,7 @@ function AddNewCareer({ onClose, refetchData }) {
   const [idDepartment, setIdDepartment] = useState();
   const [loading, setLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
-  console.log(data)
-  console.log('id',idDepartment)
+  console.log(data);
   useEffect(() => {
     const fetchDepartmentsList = async () => {
       try {
@@ -37,16 +35,18 @@ function AddNewCareer({ onClose, refetchData }) {
   }, []);
   const acceptAddNewCareer = async () => {
     setLoading(true);
-    setIsDisable(true);
+    // setIsDisable(true);
     try {
-      // await axios.post(`${END_POINT}/admin/career/${idDepartment}`, data, {
-      //   headers: { authorization: `Bearer ${accessToken}` },
-      // });
+      await axios.post(`${END_POINT}/admin/career/${idDepartment}`, data, {
+        headers: { authorization: `Bearer ${accessToken}` },
+      });
       setLoading(false);
       setIsDisable(false);
       onClose();
       refetchData();
-    } catch {}
+    } catch(error) {
+      console.log(error)
+    }
   };
   return (
     <>
@@ -69,6 +69,8 @@ function AddNewCareer({ onClose, refetchData }) {
             </Button>
           </div>
           <Form
+            autoComplete="off"
+            onFinish={acceptAddNewCareer}
             labelCol={{
               span: 6,
             }}
@@ -77,7 +79,16 @@ function AddNewCareer({ onClose, refetchData }) {
             }}
             layout="horizontal"
           >
-            <Item label="Tên công việc">
+            <Item
+              label="Tên công việc"
+              name="name"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập tên công việc",
+                },
+              ]}
+            >
               <Input
                 value={data.name}
                 onChange={(e) =>
@@ -88,7 +99,16 @@ function AddNewCareer({ onClose, refetchData }) {
                 }
               />
             </Item>
-            <Item label="Loại công việc">
+            <Item
+              name="type"
+              label="Loại công việc"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập loại công việc",
+                },
+              ]}
+            >
               <Input
                 value={data.type}
                 onChange={(e) =>
@@ -99,7 +119,16 @@ function AddNewCareer({ onClose, refetchData }) {
                 }
               />
             </Item>
-            <Item label="Mô tả">
+            <Item
+              name="description"
+              label="Mô tả"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập mô tả",
+                },
+              ]}
+            >
               <TextArea
                 rows={3}
                 placeholder="Tối đa 1000 kí tự"
@@ -113,33 +142,59 @@ function AddNewCareer({ onClose, refetchData }) {
                 }
               />
             </Item>
-            <Item label="Hạn nộp hồ sơ">
-              <DatePicker 
-              placeholder="yyyy-mm-dd"
-              onChange={(e, dateString) =>
-                setData({
-                  ...data,
-                  deadline: dateString,
-                })
-              }
+            <Item
+              name="deadline"
+              label="Hạn nộp hồ sơ"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng chọn deadline",
+                },
+              ]}
+            >
+              <DatePicker
+                placeholder="yyyy-mm-dd"
+                onChange={(e, dateString) =>
+                  setData({
+                    ...data,
+                    deadline: dateString,
+                  })
+                }
               />
             </Item>
-            <Item label="Địa điểm làm việc">
-              <Input 
-              value={data.location}
-              onChange={(e) =>
-                setData({
-                  ...data,
-                  location: e.target.value,
-                })
-              }
+            <Item
+              name="location"
+              label="Địa điểm làm việc"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập địa điểm",
+                },
+              ]}
+            >
+              <Input
+                value={data.location}
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    location: e.target.value,
+                  })
+                }
               />
             </Item>
-            <Item label="Phòng ban">
+            <Item
+              name="department"
+              label="Phòng ban"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng chọn thông tin",
+                },
+              ]}
+            >
               <Select
-                showSearch
                 allowClear
-                onChange={(_,option) =>setIdDepartment(() => option?.key)}
+                onChange={(_, option) => setIdDepartment(() => option?.key)}
               >
                 {departments.map((department) => (
                   <Option value={department.name} key={department._id}>
@@ -164,7 +219,7 @@ function AddNewCareer({ onClose, refetchData }) {
                 type="primary"
                 size="large"
                 loading={loading}
-                onClick={acceptAddNewCareer}
+                htmlType="submit"
                 className="rounded-lg"
               >
                 Xác nhận

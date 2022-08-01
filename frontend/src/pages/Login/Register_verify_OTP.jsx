@@ -162,7 +162,7 @@ function Register_OTP() {
                 otp: OTP
             }  
         });
-
+        console.log(response)
         success();
         navigate("/dang-nhap");
     } catch(error) {
@@ -176,7 +176,7 @@ function Register_OTP() {
         <div className="Register_OTP">
           <div className="Register_OTP-header">
             <Form
-              form ={form}
+              form ={form}q
               autoComplete="off"
               labelCol={{ span: 10 }}
               wrapperCol={{ span: 14 }}

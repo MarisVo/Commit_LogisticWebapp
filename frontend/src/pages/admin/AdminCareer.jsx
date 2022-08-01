@@ -1,43 +1,43 @@
 import { Table, Input } from "antd";
-import { /*useContext,*/ useEffect, useState } from "react";
+import { /*useContext,*/ useContext, useEffect, useState } from "react";
 import AddNewCareer from "../../components/Admin/Career/AddNewCareer";
 import EditCareer from "../../components/Admin/Career/EditCareer";
 import ConfirmModal from "../../components/ConfirmModal";
 import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
 import { END_POINT } from "../../utils/constant";
 import axios from "axios";
-// import { MainContext } from "../../context/MainContext";
+import { MainContext } from "../../context/MainContext";
 function AdminCareer() {
+  const { accessToken } = useContext(MainContext);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 2,
-    total:16
+    pageSize: 4,
+    total: 20,
   });
   const [isAddVisible, setIsAddVisible] = useState(false);
   const [isEditVisible, setIsEditVisible] = useState(false);
   const [isDeleteVisible, setIsDeleteVisible] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
-  const [valueCompare, setValueCompare] = useState("");
+  const [idCompare, setIdCompare] = useState("");
+  const [nameCompare, setNameCompare] = useState("");
   const [dataForEdit, setDataForEdit] = useState({});
   const columns = [
     {
       title: "Tên việc làm",
       dataIndex: "name",
-      sorter: (a, b) => {
-        if(a.name < b.name) return -1
-        if(a.name > b.name) return 1
-      }
+      sorter:true
     },
     {
       title: "Hạn nộp hồ sơ",
       dataIndex: "deadline",
       sorter: (a, b) => {
-        if(a.deadline < b.deadline) return -1
-        if(a.deadline > b.deadline) return 1
+        if (a.deadline < b.deadline) return -1;
+        if (a.deadline > b.deadline) return 1;
       },
-      render: (a) => <div>{a.split("T")[0]}</div>,
+      render: (a) => <div>{a?.split("T")[0]}</div>,
+      // render: (a) => console.log(a)
     },
     // {
     //   title: "Phòng ban",
@@ -67,7 +67,6 @@ function AdminCareer() {
           value: "human",
         },
       ],
-      onFilter: (value, record) => record.type === value,
     },
     {
       title: "Mô tả",
@@ -86,11 +85,6 @@ function AdminCareer() {
           value: "HN",
         },
       ],
-      // onFilter: (value, record) => record.locate === value,
-      // onFilter: (value, record) => fetchData({location:value}),
-      onFilter: (value, record) => console.log(value)
-
-
     },
     {
       title: "Trạng thái",
@@ -105,7 +99,6 @@ function AdminCareer() {
           value: "Đã đóng",
         },
       ],
-      onFilter: (value, record) => record.state === value,
       render: (state) => (
         <>
           {state === "Đang mở" ? (
@@ -136,7 +129,8 @@ function AdminCareer() {
             className="flex items-baseline gap-x-1 hover:text-red-600"
             onClick={() => {
               setIsDeleteVisible(true);
-              setValueCompare(record.name);
+              setIdCompare(record._id);
+              setNameCompare(record.name);
             }}
           >
             <AiOutlineDelete className="translate-y-[1px]" />
@@ -146,18 +140,19 @@ function AdminCareer() {
       ),
     },
   ];
-  const fetchData = async (params={}) => {
+  const fetchData = async (params = {}) => {
     setLoading(true);
     try {
-      const { data: response } = await axios.get(`${END_POINT}/career`,{params:params});
-      console.log(response)
+      const { data: response } = await axios.get(`${END_POINT}/career`, {
+        params: params,
+      });
       setData(response.data);
       setLoading(false);
       setPagination({
-        total:params?.total,
-        pageSize:params?.pageSize,
-        current:params?.page+1,
-      })
+        total: params?.total,
+        pageSize: params?.pageSize,
+        current: params?.page + 1,
+      });
     } catch (error) {
       console.error(error.message);
     }
@@ -165,36 +160,31 @@ function AdminCareer() {
   useEffect(() => {
     fetchData({
       ...pagination,
-      page:pagination.current-1
+      page: pagination.current - 1,
     });
   }, []);
   const handleTableChange = (newPagination, filters, sorter) => {
-    // fetchData({
-    //     sortField: sorter.field,
-    //     sortOrder: sorter.order,
-    //     pagination: newPagination,
-    //     ...filters,
-    // });
-    // data.find(a=>a.)
+    const sort = sorter.order==="descend"?`-${sorter.field}`:sorter.field
+
+    console.log(sorter)
     fetchData({
+      sortBy: sort,
       ...newPagination,
-      page:newPagination.current-1
-    })
-    console.log(newPagination)
-    setPagination(newPagination)
+      page: (newPagination.current - 1),
+      ...filters
+    });
   };
   const acceptDelete = async () => {
     setLoading(true);
     setIsDisable(true);
     try {
-      /*await axios.delete(
-        `${END_POINT}/admin/career/${valueCompare}`,
-        {
-          headers: { authorization: `Bearer ${accessToken}` },
-        }
-      )*/
+      await axios.delete(`${END_POINT}/admin/career/${idCompare}`, {
+        headers: { authorization: `Bearer ${accessToken}` },
+      });
       setLoading(false);
       setIsDisable(false);
+      fetchData({ ...pagination, page: pagination.current - 1 });
+      setIsDeleteVisible(false);
     } catch (error) {
       console.log(error);
     }
@@ -245,19 +235,25 @@ function AdminCareer() {
       {isAddVisible && (
         <AddNewCareer
           onClose={() => setIsAddVisible(false)}
-          refetchData={fetchData}
+          refetchData={()=>fetchData({
+            ...pagination,
+            page: pagination.current - 1,
+          })}
         />
       )}
       {isEditVisible && (
         <EditCareer
           onClose={() => setIsEditVisible(false)}
           data={dataForEdit}
-          refetchData={fetchData}
+          refetchData={()=>fetchData({
+            ...pagination,
+            page: pagination.current - 1,
+          })}
         />
       )}
       <ConfirmModal //Modal delete career
         isVisible={isDeleteVisible}
-        text={`xóa Công việc ${valueCompare}`}
+        text={`xóa Công việc ${nameCompare}`}
         onClose={() => setIsDeleteVisible(false)}
         loading={loading}
         disable={isDisable}

@@ -1,6 +1,7 @@
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  DesktopOutlined
 } from "@ant-design/icons";
 import {
   MdGroup,
@@ -94,6 +95,27 @@ export default function AdminPage() {
       "9",
       <AiOutlinePartition />
     ),
+    getItem(
+      <div>
+        <Link to="warehouse">warehouse</Link>
+      </div>,
+      "10",
+      <DesktopOutlined> </DesktopOutlined>
+    ),
+    getItem(
+      <div>
+        <Link to="car">car</Link>
+      </div>,
+      "11",
+      <DesktopOutlined> </DesktopOutlined>
+    ),
+    getItem(
+      <div>
+        <Link to="road">road</Link>
+      </div>,
+      "12",
+      <DesktopOutlined> </DesktopOutlined>
+    ),
     // getItem("User", "sub1", <UserOutlined />, [getItem("Tom", "3"), getItem("Bill", "4"), getItem("Alex", "5")]),
   ];
   return (
@@ -107,7 +129,7 @@ export default function AdminPage() {
         trigger={null}
         collapsible
         collapsed={collapsed}
-        className="uppercase hidden xl:block"
+        className="uppercase " //hidden xl:block
         style={{
           background: "#fff",
         }}

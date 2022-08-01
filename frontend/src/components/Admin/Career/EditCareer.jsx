@@ -1,34 +1,30 @@
-import { useState } from "react";
-import { Form, Input, DatePicker, Button } from "antd";
+import { useState, useContext } from "react";
+import { Form, Input, DatePicker, Button, Select } from "antd";
 import axios from "axios";
 import { END_POINT } from "../../../utils/constant";
-
+import { MainContext } from "../../../context/MainContext";
+const {Option} = Select
 const { Item } = Form;
 function EditCareer({ onClose, data, refetchData }) {
-  const [dataEdit, setDataEdit] = useState(data);
+  const [dataEdit, setDataEdit] = useState({...data,
+    _id:null});
   const [loading, setLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
   console.log("data là", dataEdit);
+  const { accessToken } = useContext(MainContext);
   const acceptEditCareer = async () => {
     setLoading(true);
-    setIsDisable(true);
+    // setIsDisable(true);
     try {
-      setTimeout(() => {
-        //sẽ thay bằng PUT request
-        setLoading(false);
-        setIsDisable(false);
-        onClose();
-        refetchData();
-      }, 2000);
-    //   await axios.put(`${END_POINT}/admin/career/${data._id}`, {
-    //     headers: { authorization: `Bearer ${accessToken}` },
-    //   });
-    //   setLoading(false);
-    //   setDisable(false);
-    //   onClose();
-    //   refetchData();
-    } catch {
-      //code
+      await axios.put(`${END_POINT}/admin/career/${data._id}`, dataEdit, {
+        headers: { authorization: `Bearer ${accessToken}` },
+      });
+      setLoading(false);
+      // setIsDisable(false);
+      refetchData();
+      onClose();
+    } catch (error) {
+      console.log(error);
     }
   };
   return (
@@ -103,6 +99,20 @@ function EditCareer({ onClose, data, refetchData }) {
                   })
                 }
               />
+            </Item>
+            <Item label="Trạng thái">
+              <Select
+                value={dataEdit.state}
+                onChange={(value) =>
+                  setDataEdit({
+                    ...dataEdit,
+                    state: value,
+                  })
+                }
+              >
+                <Option value="Đang mở"><div className="text-green-600 font-bold">Mở</div></Option>
+                <Option value="Đã đóng"><span className="text-red-600 font-bold">Đóng</span></Option>
+              </Select>
             </Item>
             <div className="flex justify-end mt-2 text-sm gap-x-6">
               <Button

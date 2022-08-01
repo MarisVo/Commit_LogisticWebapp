@@ -1,7 +1,6 @@
 import React from 'react'
 import 'antd/dist/antd.css'
 import { Form, Button, Input, Select, Typography, message } from "antd";
-import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import * as axios from 'axios'
 
@@ -25,6 +24,7 @@ const RegisForm = styled.div`
     background-color: #FBAB7E;
     background-image: linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%);
 }
+
 .Regis-header{
     max-width: 500px;
     width: 100%;
@@ -35,11 +35,13 @@ const RegisForm = styled.div`
     box-shadow: 0 5px 10px rgba(0,0,0,0.15);
     overflow:auto;
 }
+
 .ant-typography{
     font-size: 45px;
     font-weight: 500;
     position: relative;
 }
+
 .ant-input-affix-wrapper {
     box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
 }
@@ -72,7 +74,7 @@ function isValidEmail(email) {
 
 const { Title } = Typography;
 
-function Register() {
+function Staff_Register() {
   const [form] = Form.useForm();
 
   const success = () => {
@@ -85,7 +87,7 @@ function Register() {
     });
   };
 
-  const existed = () => {
+  const failed400 = () => {
     message.error({
       content: 'Email hoặc số điện thoại đã tồn tại',
       className: 'custom-class',
@@ -95,15 +97,6 @@ function Register() {
     });
   };
 
-  const failed400 = () => {
-    message.error({
-      content: 'Đăng kí không thành công',
-      className: 'custom-class',
-      style: {
-        marginTop: '20vh',
-      },
-    });
-  };
 
   const failed500 = () => {
     message.error({
@@ -120,43 +113,26 @@ function Register() {
   let phone;
   (isValidEmail(emailphone)) ? email = emailphone : phone = emailphone
   let name = Form.useWatch('name', form);
-  let address = Form.useWatch('address', form);
-  let customer_type = Form.useWatch('customer_type', form);
-  let tax = Form.useWatch('tax', form);
-  let description = Form.useWatch('description', form);
   let password = Form.useWatch('password', form);
-  let verify_password = Form.useWatch('confirmPassword', form);
-  let verify_op;
-  (email) ? verify_op = "email" : verify_op = "phone"
-
-  let navigate = useNavigate();
+  let staff_type = Form.useWatch('staff_type', form);
 
   const onFinish = async() => {
     try{
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:8000/api/auth/register',
+        url: 'http://localhost:8000/api/admin/auth/register',
         data: {
           name: name,
           email: email,
           phone: phone,
           password: password,
-          verify_password: verify_password,
-          address: address,
-          description: description,
-          customer_type: customer_type,
-          verify_op: verify_op
+          staff_type: staff_type
         }
       });
 
-      console.log(JSON.stringify(response?.data));
+      /*console.log(JSON.stringify(response?.data));*/
       success();
-      navigate("/xac-thuc-otp");
     } catch(error){
-      if(error.response.data.message == "user is exist"){
-        existed();
-      }
-
       if(error.message == "Request failed with status code 400") {
         failed400();
       }
@@ -235,91 +211,24 @@ function Register() {
                   <Input.Password placeholder="Nhập mật khẩu" />
                 </Form.Item>
 
-                <Form.Item
-                  name="confirmPassword"
-                  label="Xác nhận mật khẩu"
-                  dependencies={["password"]}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Mật khẩu không khớp"
-                    },
-                    ({ getFieldValue }) => ({
-                      validator(_, value) {
-                        if (!value || getFieldValue("password") === value) {
-                          return Promise.resolve();
-                        }
-                        return Promise.reject(
-                          "Mật khẩu không khớp"
-                        );
-                      },
-                    }),
-                  ]}
-                  hasFeedback
-                >
-                  <Input.Password placeholder="Xác nhận mật khẩu" />
-                </Form.Item>
-
-                <Form.Item
-                  name="address"
-                  label="Địa chỉ"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Vui lòng nhập địa chỉ",
-                    },
-                  ]}
-                  hasFeedback
-                >
-                  <Input placeholder="Nhập địa chỉ" />
-                </Form.Item>
-
-
                 <Form.Item 
-                  name="customer_type" 
-                  label="Khách hàng"
+                  name="staff_type" 
+                  label="Nhân viên"
                   rules={[
                     {
                       required: true,
-                      message: "Xin vui lòng chọn loại khách hàng",
+                      message: "Xin vui lòng chọn kiểu nhân viên",
                     },
                   ]}
                   hasFeedback
                 >
-                  <Select placeholder="Chọn loại khách hàng">
-                    <Select.Option value="intermediary">intermediary</Select.Option>
-                    <Select.Option value="business">business</Select.Option>
-                    <Select.Option value="passers">passers</Select.Option>
+                  <Select placeholder="Chọn kiểu nhân viên">
+                    <Select.Option value="admin">admin</Select.Option>
+                    <Select.Option value="driver">driver</Select.Option>
+                    <Select.Option value="shipper">shipper</Select.Option>
+                    <Select.Option value="storekeeper">storekeeper</Select.Option>
+                    <Select.Option value="staff">staff</Select.Option>
                   </Select>
-                </Form.Item>
-
-                <Form.Item
-                  name="tax"
-                  label="Mã số thuế"
-                  rules={[
-                    ({ getFieldValue }) => ({
-                      validator(_, tax) {
-                        if ((tax && getFieldValue("customer_type") === "business") || getFieldValue("customer_type") === "passers" || getFieldValue("customer_type") === "intermediary") {
-                          return Promise.resolve();
-                        }
-                        return Promise.reject(
-                          "Vui lòng nhập mã số thuế nếu là doanh nghiệp"
-                        );
-                      },
-                    }),
-                  ]}
-                  hasFeedback
-                >
-                  <Input placeholder="Nhập mã số thuế" />
-                </Form.Item>
-
-                <Form.Item wrapperCol={{ span: 24 }}>
-                    <div className='sign'>
-                        Bạn đã có tài khoản?  
-                        <Link to="/dang-nhap" className="font-semibold text-blue-700">
-                            Đăng nhập
-                        </Link>
-                    </div>
                 </Form.Item>
 
                 <Form.Item wrapperCol={{ span: 24 }}>
@@ -337,4 +246,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default Staff_Register;

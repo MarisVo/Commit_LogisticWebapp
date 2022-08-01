@@ -2,10 +2,11 @@ import { Table, Input } from "antd";
 import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
 import { END_POINT } from "../../utils/constant";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import AddNewDepartment from "../../components/Admin/Department/AddDepartment";
 import EditDepartment from "../../components/Admin/Department/EditDepartment";
 import ConfirmModal from "../../components/ConfirmModal";
+import { MainContext } from "../../context/MainContext";
 
 function AdminDepartment() {
   const columns = [
@@ -55,18 +56,6 @@ function AdminDepartment() {
         if(a.scale > b.scale) return 1
       }
     },
-    //   {
-    //     title: "Danh sách việc làm",
-    //     dataIndex: "job",
-    //     render: (a, e) => (
-    //       <div
-    //         // onClick={() => { setIsModalVisible(true) }}
-    //         className="text-blue-700 cursor-pointer"
-    //       >
-    //         Xem
-    //       </div>
-    //     ),
-    //   },
     {
       title: "",
       width: 160,
@@ -84,7 +73,8 @@ function AdminDepartment() {
             className="flex items-baseline gap-x-1 hover:text-red-600"
             onClick={() => {
               setIsDeleteVisible(true);
-              setValueCompare(record.name);
+              setValueCompare(record._id);
+              setNameCompare(record.name)
             }}
           >
             <AiOutlineDelete className="translate-y-[1px]" />
@@ -94,6 +84,7 @@ function AdminDepartment() {
       ),
     },
   ];
+  const { accessToken } = useContext(MainContext);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
@@ -104,7 +95,8 @@ function AdminDepartment() {
   const [isAddVisible, setIsAddVisible] = useState(false);
   const [isEditVisible, setIsEditVisible] = useState(false);
   const [isDeleteVisible, setIsDeleteVisible] = useState(false);
-  const [valueCompare, setValueCompare] = useState("");
+  const [IdCompare, setValueCompare] = useState("");
+  const [nameCompare, setNameCompare] = useState("");
   const [dataForEdit, setDataForEdit] = useState({});
   const fetchData = async () => {
     setLoading(true);
@@ -124,14 +116,16 @@ function AdminDepartment() {
     setLoading(true);
     setIsDisable(true);
     try {
-      /*await axios.delete(
-        `${END_POINT}/admin/department/${valueCompare}`,
+      await axios.delete(
+        `${END_POINT}/admin/department/${IdCompare}`,
         {
           headers: { authorization: `Bearer ${accessToken}` },
         }
-      )*/
+      )
       setLoading(false);
+      fetchData()
       setIsDisable(false);
+      setIsDeleteVisible(false)
     } catch (error) {
       console.log(error);
     }
@@ -153,6 +147,9 @@ function AdminDepartment() {
       console.error(error.message);
     }
   };
+  const handleTableChange = (newPagination)=>{
+    setPagination(newPagination)
+  }
   return (
     <div>
       <div className="flex justify-between mb-4">
@@ -175,7 +172,7 @@ function AdminDepartment() {
         dataSource={data}
         pagination={pagination}
         loading={loading}
-        // onChange={handleTableChange}
+        onChange={handleTableChange}
       />
       {isAddVisible && (
         <AddNewDepartment
@@ -192,7 +189,7 @@ function AdminDepartment() {
       )}
       <ConfirmModal //Modal delete department
         isVisible={isDeleteVisible}
-        text={`xóa Phòng ban ${valueCompare}`}
+        text={`xóa Phòng ban ${nameCompare}`}
         onClose={() => setIsDeleteVisible(false)}
         loading={loading}
         disable={isDisable}
