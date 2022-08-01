@@ -53,6 +53,14 @@ tags:
   description: "Endpoint Consultancy"
 - name: "notification"
   description: "Endpoint Notification for user's realtime interaction"
+- name: "service"
+  description: "Endpoint Service"
+- name: "distance"
+  description: "Endpoint Distance"
+- name: "price"
+  description: "Endpoint Price"
+- name: "priceList"
+  description: "Endpoint PriceList"
 - name: "customer"
   description: "Endpoint Customer"
 paths:
@@ -3546,6 +3554,7 @@ paths:
           description: receiver's ID didn't exist.
       security:
         - bearerAuth: []
+  
   /distance:
     get:
       tags:
@@ -3555,7 +3564,7 @@ paths:
         - application/json
       parameters:
         - in: query
-        name: pageSize
+          name: pageSize
           type: string
           description: limit number of distances on a page
           parameters:
@@ -4524,7 +4533,9 @@ paths:
           description: Delete service successfully.
         400:
           description: Delete service failed.
-  
+      security:
+        - bearerAuth: []
+
   /customer:
     get:
       tags:
@@ -4635,6 +4646,7 @@ paths:
           description: Delete customer successfully.
       security:
         - bearerAuth: []
+
 securityDefinitions:
   bearerAuth:
     type: "apiKey"

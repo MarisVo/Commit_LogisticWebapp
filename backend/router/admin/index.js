@@ -51,7 +51,7 @@ adminRoute.use('/auth', authAdminRoute)
     .use("/feature", featureAdminRoute)
     .use('/distance', distanceAdminRoute)
     .use('/price', priceAdminRoute)
-    .use('/pricelist', pricelistAdminRoute);
-    .use("/customer", customerAdminRoute)
+    .use('/pricelist', pricelistAdminRoute)
+    .use("/customer", customerAdminRoute);
 
 export default adminRoute
