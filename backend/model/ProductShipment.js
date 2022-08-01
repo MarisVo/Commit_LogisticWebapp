@@ -9,7 +9,8 @@ const ProductShipmentSchema = new Schema(
         },
         product_id: {
             type: Schema.Types.ObjectId,
-            ref: 'product_shipments'
+            ref: 'product_shipments', 
+            required: true
         }
     },
     { timestamps: true }

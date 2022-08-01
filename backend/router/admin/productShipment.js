@@ -82,10 +82,12 @@ productShipmentAdminRoute.post('/create', async (req, res) => {
 
     try {
         const { quantity, product_id } = req.body
+        //check quantity 
         if (quantity < 1)
-         return sendError(res, "Quantity is not less than 1")
-        const isExist = await ProductShipment.exists({ product_id })
-        if (!isExist)
+            return sendError(res, "Quantity is not less than 1")
+        //check productID
+        const isExistProductID = await ProductShipment.exists({ quantity: quantity, product_id: product_id })
+        if (!isExistProductID)
             return sendError(res, "Product is not exists")
 
         //get quantity of product
@@ -112,7 +114,7 @@ productShipmentAdminRoute.post('/create', async (req, res) => {
                 product_shipments.push(productShipmentQuantity[i]._id);
             }
             console.log(product_shipments)
-            const updateProduct = await Product.findByIdAndUpdate({_id: product_id}, {product_shipments: product_shipments})
+            const updateProduct = await Product.findByIdAndUpdate({ _id: product_id }, { product_shipments: product_shipments })
             if (!updateProduct)
                 return sendServerError(res, "Update failed")
             return sendSuccess(res, 'Set product shipment information successfully')
@@ -161,13 +163,37 @@ productShipmentAdminRoute.delete('/:id', async (req, res) => {
 productShipmentAdminRoute.put('/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const { quantity } = req.body
+        const { quantity, product_id } = req.body
         if (!quantity) return sendError(res, "Quantity is required")
-        const isExist = await ProductShipment.exists({ quantity: quantity })
+
+        const isExist = await ProductShipment.exists({ quantity: quantity, product_id: product_id, _id: id })
         if (isExist)
-            return sendError(res, "This quantity is existed.")
-        await ProductShipment.findByIdAndUpdate(id, { quantity: quantity })
-        return sendSuccess(res, "Update  successfully", { quantity })
+            return sendError(res, "This product shipment is existed.")
+
+        //get quantity of product
+        const productid = await Product.findById({ _id: product_id }, { quantity: true })
+        const productQuantity = productid.quantity
+        console.log(productQuantity)
+
+        //get all product by productID in productshipment
+        const productShipmentQuantity = await ProductShipment.find({ product_id: product_id })
+        let temp = 0
+        for (let i = 0; i < productShipmentQuantity.length; i++) {
+            if(productShipmentQuantity[i].id != id)
+            {
+                temp = temp + productShipmentQuantity[i].quantity
+            }
+            console.log(productShipmentQuantity[i].id)
+        }
+        let quantityPresent = Number(quantity) + temp
+        console.log(quantityPresent)
+        // Compare
+        if (productQuantity >= quantityPresent) {
+            await ProductShipment.findByIdAndUpdate(id, { quantity: quantity, product_id: product_id })
+            return sendSuccess(res, 'Update product shipment information successfully')
+        }
+        else
+            return sendError(res, "Product_shipment quantity over load current product quantity")
     } catch (error) {
         console.log(error)
         return sendServerError(res)

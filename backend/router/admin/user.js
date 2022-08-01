@@ -1,6 +1,7 @@
 import express from 'express'
-import { sendError, sendSuccess } from "../../helper/client.js";
+import { sendError, sendServerError, sendSuccess } from "../../helper/client.js";
 import Customer from '../../model/Customer.js';
+import Staff from '../../model/Staff.js';
 import User from "../../model/User.js";
 
 const userAdminRoute = express.Router()
@@ -22,7 +23,6 @@ userAdminRoute.delete('/:id', async (req, res) => {
         console.log(userRole)
 
         await User.findByIdAndRemove(id)
-        await Customer.findByIdAndRemove({_id: userRole})
             .then(() => {
                 return sendSuccess(res, "Delete user successfully.")
             })
@@ -30,6 +30,13 @@ userAdminRoute.delete('/:id', async (req, res) => {
                 return sendError(res, err)
             })
 
+        const isExitstaff = await Staff.exists({ _id: userRole })
+        if (isExitstaff)
+            await Staff.findByIdAndRemove({_id: userRole})
+            
+        const isExitCustomer = await Customer.exists({ _id: userRole })
+        if (isExitCustomer) 
+            await Customer.findByIdAndRemove({_id: userRole})
     }
     catch (error) {
         console.log(error)

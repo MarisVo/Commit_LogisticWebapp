@@ -106,16 +106,16 @@ billAdminRoute.post('/create', async (req, res) => {
         const isExistDriver = await Staff.exists({ _id: driver })
         const isExistProductShipment = await ProductShipment.exists({ _id: product_shipments })
 
-        // if (!isExistService)
-        //     return sendError(res, 'Service does not exist.')
-        // if (!isExistRoad)
-        //     return sendError(res, 'Road does not exist.')
+        if (!isExistService)
+            return sendError(res, 'Service does not exist.')
+        if (!isExistRoad)
+            return sendError(res, 'Road does not exist.')
         if (!isExistCar)
             return sendError(res, 'Car does not exist.')
-        // if (!isExistDriver)
-        //     return sendError(res, 'Driver does not exist.')
-        // if (!isExistProductShipment)
-        //     return sendError(res, 'Product shipment does not exist.')
+        if (!isExistDriver)
+            return sendError(res, 'Driver does not exist.')
+        if (!isExistProductShipment)
+            return sendError(res, 'Product shipment does not exist.')
         await Bill.create({ service, road, car, driver, product_shipments, status })
         return sendSuccess(res, 'Set bill information successfully.')
     }
@@ -126,11 +126,11 @@ billAdminRoute.post('/create', async (req, res) => {
 })
 
 /**
- * @route DELETE /api/admin/product-shipment/:id
+ * @route DELETE /api/admin/bill/:id
  * @description delete a product shipment existing 
  * @access private
  */
-billAdminRoute.delete('/delete/:id', async (req, res) => {
+billAdminRoute.delete('/:id', async (req, res) => {
     const { id } = req.params;
     try {
         const isExit = await Bill.exists({ _id: id })
@@ -156,7 +156,7 @@ billAdminRoute.delete('/delete/:id', async (req, res) => {
  * @description update information of product shipment
  * @access private
  */
-billAdminRoute.put('/edit/:id', async (req, res) => {
+billAdminRoute.put('/:id', async (req, res) => {
     try {
         const { id } = req.params
         const { service, road, car, driver, product_shipments, status } = req.body

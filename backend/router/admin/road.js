@@ -105,7 +105,7 @@ roadAdminRoute.post('/create', async (req, res) => {
  * @description update information of road
  * @access private
  */
-roadAdminRoute.put('/edit/:id', async (req, res) => {
+roadAdminRoute.put('/:id', async (req, res) => {
     try {
         const { id } = req.params
         const { distance, origin, destination } = req.body
@@ -137,7 +137,7 @@ roadAdminRoute.put('/edit/:id', async (req, res) => {
  * @description delete a road existing 
  * @access private
  */
-roadAdminRoute.delete('/delete/:id', async (req, res) => {
+roadAdminRoute.delete('/:id', async (req, res) => {
     const { id } = req.params;
     try {
         const isExit = await Road.exists({ _id: id })

@@ -90,7 +90,7 @@ carAdminRoute.post('/create', async (req, res) => {
  * @description update infomation of a existing car
  * @access private
  */
-carAdminRoute.put('/edit/:id', async (req, res) => {
+carAdminRoute.put('/:id', async (req, res) => {
     try {
         const { volumn, tonnage, car_type } = req.body
         const { id } = req.params;
@@ -112,7 +112,7 @@ carAdminRoute.put('/edit/:id', async (req, res) => {
  * @description delete a car existing 
  * @access private
  */
-carAdminRoute.delete('/delete/:id', async (req, res) => {
+carAdminRoute.delete('/:id', async (req, res) => {
     const { id } = req.params;
     try {
         const isExit = await Car.exists({ _id: id })
