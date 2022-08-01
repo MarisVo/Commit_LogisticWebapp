@@ -16,8 +16,9 @@ const DepartmentSchema = new Schema(
             default: null
         },
         director: {
-            type: String,
-            default: null
+            type: Schema.Types.ObjectId,
+            ref: 'staffs',
+            required: true
         },
         scale: {
             type: Number
