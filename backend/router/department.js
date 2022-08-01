@@ -47,7 +47,6 @@ departmentRoute.get("/", async (req, res) => {
             { name: { $regex: keyword, $options: "i" } },
             { description: { $regex: keyword, $options: "i" } },
             { location: { $regex: keyword, $options: "i" } },
-            { director: { $regex: keyword, $options: "i" } },
           ],
         }
       : {};
