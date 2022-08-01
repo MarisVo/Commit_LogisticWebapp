@@ -102,11 +102,11 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/participant', participantRoute)
     .use('/api/notification', verifyToken, notificationRoute)
 
-app.use(express.static(path.join(__dirname, '../frontend/build')));
+app.use(express.static(path.join(__dirname, process.env.BUILD_DIST)));
 
 app.get('/*', async (req, res) => {
     try {
-        res.sendFile(path.join(__dirname, '../frontend/build/index.html'))
+        res.sendFile(path.join(__dirname, process.env.BUILD_DIST + 'index.html'))
     } catch (error) {
         console.log(error.message)
         res.sendStatus(500)

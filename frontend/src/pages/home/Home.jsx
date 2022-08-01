@@ -10,6 +10,8 @@ import { FiMap } from 'react-icons/fi'
 import axios from 'axios'
 import { END_POINT } from "../../utils/constant"
 import { Fade, Zoom, Reveal } from 'react-reveal';
+import { useContext } from 'react';
+import { MainContext } from '../../context/MainContext';
 
 const { TabPane } = Tabs
 const { Option } = Select
@@ -151,6 +153,7 @@ const Home = () => {
     const [currentDistrict, setCurrentDistrict] = useState(null)
     const [person, setPerson] = useState(1)
     const [warehouses, setWarehouse] = useState([])
+    const { setMetadata } = useContext(MainContext)
 
     const searchWarehouse = () => {
         if (currentDistrict && currentProvince) {
@@ -178,6 +181,12 @@ const Home = () => {
 
 
     useEffect(() => {
+        setMetadata((prev) => {
+            return {
+                ...prev,
+                title: 'Trang chủ | TKTL'
+            }
+        })
         const dataProv = getProvinces()
         setListProvince(dataProv)
     }, [])

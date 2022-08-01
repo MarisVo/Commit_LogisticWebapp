@@ -50,9 +50,11 @@ import {
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainProvider from "./context/MainContext";
+import Metadata from './SEO/Metadata';
 const App = () => {
   return (
     <MainProvider>
+      <Metadata>
       <BrowserRouter>
         <div className="wrapper">
           <ScrollToTop />
@@ -140,6 +142,7 @@ const App = () => {
 
         </div>
       </BrowserRouter>
+      </Metadata>
     </MainProvider>
   );
 };

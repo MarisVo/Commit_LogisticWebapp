@@ -6,6 +6,16 @@ export const MainContext = createContext();
 const MainProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState(null);
   const [user, setUser] = useState(null);
+  const [metadata, setMetadata] = useState({
+    title: 'Tien Kim Thanh Logistics',
+    description: 'Webapp of Tien Kim Thanh Logistics for logistic services',
+    meta: {
+      name: {
+        title: 'Tien Kim Thanh Logistics',
+        keywords: 'logistic,logistics,trucking,transport,TKTL,Tien Kim Thanh',
+      }
+    }
+  })
 
   const checkAuthenticated = async () => {
     const refreshToken = localStorage.getItem(
@@ -76,6 +86,8 @@ const MainProvider = ({ children }) => {
         checkAuthenticated,
         loginHandle,
         logoutHandle,
+        metadata,
+        setMetadata
       }}
     >
       {children}
