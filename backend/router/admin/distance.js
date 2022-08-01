@@ -1,8 +1,8 @@
 import express from "express";
-import { sendError, sendServerError, sendSuccess } from "../helper/client.js";
-import DeliveryService from "../model/DeliveryService.js";
-import Distance from "../model/Distance.js";
-import { zoneCodeValidate } from "../validation/distance.js";
+import { sendError, sendServerError, sendSuccess } from "../../helper/client.js";
+import DeliveryService from "../../model/DeliveryService.js";
+import Distance from "../../model/Distance.js";
+import { zoneCodeValidate } from "../../validation/distance.js";
 
 const distanceRoute = express.Router();
 

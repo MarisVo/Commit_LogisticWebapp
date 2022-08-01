@@ -1,6 +1,6 @@
 import express from "express";
-import { sendError, sendServerError, sendSuccess } from "../helper/client.js";
-import DeliveryService from "../model/DeliveryService.js";
+import { sendError, sendServerError, sendSuccess } from "../../helper/client.js";
+import DeliveryService from "../../model/DeliveryService.js";
 
 const priceListRoute = express.Router();
 
