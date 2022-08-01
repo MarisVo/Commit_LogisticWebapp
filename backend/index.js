@@ -5,6 +5,8 @@ import cors from "cors"
 import YAML from 'yamljs'
 import { Server } from 'socket.io'
 import session from 'express-session'
+import path from 'path'
+const __dirname = path.resolve(path.dirname(''))
 
 import authRoute from "./router/auth.js"
 import adminRoute from "./router/admin/index.js"
@@ -45,9 +47,12 @@ dotenv.config()
 /**
  * Connect MongoDB
  */
-mongoose.connect(process.env.MONGO_URI, () => {
-    console.log('Connect MongoDB successfully.')
-}).catch(error => console.log(error.reason))
+mongoose.connect(process.env.MONGO_URI)
+const db = mongoose.connection
+db.on('error', () => console.log('MongoDB connection error.'))
+db.once('open', () => {
+    console.log('Connected to MongoDB successfully.')
+})
 
 const PORT = process.env.PORT || 8000
 export const TOKEN_LIST = {}
@@ -69,7 +74,6 @@ app.use(session({
     resave: true
 }))
 app.use(express.json())
-app.use(express.static('public'))
 app.use(cors())
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
@@ -97,6 +101,17 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/department', departmentRoute)
     .use('/api/participant', participantRoute)
     .use('/api/notification', verifyToken, notificationRoute)
+
+app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+app.get('/*', async (req, res) => {
+    try {
+        res.sendFile(path.join(__dirname, '../frontend/build/index.html'))
+    } catch (error) {
+        console.log(error.message)
+        res.sendStatus(500)
+    }
+})
 
 io.on(NOTIFY_EVENT.connection, socket => {
     // console.log('Connected to a user successfully.')
