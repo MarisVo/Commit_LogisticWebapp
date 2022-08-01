@@ -24,7 +24,7 @@ customerAdminRoute.put('/:id', async (req, res) => {
         .then(() => {return sendSuccess(res, 'Customer updated successfully')})
     }
     catch (err) {
-        return sendServerError(res, err);
+        return sendServerError(res);
     }
 })
 /**
@@ -46,7 +46,7 @@ customerAdminRoute.put('/:id', async (req, res) => {
         })
     }
     catch (err) {
-        sendServerError(res, err)
+        sendServerError(res)
     }
 })
 export default customerAdminRoute;
