@@ -54,7 +54,7 @@ serviceRoute.get("/", async (req, res) => {
 serviceRoute.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const service = await DeliveryService.find({ _id: id });
+    const service = await DeliveryService.findOne({ _id: id });
     if (!service) return sendError(res, "Service does not exist.");
     if (service)
       return sendSuccess(res, "get service information successfully.", service);

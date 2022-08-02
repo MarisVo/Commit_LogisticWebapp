@@ -4818,37 +4818,6 @@ paths:
           description: request successfully.
       security:
         - bearerAuth: []
-    post:
-      tags:
-        - customer
-      summary: Create a customer
-      consumes:
-        - application/json
-      parameters:
-        - in: body
-          name: Customer information
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-              address:
-                type: string
-              description:
-                type: string
-              customer_type:
-                type: string
-              rank_passers:
-                type: object
-              companyTaxcode_business:
-                type: string
-              accepted_business:
-                type: boolean
-      responses:
-        200:
-          description: create customer successfully.
-      security:
-        - bearerAuth: []
   /admin/customer/{id}:
     put:
       tags:
