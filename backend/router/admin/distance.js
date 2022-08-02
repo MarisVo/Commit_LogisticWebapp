@@ -1,91 +1,42 @@
 import express from "express";
-import { sendError, sendServerError, sendSuccess } from "../../helper/client.js";
-import DeliveryService from "../../model/DeliveryService.js";
+import {
+  sendError,
+  sendServerError,
+  sendSuccess,
+} from "../../helper/client.js";
 import Distance from "../../model/Distance.js";
-import { zoneCodeValidate } from "../../validation/distance.js";
+import DeliveryService from "../../model/DeliveryService.js";
+import { createDistanceValidate } from "../../validation/distance.js";
 
-const distanceRoute = express.Router();
-
-/**
- * @route GET /api/distance
- * @description get distance information
- * @access public
- */
-distanceRoute.get("/", async (req, res) => {
-  try {
-    const { fromProvince, toProvince } = req.query;
-    const distance = await Distance.find({
-      fromProvince: fromProvince,
-      toProvince: toProvince,
-    });
-    if (distance)
-      return sendSuccess(
-        res,
-        "get distance information successfully.",
-        distance
-      );
-    return sendError(res, "distance information is not found.");
-  } catch (error) {
-    console.log(error);
-    return sendServerError(res);
-  }
-});
+const distanceAdminRoute = express.Router();
 
 /**
- * @route GET /api/distance/:id
- * @description get a single distance information
+ * @route POST /api/admin/distance/create/:serviceId
+ * @description create delivery road for delivery service
  * @access private
  */
+distanceAdminRoute.post("/create/:serviceId", async (req, res) => {
+  const errors = createDistanceValidate(req.body);
+  if (errors) return sendError(res, errors);
 
-distanceRoute.get("/:id", async (req, res) => {
+  const { fromProvince, toProvince, zonecode, dist } = req.body;
+
   try {
-    const { id } = req.params;
-    const distance = await Distance.findById({ _id: id });
-    if (!distance) return sendError(res, "Distance does not exist.");
-    if (distance)
-      return sendSuccess(
-        res,
-        "get distance information successfully.",
-        distance
-      );
-    return sendError(res, "Distance information is not found.");
-  } catch (error) {
-    console.log(error);
-    return sendServerError(res);
-  }
-});
-
-/**
- * @route GET /api/distance/service/:serviceId
- * @description get distance information for a given service id
- * @access public
- */
-
-distanceRoute.get("/service/:serviceId", async (req, res) => {
-  try {
-    const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0;
-    const page = req.query.page ? parseInt(req.query.page) : 0;
-    const { serviceId } = req.params;
-    const service = await DeliveryService.findById({ _id: serviceId });
-    if (!service) return sendError(res, "Service does not exist.");
-
+    const service = await DeliveryService.exists({ _id: req.params.serviceId });
     if (service) {
-      const ids = [];
-      for (let i = 0; i < service.distances.length; i++) {
-        if (service.distances.length) {
-          ids.push(service.distances[i]);
-        }
-      }
-      const distance = await Distance.find({ _id: ids })
-        .limit(pageSize)
-        .skip(pageSize * page);
-      return sendSuccess(
-        res,
-        "get distance information successfully.",
-        distance
+      const distance = await Distance.create({
+        fromProvince,
+        toProvince,
+        zonecode,
+        dist,
+      });
+
+      await DeliveryService.findOneAndUpdate(
+        { _id: service._id },
+        { $push: { distances: distance } }
       );
     }
-    return sendError(res, "Distance information is not found.");
+    return sendSuccess(res, "create distance successfully.");
   } catch (error) {
     console.log(error);
     return sendServerError(res);
@@ -93,28 +44,60 @@ distanceRoute.get("/service/:serviceId", async (req, res) => {
 });
 
 /**
- * @route PUT /api/distance/:id
- * @description distance zonecode submit
+ * @route PUT /api/admin/distance/:id
+ * @description update details of an existing distance
  * @access private
  */
-distanceRoute.put("/:id", async (req, res) => {
+distanceAdminRoute.put("/:id", async (req, res) => {
   const { id } = req.params;
-  const errors = zoneCodeValidate(req.body);
+  const errors = createDistanceValidate(req.body);
   if (errors) return sendError(res, errors);
-  let { zonecode } = req.body;
+  let { fromProvince, toProvince, zonecode, dist } = req.body;
   try {
     const distance = await Distance.findById(id);
     if (distance) {
-      await Distance.findByIdAndUpdate(id, { zonecode: zonecode });
-      return sendSuccess(res, "Update distance successfully.", {
+      await Distance.findByIdAndUpdate(id, {
+        fromProvince: fromProvince,
+        toProvince: toProvince,
         zonecode: zonecode,
+        dist: dist,
+      });
+      return sendSuccess(res, "Update distance successfully.", {
+        fromProvince: fromProvince,
+        toProvince: toProvince,
+        zonecode: zonecode,
+        dist: dist,
       });
     }
-    return sendError(res, "Distance does not exist.");
+    return sendError(res, "distance does not exist.");
   } catch (error) {
     console.log(error);
     return sendError(res);
   }
 });
 
-export default distanceRoute;
+/**
+ * @route DELETE /api/admin/distance/:id
+ * @description delete an existing distance
+ * @access private
+ */
+distanceAdminRoute.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const isExist = await Distance.exists({ _id: id });
+    if (!isExist) return sendError(res, "distance does not exist.");
+    await DeliveryService.findOneAndUpdate({distances: id}, { $pull: { distances: id } });
+    await Distance.findByIdAndRemove(id)
+      .then(() => {
+        return sendSuccess(res, "Delete distance successfully.");
+      })
+      .catch((err) => {
+        return sendError(res, err);
+      });
+  } catch (error) {
+    console.log(error);
+    return sendError(res);
+  }
+});
+
+export default distanceAdminRoute;
