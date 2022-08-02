@@ -49,11 +49,11 @@ adminRoute.use('/auth', authAdminRoute)
     .use("/applicant", applicantAdminRoute)
     .use("/career", careerAdminRoute)
     .use("/department", departmentAdminRoute)
-    .use("/product", productAdminRoute);
+    .use("/product", productAdminRoute)
     .use("/feature", featureAdminRoute)
     .use('/distance', distanceAdminRoute)
     .use('/price', priceAdminRoute)
     .use('/pricelist', pricelistAdminRoute)
-    .use("/customer", customerAdminRoute);
+    .use("/customer", customerAdminRoute)
 
 export default adminRoute
