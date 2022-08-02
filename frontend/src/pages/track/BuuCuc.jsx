@@ -42,6 +42,7 @@ export default function BuuCuc() {
 			// replace Thành phố || Tỉnh to empty
 			province = province.replace('Thành phố ', '').replace('Tỉnh ', '');
 
+			
 			const res = await axios.get(`${END_POINT}/tracking/warehouse`, {
 				params: {
 					province,
@@ -57,7 +58,10 @@ export default function BuuCuc() {
 	};
 
 	return (
-		<div>
+		<div style={{ 
+			maxWidth: "1200px",
+			margin:"auto"
+		 }}>
 			<div className="flex items-center flex-col lg:flex-row gap-[24px]">
 				<div className="w-full h-[43px] lg:w-1/3">
 					<select

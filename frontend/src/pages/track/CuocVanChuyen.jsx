@@ -31,6 +31,7 @@ export default function CuocVanChuyen() {
 	const [unit, setUnit] = useState('kg');
 	const [price, setPrice] = useState(0);
 
+
 	const [isValid, setIsValid] = useState(false);
 
 	// =================== FROM EFFECT =======================//
@@ -83,27 +84,38 @@ export default function CuocVanChuyen() {
 
 		const provinceFrom = provincesFrom.find(prov => prov.code === provinceCodeFrom);
 		const provinceTo = provincesTo.find(prov => prov.code === provinceCodeTo);
+		const districtFrom = districtsFrom.find(prov => prov.code === districtCodeFrom);
+		const districtTo = districtsTo.find(prov => prov.code === districtCodeTo);
+		const wardFrom = wardsFrom.find(prov => prov.code === wardCodeFrom);
+		const wardTo = wardsTo.find(prov => prov.code === wardCodeTo);
+
+
 
 		try {
-			
-			const { data } = await axios.post(`${END_POINT}/tracking/postage`, {
+
+			const {data} = await axios.post("http://localhost:8000/api/tracking/postage", {
 				fromProvince: provinceFrom.name,
+				fromDistrict: districtFrom.name,
+				fromWard: wardFrom.district_name,
 				toProvince: provinceTo.name,
+				toDistrict: districtTo.name,
+				toWard: wardTo.district_name,
 				unit,
-				quantity: +weight,
-				serviceName: 'express',
+				quantity: weight,
+				serviceId: "62a991c45b1e73890c891df7",
+				serviceName: "create price for a service",
 			})
-	
+
 			setPrice(data.data.result);
-	
+
 			console.log(data);
-			
-	
+
+
 			if (data.success === false) {
 				alert(data.message || 'Có lỗi xảy ra');
 			}
 		} catch (error) {
-			alert(error?.response?.data?.message || 'Có lỗi xảy ra');			
+			alert(error?.response?.data?.message || 'Có lỗi xảy ra');
 		}
 
 
@@ -111,7 +123,10 @@ export default function CuocVanChuyen() {
 	};
 
 	return (
-		<div className="p-7 shadow shadow-zinc-200">
+		<div className="p-7 shadow shadow-zinc-200" style={{ 
+			maxWidth: "1200px",
+			margin:"auto"
+		 }}>
 			<span className="mb-4 inline-block font-bold text-xl text-[#F0B90B]">
 				Gửi từ: <span className="text-red-500"> * </span>
 			</span>
@@ -457,18 +472,18 @@ export default function CuocVanChuyen() {
 				{/* <div id="bill" className="collapse px-4 lg:px-0"> */}
 				{
 					isValid && price && (
-					<div id="bill" className="px-4 lg:px-0">
-						<div className="mt-14 bg-[#FFF2F4] min-h-[215px] rounded-[10px] flex flex-col items-center justify-center">
-							<span className="uppercase text-[#161D25] SFProDisplayBold">
-								tổng tiền cước vận chuyển
-							</span>
-							<span className="py-3 text-[#FF0000] text-[54px]">{price} VNĐ</span>
-							<span className="text-[#161D25] text-center lg:text-left">
-								Giá trên đã bao gồm phụ phí nhiên liệu, phí vùng sâu vùng xa và
-								10% thuế VAT
-							</span>
+						<div id="bill" className="px-4 lg:px-0">
+							<div className="mt-14 bg-[#FFF2F4] min-h-[215px] rounded-[10px] flex flex-col items-center justify-center">
+								<span className="uppercase text-[#161D25] SFProDisplayBold">
+									tổng tiền cước vận chuyển
+								</span>
+								<span className="py-3 text-[#FF0000] text-[54px]">{price} VNĐ</span>
+								<span className="text-[#161D25] text-center lg:text-left">
+									Giá trên đã bao gồm phụ phí nhiên liệu, phí vùng sâu vùng xa và
+									10% thuế VAT
+								</span>
+							</div>
 						</div>
-					</div>
 					)
 				}
 			</div>

@@ -8,7 +8,7 @@ const Life = () => {
   return (
     <>
       <div>
-        <img src={Banner} alt="Banner" />
+        <img src={Banner} alt="Banner" style={{paddingTop:"32px"}}/>
       </div>
       <LifeInJTDetail />
       <Welfare />

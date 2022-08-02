@@ -3,8 +3,8 @@ import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
 import { END_POINT } from "../../utils/constant";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
-import AddNewDepartment from "../../components/Admin/Department/AddDepartment";
-import EditDepartment from "../../components/Admin/Department/EditDepartment";
+import AddNewDepartment from "../../components/Admin/department/AddDepartment";
+import EditDepartment from "../../components/Admin/department/EditDepartment";
 import ConfirmModal from "../../components/ConfirmModal";
 import { MainContext } from "../../context/MainContext";
 
