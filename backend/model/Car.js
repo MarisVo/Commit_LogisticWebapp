@@ -1,5 +1,4 @@
 import mongoose from "mongoose"
-import { COST } from "../constant.js"
 import { CAR_TYPE } from "../constant.js"
 const { Schema } = mongoose
 

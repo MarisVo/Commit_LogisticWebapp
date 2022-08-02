@@ -163,8 +163,10 @@ export const NOTIFY_EVENT = {
     disconnect: 'disconnect'
 }
 
-export const COST = {
-    transportation: 'transportation',
+// This constant may be updated late
+export const TURNOVER = {
+    complete_order: 'complete order',
+    fuel: 'fuel',
     repair: 'repair',
     maintenance: 'maintenance',
     incurred: 'incurred'
@@ -179,5 +181,6 @@ export const PAYMENT_METHOD = {
     CASH: 'cash',
     MOMO_WALLET: 'momo wallet',
     ZALO_PAY: 'zalo pay',
-    PAYPAL: 'paypal'
+    PAYPAL: 'paypal',
+    BANKING: 'banking'
 }
