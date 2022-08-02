@@ -22,6 +22,7 @@ import {
   Register,
   Register_OTP,
   StaffLogin,
+  StaffRegister,
   ForgetPass,
   RecruitmentDetails,
   Purchase,
@@ -100,13 +101,14 @@ const App = () => {
                 <Route path="user/notifications/order" element={<Notification />} />
               </Route>
               {/* -------------------------Đăng kí/Đăng nhập------------- */}
-              <Route element={<ProtectedRoute />}>
-                <Route path="dang-ki" element={<Register />} />
-                <Route path="dang-nhap" element={<Login />} />
-                <Route path="quen-mat-khau" element={<ForgetPass />} />
-                <Route path="xac-thuc-otp" element={<Register_OTP />} />
-                <Route path="dang-nhap-nhan-vien" element={<StaffLogin />} />
-              </Route>
+                <Route element={<ProtectedRoute/>}>
+              <Route path="dang-ki" element={<Register /> } />
+              <Route path="dang-nhap" element={<Login /> } />
+              <Route path="quen-mat-khau" element={<ForgetPass />} />
+              <Route path="xac-thuc-otp" element={<Register_OTP />} />
+              <Route path="dang-nhap-nhan-vien" element={<StaffLogin /> } />
+              <Route path="dang-ki-nhan-vien" element={<StaffRegister /> } />
+                </Route>            
               {/* -----------------------Tư vấn----------------------- */}
               <Route path="tu-van/lien-he" element={<Contact />} />
               <Route path="tu-van/dang-ki-tu-van" element={<SignUpAdvice />} />
@@ -132,6 +134,7 @@ const App = () => {
                 <Route path="warehouse" element={<AdminWarehouse />}></Route>
                 <Route path="car" element={<AdminCar />}></Route>
                 <Route path="road" element={<AdminRoad />}></Route>
+                <Route path="staff_regis" element={<StaffRegister />}></Route>
               </Route>
             </Route>
           </Routes>

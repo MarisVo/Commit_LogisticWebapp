@@ -8,23 +8,18 @@ import { MainContext } from '../../context/MainContext';
 
 const RegisForm = styled.div`
 .Regis{
-    height: 150vh;
     display: flex;
     flex-direction:row;
     @media (max-width: 768px) {
       flex-direction: column;
-      height: 140vh;
     }
     @media (max-height: 628px) {
       flex-direction: column;
-      height: 140vh;
     }
     justify-content: center;
     align-items: center;
     padding-top: 100px;
     padding-bottom: 50px;
-    background-color: #FBAB7E;
-    background-image: linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%);
 }
 .Regis-header{
     max-width: 500px;
@@ -77,7 +72,7 @@ function Staff_Register() {
 
   const success = () => {
     message.success({
-      content: 'Mã OTP đã được gửi về email hoặc số điện thoại của bạn, vui lòng nhập mã OTP để xác thực tài khoản',
+      content: 'Thêm nhân viên mới thành công',
       className: 'custom-class',
       style: {
         marginTop: '20vh',
@@ -103,10 +98,8 @@ function Staff_Register() {
     });
   };
   
-  const emailphone = Form.useWatch('email/phone', form);
-  let email;
-  let phone;
-  (isValidEmail(emailphone)) ? email = emailphone : phone = emailphone
+  let email = Form.useWatch('email', form);
+  let phone = Form.useWatch('phone', form);
   let name = Form.useWatch('name', form);
   let password = Form.useWatch('password', form);
   let staff_type = Form.useWatch('staff_type', form);
@@ -170,8 +163,8 @@ function Staff_Register() {
                 </Form.Item>
 
                 <Form.Item
-                    name="email/phone"
-                    label="Email/Phone"
+                    name="email"
+                    label="Email"
                     rules={[
                       {
                         required: true,
@@ -181,6 +174,20 @@ function Staff_Register() {
                     hasFeedback
                     >
                     <Input placeholder="Nhập email hoặc số điện thoại" />
+                </Form.Item>
+
+                <Form.Item
+                    name="phone"
+                    label="Phone"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Vui lòng nhập số điện thoại",
+                      },                  
+                    ]}
+                    hasFeedback
+                    >
+                    <Input placeholder="Nhập số điện thoại" />
                 </Form.Item>
 
                 <Form.Item
