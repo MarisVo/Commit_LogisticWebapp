@@ -9,13 +9,15 @@ const receiverRoute = express.Router();
 
 
 receiverRoute.put('/:id',
-    // verifyToken, 
-    // verifyCustomer,
+    verifyToken, 
+    verifyCustomer,
     async (req, res) => {
         const id = req.params.id
         const {name, phone, identity} = req.body
-        const order = await Order.find({_id: id})
+        const customerId = req.user.role._id
+        const order = await Order.find({_id: id, customerId: customerId})
         if (!order) {return sendError(res, 'Order not found')}
+        
         if (order[0].status === ORDER_STATUS.waiting) {
             try {
                 const receiverId = order[0].receiver
@@ -28,6 +30,5 @@ receiverRoute.put('/:id',
         } else {
             sendError(res, "Cannot update receiver while order is completed");
         }
-
     })
 export default receiverRoute;

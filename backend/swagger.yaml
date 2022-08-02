@@ -3399,7 +3399,8 @@ paths:
       responses:
         200:
           description: Update receiver successfully. 
-
+      security:
+        - bearerAuth: []
 securityDefinitions:
   bearerAuth:
     type: "apiKey"
