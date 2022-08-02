@@ -198,13 +198,19 @@ function AdminDepartment() {
         onChange={handleTableChange}
       />
       {isAddVisible && (
-        <AddNewDepartment onClose={() => setIsAddVisible(false)} refetchData={fetchData} />
+        <AddNewDepartment
+          onClose={() => setIsAddVisible(false)}
+          refetchData={()=>fetchData({
+            ...pagination,
+            page: pagination.current - 1,
+          })}
+        />
       )}
       {isEditVisible && (
         <EditDepartment
           onClose={() => setIsEditVisible(false)}
           data={dataForEdit}
-          refetchData={fetchData({
+          refetchData={()=>fetchData({
             ...pagination,
             page: pagination.current - 1,
           })}

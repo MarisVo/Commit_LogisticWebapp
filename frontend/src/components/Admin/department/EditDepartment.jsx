@@ -13,15 +13,15 @@ function EditDepartment({ onClose, data, refetchData }) {
   console.log("data là", dataEdit);
   const acceptEditDepartment = async () => {
     setLoading(true);
-    setIsDisable(true);
+    // setIsDisable(true);
     try {
       await axios.put(`${END_POINT}/admin/department/${data._id}`, dataEdit, {
         headers: { authorization: `Bearer ${accessToken}` },
       });
       setLoading(false);
-      setIsDisable(false);
-      onClose();
+      // setIsDisable(false);
       refetchData();
+      onClose();
     } catch(error) {
       console.log(error)
     }
