@@ -22,6 +22,7 @@ import applicantRoute from "./router/applicant.js"
 import careerRoute from "./router/career.js"
 import departmentRoute from "./router/department.js"
 import participantRoute from "./router/participant.js"
+import productRoute from "./router/product.js"
 
 // swagger setup
 import swaggerUi from 'swagger-ui-express'
@@ -88,7 +89,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/department', departmentRoute)
     .use('/api/participant', participantRoute)
     .use('/api/notification', verifyToken, notificationRoute)
-
+    .use('/api/product', productRoute)
+    
 io.on(NOTIFY_EVENT.connection, socket => {
     // console.log('Connected to a user successfully.')
 
