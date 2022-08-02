@@ -15,38 +15,55 @@ function Products() {
       key: "code_bill",
     },
     {
-      title: "Ngày cập nhật lần cuối",
+      title: "Thời gian cập nhật lần cuối",
       dataIndex: "updateAt",
       sorter: true,
     },
     {
-      title: "Giờ cập nhật lần cuối",
-      dataIndex: "time",
-      sorter: true,
+      title: "Driver",
+      dataIndex: "driver",
+    },
+    {
+      title: "Bưu cục đi",
+      dataIndex: "origin",
+    },
+    {
+      title: "Bưu cục đến",
+      dataIndex: "destination",
     },
     {
       title: "Trạng thái",
       dataIndex: "status",
       filters: [
         {
+          text: "Đang chờ",
+          value: "waiting",
+        },
+        {
           text: "Đang giao hàng",
-          value: "Đang giao hàng",
+          value: "procesing",
         },
         {
           text: "Đã hoàn thành",
-          value: "Đã hoàn thành",
+          value: "completed",
         },
       ],
       onFilter: (value, record) => record.status === value,
       render: (status) => (
         <>
-          {status === "waiting" ? (
-            <div className="text-yellow-600 max-w-[150px] font-bold bg-yellow-200 text-center rounded-lg py-1">
-              Đang giao hàng
-            </div>
+          {status === "completed" || status === "processing" ? (
+            status === "completed" ? (
+              <div className="text-green-600 font-bold bg-green-200 text-center rounded-lg py-1">
+                Hoàn thành
+              </div>
+            ) : (
+              <div className="text-yellow-600 font-bold bg-yellow-200 text-center rounded-lg py-1">
+                Đang giao
+              </div>
+            )
           ) : (
-            <div className="text-green-600 max-w-[150px] font-bold bg-green-300 text-center rounded-lg py-1">
-              Đã hoàn thành
+            <div className="text-gray-600 font-bold bg-gray-200 text-center rounded-lg py-1">
+              Đang đợi
             </div>
           )}
         </>
@@ -95,7 +112,7 @@ function Products() {
   const data2 = [
     {
       key: 1,
-      status: "Đang giao hàng",
+      status: "waiting",
       code_bill: "MXJJA0",
       updateAt: "14/02/22",
       time: "19:03",
@@ -103,7 +120,15 @@ function Products() {
     },
     {
       key: 2,
-      status: "Đã hoàn thành",
+      status: "completed",
+      code_bill: "MXJJB3",
+      updateAt: "10/11/22",
+      time: "17:03",
+      detail: "Chi tiết",
+    },
+    {
+      key: 3,
+      status: "processing",
       code_bill: "MXJJB3",
       updateAt: "10/11/22",
       time: "17:03",
@@ -114,7 +139,7 @@ function Products() {
     try {
       const { data: response } = await axios.get(`${END_POINT}/bill`);
       setData(response.data);
-      const {data:product}=await axios.get(`${END_POINT}/`)
+      const { data: product } = await axios.get(`${END_POINT}/`);
       console.log(response);
       console.log(product);
     } catch (error) {

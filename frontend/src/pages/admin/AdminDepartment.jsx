@@ -14,17 +14,17 @@ function AdminDepartment() {
       title: "Tên phòng ban",
       dataIndex: "name",
       sorter: (a, b) => {
-        if(a.name < b.name) return -1
-        if(a.name > b.name) return 1
-      }
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+      },
     },
     {
       title: "Trưởng ban",
       dataIndex: "director",
       sorter: (a, b) => {
-        if(a.director < b.director) return -1
-        if(a.director > b.director) return 1
-      }
+        if (a.director < b.director) return -1;
+        if (a.director > b.director) return 1;
+      },
     },
     // {
     //     title: 'Vị trí',
@@ -52,9 +52,9 @@ function AdminDepartment() {
       title: "Số lượng nhân viên",
       dataIndex: "scale",
       sorter: (a, b) => {
-        if(a.scale < b.scale) return -1
-        if(a.scale > b.scale) return 1
-      }
+        if (a.scale < b.scale) return -1;
+        if (a.scale > b.scale) return 1;
+      },
     },
     {
       title: "",
@@ -74,7 +74,7 @@ function AdminDepartment() {
             onClick={() => {
               setIsDeleteVisible(true);
               setValueCompare(record._id);
-              setNameCompare(record.name)
+              setNameCompare(record.name);
             }}
           >
             <AiOutlineDelete className="translate-y-[1px]" />
@@ -90,7 +90,8 @@ function AdminDepartment() {
   const [isDisable, setIsDisable] = useState(false);
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 10,
+    pageSize: 1,
+    total: 3,
   });
   const [isAddVisible, setIsAddVisible] = useState(false);
   const [isEditVisible, setIsEditVisible] = useState(false);
@@ -98,34 +99,51 @@ function AdminDepartment() {
   const [IdCompare, setValueCompare] = useState("");
   const [nameCompare, setNameCompare] = useState("");
   const [dataForEdit, setDataForEdit] = useState({});
-  const fetchData = async () => {
+  // const fetchData = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const { data: response } = await axios.get(`${END_POINT}/department`);
+  //     console.log(response);
+  //     setLoading(false);
+  //     setData(response.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  const fetchData = async (params = {}) => {
     setLoading(true);
     try {
-      const { data: response } = await axios.get(`${END_POINT}/department`);
-      console.log(response);
-      setLoading(false);
+      const { data: response } = await axios.get(`${END_POINT}/department`, {
+        params: params,
+      });
       setData(response.data);
+      setLoading(false);
+      setPagination({
+        total: params?.total,
+        pageSize: params?.pageSize,
+        current: params?.page + 1,
+      });
     } catch (error) {
-      console.log(error);
+      console.error(error.message);
     }
   };
   useEffect(() => {
-    fetchData();
+    fetchData({
+      ...pagination,
+      page: pagination.current - 1,
+    });
   }, []);
   const acceptDelete = async () => {
     setLoading(true);
     setIsDisable(true);
     try {
-      await axios.delete(
-        `${END_POINT}/admin/department/${IdCompare}`,
-        {
-          headers: { authorization: `Bearer ${accessToken}` },
-        }
-      )
+      await axios.delete(`${END_POINT}/admin/department/${IdCompare}`, {
+        headers: { authorization: `Bearer ${accessToken}` },
+      });
       setLoading(false);
-      fetchData()
+      fetchData();
       setIsDisable(false);
-      setIsDeleteVisible(false)
+      setIsDeleteVisible(false);
     } catch (error) {
       console.log(error);
     }
@@ -147,9 +165,14 @@ function AdminDepartment() {
       console.error(error.message);
     }
   };
-  const handleTableChange = (newPagination)=>{
-    setPagination(newPagination)
-  }
+  const handleTableChange = (newPagination, filters, sorter) => {
+    const sort = sorter.order === "descend" ? `-${sorter.field}` : sorter.field;
+    fetchData({
+      sortBy: sort,
+      ...newPagination,
+      page: newPagination.current - 1,
+    });
+  };
   return (
     <div>
       <div className="flex justify-between mb-4">
@@ -175,16 +198,16 @@ function AdminDepartment() {
         onChange={handleTableChange}
       />
       {isAddVisible && (
-        <AddNewDepartment
-          onClose={() => setIsAddVisible(false)}
-          refetchData={fetchData}
-        />
+        <AddNewDepartment onClose={() => setIsAddVisible(false)} refetchData={fetchData} />
       )}
       {isEditVisible && (
         <EditDepartment
           onClose={() => setIsEditVisible(false)}
           data={dataForEdit}
-          refetchData={fetchData}
+          refetchData={fetchData({
+            ...pagination,
+            page: pagination.current - 1,
+          })}
         />
       )}
       <ConfirmModal //Modal delete department

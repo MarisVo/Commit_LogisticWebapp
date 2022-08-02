@@ -224,8 +224,8 @@ function AdminCareer() {
         </button>
       </div>
       <Table
-        columns={columns}
         rowKey={(record) => record._id}
+        columns={columns}
         dataSource={data}
         pagination={pagination}
         loading={loading}
