@@ -28,6 +28,10 @@ const TurnoverSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'bills'
         },
+        order: {
+            type: Schema.Types.ObjectId,
+            ref: 'orders'
+        },
         message: String
     },
     { timestamps: true }
