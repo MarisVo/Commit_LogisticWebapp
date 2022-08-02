@@ -107,6 +107,13 @@ export default function AdminPage() {
       "12",
       <DesktopOutlined> </DesktopOutlined>
     ),
+    getItem(
+      <div>
+        <Link to="staff_regis">add staff</Link>
+      </div>,
+      "13",
+      <DesktopOutlined> </DesktopOutlined>
+    ),
     // getItem("User", "sub1", <UserOutlined />, [getItem("Tom", "3"), getItem("Bill", "4"), getItem("Alex", "5")]),
   ];
   return (

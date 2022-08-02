@@ -11,15 +11,18 @@ const OrderSchema = new Schema(
         },
         service: {
             type: Schema.Types.ObjectId,
-            ref: 'delivery_services'
+            ref: 'delivery_services',
+            required: true
         },
         customer: {
             type: Schema.Types.ObjectId,
-            ref: 'customers'
+            ref: 'customers',
+            required: true
         },
         receiver: {
             type: Schema.Types.ObjectId,
-            ref: 'receivers'
+            ref: 'receivers',
+            required: true
         },
         total_price: {
             type: Number,
@@ -38,7 +41,21 @@ const OrderSchema = new Schema(
         destination: {
             type: String,
             required: true
-        }
+        },
+        feedback: [
+            {
+                user: {
+                    type: Schema.Types.ObjectId,
+                    ref: 'users',
+                    required: true
+                },
+                content: {
+                    type: String,
+                    required: true
+                }
+            },
+            { timestamps: true }
+        ]
     },
     { timestamps: true }
 )

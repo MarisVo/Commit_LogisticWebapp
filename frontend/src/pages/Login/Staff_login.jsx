@@ -53,7 +53,6 @@ const LoginForm = styled.div`
     text-align: right;
   }
 `;
-
 const ButtonContainer = styled.div`
   .ant-btn-primary {
     height: 100%;
@@ -93,7 +92,6 @@ function StaffLogin() {
       },
     });
   };
-
   const failed403 = () => {
     message.error({
       content: 'Role của bạn chưa được xác nhận, từ chối đăng nhập',
@@ -103,7 +101,6 @@ function StaffLogin() {
       },
     });
   };
-
   const failed400 = () => {
     message.error({
       content: 'Email, số điện thoại hoặc mật khẩu không đúng',
@@ -146,7 +143,6 @@ function StaffLogin() {
       if(error.message == "Request failed with status code 403") {
         failed403();
       }
-
       if(error.message == "Request failed with status code 400") {
         failed400();
       }

@@ -77,7 +77,8 @@ const MainProvider = ({ children }) => {
         user,
         loginHandle,
         logoutHandle,
-        checkAuthenticated
+        checkAuthenticated,
+        accessToken
       }}
     >
       {children}
