@@ -1,7 +1,8 @@
-import { Outlet, Link, Navigate } from 'react-router-dom'
+import { Outlet, Link, Navigate, useNavigate } from 'react-router-dom'
 import { useContext, useState } from 'react'
 import logoJT from '../assets/icons/logo-J&T.svg'
 import { MainContext } from '../context/MainContext';
+import { useEffect } from 'react';
 
 const items = [
     {
@@ -14,30 +15,35 @@ const items = [
     },
 ]
 function LayerStorekeeper() {
-      const {  logoutHandle } = useContext(MainContext);
-
-    return (
-        <>
-            <div className='fixed left-0 right-0 top-0 flex flex-row justify-between px-4 items-center h-20 bg-gradient-to-l from-orange-400 to-yellow-400 z-10 '>
-                <div>
-                    <img src={logoJT}/>
-                </div>
-                <div className="flex flex-row gap-x-3 h-full justify-center items-center">
-                    <div className='bg-orange-600 hover:opacity-80 px-2 py-2 rounded-lg'>
-                        <Link to='ton-kho' className='font-bold text-white' >Quản lý hàng tồn kho</Link>
-                    </div>
-                    <div className='bg-orange-600 hover:opacity-80  px-2 py-2 rounded-lg'>
-                        <Link to='xuat-nhap' className='font-bold text-white'>Quản lý đơn hàng</Link>
-                    </div>
-                </div>
-                <div className='peer rounded-full  bg-slate-400 w-[46px] text-white p-3 mr-12 '>TK</div>
-                <div className='peer-hover:block absolute right-5 top-16 bg-white shadow-xl px-4 py-2 rounded-lg' onClick={logoutHandle}>
-                    Đăng xuất
-                </div>
-            </div>
-            <Outlet />
-        </>
-    );
+      const {  logoutHandle, user  } = useContext(MainContext);
+    
+      if(user&&user.role.staff_type==="storekeeper")
+      {
+          return (
+              <>
+                  <div className='fixed left-0 right-0 top-0 flex flex-row justify-between px-4 items-center h-20 bg-gradient-to-l from-orange-400 to-yellow-400 z-10 '>
+                      <div>
+                          <img src={logoJT}/>
+                      </div>
+                      <div className="flex flex-row gap-x-3 h-full justify-center items-center">
+                          <div className='bg-orange-600 hover:opacity-80 px-2 py-2 rounded-lg'>
+                              <Link to='ton-kho' className='font-bold text-white' >Quản lý hàng tồn kho</Link>
+                          </div>
+                          <div className='bg-orange-600 hover:opacity-80  px-2 py-2 rounded-lg'>
+                              <Link to='xuat-nhap' className='font-bold text-white'>Quản lý đơn hàng</Link>
+                          </div>
+                      </div>
+                      <div className='peer rounded-full  bg-slate-400 w-[46px] text-white p-3 mr-12 '>TK</div>
+                      <div className='peer-hover:block absolute right-5 top-16 bg-white shadow-xl px-4 py-2 rounded-lg' onClick={logoutHandle}>
+                          Đăng xuất
+                      </div>
+                  </div>
+                  <Outlet />
+              </>
+          );
+      }
+      
+      return <Navigate to="/dang-nhap-nhan-vien" />
 }
 
 export default LayerStorekeeper;

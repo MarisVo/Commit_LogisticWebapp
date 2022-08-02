@@ -4,6 +4,9 @@ import { Form, Button, Input, Select, Typography, message } from "antd";
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import * as axios from 'axios'
+import { useContext } from 'react';
+import { MainContext } from '../../context/MainContext';
+import { useEffect } from 'react';
 
 const RegisForm = styled.div`
 .Regis{
@@ -130,7 +133,12 @@ function Register() {
   (email) ? verify_op = "email" : verify_op = "phone"
 
   let navigate = useNavigate();
-
+  const {user} = useContext(MainContext)
+  useEffect(()=>{
+    if(user){
+      navigate("/")
+    }
+  },[user])
   const onFinish = async() => {
     try{
       const response = await axios({

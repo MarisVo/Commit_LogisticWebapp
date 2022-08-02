@@ -5,6 +5,7 @@ import { MainContext } from '../context/MainContext';
 
 function CustomerRoute() {
   const { user } = useContext(MainContext)
+    
   if (user && user.role.customer_type) {
     return <Outlet />;
   }

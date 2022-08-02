@@ -17,7 +17,9 @@ import { TiDeleteOutline } from "react-icons/ti";
 import { Link } from "react-router-dom";
 
 import { Tabs } from "antd";
-import { axios } from "axios";
+import  axios  from "axios";
+import { useContext } from "react";
+import { MainContext } from "../../context/MainContext";
 const { TabPane } = Tabs;
 const Purchase = () => {
   const [open, setOpen] = useState(false);
@@ -73,19 +75,23 @@ const Purchase = () => {
     total_price: 1000000,
   };
   const [img, setImg] = useState("");
-  /*  useEffect(() => {
+  const {accessToken} = useContext(MainContext)
+   useEffect(() => {
     const getOrder = async () => {
       try {
         const res = await axios.get(
-          `${REACT_APP_API_BASE_URL}/tracking/order/` + id
+          `http://localhost:8000/api/order`,  {
+          headers: { authorization: `Bearer ${accessToken}` },
+        }
         );
         console.log(res.data);
-        setProduct(res.data);
+        /* setProduct(res.data); */
       } catch (err) {
         console.log(err);
       }
     };
-  }); */
+    getOrder()
+  },[]);
 
   const navigate = useNavigate();
   const [key, setKey] = useState("tất cả");
@@ -113,9 +119,9 @@ const Purchase = () => {
             />
           </span>
         </div>
-        <div className=" sm:mx-16 lg:mx-52 py-4 bg-gray-white mx-2  ">
+        <div className=" sm:mx-16 lg:mx-44 py-4 bg-gray-white mx-2  ">
           <div
-            className="custom-tab shadow-[#000000] container mx-auto  text-xl bg-white "
+            className="custom-tab shadow-[#000000] container w-[100%] px-auto  text-xl bg-white  "
             style={{ width: "100%" }}
           >
             <Tabs
@@ -150,10 +156,10 @@ const Purchase = () => {
 
           <div className="flex flex-col mt-2 bg-white rounded-sm shadow-xl">
             <div className="  overflow-auto mb-3 w-[100%]">
-              <div className="flex justify-between items-center border-gray-300 border-b-[1px] py-2 ">
+              <div className="flex justify-between items-center border-gray-300 border-b-[1px] py-2 bg-[#ffd124]">
                 <div className="flex flex-nowrap items-center mx-2">
                   <div className=" text-lg sm:text-lg font-bold ml-2 text-[#00003B]">
-                    {order1.orderId}
+                    #{order1.orderId}
                   </div>
                 </div>
                 <div className=" flex flex-nowrap items-center mx-2 flex-row">
@@ -170,22 +176,22 @@ const Purchase = () => {
                 <div className="ml-3 flex flex-col ">
                   <div className="ml-2 flex items-center py-1">
                     <AiOutlineGift className="mr-1 w-5 h-5  md:w-7 md:h-7 " />
-                    <div className="text-base md:text-lg mr-1">Đơn hàng:</div>
-                    <div className="text-base md:text-lg">Điện thoại Oppo</div>
+                    <div className="text-base font-semibold md:text-lg mr-1">Đơn hàng:</div>
+                    <div className="text-base font-semibold md:text-lg">Điện thoại Oppo</div>
                   </div>
                   <div className="ml-2 flex items-center py-1">
                     <AiOutlineUser className="mr-1 w-5 h-5  md:w-7 md:h-7 " />
-                    <div className="text-base md:text-lg mr-1">
+                    <div className="text-base font-semibold md:text-lg mr-1">
                       Tên người nhận:
                     </div>
-                    <div className="text-base md:text-lg">Nguyễn Văn Trí</div>
+                    <div className="text-base font-semibold md:text-lg">Nguyễn Văn Trí</div>
                   </div>
                   <div className="ml-2 flex items-center py-1">
                     <AiTwotoneCalendar className="mr-1 w-5 h-5  md:w-7 md:h-7 " />
-                    <div className="text-base md:text-lg mr-1">
+                    <div className="text-base font-semibold md:text-lg mr-1">
                       Ngày tạo đơn:
                     </div>
-                    <div className="text-base md:text-lg">1/7/2020</div>
+                    <div className="text-base font-semibold md:text-lg">1/7/2020</div>
                   </div>
                 </div>
               </div>
@@ -199,7 +205,7 @@ const Purchase = () => {
                 </div> */}
                 <div className="flex justify-end mb-1 mr-2">
                   <Link className=" " to="/user/purchase/order/2323">
-                    <button className="p-2 ml-3 items-center max-w-[140px] flex font-semibold bg-yellow-500  border-button_color border-2  hover:translate-y-[-1px] transition-all text-[#00003B] rounded-sm">
+                    <button className="p-2 ml-3 font-bold items-center max-w-[140px] flex  bg-yellow-500  border-button_color border-2  hover:translate-y-[-1px] transition-all text-[#00003B] rounded-sm">
                       <BiTargetLock />
                       <div>Tra hành trình</div>
                     </button>
@@ -207,7 +213,7 @@ const Purchase = () => {
                 </div>
                 <div className="flex justify-end mb-1 mr-2">
                   <Link className=" " to="/user/purchase/232">
-                    <button className="p-2 ml-3 max-w-[140px] items-center flex font-semibold bg-yellow-500  border-button_color border-2  hover:translate-y-[-1px] transition-all text-[#00003B] rounded-sm">
+                    <button className="p-2 ml-3 font-bold max-w-[140px] items-center flex  bg-yellow-500  border-button_color border-2  hover:translate-y-[-1px] transition-all text-[#00003B] rounded-sm">
                       <MdOutlineEditCalendar className="mr-1" />
                       <div> Chi tiết đơn</div>
                     </button>
