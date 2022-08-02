@@ -41,6 +41,8 @@ tags:
   description: "Endpoint Quote"
 - name: "order"
   description: "Endpoint Order"
+- name: "product"
+  description: "Endpoint Product"
 - name: "career"
   description: "Endpoint Career"
 - name: "department"
@@ -2874,7 +2876,258 @@ paths:
               "success": 5,
               "failure": 2,
             }
-            
+
+  /product/{orderId}:
+    post:
+      tags:
+        - "product"
+      summary: "Customer add a new product to order"
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: orderId
+          type: string
+          required: true
+          description: orderId of order
+        - in: body
+          name: products
+          description: array of products.
+          schema:
+            type: object      
+            properties:
+              products:
+                type: array
+                items:
+                  type: object    
+                  properties:              
+                    name: 
+                      type: string
+                    quantity:
+                      type: integer
+                    unit: 
+                      type: string   
+                      enum: ['m3', 'kg', 'ton']
+      
+      responses:
+        200:
+          description: Add product(s) successfully.
+        400:
+          description: Add product(s) failed.
+      security:
+        - bearerAuth: []
+    get:
+      tags:
+        - "product"
+      summary: "Customer get product of an order"
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: orderId
+          type: string
+          required: true
+          description: orderId of order         
+      responses:
+        200:
+          description: Get product successfully.
+          schema:
+            type: object
+            example: {
+                  "name": "string",
+                  "quantity": "string",
+                  "unit": "string",                 
+            }
+        400:
+          description: Get product failed.
+      security:
+        - bearerAuth: []
+  /product/{productId}:
+    put:
+      tags:
+        - "product"
+      summary: "Customer update product in waiting order"
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: productId
+          type: string
+          required: true
+          description: productId
+        - in: body
+          name: product
+          description: updated product
+          schema:
+            type: object      
+            properties:
+              name: 
+                type: string
+              quantity:
+                type: integer
+              unit: 
+                type: string   
+                enum: ['m3', 'kg', 'ton']            
+      responses:
+        200:
+          description: Update product successfully.
+        400:
+          description: Update product failed.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "product"
+      summary: "Customer delete product in waiting order"
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: productId
+          type: string
+          required: true
+          description: productId                      
+      responses:
+        200:
+          description: Delete product successfully.
+        400:
+          description: Delete product failed.
+      security:
+        - bearerAuth: []
+  /admin/product:
+    get:
+      tags:
+        - "product"
+      summary: "Admin get list of products"
+      consumes:
+        - application/json
+      parameters:
+        - in: query
+          name: pageSize
+          type: string
+          description: limit number of product on a page
+        - in: query
+          name: page
+          type: string
+          description: num of page
+        - in: query
+          name: keyword
+          type: string
+          description: keyword
+        - in: query
+          name: sortBy
+          type: string
+          description: sort by (name, quantity, updatedAt)
+        - in: query
+          name: orderId
+          type: string
+          description:  orderId
+      responses:
+        200:
+          description: Get product successfully.
+          schema:
+            type: object
+            example: {
+                  "name": "string",
+                  "quantity": integer,
+                  "unit": "string",                 
+            }
+        400:
+          description: Get product failed.
+      security:
+        - bearerAuth: []
+  /admin/product/{orderId}:
+    post:
+      tags:
+        - "product"
+      summary: "Admin add a new product to order"
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: orderId
+          type: string
+          required: true
+          description: orderId of order
+        - in: body
+          name: products
+          description: array of products.
+          schema:
+            type: object      
+            properties:
+              products:
+                type: array
+                items:
+                  type: object    
+                  properties:              
+                    name: 
+                      type: string
+                    quantity:
+                      type: integer
+                    unit: 
+                      type: string   
+                      enum: ['m3', 'kg', 'ton']
+      
+      responses:
+        200:
+          description: Add product(s) successfully.
+        400:
+          description: Add product(s) failed.
+      security:
+        - bearerAuth: []
+  /admin/product/{productId}:
+    put:
+      tags:
+        - "product"
+      summary: "Admin update product in waiting order"
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: productId
+          type: string
+          required: true
+          description: productId
+        - in: body
+          name: product
+          description: updated product
+          schema:
+            type: object      
+            properties:
+              name: 
+                type: string
+              quantity:
+                type: integer
+              unit: 
+                type: string   
+                enum: ['m3', 'kg', 'ton']            
+      responses:
+        200:
+          description: Update product successfully.
+        400:
+          description: Update product failed.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "product"
+      summary: "Admin delete product in waiting order"
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: productId
+          type: string
+          required: true
+          description: productId                      
+      responses:
+        200:
+          description: Delete product successfully.
+        400:
+          description: Delete product failed.
+      security:
+        - bearerAuth: []
+  
   /career:
     get:
       tags:

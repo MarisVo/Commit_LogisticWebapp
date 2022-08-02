@@ -20,6 +20,7 @@ import orderAdminRoute from "./order.js"
 import applicantAdminRoute from "./applicant.js"
 import careerAdminRoute from "./career.js"
 import departmentAdminRoute from "./department.js"
+import productAdminRoute from "./product.js"
 import featureAdminRoute from "./feature.js"
 import distanceAdminRoute from "./distance.js"
 import priceAdminRoute from "./price.js"
@@ -48,6 +49,7 @@ adminRoute.use('/auth', authAdminRoute)
     .use("/applicant", applicantAdminRoute)
     .use("/career", careerAdminRoute)
     .use("/department", departmentAdminRoute)
+    .use("/product", productAdminRoute);
     .use("/feature", featureAdminRoute)
     .use('/distance', distanceAdminRoute)
     .use('/price', priceAdminRoute)

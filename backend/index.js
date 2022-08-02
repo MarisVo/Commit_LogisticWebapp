@@ -24,6 +24,7 @@ import applicantRoute from "./router/applicant.js"
 import careerRoute from "./router/career.js"
 import departmentRoute from "./router/department.js"
 import participantRoute from "./router/participant.js"
+import productRoute from "./router/product.js"
 import featureRoute from "./router/feature.js"
 import distanceRoute from "./router/distance.js"
 import priceRoute from "./router/price.js"
@@ -99,6 +100,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/participant', participantRoute)
     .use('/api/feature', featureRoute)
     .use('/api/notification', verifyToken, notificationRoute)
+    .use('/api/product', productRoute)
     .use('/api/distance', distanceRoute)
     .use('/api/price', priceRoute)
     .use('/api/pricelist', priceListRoute)
