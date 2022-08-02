@@ -22,6 +22,7 @@ import {
   Register,
   Register_OTP,
   StaffLogin,
+  StaffRegister,
   ForgetPass,
   RecruitmentDetails,
   Purchase,
@@ -129,6 +130,7 @@ const App = () => {
               <Route path="quen-mat-khau" element={<ForgetPass />} />
               <Route path="xac-thuc-otp" element={<Register_OTP />} />
               <Route path="dang-nhap-nhan-vien" element={<StaffLogin /> } />
+              <Route path="dang-ki-nhan-vien" element={<StaffRegister /> } />
                 </Route>            
               {/* -----------------------Tư vấn----------------------- */}
               <Route path="tu-van/lien-he" element={<Contact />} />
@@ -154,6 +156,7 @@ const App = () => {
                 <Route path="warehouse" element={<AdminWarehouse />}></Route>
                 <Route path="car" element={<AdminCar />}></Route>
                 <Route path="road" element={<AdminRoad />}></Route>
+                <Route path="staff_regis" element={<StaffRegister />}></Route>
               </Route>
               </Route>
           </Routes>

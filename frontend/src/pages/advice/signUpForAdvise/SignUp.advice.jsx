@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import * as axios from "axios";
 import {
   faPhone,
   faEnvelope,
@@ -24,12 +25,18 @@ export default function SignUpForAdvice() {
   const [districtCodeTo, setDistrictCodeTo] = useState(null);
   const [wardCodeTo, setWardCodeTo] = useState(null);
 
+  const [province, setProvince] = useState(null);
+  const [district, setDistrict] = useState(null);
+  const [ward, setWard] = useState(null);
+
+  const [service, setService] = useState(null);
   const [fullName, setFullName] = useState(null);
   const [phone, setPhone] = useState(null);
   const [email, setEmail] = useState(null);
   const [address, setAddress] = useState(null);
   const [prodName, setProdName] = useState(null);
   const [prodQuantity, setProdQuantity] = useState(null);
+  const [fullAddress, setFullAddress] = useState(null);
 
   const [isValid, setIsValid] = useState(false);
 
@@ -49,9 +56,32 @@ export default function SignUpForAdvice() {
     setWardsTo(getWardsByDistrictCode(districtCodeTo));
   }, [districtCodeTo]);
 
+  //get province, district, ward name
+  useEffect(() => {
+    for(let i = 0; i < provincesTo?.length; i++)
+      if(provinceCodeTo == provincesTo[i].code)
+        setProvince(provincesTo[i].name)     
+  })
+  useEffect(() => {
+    for(let i = 0; i < districtsTo?.length; i++)
+      if(districtCodeTo == districtsTo[i].code)
+        setDistrict(districtsTo[i].name)     
+  })
+  useEffect(() => {
+    for(let i = 0; i < wardsTo?.length; i++)
+      if(wardCodeTo == wardsTo[i].code)
+        setWard(wardsTo[i].name)     
+  })
+  //get full address
+  useEffect(() => {
+    let fAddress = address + " " + ward + " " + district + " " + province ;
+    setFullAddress(fAddress);
+  })
+
   const handleSubmit = () => {
     // check empty field
     if (
+      !service ||
       !provinceCodeTo ||
       !districtCodeTo ||
       !wardCodeTo ||
@@ -66,13 +96,32 @@ export default function SignUpForAdvice() {
       alert("Vui lòng nhập đầy đủ thông tin");
       return;
     } else {
-      console.log(provinceCodeTo);
-      console.log(phone);
-      alert("đăng kí tư vấn thành công");
+      postConsultant();
     }
-
     setIsValid(true);
   };
+
+  const postConsultant = async() => {
+    try{
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:8000/api/consultancy',
+        data: {
+          service: service,
+          name: fullName,
+          email: email,
+          phone: phone,
+          fulladdress: fullAddress,
+          parcel: prodName,
+          quantity: prodQuantity
+        }
+      });
+      alert("đăng kí tư vấn thành công");
+    } catch(error){
+      console.log(error);
+      alert("đăng kí tư vấn không thành công");
+    }
+  }
 
   return (
     <div className="layoutAdvice">
@@ -109,8 +158,9 @@ export default function SignUpForAdvice() {
                     <input
                       id="service-1"
                       type="radio"
-                      defaultValue={1}
+                      value="express"
                       name="services"
+                      onChange={(e) => setService(e.target.value)}
                     />
                     <label className="text-lg"> J&amp;T Express</label>
                   </div>
@@ -118,8 +168,9 @@ export default function SignUpForAdvice() {
                     <input
                       id="service-2"
                       type="radio"
-                      defaultValue={2}
+                      value="fast"
                       name="services"
+                      onChange={(e) => setService(e.target.value)}
                     />
                     <label className="text-lg"> J&amp;T Fast</label>
                   </div>
@@ -127,8 +178,9 @@ export default function SignUpForAdvice() {
                     <input
                       id="service-3"
                       type="radio"
-                      defaultValue={3}
+                      value="super"
                       name="services"
+                      onChange={(e) => setService(e.target.value)}
                     />
                     <label className="text-lg"> J&amp;T Super</label>
                   </div>
@@ -232,7 +284,7 @@ export default function SignUpForAdvice() {
                               value={province.code}
                               key={province.code}
                             >
-                              {province.name}
+                              {province.name}                             
                             </option>
                           ))}
                       </select>
