@@ -3373,6 +3373,33 @@ paths:
           description: Update receiver successfully. 
       security:
         - bearerAuth: []
+  /receiver/{orderId}:
+    put:
+      tags:
+        - receiver
+      summary: Update receiver if order is waiting
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: orderId
+          type: string
+          description: id of order to check
+        - in: body
+          name: update content
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              phone:
+                type: string
+              identity:
+                type: string
+      responses:
+        200:
+          description: Update receiver successfully. 
+
 securityDefinitions:
   bearerAuth:
     type: "apiKey"
