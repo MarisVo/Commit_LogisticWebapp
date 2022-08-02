@@ -28,7 +28,7 @@ export default function AdminOrder() {
     const [dataSplit, setDataSplit] = useState()
 
     const [open, setOpen] = useState(false)
-    const [change,setChange] = useState("");
+    const [change,setChange] = useState(1);
 
 
     const [data, setData] = useState([
@@ -102,7 +102,7 @@ export default function AdminOrder() {
             });
             console.log(res);
             if (res.status === 200) {
-                setData(res.data.data)
+                // setData(res.data.data)
             }
         }
         catch (error) {
@@ -173,23 +173,22 @@ export default function AdminOrder() {
         setOpenDel(true)
     }
 
-    const handleSplit = (dataIndex, id) => {
-        // console.log(data);
-        // dataIndex.push({
-        //     bill:dataIndex.length+1,
-        // })
-        setOpenSplit(true)
-        const newData = data.filter(e => e.id === id);
-        const index = data.findIndex(e => e.id === id);
-        newData[0].product = dataIndex;
-        console.log(index);
-        const getData = data.slice(0, data.length)
-        getData.splice(index, 1, newData[0])
-        setDataSplit(dataIndex)
-        // setData(getData)
-        // console.log(getData);
-
-    }
+    // const handleSplit = (dataIndex, id) => {
+    //     // console.log(data);
+    //     // dataIndex.push({
+    //     //     bill:dataIndex.length+1,
+    //     // })
+    //     setOpenSplit(true)
+    //     const newData = data.filter(e => e.id === id);
+    //     const index = data.findIndex(e => e.id === id);
+    //     newData[0].product = dataIndex;
+    //     console.log(index);
+    //     const getData = data.slice(0, data.length)
+    //     getData.splice(index, 1, newData[0])
+    //     setDataSplit(dataIndex)
+    //     // setData(getData)
+    //     // console.log(getData);
+    // }
 
 
 
@@ -430,7 +429,7 @@ export default function AdminOrder() {
         try {
             await setTimeout(() => {
                 delDataToApi(id)
-                setChange("del")
+                setChange(change+1)
                 // console.log(id);
                 setLoading(false)
                 setOpenDel(false)
@@ -445,13 +444,15 @@ export default function AdminOrder() {
     const acceptEditNewOrder = async (e) => {
         setLoading(true)
         setIsDisable(true)
-        const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('input')
+        const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('select')
         const items = {
             status:tableData[0].value,
         }
 
         try {
             await setTimeout(() => {
+                setChange('edit')
+                getDataFromApi()
                 editDataToApi(items,id)
                 setLoading(false)
                 setOpenEdit(false)
@@ -463,24 +464,6 @@ export default function AdminOrder() {
 
         }
     }
-
-    // const acceptSplit = async () => {
-    //     setLoading(true)
-    //     setIsDisable(true)
-
-    //     try {
-    //         await setTimeout(() => {
-    //             setLoading(false)
-    //             setOpenSplit(false)
-    //             setIsDisable(false)
-
-    //         }, 2000)
-    //     }
-    //     catch {
-
-    //     }
-    // }
-
 
 
     return (

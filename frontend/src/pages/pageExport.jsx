@@ -1,6 +1,9 @@
+
 export { default as Home } from "./home/Home";
 export { default as About } from "./about/About";
 export { default as Commit } from "./about/Commit";
+export { default as DefaultLayout } from "../layouts/DefaultLayout";
+
 // ---------------------------------------------//
 export { default as Track } from "./track/Track";
 export { default as BangGia } from "./track/BangGia";
@@ -22,14 +25,19 @@ export { default as Register } from "./Login/Register.jsx";
 export { default as ForgetPass } from "./Login/ForgetPass.jsx";
 export { default as Register_OTP } from "./Login/Register_verify_OTP.jsx";
 export { default as StaffLogin } from "./Login/Staff_login.jsx";
-export { default as Staff_Register } from "./Login/Staff_regis.jsx";
+
+export { default as StaffRegister } from "./admin/Staff_regis.jsx";
+
 
 export { default as PageNotFound } from "./PageNotFound";
 
 export { default as LayerStorekeeper } from "../layouts/StorekeeperLayout";
-export { default as ProductsManager } from "./storekeeper/ProductsManager";
+
+
+
+export { default as ProductsManager } from "./storekeeper/Bill";
 export { default as Inventory } from "./storekeeper/Inventory";
-export { default as DefaultLayout } from "../layouts/DefaultLayout";
+export {default as InventoryDetail} from "./storekeeper/InventoryDetail"
 
 //----------------------------------------------//
 export { default as Purchase } from "./Purchase/Purchase.jsx";

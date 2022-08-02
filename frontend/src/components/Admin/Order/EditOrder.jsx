@@ -40,7 +40,10 @@ function EditOrder({ isVisible, onClose, onOk, loading, disable, data }) {
                                 <Input defaultValue={data.destination} />
                             </Item> */}
                             <Item label="Tình trạng">
-                                <Input defaultValue={data.status} />
+                                <select defaultValue={data.status} style={{padding:'5px'}}>
+                                    <option value="Xác nhận">Xác nhận</option>
+                                    <option value="Từ chối">Từ chối</option>
+                                </select>
                             </Item>
                             {/* <Item label="Thiết bị">
                                 <Input disabled={true} defaultValue={data.service} />
