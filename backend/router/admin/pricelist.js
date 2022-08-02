@@ -1,41 +1,123 @@
 import express from "express";
-import { sendError, sendServerError, sendSuccess } from "../../helper/client.js";
+import { unlinkSync } from "fs";
+import {
+  handleFilePath,
+  upload,
+} from "../../constant.js";
+import {
+  sendError,
+  sendServerError,
+  sendSuccess,
+} from "../../helper/client.js";
+import { createUploadDir } from "../../middleware/index.js";
 import DeliveryService from "../../model/DeliveryService.js";
+import { uploadPricelistValidate } from "../../validation/pricelist.js";
 
-const priceListRoute = express.Router();
+const priceListAdminRoute = express.Router();
 
 /**
- * @route GET /api/pricelist
- * @description get pricelist information
- * @access public
+ * @route POST /api/admin/pricelist/:serviceId
+ * @description upload price files for service
+ * @access private
  */
-priceListRoute.get("/", async (req, res) => {
-  try {
-    const { province } = req.query;
-    const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0;
-    const page = req.query.page ? parseInt(req.query.page) : 0;
-    const isExist = await DeliveryService.find(
-      { "price_files.province": province },
-      { price_files: true }
-    )
-      .limit(pageSize)
-      .skip(pageSize * page);
-    const files = [];
-    for (let j = 0; j < isExist.length; j++) {
-      for (let i = 0; i < isExist[j].price_files.length; i++) {
-        if (isExist[j].price_files[i].province === province) {
-          files.push(isExist[j].price_files[i]);
-        }
+priceListAdminRoute.post(
+  "/:serviceId",
+  createUploadDir,
+  upload.single("file"),
+  async (req, res) => {
+    const errors = uploadPricelistValidate(req.body);
+    if (errors) {
+      return sendError(res, errors);
+    }
+    const file = handleFilePath(req.file);
+    const { province } = req.body;
+
+    try {
+      const isExist = await DeliveryService.exists({
+        _id: req.params.serviceId,
+      })
+      const provinceExist = await DeliveryService.exists({
+        _id: req.params.serviceId,
+        "price_files.province": province
+      })
+      if (provinceExist) {
+        return sendError(res, 'the pricelist\'s province is already used.')  
       }
+      if (isExist) {
+        await DeliveryService.updateOne(
+          {
+            _id: isExist._id,
+          },
+          {
+            $push: { price_files: { province, file } },
+          }
+        );
+        return sendSuccess(res, "upload pricelist file successfully");
+      
+      }
+      return sendError(res, "Upload list failed");
+    } catch (error) {
+      if (req.file) unlinkSync(req.file.path);
+      return sendServerError(res);
     }
-    if (files.length) {
-      return sendSuccess(res, "get pricelist information successfully.", files);
+  }
+);
+
+/**
+ * @route PUT /api/admin/pricelist/:serviceId
+ * @description update details of an existing pricelist
+ * @access private
+ */
+priceListAdminRoute.put(
+  "/:serviceId",
+  createUploadDir,
+  upload.single("file"),
+  async (req, res) => {
+    const { serviceId } = req.params;
+    const { province } = req.query;
+    const file = handleFilePath(req.file);
+    try {
+      const isExist = await DeliveryService.findById(serviceId);
+      if (isExist) {
+        await DeliveryService.updateOne(
+          { _id: isExist._id, "price_files.province": province },
+          {
+            $set: {
+              "price_files.$.file": file
+            },
+          }
+        );
+        return sendSuccess(res, "Update pricelist file successfully");
+      }
+      return sendError(res, "service does not exist.");
+    } catch (error) {
+      return sendError(res);
     }
-    return sendError(res, "pricelist information is not found.");
+  }
+);
+
+/**
+ * @route DELETE /api/admin/pricelists/:serviceId
+ * @description delete an existing pricelist
+ * @access private
+ */
+priceListAdminRoute.delete("/:serviceId", async (req, res) => {
+  const { serviceId } = req.params;
+  const { province } = req.query;
+  const isExist = await DeliveryService.exists({
+    _id: req.params.serviceId,
+    "price_files.province": province
+  })
+    if (!isExist) return sendError(res, "Pricelist does not exist.");
+  try {
+    await DeliveryService.updateOne(
+      { _id: serviceId },
+      { $pull: { price_files: { province: province } } }
+    );
+    return sendSuccess(res, "Delete price list successfully");
   } catch (error) {
-    console.log(error);
-    return sendServerError(res);
+    return sendError(res, "Delete price list failed");
   }
 });
 
-export default priceListRoute;
+export default priceListAdminRoute;
