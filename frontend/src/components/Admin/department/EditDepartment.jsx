@@ -1,34 +1,30 @@
 import { useContext, useState } from "react";
-import { Form, Input, Button } from "antd";
-import { END_POINT } from "../../../utils/constant";
+import { Form, Input, DatePicker, Button } from "antd";
 import axios from "axios";
+import { END_POINT } from "../../../utils/constant";
 import { MainContext } from "../../../context/MainContext";
 
 const { Item } = Form;
-function AddNewDepartment({ onClose, refetchData }) {
-  const { accessToken } = useContext(MainContext);
-  const [data, setData] = useState({
-    name: "",
-    director: "",
-    description: "",
-    location: "",
-    scale: "",
-  });
-  console.log(data);
+function EditDepartment({ onClose, data, refetchData }) {
+  const {accessToken} = useContext(MainContext)
+  const [dataEdit, setDataEdit] = useState(data);
   const [loading, setLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
-  const acceptAddNewDepartment = async () => {
+  console.log("data là", dataEdit);
+  const acceptEditDepartment = async () => {
     setLoading(true);
     // setIsDisable(true);
     try {
-      await axios.post(`${END_POINT}/admin/department`, data, {
+      await axios.put(`${END_POINT}/admin/department/${data._id}`, dataEdit, {
         headers: { authorization: `Bearer ${accessToken}` },
       });
       setLoading(false);
-      setIsDisable(false);
+      // setIsDisable(false);
       refetchData();
       onClose();
-    } catch {}
+    } catch(error) {
+      console.log(error)
+    }
   };
   return (
     <>
@@ -36,7 +32,7 @@ function AddNewDepartment({ onClose, refetchData }) {
         <div className="relative w-[700px] flex flex-col bg-white p-6 gap-y-3 animate-modal_in mx-4 rounded-xl overflow-auto">
           <div className="flex justify-between items-center gap-y-3">
             <span className="text-xl uppercase font-bold h-fit">
-              Thêm phòng ban mới
+              Chỉnh sửa Phòng ban
             </span>
             <Button
               size="large"
@@ -51,8 +47,6 @@ function AddNewDepartment({ onClose, refetchData }) {
             </Button>
           </div>
           <Form
-            autoComplete="off"
-            onFinish={acceptAddNewDepartment}
             labelCol={{
               span: 6,
             }}
@@ -61,98 +55,49 @@ function AddNewDepartment({ onClose, refetchData }) {
             }}
             layout="horizontal"
           >
-            <Item
-              label="Tên phòng ban"
-              name="name"
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng nhập tên phòng ban",
-                },
-              ]}
-            >
+            <Item label="Tên phòng ban">
               <Input
-                value={data.name}
+                value={dataEdit.name}
                 onChange={(e) =>
-                  setData({
-                    ...data,
+                  setDataEdit({
+                    ...dataEdit,
                     name: e.target.value,
                   })
                 }
               />
             </Item>
-            <Item
-              label="Tên trưởng ban"
-              name="director"
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng nhập tên trưởng ban",
-                },
-              ]}
-            >
+           
+            <Item label="Trưởng ban">
               <Input
-                value={data.director}
+                value={dataEdit.director}
                 onChange={(e) =>
-                  setData({
-                    ...data,
+                  setDataEdit({
+                    ...dataEdit,
                     director: e.target.value,
                   })
                 }
               />
             </Item>
-            <Item label="Mô tả" name="description">
+            <Item label="Mô tả">
               <Input
-                value={data.description}
+                value={dataEdit.description}
                 onChange={(e) =>
-                  setData({
-                    ...data,
+                  setDataEdit({
+                    ...dataEdit,
                     description: e.target.value,
                   })
                 }
               />
             </Item>
-            <Item
-              label="Địa điểm làm việc"
-              name="location"
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng nhập địa điểm",
-                },
-              ]}
-            >
+            <Item label="Địa điểm làm việc">
               <Input
-                value={data.location}
+                value={dataEdit.location}
                 onChange={(e) =>
-                  setData({
-                    ...data,
+                  setDataEdit({
+                    ...dataEdit,
                     location: e.target.value,
                   })
                 }
-              />
-            </Item>
-            <Item
-              label="Scale"
-              name="scale"
-              rules={[
-                {
-                  // type:"number",
-                  required: true,
-                  message: "Vui lòng nhập số",
-                },
-              ]}
-            >
-              <Input
-                type="number"
-                value={data.scale}
-                onChange={(e) =>{
-                  console.log(e)
-                  setData({
-                    ...data,
-                    scale: +e.target.value,
-                  })
-                }}
               />
             </Item>
             <div className="flex justify-end mt-2 text-sm gap-x-6">
@@ -169,9 +114,9 @@ function AddNewDepartment({ onClose, refetchData }) {
               </Button>
               <Button
                 type="primary"
-                htmlType="submit"
                 size="large"
                 loading={loading}
+                onClick={acceptEditDepartment}
                 className="rounded-lg"
               >
                 Xác nhận
@@ -184,4 +129,4 @@ function AddNewDepartment({ onClose, refetchData }) {
   );
 }
 
-export default AddNewDepartment;
+export default EditDepartment;

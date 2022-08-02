@@ -1,8 +1,17 @@
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  DesktopOutlined,
+  DesktopOutlined
 } from "@ant-design/icons";
+import {
+  MdGroup,
+  MdConnectWithoutContact,
+  MdOutlineDeliveryDining,
+} from "react-icons/md";
+import { FaHandshake } from "react-icons/fa";
+import { AiOutlineMessage, AiOutlinePartition } from "react-icons/ai";
+import { BsFillPersonFill, BsPaperclip } from "react-icons/bs";
+import {ImProfile} from "react-icons/im"
 import { Layout, Menu } from "antd";
 import React, { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
@@ -26,36 +35,36 @@ export default function AdminPage() {
         <Link to="about">About</Link>
       </div>,
       "1",
-      <DesktopOutlined> </DesktopOutlined>
+      <MdGroup />
     ),
     getItem(
       <div>
         <Link to="contact-us">Contact Us</Link>
       </div>,
       "2",
-      <DesktopOutlined> </DesktopOutlined>
+      <MdConnectWithoutContact />
     ),
-    getItem(<div>Commit</div>, "sub1", <DesktopOutlined> </DesktopOutlined>, [
-      getItem(
-        <div>
-          <Link to="commitment">Main Commitment</Link>
-        </div>,
-        "3"
-      ),
-    ]),
+
+    getItem(
+      <div>
+        <Link to="commitment">Commitment</Link>
+      </div>,
+      "3",
+      <FaHandshake />
+    ),
     getItem(
       <div>
         <Link to="message">Contact message</Link>
       </div>,
       "4",
-      <DesktopOutlined> </DesktopOutlined>
+      <AiOutlineMessage />
     ),
     getItem(
       <div>
-        <Link to="service">delivery service</Link>
+        <Link to="service">Delivery service</Link>
       </div>,
       "5",
-      <DesktopOutlined> </DesktopOutlined>
+      <MdOutlineDeliveryDining />
     ),
 
     getItem(
@@ -63,28 +72,28 @@ export default function AdminPage() {
         <Link to="partner">partner</Link>
       </div>,
       "6",
-      <DesktopOutlined> </DesktopOutlined>
+      <FaHandshake />
     ),
     getItem(
       <div>
         <Link to="career">career</Link>
       </div>,
       "7",
-      <DesktopOutlined> </DesktopOutlined>
+      <BsPaperclip />
     ),
     getItem(
       <div>
         <Link to="applicant">applicant</Link>
       </div>,
       "8",
-      <DesktopOutlined> </DesktopOutlined>
+      <ImProfile />
     ),
     getItem(
       <div>
         <Link to="department">department</Link>
       </div>,
       "9",
-      <DesktopOutlined> </DesktopOutlined>
+      <AiOutlinePartition />
     ),
     getItem(
       <div>
@@ -127,7 +136,7 @@ export default function AdminPage() {
         trigger={null}
         collapsible
         collapsed={collapsed}
-        className= 'uppercase'
+        className="uppercase " //hidden xl:block
         style={{
           background: "#fff",
         }}
@@ -146,26 +155,29 @@ export default function AdminPage() {
           }}
         >
           <div className="flex flex-row justify-between pr-10">
-            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-              className: "trigger",
-              onClick: () => setCollapsed(!collapsed),
-              style: {
-                padding: " 0 24px",
-                fontSize: "18px",
-                lineHeight: "64px",
-                cursor: "pointer",
-                transition: "color 0.3s",
-                color: "orange",
-              },
-            })}
+            {React.createElement(
+              collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+              {
+                className: "trigger",
+                onClick: () => setCollapsed(!collapsed),
+                style: {
+                  padding: " 0 24px",
+                  fontSize: "18px",
+                  lineHeight: "64px",
+                  cursor: "pointer",
+                  transition: "color 0.3s",
+                  color: "orange",
+                },
+              }
+            )}
             <AdminDropDownAvatar></AdminDropDownAvatar>
           </div>
         </Header>
         <Content
           className="site-layout-background"
           style={{
-            margin: "24px 16px",
-            padding: 24,
+            margin: "24px 12px",
+            // padding: 24,
             minHeight: 280,
           }}
         >

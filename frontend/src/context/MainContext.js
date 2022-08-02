@@ -74,6 +74,7 @@ const MainProvider = ({ children }) => {
   return (
     <MainContext.Provider
       value={{
+        accessToken,
         user,
         loginHandle,
         logoutHandle,

@@ -1,3 +1,4 @@
+export { default as DefaultLayout } from "../layouts/DefaultLayout";
 export { default as Home } from "./Home/Home";
 export { default as About } from "./About/About";
 export { default as Commit } from "./About/Commit";
@@ -27,10 +28,9 @@ export { default as StaffRegister } from "./Admin/Staff_regis.jsx";
 export { default as PageNotFound } from "./PageNotFound";
 
 export { default as LayerStorekeeper } from "../layouts/StorekeeperLayout";
-export { default as ProductsManager } from "./Storekeeper/ProductsManager";
+export { default as ProductsManager } from "./Storekeeper/Bill";
 export { default as Inventory } from "./Storekeeper/Inventory";
-export { default as DefaultLayout } from "../layouts/DefaultLayout";
-
+export {default as InventoryDetail} from "./Storekeeper/InventoryDetail"
 //----------------------------------------------//
 export { default as Purchase } from "./Purchase/Purchase.jsx";
 export { default as PurchaseDriver } from "./Purchase/PurchaseDriver.jsx";

@@ -34,6 +34,7 @@ import {
   LayerStorekeeper,
   ProductsManager,
   Inventory,
+  InventoryDetail,
   StandardService,
   Service,
   FastService,
@@ -51,7 +52,7 @@ import {
   AdminDepartment,
   AdminWarehouse,
   AdminCar,
-  AdminRoad
+  AdminRoad,
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainProvider, { MainContext } from "./context/MainContext";
@@ -59,14 +60,12 @@ import ProtectedRoute from "./layouts/ProtectLayout";
 import StaffRoute from "./layouts/StaffLayout";
 import CustomerRoute from "./layouts/CustomerRoute";
 
-
 const App = () => {
-
   return (
     <MainProvider>
       <BrowserRouter>
         <div className="wrapper">
-          <ScrollToTop />
+          {/* <ScrollToTop /> */}
           <Routes>
             <Route path="/" element={<DefaultLayout />}>
               <Route index element={<Home />}></Route>
@@ -82,47 +81,25 @@ const App = () => {
               </Route>
               {/* ------------------------Tuyển dụng------------------- */}
               <Route path="tuyen-dung" element={<CareerOpportunities />}>
-                <Route
-                  path="chi-tiet-viec-lam-noi-bat"
-                  element={<RecruitmentDetails />}
-                />
-                <Route
-                  path="chi-tiet-viec-lam-moi"
-                  element={<RecruitmentDetails />}
-                />
+                <Route path="chi-tiet-viec-lam-noi-bat" element={<RecruitmentDetails />} />
+                <Route path="chi-tiet-viec-lam-moi" element={<RecruitmentDetails />} />
               </Route>
               <Route path="cuoc-song" element={<Life />} />
               {/* ------------------------Dịch vụ---------------------- */}
               <Route path="dich-vu" element={<Service />} />
-              <Route
-                path="chuyen-phat-tieu-chuan"
-                element={<StandardService />}
-              />
+              <Route path="chuyen-phat-tieu-chuan" element={<StandardService />} />
               <Route path="chuyen-phat-nhanh" element={<FastService />} />
-              <Route
-                path="sieu-dich-vu-chuyen-phat"
-                element={<SuperService />}
-              />
-              <Route
-                path="chuyen-phat-do-tuoi-song"
-                element={<FreshService />}
-              />
+              <Route path="sieu-dich-vu-chuyen-phat" element={<SuperService />} />
+              <Route path="chuyen-phat-do-tuoi-song" element={<FreshService />} />
               {/* ----------------------Profile------------------ */}
-               <Route element={<CustomerRoute/>}>
-                  <Route path="user/account/profile" element={<Profile />} />
-                  <Route path="user/purchase" element={<Purchase />} />
-                  <Route path="driver/purchase" element={<PurchaseDriver />} />
-                  <Route path="user/purchase/:id" element={<PurchaseDetail />} />
-                  <Route
-                    path="user/purchase/order/:id"
-                    element={<PurchaseStage />}
-                  />
-                  <Route
-                    path="user/notifications/order"
-                    element={<Notification />}
-                  />
-
-               </Route>
+              <Route element={<CustomerRoute />}>
+                <Route path="user/account/profile" element={<Profile />} />
+                <Route path="user/purchase" element={<Purchase />} />
+                <Route path="driver/purchase" element={<PurchaseDriver />} />
+                <Route path="user/purchase/:id" element={<PurchaseDetail />} />
+                <Route path="user/purchase/order/:id" element={<PurchaseStage />} />
+                <Route path="user/notifications/order" element={<Notification />} />
+              </Route>
               {/* -------------------------Đăng kí/Đăng nhập------------- */}
                 <Route element={<ProtectedRoute/>}>
               <Route path="dang-ki" element={<Register /> } />
@@ -137,11 +114,12 @@ const App = () => {
               <Route path="tu-van/dang-ki-tu-van" element={<SignUpAdvice />} />
               <Route path="*" element={<PageNotFound />} />
             </Route>
-            <Route element={<StaffRoute/>}>        
+            <Route element={<StaffRoute />}>
               <Route path="storekeeper" element={<LayerStorekeeper />}>
                 <Route index element={<ProductsManager />} />
                 <Route path="xuat-nhap" element={<ProductsManager />} />
                 <Route path="ton-kho" element={<Inventory />} />
+                <Route path="ton-kho/:id" element={<InventoryDetail />} />
               </Route>
               <Route path="admin" element={<AdminPage />}>
                 <Route path="about" element={<AdminAbout />}></Route>
@@ -158,7 +136,7 @@ const App = () => {
                 <Route path="road" element={<AdminRoad />}></Route>
                 <Route path="staff_regis" element={<StaffRegister />}></Route>
               </Route>
-              </Route>
+            </Route>
           </Routes>
         </div>
       </BrowserRouter>
