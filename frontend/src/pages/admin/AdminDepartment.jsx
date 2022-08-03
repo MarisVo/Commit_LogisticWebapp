@@ -13,18 +13,12 @@ function AdminDepartment() {
     {
       title: "Tên phòng ban",
       dataIndex: "name",
-      sorter: (a, b) => {
-        if (a.name < b.name) return -1;
-        if (a.name > b.name) return 1;
-      },
+      sorter: true
     },
     {
       title: "Trưởng ban",
       dataIndex: "director",
-      sorter: (a, b) => {
-        if (a.director < b.director) return -1;
-        if (a.director > b.director) return 1;
-      },
+      sorter: true
     },
     // {
     //     title: 'Vị trí',
@@ -93,23 +87,18 @@ function AdminDepartment() {
     pageSize: 1,
     total: 3,
   });
+  const [params, setParams] = useState({
+    ...pagination,
+    page: pagination.current - 1,
+    keyword: null,
+    sortBy: null,
+  });
   const [isAddVisible, setIsAddVisible] = useState(false);
   const [isEditVisible, setIsEditVisible] = useState(false);
   const [isDeleteVisible, setIsDeleteVisible] = useState(false);
   const [IdCompare, setValueCompare] = useState("");
   const [nameCompare, setNameCompare] = useState("");
   const [dataForEdit, setDataForEdit] = useState({});
-  // const fetchData = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const { data: response } = await axios.get(`${END_POINT}/department`);
-  //     console.log(response);
-  //     setLoading(false);
-  //     setData(response.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
   const fetchData = async (params = {}) => {
     setLoading(true);
     try {
@@ -128,11 +117,8 @@ function AdminDepartment() {
     }
   };
   useEffect(() => {
-    fetchData({
-      ...pagination,
-      page: pagination.current - 1,
-    });
-  }, []);
+    fetchData(params);
+  }, [params]);
   const acceptDelete = async () => {
     setLoading(true);
     setIsDisable(true);
@@ -141,7 +127,7 @@ function AdminDepartment() {
         headers: { authorization: `Bearer ${accessToken}` },
       });
       setLoading(false);
-      fetchData();
+      fetchData({ ...pagination, page: pagination.current - 1 });
       setIsDisable(false);
       setIsDeleteVisible(false);
     } catch (error) {
@@ -153,21 +139,17 @@ function AdminDepartment() {
     const [dataEdit] = data.filter((ele) => ele.name === record.name);
     setDataForEdit(dataEdit);
   };
-  const searchByKeyword = async (value) => {
-    setLoading(true);
-    try {
-      const { data: response } = await axios.get(`${END_POINT}/department`, {
-        params: { keyword: value },
-      });
-      setData(response.data);
-      setLoading(false);
-    } catch (error) {
-      console.error(error.message);
-    }
+  const searchByKeyword = (value) => {
+    setParams({
+      ...params,
+      page:0,
+      keyword:value
+    })
   };
   const handleTableChange = (newPagination, filters, sorter) => {
     const sort = sorter.order === "descend" ? `-${sorter.field}` : sorter.field;
-    fetchData({
+    setParams({
+      ...params,
       sortBy: sort,
       ...newPagination,
       page: newPagination.current - 1,
@@ -200,20 +182,14 @@ function AdminDepartment() {
       {isAddVisible && (
         <AddNewDepartment
           onClose={() => setIsAddVisible(false)}
-          refetchData={()=>fetchData({
-            ...pagination,
-            page: pagination.current - 1,
-          })}
+          refetchData={()=>fetchData(params)}
         />
       )}
       {isEditVisible && (
         <EditDepartment
           onClose={() => setIsEditVisible(false)}
           data={dataForEdit}
-          refetchData={()=>fetchData({
-            ...pagination,
-            page: pagination.current - 1,
-          })}
+          refetchData={()=>fetchData(params)}
         />
       )}
       <ConfirmModal //Modal delete department

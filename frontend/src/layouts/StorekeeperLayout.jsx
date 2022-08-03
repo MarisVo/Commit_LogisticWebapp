@@ -22,17 +22,17 @@ function getItem(label, key, icon, children) {
 }
 const items = [
   getItem(
-      <Link to="ton-kho">Hàng tồn kho</Link>,
+      <Link to="inventory">Hàng tồn kho</Link>,
     "1",
     <MdOutlineInventory2 />
   ),
   getItem(
-      <Link to="xuat-nhap">Xuất nhập kho</Link>,
+      <Link to="bills">Xuất nhập kho</Link>,
     "2",
     <BiTransferAlt />
   ),
 ];
-const App = () => {
+const StorekeeperLayout = () => {
   const [collapsed, setCollapsed] = useState(true);
   const [isSidebarVisible,setIsSidebarVisible] = useState(false)
   const hiddenSidebar = (e) => {
@@ -112,4 +112,4 @@ const App = () => {
     </>
   );
 };
-export default App;
+export default StorekeeperLayout;

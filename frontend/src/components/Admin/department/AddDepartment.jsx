@@ -9,7 +9,7 @@ function AddNewDepartment({ onClose, refetchData }) {
   const { accessToken } = useContext(MainContext);
   const [data, setData] = useState({
     name: "",
-    director: "",
+    // director: "",
     description: "",
     location: "",
     scale: "",
@@ -28,22 +28,21 @@ function AddNewDepartment({ onClose, refetchData }) {
       setIsDisable(false);
       refetchData();
       onClose();
-    } catch {}
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <>
       <div className="fixed inset-0  bg-slate-600 bg-opacity-50 z-20 flex justify-center items-center">
         <div className="relative w-[700px] flex flex-col bg-white p-6 gap-y-3 animate-modal_in mx-4 rounded-xl overflow-auto">
           <div className="flex justify-between items-center gap-y-3">
-            <span className="text-xl uppercase font-bold h-fit">
-              Thêm phòng ban mới
-            </span>
+            <span className="text-xl uppercase font-bold h-fit">Thêm phòng ban mới</span>
             <Button
               size="large"
               disabled={isDisable}
               className={
-                !isDisable &&
-                "hover:bg-red-500 hover:border-red-700 hover:text-white border-none"
+                !isDisable && "hover:bg-red-500 hover:border-red-700 hover:text-white border-none"
               }
               onClick={onClose}
             >
@@ -146,12 +145,12 @@ function AddNewDepartment({ onClose, refetchData }) {
               <Input
                 type="number"
                 value={data.scale}
-                onChange={(e) =>{
-                  console.log(e)
+                onChange={(e) => {
+                  console.log(e);
                   setData({
                     ...data,
                     scale: +e.target.value,
-                  })
+                  });
                 }}
               />
             </Item>
@@ -160,8 +159,7 @@ function AddNewDepartment({ onClose, refetchData }) {
                 size="large"
                 disabled={isDisable}
                 className={
-                  !isDisable &&
-                  "hover:bg-red-500 hover:border-red-700 hover:text-white rounded-lg"
+                  !isDisable && "hover:bg-red-500 hover:border-red-700 hover:text-white rounded-lg"
                 }
                 onClick={onClose}
               >

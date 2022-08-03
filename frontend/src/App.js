@@ -32,7 +32,7 @@ import {
   Notification,
   PurchaseDriver,
   LayerStorekeeper,
-  ProductsManager,
+  Bills,
   Inventory,
   InventoryDetail,
   StandardService,
@@ -114,12 +114,12 @@ const App = () => {
               <Route path="tu-van/dang-ki-tu-van" element={<SignUpAdvice />} />
               <Route path="*" element={<PageNotFound />} />
             </Route>
-            <Route element={<StaffRoute />}>
+            {/* <Route element={<StaffRoute />}> */}
               <Route path="storekeeper" element={<LayerStorekeeper />}>
-                <Route index element={<ProductsManager />} />
-                <Route path="xuat-nhap" element={<ProductsManager />} />
-                <Route path="ton-kho" element={<Inventory />} />
-                <Route path="ton-kho/:id" element={<InventoryDetail />} />
+                <Route index element={<Bills />} />
+                <Route path="bills" element={<Bills />} />
+                <Route path="inventory" element={<Inventory />} />
+                <Route path="inventory/:id" element={<InventoryDetail />} />
               </Route>
               <Route path="admin" element={<AdminPage />}>
                 <Route path="about" element={<AdminAbout />}></Route>
@@ -136,7 +136,7 @@ const App = () => {
                 <Route path="road" element={<AdminRoad />}></Route>
                 <Route path="staff_regis" element={<StaffRegister />}></Route>
               </Route>
-            </Route>
+            {/* </Route> */}
           </Routes>
         </div>
       </BrowserRouter>
