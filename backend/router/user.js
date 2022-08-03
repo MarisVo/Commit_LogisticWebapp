@@ -26,12 +26,14 @@ userRoute.get('/',
                     { phone: { $regex: keyword, $options: 'i' } },
                 ]
             } : {}
+
+            const length = await User.count()
             const listUser = await User.find({listKeyword}, {password: false})
             .limit(pageSize)
             .skip(pageSize*page)
             .sort(`${sortBy}`)
 
-            if (listUser) return sendSuccess(res, "Get user successful.", listUser)
+            if (listUser) return sendSuccess(res, "Get user successful.", {length, listUser})
             return sendError(res, "Information not found.")
         } catch (error) {
             console.log(error)

@@ -38,13 +38,15 @@ roadAdminRoute.get("/", async (req, res) => {
         if (distance) {
             query.distance = distance;
         }
+        
+        const length = await Road.count()
         const road = await Road.find({ $and: [query, keywordList] })
             .skip(pageSize * page)
             .limit(pageSize)
             .sort(`${sortBy}`);
 
         if (road)
-            return sendSuccess(res, "Get road information successfully.", road);
+            return sendSuccess(res, "Get road information successfully.", {length, road});
         return sendError(res, "Road information is not found.");
     } catch (error) {
         console.log(error);
@@ -154,7 +156,7 @@ roadAdminRoute.delete('/:id', async (req, res) => {
     }
     catch (error) {
         console.log(error)
-        return sendError(res)
+        return sendServerError(res)
     }
 })
 

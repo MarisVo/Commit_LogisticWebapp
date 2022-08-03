@@ -40,7 +40,7 @@ userAdminRoute.delete('/:id', async (req, res) => {
     }
     catch (error) {
         console.log(error)
-        return sendError(res)
+        return sendServerError(res)
     }
 })
 

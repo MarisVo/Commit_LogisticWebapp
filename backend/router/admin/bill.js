@@ -56,13 +56,14 @@ billAdminRoute.get("/", async (req, res) => {
             query.status = status;
         }
         
+        const length = await Bill.count()
         const bills = await Bill.find({ $and: [query, keywordList] })
             .skip(pageSize * page)
             .limit(pageSize)
             .sort(`${sortBy}`);
 
         if (bills)
-            return sendSuccess(res, "Get bill information successfully.", bills);
+            return sendSuccess(res, "Get bill information successfully.", {length, bills});
         return sendError(res, "Bill information is not found.");
     } catch (error) {
         console.log(error);
@@ -147,7 +148,7 @@ billAdminRoute.delete('/:id', async (req, res) => {
     }
     catch (error) {
         console.log(error)
-        return sendError(res)
+        return sendServerError(res)
     }
 })
 

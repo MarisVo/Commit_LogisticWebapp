@@ -31,12 +31,14 @@ carAdminRoute.get('/',
             if (plate) {
                 query.plate = plate;
             }
+
+            const length = await Car.count()
             const listCar = await Car.find({ $and: [query, listKeyword] })
                 .limit(pageSize)
                 .skip(pageSize * page)
                 .sort(`${sortBy}`)
 
-            if (listCar) return sendSuccess(res, "Get car successful.", listCar)
+            if (listCar) return sendSuccess(res, "Get car successful.", {length, listCar})
             return sendError(res, "Information not found.")
         } catch (error) {
             console.log(error)
@@ -129,7 +131,7 @@ carAdminRoute.delete('/:id', async (req, res) => {
     }
     catch (error) {
         console.log(error)
-        return sendError(res)
+        return sendServerError(res)
     }
 })
 

@@ -2,7 +2,6 @@ import express from "express"
 import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
 import ProductShipment from "../../model/ProductShipment.js"
 import Product from "../../model/Product.js"
-import User from "../../model/User.js";
 import { createProductShipmentValidate } from "../../validation/productShipment.js"
 
 
@@ -34,13 +33,14 @@ productShipmentAdminRoute.get('/',
                 query.product_id = product_id;
             }
 
+            const length = await ProductShipment.count()
             const listProductShipment = await ProductShipment.find({ $and: [query, keywordList] })
                 .limit(pageSize)
                 .skip(pageSize * page)
                 .sort(`${sortBy}`)
 
             if (listProductShipment)
-                return sendSuccess(res, "Get product shipment information successfully", listProductShipment);
+                return sendSuccess(res, "Get product shipment information successfully", {length, listProductShipment});
 
             return sendError(res, "Product shipment not found")
 
@@ -151,7 +151,7 @@ productShipmentAdminRoute.delete('/:id', async (req, res) => {
     }
     catch (error) {
         console.log(error)
-        return sendError(res)
+        return sendServerError(res)
     }
 })
 
