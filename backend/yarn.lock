@@ -111,7 +111,7 @@
     "delegates" "^1.0.0"
     "readable-stream" "^3.6.0"
 
-"argon2@^0.28.5":
+"argon2@^0.28.7":
   "integrity" "sha512-pvsScM3Fq7b+jolXkZHh8nRQx0uD/WeelnwYPMRpn4pAydoa1gqeL/KRdWAag4Hnu1TJNBTAfqyTjV+ZHwNnYA=="
   "resolved" "https://registry.npmjs.org/argon2/-/argon2-0.28.7.tgz"
   "version" "0.28.7"
@@ -182,7 +182,7 @@
   "resolved" "https://registry.npmjs.org/bluebird/-/bluebird-3.7.2.tgz"
   "version" "3.7.2"
 
-"body-parser@1.20.0":
+"body-parser@^1.20.0", "body-parser@1.20.0":
   "integrity" "sha512-DfJ+q6EPcGKZD1QWUjSpqp+Q7bDQTsQIF4zfUAtZ6qk+H/3/QRhg9CEp39ss+/T2vw0+HaidC0ecJj/DRLIaKg=="
   "resolved" "https://registry.npmjs.org/body-parser/-/body-parser-1.20.0.tgz"
   "version" "1.20.0"

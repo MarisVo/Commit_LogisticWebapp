@@ -5,11 +5,13 @@ import { Link, useNavigate } from "react-router-dom";
 import appStore from "../../assets/images/appStore.png";
 import ggPlay from "../../assets/images/ggPlay.png";
 import { getDistrictsByProvinceCode, getProvinces } from "sub-vn";
-import { IoLocationOutline } from "react-icons/io5";
-import { FiMap } from "react-icons/fi";
-import axios from "axios";
-import { END_POINT } from "../../utils/constant";
-import { Fade, Zoom, Reveal } from "react-reveal";
+import { IoLocationOutline } from 'react-icons/io5'
+import { FiMap } from 'react-icons/fi'
+import axios from 'axios'
+import { END_POINT } from "../../utils/constant"
+import { Fade, Zoom, Reveal } from 'react-reveal';
+import { useContext } from 'react';
+import { MainContext } from '../../context/MainContext';
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -152,18 +154,19 @@ const coops = [
 ];
 
 const Home = () => {
-  const navigate = useNavigate();
-  const [defaultService, setDefaultService] = useState("vận đơn");
-  function callback(dichVu) {
-    setDefaultService(dichVu);
-    navigate(`/track?type=${dichVu}`);
-  }
-  const [listProvinces, setListProvince] = useState([]);
-  const [listDistricts, setListDistricts] = useState([]);
-  const [currentProvince, setCurrentProvince] = useState(null);
-  const [currentDistrict, setCurrentDistrict] = useState(null);
-  const [person, setPerson] = useState(1);
-  const [warehouses, setWarehouse] = useState([]);
+    const navigate = useNavigate()
+    const [defaultService, setDefaultService] = useState("vận đơn")
+    function callback(dichVu) {
+        setDefaultService(dichVu);
+        navigate(`/track?type=${dichVu}`)
+    }
+    const [listProvinces, setListProvince] = useState([])
+    const [listDistricts, setListDistricts] = useState([])
+    const [currentProvince, setCurrentProvince] = useState(null)
+    const [currentDistrict, setCurrentDistrict] = useState(null)
+    const [person, setPerson] = useState(1)
+    const [warehouses, setWarehouse] = useState([])
+    const { setMetadata } = useContext(MainContext)
 
   const searchWarehouse = (e) => {
     e.preventDefault()
@@ -190,6 +193,12 @@ const Home = () => {
 
 
     useEffect(() => {
+        setMetadata((prev) => {
+            return {
+                ...prev,
+                title: 'Trang chủ | TKTL'
+            }
+        })
         const dataProv = getProvinces()
         setListProvince(dataProv)
     }, [])

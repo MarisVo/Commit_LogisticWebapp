@@ -59,10 +59,11 @@ import MainProvider, { MainContext } from "./context/MainContext";
 import ProtectedRoute from "./layouts/ProtectLayout";
 import StaffRoute from "./layouts/StaffLayout";
 import CustomerRoute from "./layouts/CustomerRoute";
-
+import Metadata from './SEO/Metadata';
 const App = () => {
   return (
     <MainProvider>
+      <Metadata>
       <BrowserRouter>
         <div className="wrapper">
           {/* <ScrollToTop /> */}
@@ -140,6 +141,7 @@ const App = () => {
           </Routes>
         </div>
       </BrowserRouter>
+      </Metadata>
     </MainProvider>
   );
 };

@@ -50,14 +50,14 @@ function EditStatus({ onClose, data, refetchData }) {
                     >
                         <Item label="Trạng thái">
                             <Select
-                            value={editData.status}
+                            // value={editData.status}
                             onChange={value=>setEditData({
                                 ...editData,
                                 status:value
                             })}
                             >
-                                <Option value='Duyệt'>Duyệt</Option>
-                                <Option value='Loại'>Loại</Option>
+                                <Option value='Duyệt'>Hoàn thành</Option>
+                                <Option value='Loại'>Đang giao</Option>
                                 <Option value='Đang đợi'>Đang đợi</Option>
                             </Select>
                         </Item>
