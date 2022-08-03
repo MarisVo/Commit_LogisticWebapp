@@ -7,6 +7,7 @@ import { Server } from 'socket.io'
 import session from 'express-session'
 import path from 'path'
 const __dirname = path.resolve(path.dirname(''))
+import bodyParser from "body-parser"
 
 import authRoute from "./router/auth.js"
 import adminRoute from "./router/admin/index.js"
@@ -25,6 +26,13 @@ import applicantRoute from "./router/applicant.js"
 import careerRoute from "./router/career.js"
 import departmentRoute from "./router/department.js"
 import participantRoute from "./router/participant.js"
+import productRoute from "./router/product.js"
+import featureRoute from "./router/feature.js"
+import distanceRoute from "./router/distance.js"
+import priceRoute from "./router/price.js"
+import priceListRoute from "./router/pricelist.js"
+import serviceRoute from "./router/service.js"
+import customerRoute from "./router/customer.js"
 
 // swagger setup
 import swaggerUi from 'swagger-ui-express'
@@ -75,6 +83,8 @@ app.use(session({
 }))
 app.use(express.json())
 app.use(cors())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/public', publicRoute)
@@ -100,7 +110,14 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/career', careerRoute)
     .use('/api/department', departmentRoute)
     .use('/api/participant', participantRoute)
+    .use('/api/feature', featureRoute)
     .use('/api/notification', verifyToken, notificationRoute)
+    .use('/api/product', productRoute)
+    .use('/api/distance', distanceRoute)
+    .use('/api/price', priceRoute)
+    .use('/api/pricelist', priceListRoute)
+    .use('/api/service', serviceRoute)
+    .use('/api/customer', customerRoute)
 
 app.use(express.static(path.join(__dirname, process.env.BUILD_DIST)));
 
