@@ -40,7 +40,7 @@ productShipmentAdminRoute.get('/',
                 .sort(`${sortBy}`)
 
             if (listProductShipment)
-                return sendSuccess(res, "Get product shipment information successfully", {length, listProductShipment});
+                return sendSuccess(res, "Get product shipment information successfully", { length, listProductShipment });
 
             return sendError(res, "Product shipment not found")
 
@@ -86,9 +86,9 @@ productShipmentAdminRoute.post('/create', async (req, res) => {
         if (quantity < 1)
             return sendError(res, "Quantity is not less than 1")
         //check productID
-        const isExistProductID = await ProductShipment.exists({ quantity: quantity, product_id: product_id })
+        const isExistProductID = await Product.exists({ _id: product_id })
         if (!isExistProductID)
-            return sendError(res, "Product is not exists")
+            return sendError(res, "Product id is not exists")
 
         //get quantity of product
         const productid = await Product.findById({ _id: product_id }, { quantity: true })
@@ -140,13 +140,16 @@ productShipmentAdminRoute.delete('/:id', async (req, res) => {
         const isExit = await ProductShipment.exists({ _id: id })
         if (!isExit)
             return sendError(res, "Product shipment not exists")
-
+        
+        //delete document "product_shipment" in "prouct" collection
+        await Product.updateMany({}, { $pull: { product_shipments: id  } });
+       
         await ProductShipment.findByIdAndRemove(id)
             .then(() => {
                 return sendSuccess(res, "Delete product shipment successfully.")
             })
             .catch((err) => {
-                return sendError(res, err)
+                return sendServerError(res, err)
             })
     }
     catch (error) {
@@ -179,8 +182,7 @@ productShipmentAdminRoute.put('/:id', async (req, res) => {
         const productShipmentQuantity = await ProductShipment.find({ product_id: product_id })
         let temp = 0
         for (let i = 0; i < productShipmentQuantity.length; i++) {
-            if(productShipmentQuantity[i].id != id)
-            {
+            if (productShipmentQuantity[i].id != id) {
                 temp = temp + productShipmentQuantity[i].quantity
             }
             console.log(productShipmentQuantity[i].id)
