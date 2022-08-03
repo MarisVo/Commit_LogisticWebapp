@@ -3632,6 +3632,11 @@ paths:
                 type: string
               rank_passers:
                 type: object
+                properties:
+                  point: 
+                    type: number
+                  level: 
+                    type: string
               companyTaxcode_business:
                 type: string
               accepted_business:
