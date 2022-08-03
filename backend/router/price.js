@@ -37,10 +37,14 @@ priceRoute.get("/service/:serviceId", async (req, res) => {
     if (!service) return sendError(res, "Service does not exist.");
     if (service) {
       const id = service.price;
+      const length = await Price.count();
       const price = await Price.find({ _id: id })
         .limit(pageSize)
         .skip(pageSize * page);
-      return sendSuccess(res, "Get price information successfully.", price);
+      return sendSuccess(res, "Get price information successfully.", {
+        length,
+        price,
+      });
     }
     return sendError(res, "Price information is not found.");
   } catch (error) {

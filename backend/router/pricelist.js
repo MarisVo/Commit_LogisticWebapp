@@ -28,8 +28,12 @@ priceListRoute.get("/", async (req, res) => {
         }
       }
     }
+    const length = files.length;
     if (files.length) {
-      return sendSuccess(res, "get pricelist information successfully.", files);
+      return sendSuccess(res, "get pricelist information successfully.", {
+        length,
+        files,
+      });
     }
     return sendError(res, "pricelist information is not found.");
   } catch (error) {

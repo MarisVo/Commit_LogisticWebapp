@@ -31,12 +31,13 @@ serviceRoute.get("/", async (req, res) => {
     if (tip) {
       query.location = tip;
     }
+    const length = await DeliveryService.count();
     const service = await DeliveryService.find({ $and: [query, keywordCondition] })
       .limit(pageSize)
       .skip(pageSize * page)
       .sort(`${sortBy}`);
     if (service)
-      return sendSuccess(res, "get service information successfully.", service);
+      return sendSuccess(res, "get service information successfully.", {length, service});
     return sendError(res, "Service information is not found.");
   } catch (error) {
     console.log(error);
