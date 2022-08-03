@@ -15,12 +15,12 @@ receiverRoute.put('/:id',
         const id = req.params.id
         const {name, phone, identity} = req.body
         const customerId = req.user.role._id
-        const order = await Order.find({_id: id, customerId: customerId})
+        const order = await Order.findOne({_id: id, customer: customerId})
         if (!order) {return sendError(res, 'Order not found')}
         
-        if (order[0].status === ORDER_STATUS.waiting) {
+        if (order.status === ORDER_STATUS.waiting) {
             try {
-                const receiverId = order[0].receiver
+                const receiverId = order.receiver
                 await Receiver.findByIdAndUpdate(receiverId, {name: name, phone: phone, identity: identity});
                 return sendSuccess(res,"Receiver updated successfully");
             }
