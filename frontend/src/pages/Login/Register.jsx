@@ -3,6 +3,9 @@ import 'antd/dist/antd.css'
 import { Form, Button, Input, Select, Typography, message, Modal } from "antd";
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+
+import { useContext } from 'react';
+import { MainContext } from '../../context/MainContext';
 import axios from 'axios'
 
 const RegisForm = styled.div`

@@ -3,7 +3,6 @@ import "antd/dist/antd.css";
 import { Form, Button, Input, Typography, message } from "antd";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-/* import axios from "../../axios/axios"; */
 import { MainContext } from "../../context/MainContext";
 import axios from "axios";
 
@@ -110,11 +109,6 @@ function Login() {
       },
     });
   };
-/*   useEffect(() => {
-    if (user&) {
-     
-    } 
-  }, [user]); */
   const emailphone = Form.useWatch("email/phone", form);
   let email;
   let phone;

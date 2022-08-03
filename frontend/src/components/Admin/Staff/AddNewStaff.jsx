@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import { Form, Input, DatePicker, Button, InputNumber, Select } from 'antd'
+import { Form, Input, DatePicker, Button } from 'antd'
 
 const { Item } = Form
-const { Option } = Select;
-function AdminEditMessage({ isVisible, onClose, onOk, loading, disable, data }) {
+function AddNewStaff({ isVisible, onClose, onOk, loading, disable }) {
 
     return (
         <>
@@ -12,7 +11,7 @@ function AdminEditMessage({ isVisible, onClose, onOk, loading, disable, data }) 
                 <div className='fixed inset-0  bg-slate-600 bg-opacity-50 z-20 flex justify-center items-center'>
                     <div className='relative w-[700px] flex flex-col bg-white p-6 gap-y-3 animate-modal_in mx-4 rounded-xl overflow-auto'>
                         <div className='flex justify-between items-center gap-y-3'>
-                            <span className='text-xl uppercase font-bold h-fit'>Sửa Order</span>
+                            <span className='text-xl uppercase font-bold h-fit'>Thêm nhân viên mới</span>
                             <Button
                                 size="large"
                                 disabled={disable}
@@ -31,35 +30,24 @@ function AdminEditMessage({ isVisible, onClose, onOk, loading, disable, data }) 
                             }}
                             layout="horizontal"
                         >
-                            {/* <Item label="Người nhận">
-                                <Input defaultValue={data.receiver} />
+                            <Item label="Họ tên">
+                                <Input />
                             </Item>
-                            <Item label="Xuất phát">
-                                <Input defaultValue={data.origin} />
+                            <Item label="Phòng ban">
+                                <Input />
                             </Item>
-                            <Item label="Điểm đến">
-                                <Input defaultValue={data.destination} />
-                            </Item> */}
-                            <Item label="Tình trạng">
-                                
-                                    <select defaultValue={data.status}>
-                                        <option value="unseen">unseen</option>
-                                        <option value="seen">seen</option>
-                                    </select>
-                                
+                            <Item label="Ngày bắt đầu">
+                                <DatePicker />
                             </Item>
-                            {/* <Item label="Thiết bị">
-                                <Input disabled={true} defaultValue={data.service} />
+                            <Item label="Địa chỉ">
+                                <Input />
                             </Item>
-                            <Item label="Tổng giá tiền">
-                                <InputNumber defaultValue={data.total_price} />
-                            </Item> */}
-                            {/* <Item label="Sản phẩm">
-                                <Button>Tách</Button>
-                                <div>{data.product.map(e => (
-                                    <li>Lô hàng {e.bill}</li>
-                                ))}</div>
-                            </Item> */}
+                            <Item label="Vị trí">
+                                <Input />
+                            </Item>
+                            <Item label="Công việc">
+                                <Input />
+                            </Item>
                             <div className='flex justify-end mt-2 text-sm gap-x-6'>
                                 <Button
                                     size="large"
@@ -90,4 +78,4 @@ function AdminEditMessage({ isVisible, onClose, onOk, loading, disable, data }) 
     );
 }
 
-export default AdminEditMessage;
+export default AddNewStaff;

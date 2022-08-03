@@ -53,6 +53,12 @@ import {
   AdminWarehouse,
   AdminCar,
   AdminRoad,
+  AdminCustomer,
+  AdminStaff,
+  AdminOrder,
+  Staff_Register,
+
+
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainProvider, { MainContext } from "./context/MainContext";
@@ -66,24 +72,32 @@ const App = () => {
       <Metadata>
       <BrowserRouter>
         <div className="wrapper">
-          {/* <ScrollToTop /> */}
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<DefaultLayout />}>
               <Route index element={<Home />}></Route>
               <Route path="ve-chung-toi" element={<About />} />
               <Route path="cam-ket" element={<Commit />} />
               {/* -----------------------Tra cứu---------------------- */}
-              <Route path="tra-cuu" element={<Track />}>
-                <Route path="cuoc-van-chuyen" element={<CuocVanChuyen />} />
-                <Route path="van-don" element={<VanDon />} />
-                <Route path="buu-cuc" element={<BuuCuc />} />
-                <Route path="bang-gia" element={<BangGia />} />
-                <Route path="hang-cam-gui" element={<HangCamGui />} />
-              </Route>
+              <Route path="tra-cuu" element={<Track number="cuoc-van-chuyen"/>}></Route>
+                <Route path="tra-cuu/cuoc-van-chuyen" element={<Track number="cuoc-van-chuyen"/>} />
+                <Route path="tra-cuu/van-don" element={<Track number="van-don"/>} />
+                <Route path="tra-cuu/buu-cuc" element={<Track number="buu-cuc"/>} />
+                <Route path="tra-cuu/bang-gia" element={<Track number="bang-gia"/>} />
+                <Route path="tra-cuu/hang-cam-gui" element={<Track number="hang-cam-gui"/>} />
+              
               {/* ------------------------Tuyển dụng------------------- */}
               <Route path="tuyen-dung" element={<CareerOpportunities />}>
-                <Route path="chi-tiet-viec-lam-noi-bat" element={<RecruitmentDetails />} />
-                <Route path="chi-tiet-viec-lam-moi" element={<RecruitmentDetails />} />
+
+                <Route
+                  path="chi-tiet-viec-lam-noi-bat"
+                  element={<RecruitmentDetails />}
+                />
+                {/* <Route
+                  path="chi-tiet-viec-lam-moi"
+                  element={<RecruitmentDetails />}
+                /> */}
+
               </Route>
               <Route path="cuoc-song" element={<Life />} />
               {/* ------------------------Dịch vụ---------------------- */}
@@ -107,15 +121,19 @@ const App = () => {
               <Route path="dang-nhap" element={<Login /> } />
               <Route path="quen-mat-khau" element={<ForgetPass />} />
               <Route path="xac-thuc-otp" element={<Register_OTP />} />
-              <Route path="dang-nhap-nhan-vien" element={<StaffLogin /> } />
+             
+
               <Route path="dang-ki-nhan-vien" element={<StaffRegister /> } />
+
                 </Route>            
               {/* -----------------------Tư vấn----------------------- */}
               <Route path="tu-van/lien-he" element={<Contact />} />
               <Route path="tu-van/dang-ki-tu-van" element={<SignUpAdvice />} />
               <Route path="*" element={<PageNotFound />} />
             </Route>
-            {/* <Route element={<StaffRoute />}> */}
+
+            <Route element={<StaffRoute />}>
+              <Route path="dang-nhap-nhan-vien" element={<StaffLogin /> } />
               <Route path="storekeeper" element={<LayerStorekeeper />}>
                 <Route index element={<Bills />} />
                 <Route path="bills" element={<Bills />} />
@@ -135,9 +153,13 @@ const App = () => {
                 <Route path="warehouse" element={<AdminWarehouse />}></Route>
                 <Route path="car" element={<AdminCar />}></Route>
                 <Route path="road" element={<AdminRoad />}></Route>
+                <Route path="staff" element={<AdminStaff />}></Route>
+                <Route path="customer" element={<AdminCustomer/>}></Route>
+                <Route path="order" element={<AdminOrder/>}></Route>
                 <Route path="staff_regis" element={<StaffRegister />}></Route>
               </Route>
-            {/* </Route> */}
+            </Route>
+
           </Routes>
         </div>
       </BrowserRouter>

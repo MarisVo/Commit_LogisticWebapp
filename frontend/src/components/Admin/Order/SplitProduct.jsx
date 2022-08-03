@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { Form, Input, DatePicker, Button, InputNumber, Select } from 'antd'
+import { Form, Input, DatePicker, Button, InputNumber } from 'antd'
 
 const { Item } = Form
-const { Option } = Select;
-function AdminEditMessage({ isVisible, onClose, onOk, loading, disable, data }) {
+function SplitProduct({ isVisible, onClose, onOk, loading, disable,data }) {
+    
 
     return (
         <>
@@ -12,7 +12,7 @@ function AdminEditMessage({ isVisible, onClose, onOk, loading, disable, data }) 
                 <div className='fixed inset-0  bg-slate-600 bg-opacity-50 z-20 flex justify-center items-center'>
                     <div className='relative w-[700px] flex flex-col bg-white p-6 gap-y-3 animate-modal_in mx-4 rounded-xl overflow-auto'>
                         <div className='flex justify-between items-center gap-y-3'>
-                            <span className='text-xl uppercase font-bold h-fit'>Sửa Order</span>
+                            <span className='text-xl uppercase font-bold h-fit'>Tách sản phẩm</span>
                             <Button
                                 size="large"
                                 disabled={disable}
@@ -31,35 +31,14 @@ function AdminEditMessage({ isVisible, onClose, onOk, loading, disable, data }) 
                             }}
                             layout="horizontal"
                         >
-                            {/* <Item label="Người nhận">
-                                <Input defaultValue={data.receiver} />
-                            </Item>
-                            <Item label="Xuất phát">
-                                <Input defaultValue={data.origin} />
-                            </Item>
-                            <Item label="Điểm đến">
-                                <Input defaultValue={data.destination} />
-                            </Item> */}
-                            <Item label="Tình trạng">
-                                
-                                    <select defaultValue={data.status}>
-                                        <option value="unseen">unseen</option>
-                                        <option value="seen">seen</option>
-                                    </select>
-                                
-                            </Item>
-                            {/* <Item label="Thiết bị">
-                                <Input disabled={true} defaultValue={data.service} />
-                            </Item>
-                            <Item label="Tổng giá tiền">
-                                <InputNumber defaultValue={data.total_price} />
-                            </Item> */}
-                            {/* <Item label="Sản phẩm">
+                            <Item label="">
                                 <Button>Tách</Button>
-                                <div>{data.product.map(e => (
+                            </Item>
+                            <Item label="">
+                                {/* <div>{data.map(e=>(
                                     <li>Lô hàng {e.bill}</li>
-                                ))}</div>
-                            </Item> */}
+                                ))}</div> */}
+                            </Item>
                             <div className='flex justify-end mt-2 text-sm gap-x-6'>
                                 <Button
                                     size="large"
@@ -90,4 +69,4 @@ function AdminEditMessage({ isVisible, onClose, onOk, loading, disable, data }) 
     );
 }
 
-export default AdminEditMessage;
+export default SplitProduct;

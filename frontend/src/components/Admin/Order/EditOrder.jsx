@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import { Form, Input, DatePicker, Button, InputNumber, Select } from 'antd'
+import { Form, Input, DatePicker, Button, InputNumber } from 'antd'
 
 const { Item } = Form
-const { Option } = Select;
-function AdminEditMessage({ isVisible, onClose, onOk, loading, disable, data }) {
+function EditOrder({ isVisible, onClose, onOk, loading, disable, data }) {
 
     return (
         <>
@@ -41,12 +40,10 @@ function AdminEditMessage({ isVisible, onClose, onOk, loading, disable, data }) 
                                 <Input defaultValue={data.destination} />
                             </Item> */}
                             <Item label="Tình trạng">
-                                
-                                    <select defaultValue={data.status}>
-                                        <option value="unseen">unseen</option>
-                                        <option value="seen">seen</option>
-                                    </select>
-                                
+                                <select defaultValue={data.status} style={{padding:'5px'}}>
+                                    <option value="Xác nhận">Xác nhận</option>
+                                    <option value="Từ chối">Từ chối</option>
+                                </select>
                             </Item>
                             {/* <Item label="Thiết bị">
                                 <Input disabled={true} defaultValue={data.service} />
@@ -90,4 +87,4 @@ function AdminEditMessage({ isVisible, onClose, onOk, loading, disable, data }) 
     );
 }
 
-export default AdminEditMessage;
+export default EditOrder;

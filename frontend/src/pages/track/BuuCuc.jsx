@@ -1,23 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext} from 'react';
 import axios from 'axios';
 import { getProvinces, getDistrictsByProvinceCode } from 'sub-vn';
 import { IoLocationOutline } from 'react-icons/io5';
-
+import { useLocation } from "react-router-dom";
 import { END_POINT } from '../../utils/constant';
+import { MainContext } from '../../context/MainContext';
 
 export default function BuuCuc() {
+	const {dataWarehouse} = useContext(MainContext)
 	const [provinces, setProvinces] = useState([]);
 	const [districts, setDistricts] = useState([]);
 	const [provinceSelected, setProvinceSelected] = useState(null);
 	const [districtSelected, setDistrictSelected] = useState(null);
 	const [isValid, setIsValid] = useState(true);
 	const [result, setResult] = useState([]);
-
+console.log(dataWarehouse)
 	// get all provinces
+	const  pathname  = useLocation();
 	useEffect(() => {
 		setProvinces(getProvinces());
+		setProvinceSelected(dataWarehouse.province)
+		setDistrictSelected(dataWarehouse.district)
 	}, []);
+	
+	useEffect(() => {
+		dataWarehouse.district && window.scrollTo(0, 350);
+	  }, [pathname]);
+	  useEffect(()=>{
+	// 	 const searchWarehouse = (e) => {
+    // e.preventDefault()
+    if (dataWarehouse.province && dataWarehouse.district) {
+      const find = async () => {
+        try {
+          const res = await axios.get(
+            `${END_POINT}/warehouse`,
+            {
+              params: dataWarehouse
+            }
+          );
 
+          setResult(res.data);
+        } catch (error) {}
+      };
+      find();
+    }
+//   };
+	  },[])
 	// get all districts by province code
 	useEffect(() => {
 		setDistricts(getDistrictsByProvinceCode(provinceSelected));
@@ -42,6 +70,7 @@ export default function BuuCuc() {
 			// replace Thành phố || Tỉnh to empty
 			province = province.replace('Thành phố ', '').replace('Tỉnh ', '');
 
+			
 			const res = await axios.get(`${END_POINT}/tracking/warehouse`, {
 				params: {
 					province,
@@ -57,7 +86,10 @@ export default function BuuCuc() {
 	};
 
 	return (
-		<div>
+		<div style={{ 
+			maxWidth: "1200px",
+			margin:"auto"
+		 }}>
 			<div className="flex items-center flex-col lg:flex-row gap-[24px]">
 				<div className="w-full h-[43px] lg:w-1/3">
 					<select
@@ -65,6 +97,7 @@ export default function BuuCuc() {
 						id="city"
 						className="search-select w-full h-full  "
 						onChange={(e) => setProvinceSelected(e.target.value)}
+						value={provinceSelected}
 					>
 						<option data-select2-id="select2-data-81-rsyi" value="">
 							Tỉnh/ Thành phố
@@ -102,6 +135,7 @@ export default function BuuCuc() {
 						id="district"
 						className=" w-full h-full  "
 						onChange={(e) => setDistrictSelected(e.target.value)}
+						value={districtSelected}
 					>
 						<option value="">Quận/ Huyện</option>
 

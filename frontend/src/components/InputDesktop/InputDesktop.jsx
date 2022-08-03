@@ -1,7 +1,26 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-const InputDesktop = () => {
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+const InputDesktop = ({onSearch,onChangeKey, onChangeLocation, onChangeType,onChangeState, onChangeDepartment}) => {
+    
+    const [department,setDepartment] = useState([])
+
+    const getDepartment =async ()=>{
+        const res = await axios({
+            url:'http://localhost:8000/api/department',
+            method:"get",
+        })
+        if(res.status===200){
+            setDepartment(res.data.data);
+        }
+    }
+
+    useEffect(()=>{
+        getDepartment()
+    },[])
+    
     const locationsWork = [
         {
             id: 1,
@@ -133,6 +152,7 @@ const InputDesktop = () => {
         },
     ];
 
+
     return (
         <div>
             <div className="w-[1416px] p-[30px] border-solid border-[1px]  border-slate-300 shadow-md rounded-lg justify-around absolute left-[50%] translate-x-[-50%] bottom-[-32%]  bg-[#f2f2f2] hidden lg:flex z-10">
@@ -141,36 +161,25 @@ const InputDesktop = () => {
                         Vị trí ứng tuyển
                     </label>
                     <input
-                        className="outline outline-[1px] outline-slate-300 w-[320px] p-[8px]"
+                        className="outline outline-[1px] outline-slate-300 w-[300px] p-[8px]"
+                        defaultValue=""
                         type="text"
                         name=""
                         id="position"
                         placeholder="Nhập vị trí ứng tuyển"
+                        onChange={onChangeKey}
                     />
                 </div>
                 <div className="flex flex-col">
                     <label className="mb-[8px] text-[#161D25]" htmlFor="">
                         Địa điểm làm việc
                     </label>
-                    <select name="" id="" className="outline outline-[1px] outline-slate-300 w-[240px] p-[8px]">
+                    <select name="" id="" className="outline outline-[1px] outline-slate-300 w-[210px] p-[8px]" 
+                    onChange={onChangeLocation}>
                         {locationsWork.map((item) => {
                             return (
-                                <option key={item.id} value="" className="text-[#444444] ">
+                                <option key={item.id} value={item.location} className="text-[#444444] ">
                                     {item.location}
-                                </option>
-                            );
-                        })}
-                    </select>
-                </div>
-                <div className="flex flex-col">
-                    <label className="mb-[8px] text-[#161D25]" htmlFor="">
-                        Chức vụ
-                    </label>
-                    <select name="" id="" className="outline outline-[1px] outline-slate-300 w-[240px] p-[8px]">
-                        {professions.map((item) => {
-                            return (
-                                <option key={item.id} value="" className="text-[#444444]">
-                                    {item.profession}
                                 </option>
                             );
                         })}
@@ -180,17 +189,49 @@ const InputDesktop = () => {
                     <label className="mb-[8px] text-[#161D25]" htmlFor="">
                         Ngành nghề
                     </label>
-                    <select name="" id="" className="outline outline-[1px] outline-slate-300 w-[240px] p-[8px]">
+                    <select name="" id="" className="outline outline-[1px] outline-slate-300 w-[210px] p-[8px]"
+                    onChange={onChangeType}>
+                        {professions.map((item) => {
+                            return (
+                                <option key={item.id} value={item.profession} className="text-[#444444]">
+                                    {item.profession}
+                                </option>
+                            );
+                        })}
+                    </select>
+                </div>
+                <div className="flex flex-col">
+                    <label className="mb-[8px] text-[#161D25]" htmlFor="">
+                        Phòng ban
+                    </label>
+                    <select name="" id="" className="outline outline-[1px] outline-slate-300 w-[210px] p-[8px]"
+                    onChange={onChangeDepartment}>
+                        <option value="Phòng ban">Phòng ban</option>
+                        {department.map((item) => {
+                            return (
+                                <option key={item.id} value={item.name} className="text-[#444444]">
+                                    {item.name}
+                                </option>
+                            );
+                        })}
+                    </select>
+                </div>
+                <div className="flex flex-col">
+                    <label className="mb-[8px] text-[#161D25]" htmlFor="">
+                        Chức vụ
+                    </label>
+                    <select name="" id="" className="outline outline-[1px] outline-slate-300 w-[210px] p-[8px]"
+                    onChange={onChangeState}>
                         {positions.map((item) => {
                             return (
-                                <option key={item.id} value="" className="text-[#444444]">
+                                <option key={item.id} value={item.position} className="text-[#444444]">
                                     {item.position}
                                 </option>
                             );
                         })}
                     </select>
                 </div>
-                <button className="flex items-center justify-center  bg-[#e5a663] h-0 px-[36px] py-[20px] text-[#232323] self-end gap-2">
+                <button className="flex items-center justify-center  bg-[#e5a663] h-0 px-[36px] py-[20px] text-[#232323] self-end gap-2" onClick={onSearch}>
                     <FontAwesomeIcon icon={faMagnifyingGlass} />
                     Tìm kiếm
                 </button>
