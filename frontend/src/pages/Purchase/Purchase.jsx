@@ -119,7 +119,7 @@ const Purchase = () => {
             />
           </span>
         </div>
-        <div className=" sm:mx-16 lg:mx-44 py-4 bg-gray-white mx-2  ">
+        <div className=" sm:mx-16 lg:mx-52 py-4 bg-gray-white mx-2  ">
           <div
             className="custom-tab shadow-[#000000] container w-[100%] px-auto  text-xl bg-white  "
             style={{ width: "100%" }}

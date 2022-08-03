@@ -1,176 +1,93 @@
-import { Button, Form, Input, DatePicker } from "antd";
-import axios from "axios";
-import React from "react";
-const { TextArea } = Input;
+import { useState } from 'react'
+import { Form, Input, DatePicker, Button, InputNumber, Select } from 'antd'
 
-export default function AdminEditMessage(props) {
-  const { isModalVisibleEdit, onClose, infor, setDataEditMessage } = props;
+const { Item } = Form
+const { Option } = Select;
+function AdminEditMessage({ isVisible, onClose, onOk, loading, disable, data }) {
 
-  const postNewEditMessageAPI = async (newData, id) => {
-    try {
-      const result = await axios({
-        url: `url${id}`,
-        method: "post",
-        data: newData,
-        headers: "Bearer",
-      });
-      if (result.status === 200) {
-        alert("cap nhập thành công");
-      }
-    } catch (error) {}
-  };
+    return (
+        <>
+            {
+                isVisible &&
+                <div className='fixed inset-0  bg-slate-600 bg-opacity-50 z-20 flex justify-center items-center'>
+                    <div className='relative w-[700px] flex flex-col bg-white p-6 gap-y-3 animate-modal_in mx-4 rounded-xl overflow-auto'>
+                        <div className='flex justify-between items-center gap-y-3'>
+                            <span className='text-xl uppercase font-bold h-fit'>Sửa Order</span>
+                            <Button
+                                size="large"
+                                disabled={disable}
+                                className={!disable && 'hover:bg-red-500 hover:border-red-700 hover:text-white border-none'}
+                                onClick={onClose}
+                            >
+                                x
+                            </Button>
+                        </div>
+                        <Form
+                            labelCol={{
+                                span: 6,
+                            }}
+                            wrapperCol={{
+                                span: 14,
+                            }}
+                            layout="horizontal"
+                        >
+                            {/* <Item label="Người nhận">
+                                <Input defaultValue={data.receiver} />
+                            </Item>
+                            <Item label="Xuất phát">
+                                <Input defaultValue={data.origin} />
+                            </Item>
+                            <Item label="Điểm đến">
+                                <Input defaultValue={data.destination} />
+                            </Item> */}
+                            <Item label="Tình trạng">
+                                
+                                    <select defaultValue={data.status}>
+                                        <option value="unseen">unseen</option>
+                                        <option value="seen">seen</option>
+                                    </select>
+                                
+                            </Item>
+                            {/* <Item label="Thiết bị">
+                                <Input disabled={true} defaultValue={data.service} />
+                            </Item>
+                            <Item label="Tổng giá tiền">
+                                <InputNumber defaultValue={data.total_price} />
+                            </Item> */}
+                            {/* <Item label="Sản phẩm">
+                                <Button>Tách</Button>
+                                <div>{data.product.map(e => (
+                                    <li>Lô hàng {e.bill}</li>
+                                ))}</div>
+                            </Item> */}
+                            <div className='flex justify-end mt-2 text-sm gap-x-6'>
+                                <Button
+                                    size="large"
+                                    disabled={disable}
+                                    className={!disable && 'hover:bg-red-500 hover:border-red-700 hover:text-white rounded-lg'}
+                                    onClick={onClose}
+                                >
+                                    Hủy
+                                </Button>
+                                <Button
+                                    type="primary"
+                                    size="large"
+                                    loading={loading}
+                                    onClick={onOk}
+                                    className="rounded-lg"
+                                >
+                                    Xác nhận
+                                </Button>
+                            </div>
+                        </Form>
+                    </div>
 
-  const onFinish = (values) => {
-    // console.log("Success:", values);
-    setDataEditMessage(() => {
-      return { ...values };
-    });
-    // console.log(infor);
-    // send new commit to backend
-    postNewEditMessageAPI(infor, infor.id);
-  };
 
-  const onFinishFailed = (errorInfo) => {
-    // console.log("Failed:", errorInfo);
-  };
-  return (
-    <>
-      {isModalVisibleEdit && (
-        <div className="fixed inset-0 bg-slate-600 bg-opacity-50 z-20 flex justify-center items-center ">
-          <div className="relative w-[700px] flex flex-col bg-white bg-opacity-100 p-6 rounded-xl gap-y-3 animate-modal_in">
-            <Form
-              name="basic"
-              labelCol={{
-                span: 4,
-              }}
-              wrapperCol={{
-                span: 16,
-              }}
-              initialValues={
-                {
-                  // remember: true,
-                }
-              }
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
-              autoComplete="off"
-            >
-              <h1 className="uppercase"> VUI LÒNG nhập Message mới </h1>
-              <Form.Item
-                label="Name"
-                name="name"
-                rules={[
-                  {
-                    required: true,
-                    message: "Mời nhập tiêu đề",
-                  },
-                ]}
-                initialValue={infor.name}
-                onChange={(e) => {
-                  setDataEditMessage(() => {
-                    return { ...infor, name: e.target.value };
-                  });
-                }}
-              >
-                <Input />
-              </Form.Item>
 
-              <Form.Item
-                label="Phone"
-                name="Phone"
-                initialValue={infor.phone}
-                rules={[
-                  {
-                    required: true,
-                    message: "nhập số phone",
-                    type: "number/text",
-                  },
-                ]}
-                onChange={(e) => {
-                  setDataEditMessage(() => {
-                    return { ...infor, phone: e.target.value };
-                  });
-                }}
-              >
-                <Input />
-              </Form.Item>
-
-              <Form.Item
-                label="Email"
-                name="email"
-                initialValue={infor.email}
-                rules={[
-                  {
-                    required: true,
-                    message: "Mời nhập email",
-                    type: "email",
-                  },
-                ]}
-                onChange={(e) => {
-                  setDataEditMessage(() => {
-                    return { ...infor, email: e.target.value };
-                  });
-                }}
-              >
-                <Input />
-              </Form.Item>
-
-              <Form.Item
-                label="message"
-                name="message"
-                initialValue={infor.message}
-                rules={[
-                  {
-                    required: true,
-                    message: "Mời nhập chi tiết",
-                  },
-                ]}
-                onChange={(e) => {
-                  setDataEditMessage(() => {
-                    return { ...infor, message: e.target.value };
-                  });
-                }}
-              >
-                <TextArea />
-              </Form.Item>
-              <Form.Item
-                label="Ngày gửi "
-                name='date'
-                initialValue={infor.date}
-                onChange={(e) => {
-                  setDataEditMessage(() => {
-                    return { ...infor, date: e.target.value };
-                  });
-                }}
-              >
-                <DatePicker />
-              </Form.Item>
-              <Form.Item
-                wrapperCol={{
-                  offset: 13,
-                  span: 16,
-                }}
-              >
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="  bg-gradient-to-r from-orange-500 to-yellow-400 px-8 py-2 rounded-lg hover:opacity-80"
-                >
-                  Submit
-                </Button>
-                <Button
-                  onClick={onClose}
-                  type="primary"
-                  htmlType=""
-                  className=" bg-gradient-to-r from-red-600 to-red-500 px-4 py-2 rounded-lg hover:opacity-80"
-                >
-                  Hủy
-                </Button>
-              </Form.Item>
-            </Form>
-          </div>
-        </div>
-      )}
-    </>
-  );
+                </div>
+            }
+        </>
+    );
 }
+
+export default AdminEditMessage;

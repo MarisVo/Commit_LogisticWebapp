@@ -48,7 +48,6 @@ const ForgetForm = styled.div`
 a {
   color: #348ceb;
 }`
-
 const ButtonContainer = styled.div`
 .ant-btn-primary {
     margin-top: 30px;
@@ -86,7 +85,6 @@ function ForgetPass() {
       },
     });
   };
-
   const failed404 = () => {
     message.error({
       content: 'Email hoặc số điện thoại không tồn tại',
@@ -96,7 +94,6 @@ function ForgetPass() {
       },
     });
   };
-
   const failed400 = () => {
     message.error({
       content: 'Tạo mật khẩu mới không thành công',
@@ -127,7 +124,6 @@ function ForgetPass() {
       if(error.message == "Request failed with status code 404") {
         failed404();
       }
-
       if(error.message == "Request failed with status code 400") {
         failed400();
       }

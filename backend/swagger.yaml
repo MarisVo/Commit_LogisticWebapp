@@ -161,6 +161,11 @@ paths:
       summary: Update OTP send through email/phone number.
       produces:
         - application/json
+      parameters:
+        - in: query
+          name: verify_op
+          type: string
+          required: true
       responses:
         200:
           description: update otp successfully.
@@ -363,43 +368,6 @@ paths:
           description: user registered successfully.
         400:
           description: user is exist
-      security:
-        - bearerAuth: []
-  /admin/auth/unaccepted-register:
-    get:
-      tags:
-        - auth
-      summary: get list of unaccepted registers of business account
-      produces:
-        - application/json
-      responses:
-        200:
-          description: success
-          schema:
-            type: array
-            example: {
-              "data": ["customer1","customer2"]
-            }
-      security:
-        - bearerAuth: []
-  /admin/auth/accept-register/{customerId}:
-    put:
-      tags:
-        - auth
-      summary: accept active the business's register
-      consumes:
-        - application/json
-      parameters:
-      - in: path
-        name: customerId
-        required: true
-        type: string
-        description: Business's ID
-      responses:
-        200:
-          description: accepted successfully.
-        400:
-          description: this customer does not exist or was accepted register.
       security:
         - bearerAuth: []
   /about:

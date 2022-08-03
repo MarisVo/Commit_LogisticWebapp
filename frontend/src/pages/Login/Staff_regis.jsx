@@ -3,6 +3,8 @@ import 'antd/dist/antd.css'
 import { Form, Button, Input, Select, Typography, message } from "antd";
 import styled from 'styled-components';
 import * as axios from 'axios'
+import { useContext } from 'react';
+import { MainContext } from '../../context/MainContext';
 
 const RegisForm = styled.div`
 .Regis{
@@ -24,7 +26,6 @@ const RegisForm = styled.div`
     background-color: #FBAB7E;
     background-image: linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%);
 }
-
 .Regis-header{
     max-width: 500px;
     width: 100%;
@@ -35,20 +36,17 @@ const RegisForm = styled.div`
     box-shadow: 0 5px 10px rgba(0,0,0,0.15);
     overflow:auto;
 }
-
 .ant-typography{
     font-size: 45px;
     font-weight: 500;
     position: relative;
 }
-
 .ant-input-affix-wrapper {
     box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
 }
 .sign{
     text-align:right;
 }`
-
 const ButtonContainer = styled.div`
 .ant-btn-primary {
     height: 100%;
@@ -86,7 +84,6 @@ function Staff_Register() {
       },
     });
   };
-
   const failed400 = () => {
     message.error({
       content: 'Email hoặc số điện thoại đã tồn tại',
@@ -96,8 +93,6 @@ function Staff_Register() {
       },
     });
   };
-
-
   const failed500 = () => {
     message.error({
       content: 'Lỗi hệ thống',
@@ -116,11 +111,13 @@ function Staff_Register() {
   let password = Form.useWatch('password', form);
   let staff_type = Form.useWatch('staff_type', form);
 
+  const {accessToken} = useContext(MainContext);
   const onFinish = async() => {
     try{
       const response = await axios({
         method: 'post',
         url: 'http://localhost:8000/api/admin/auth/register',
+        headers: { authorization: `Bearer ${accessToken}` },
         data: {
           name: name,
           email: email,
@@ -129,14 +126,11 @@ function Staff_Register() {
           staff_type: staff_type
         }
       });
-
-      /*console.log(JSON.stringify(response?.data));*/
       success();
     } catch(error){
       if(error.message == "Request failed with status code 400") {
         failed400();
       }
-
       if(error.message == "Request failed with status code 500") {
         failed500();
       }
@@ -158,7 +152,7 @@ function Staff_Register() {
                 } }
             >
                 <Title level={2} className="text-center">
-                    Đăng ký
+                    Đăng ký staff
                 </Title>
 
                 <Form.Item

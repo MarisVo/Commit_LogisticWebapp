@@ -1,12 +1,15 @@
 import { Button, Checkbox, Form, Input, Upload } from "antd";
+import { MainContext } from "../../context/MainContext";
 import { UploadOutlined } from "@ant-design/icons";
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { TOKEN } from "./adminToken";
 import { useEffect } from "react";
 import { useRef } from "react";
 export default function AdminAbout() {
+  const {accessToken} = useContext(MainContext);
+
   const [aboutState, setAboutState] = useState({
     description: "string",
     vision: "string",
@@ -22,14 +25,14 @@ export default function AdminAbout() {
       const result = await axios({
         url: "https://api.openweathermap.org/data/2.5/weather?q=helsinki&appid=460863ced2e6b5f80cdca7445aec9faf&units=metric",
         method: "get",
-        headers: "Bears" + TOKEN,
+        headers: { authorization: `Bearer ${accessToken}` },
       });
       console.log(result);
       if (result.status === 200) {
-        setAboutState(result.data);
+        setAboutState(result.data.data);
       }
     } catch (error) {
-      console.log(error.response);
+      console.log(error);
     }
   };
   const normFile = (e) => {
