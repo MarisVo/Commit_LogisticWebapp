@@ -120,7 +120,7 @@ const App = () => {
               <Route path="dang-nhap" element={<Login /> } />
               <Route path="quen-mat-khau" element={<ForgetPass />} />
               <Route path="xac-thuc-otp" element={<Register_OTP />} />
-              <Route path="dang-nhap-nhan-vien" element={<StaffLogin /> } />
+             
 
               <Route path="dang-ki-nhan-vien" element={<StaffRegister /> } />
 
@@ -132,7 +132,7 @@ const App = () => {
             </Route>
 
             <Route element={<StaffRoute />}>
-
+              <Route path="dang-nhap-nhan-vien" element={<StaffLogin /> } />
               <Route path="storekeeper" element={<LayerStorekeeper />}>
                 <Route index element={<ProductsManager />} />
                 <Route path="xuat-nhap" element={<ProductsManager />} />

@@ -6,7 +6,10 @@ import { MainContext } from "../context/MainContext";
 function DefaultLayout() {
   const { checkAuthenticated} = useContext(MainContext)
   useEffect(async () => {
-    await checkAuthenticated()
+     const  login = localStorage.getItem("login")
+     if(login){
+       await checkAuthenticated()
+     }
   }, [])
     return ( 
         <>

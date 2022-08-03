@@ -92,6 +92,7 @@ function StaffLogin() {
       },
     });
   };
+
   const failed403 = () => {
     message.error({
       content: 'Role của bạn chưa được xác nhận, từ chối đăng nhập',
@@ -117,7 +118,14 @@ function StaffLogin() {
   (isValidEmail(emailphone)) ? email = emailphone : phone = emailphone
   let password = Form.useWatch('password', form);
 
-  
+ /*  useEffect(()=>{
+     if(user?.role.staff_type==="admin"){
+       navigate("/admin", { replace: true });
+    }
+    else if(user?.role.staff_type==="storekeeper") {
+       navigate("/storekeeper", { replace: true });
+    }
+  },[user]) */
   const onFinish = async() => {
     try{ 
       const response = await axios({
@@ -132,13 +140,14 @@ function StaffLogin() {
       console.log(response)
       success();
       const { data } = response.data;
+      console.log(data)
       loginHandle(data.accessToken, data.refreshToken, data.user);
-     if(data.user.role.staff_type==="admin"){
+        if(data.user.role.staff_type==="admin"){
        navigate("/admin", { replace: true });
-    }
-    else if(data.user.role.staff_type==="storekeeper") {
-       navigate("/storekeeper", { replace: true });
-    }
+        }
+        else if(data.user.role.staff_type==="storekeeper") {
+          navigate("/storekeeper", { replace: true });
+        }
     } catch(error) {
       if(error.message == "Request failed with status code 403") {
         failed403();

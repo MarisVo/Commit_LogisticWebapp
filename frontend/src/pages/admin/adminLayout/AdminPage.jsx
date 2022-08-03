@@ -14,12 +14,18 @@ import { BsFillPersonFill, BsPaperclip } from "react-icons/bs";
 import {ImProfile} from "react-icons/im"
 import { Layout, Menu } from "antd";
 import React, { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { useEffect } from "react";
+import { useContext } from "react";
+import { Link, Navigate, Outlet, useNavigate } from "react-router-dom";
 import logo from "../../../assets/icons/logo-J&T.svg";
+import { MainContext } from "../../../context/MainContext";
 import AdminDropDownAvatar from "./AdminDropDownAvatar";
 const { Header, Sider, Content } = Layout;
 
 export default function AdminPage() {
+  const {user} = useContext(MainContext)
+  const navigate = useNavigate()
+   
   const [collapsed, setCollapsed] = useState(false);
   function getItem(label, key, icon, children) {
     return {
@@ -151,65 +157,68 @@ export default function AdminPage() {
 
     // getItem("User", "sub1", <UserOutlined />, [getItem("Tom", "3"), getItem("Bill", "4"), getItem("Alex", "5")]),
   ];
-  return (
-    <Layout
-      className=""
-      style={{
-        minHeight: "100vh",
-      }}
-    >
-      <Sider
-        trigger={null}
-        collapsible
-        collapsed={collapsed}
-        className="uppercase " //hidden xl:block
-        style={{
-          background: "#fff",
-        }}
-      >
-        <div className="logo">
-          <img src={logo} alt="" className="w-full h-full"></img>
-        </div>
-        <Menu theme="" mode="inline" defaultSelectedKeys={[""]} items={items} />
-      </Sider>
-      <Layout className="site-layout">
-        <Header
-          className="site-layout-background"
-          style={{
-            padding: 0,
-            background: "#fff",
-          }}
-        >
-          <div className="flex flex-row justify-between pr-10">
-            {React.createElement(
-              collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-              {
-                className: "trigger",
-                onClick: () => setCollapsed(!collapsed),
-                style: {
-                  padding: " 0 24px",
-                  fontSize: "18px",
-                  lineHeight: "64px",
-                  cursor: "pointer",
-                  transition: "color 0.3s",
-                  color: "orange",
-                },
-              }
-            )}
-            <AdminDropDownAvatar></AdminDropDownAvatar>
-          </div>
-        </Header>
-        <Content
-          className="site-layout-background"
-          style={{
-            margin: "24px 12px",
-            // padding: 24,
-            minHeight: 280,
-          }}
-        >
-          <Outlet></Outlet>
-        </Content>
-      </Layout>
-    </Layout>
-  );
+   if(user&&user.role.staff_type==="admin"){
+     return (
+       <Layout
+         className=""
+         style={{
+           minHeight: "100vh",
+         }}
+       >
+         <Sider
+           trigger={null}
+           collapsible
+           collapsed={collapsed}
+           className="uppercase " //hidden xl:block
+           style={{
+             background: "#fff",
+           }}
+         >
+           <div className="logo">
+             <img src={logo} alt="" className="w-full h-full"></img>
+           </div>
+           <Menu theme="" mode="inline" defaultSelectedKeys={[""]} items={items} />
+         </Sider>
+         <Layout className="site-layout">
+           <Header
+             className="site-layout-background"
+             style={{
+               padding: 0,
+               background: "#fff",
+             }}
+           >
+             <div className="flex flex-row justify-between pr-10">
+               {React.createElement(
+                 collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+                 {
+                   className: "trigger",
+                   onClick: () => setCollapsed(!collapsed),
+                   style: {
+                     padding: " 0 24px",
+                     fontSize: "18px",
+                     lineHeight: "64px",
+                     cursor: "pointer",
+                     transition: "color 0.3s",
+                     color: "orange",
+                   },
+                 }
+               )}
+               <AdminDropDownAvatar></AdminDropDownAvatar>
+             </div>
+           </Header>
+           <Content
+             className="site-layout-background"
+             style={{
+               margin: "24px 12px",
+               // padding: 24,
+               minHeight: 280,
+             }}
+           >
+             <Outlet></Outlet>
+           </Content>
+         </Layout>
+       </Layout>
+     );
+   }
+    return <Navigate to="/dang-nhap-nhan-vien" />;
 }

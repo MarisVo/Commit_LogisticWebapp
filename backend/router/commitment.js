@@ -9,7 +9,6 @@ const commitmentRoute = express.Router()
  * @description get all commitments
  * @access public
  */
-
 commitmentRoute.get('/',
     async(req, res) => {
         try {
@@ -18,8 +17,9 @@ commitmentRoute.get('/',
                 { heading: { $regex: keyword, $options: 'i'} },
                 { detail: { $regex: keyword, $options: 'i'} },
             ]} : {}            
+            const length = await Commitment.count()
             const commits = await Commitment.find(keywordCondition).limit(limit).sort(`${sortBy}`)
-            if (commits) return sendSuccess(res, "Get commitment successful.", commits)
+            if (commits) return sendSuccess(res, "Get commitment successful.", {length, commits})
             return sendError(res, "Not information found.")
         } catch(error){
             console.log(error)

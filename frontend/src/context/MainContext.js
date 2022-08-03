@@ -20,9 +20,9 @@ const MainProvider = ({ children }) => {
       const { data } = res.data
       setUser(data.user)
       if(data.accessToken)
-        setAccessToken(data.accessToken)
+      setAccessToken(data.accessToken)
       else
-        setAccessToken(token)
+      setAccessToken(token)
       setRefreshToken(refresh)
     } catch (error) {
       return false
@@ -39,11 +39,15 @@ const MainProvider = ({ children }) => {
       _refreshToken
     );
     localStorage.setItem(
+      "login",
+      "login"
+    );
+    localStorage.setItem(
       process.env.REACT_APP_LOCALSTORAGE_TOKEN_NAME,
       _accessToken
     );
   };
-
+  
   const logoutHandle = async () => {
     console.log(accessToken)
     const refreshToken = localStorage.getItem(
@@ -61,6 +65,7 @@ const MainProvider = ({ children }) => {
       );
       localStorage.removeItem(process.env.REACT_APP_LOCALSTORAGE_TOKEN_NAME);
       localStorage.removeItem(process.env.REACT_APP_LOCALSTORAGE_REFRESH_NAME);
+      localStorage.removeItem("login");
       setAccessToken(null);
       setRefreshToken(null)
       setUser(null);
@@ -70,7 +75,9 @@ const MainProvider = ({ children }) => {
       console.log(err);
     }
   };
-  
+  useEffect(()=>{
+   checkAuthenticated()
+  },[])
   return (
     <MainContext.Provider
       value={{
@@ -79,7 +86,6 @@ const MainProvider = ({ children }) => {
         loginHandle,
         logoutHandle,
         checkAuthenticated,
-        accessToken
       }}
     >
       {children}
