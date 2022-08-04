@@ -36,7 +36,9 @@ serviceRoute.get("/", async (req, res) => {
       .limit(pageSize)
       .skip(pageSize * page)
       .sort(`${sortBy}`)
-      .populate("quotes", "features", "participants");
+      .populate("quotes")
+      .populate("features")
+      .populate("participants");
     if (service)
       return sendSuccess(res, "get service information successfully.", {length, service});
     return sendError(res, "Service information is not found.");
