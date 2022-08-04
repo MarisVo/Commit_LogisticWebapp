@@ -8,17 +8,21 @@ const distanceRoute = express.Router();
 
 /**
  * @route GET /api/distance
- * @description get distance information
+ * @description get distances information for given provinces
  * @access public
  */
 distanceRoute.get("/", async (req, res) => {
   try {
+    const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0;
+    const page = req.query.page ? parseInt(req.query.page) : 0;
     const { fromProvince, toProvince } = req.query;
     const length = await Distance.count();
     const distance = await Distance.find({
       fromProvince: fromProvince,
       toProvince: toProvince,
-    });
+    })
+    .limit(pageSize)
+    .skip(pageSize * page);
     if (distance)
       return sendSuccess(res, "get distance information successfully.", {
         length,
@@ -64,20 +68,29 @@ distanceRoute.get("/service/:serviceId", async (req, res) => {
     const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0;
     const page = req.query.page ? parseInt(req.query.page) : 0;
     const { serviceId } = req.params;
+    const { sortBy, fromProvince, toProvince } = req.query;
+    var query = {};
     const service = await DeliveryService.findById({ _id: serviceId });
     if (!service) return sendError(res, "Service does not exist.");
-
     if (service) {
       const ids = [];
+      if (fromProvince) {
+        query.fromProvince = fromProvince;
+      }
+      if (toProvince) {
+        query.toProvince = toProvince;
+      }
       for (let i = 0; i < service.distances.length; i++) {
         if (service.distances.length) {
           ids.push(service.distances[i]);
         }
       }
+      query._id = ids;
       const length = await Distance.count();
-      const distance = await Distance.find({ _id: ids })
+      const distance = await Distance.find( query )
         .limit(pageSize)
-        .skip(pageSize * page);
+        .skip(pageSize * page)
+        .sort(`${sortBy}`);
       return sendSuccess(res, "get distance information successfully.", {
         length,
         distance,
