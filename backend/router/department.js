@@ -39,7 +39,7 @@ departmentRoute.get("/", async (req, res) => {
   try {
     const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0;
     const page = req.query.page ? parseInt(req.query.page) : 0;
-    const { keyword } = req.query;
+    const { keyword, sortBy } = req.query;
     var keywordCondition = keyword
       ? {
           $or: [
@@ -52,7 +52,8 @@ departmentRoute.get("/", async (req, res) => {
     const length = await Department.count();
     const department = await Department.find(keywordCondition)
       .limit(pageSize)
-      .skip(pageSize * page);
+      .skip(pageSize * page)
+      .sort(`${sortBy}`);
     if (department)
       return sendSuccess(res, "Get department information successfully.", {
         length,
