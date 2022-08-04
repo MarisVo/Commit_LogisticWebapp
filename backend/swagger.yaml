@@ -35,6 +35,12 @@ tags:
   description: "Endpoint Car"
 - name: "prohibited-product"
   description: "Endpoint Prohibited Product"
+- name: "road"
+  description: "Endpoint Road"
+- name: "bill"
+  description: "Endpoint Bill"
+- name: "product-shipment"
+  description: "Endpoint Product Shipment"
 - name: "participant"
   description: "Endpoint Participant"
 - name: "quote"
@@ -1532,7 +1538,7 @@ paths:
             description: Update user failed.  
         security:
           - bearerAuth: []  
-  /car:
+  /admin/car:
     get:
       tags:
         - "car"
@@ -1541,9 +1547,13 @@ paths:
         - application/json
       parameters:
         - in: query
-          name: keyword
+          name: car_type
           type: string
-          description: keyword of car 
+          description: car_type of car (ex 8_ton, 20_ton)
+        - in: query
+          name: plate
+          type: string
+          description: plate of car 
         - in: query
           name: page
           type: string
@@ -1565,7 +1575,10 @@ paths:
             }
         400:
           description: car in not found.
-  /car/{carId}:
+      security:
+        - bearerAuth: []
+  
+  /admin/car/{carId}:
     get:
       tags:
         - "car"
@@ -1591,6 +1604,83 @@ paths:
             }
         400:
           description: CarId is not found.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - "car"
+      summary: Admin update road 
+      produces:
+        - application/json
+      consumes:
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: carId
+          type: string
+          required: true
+          description: Id of an car 
+        - in: body
+          name: road
+          description: a new car.
+          schema:
+            type: object
+            required:
+              - volumn
+              - tonnage 
+              - car_type
+            properties:
+              volumn: 
+                  type: number
+              tonnage:
+                  type: number
+              car_type:
+                type: string
+                enum: ['8_ton', '20_ton']
+        - in: formData
+      responses:
+        200:
+          description: Update car successfully.
+          schema:
+            type: object
+            example: {
+                "plate": "string",
+                "car_type": "string",
+                "volumn": "string",
+                "tonnage": "string",
+            }
+        400:
+          description: road cannot be found.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "car"
+      summary: "Delete a existing car"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: carId 
+          type: string
+          required: true
+          description: car Id
+      responses:
+        200:
+          description: Delete car successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+        400:
+          description: Delete car failed.
+      security:
+        - bearerAuth: []
 
   /admin/car/create:
     post:
@@ -1630,34 +1720,7 @@ paths:
           description: Create car failed.
       security:
         - bearerAuth: []
-  /admin/car/{carId}:     
-    delete:
-      tags:
-        - "car"
-      summary: "Delete a existing car"
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          name: carId 
-          type: string
-          required: true
-          description: car Id
-      responses:
-        200:
-          description: Delete car successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
-        400:
-          description: Update car failed.
-      security:
-        - bearerAuth: []
+
   /prohibited-product:
     get:
       tags:
@@ -1854,6 +1917,575 @@ paths:
           description: Update prohibited product failed.
       security:
         - bearerAuth: []
+  
+  /admin/road:
+    get:
+      tags:
+        - "road"
+      summary: get roads
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: pageSize
+          type: string
+          description: limit number of road on a page
+        - in: query
+          name: page
+          type: string
+          description: num of page
+        - in: query
+          name: keyword
+          type: string
+          description: keyword
+        - in: query
+          name: sortBy
+          type: string
+          description: sort by
+        - in: query
+          name: distance
+          type: string
+          description:  distance
+        - in: query
+          name: origin
+          type: string
+          description: origin
+        - in: query
+          name: destination
+          type: string
+          description:  destination
+      responses:
+        200:
+          description: get road successfully.
+          schema:
+            type: object
+            example: {
+              "distance": "string",
+              "origin": "string",
+              "destination": "string",
+            }
+        400:
+          description: road in not found.
+      security:
+        - bearerAuth: []
+
+  /admin/road/{roadId}:
+    get:
+      tags:
+        - "road"
+      summary: get road by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: roadId
+          type: string
+          required: true
+          description: Id of a road 
+      responses:
+        200:
+          description: get road successfully.
+          schema:
+            type: object
+            example: {
+              "distance": "string",
+              "origin": "string",
+              "destination": "string",
+            }
+        400:
+          description: RoadId is not found. 
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - "road"
+      summary: Admin update road 
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: roadId
+          type: string
+          required: true
+          description: Id of an road 
+        - in: body
+          name: road
+          description: a new road.
+          schema:
+            type: object
+            properties:
+              distance: 
+                  type: number
+              origin:
+                  type: string
+              destination: 
+                  type: string
+      responses:
+        200:
+          description: Update road  successfully.
+          schema:
+            type: object
+            example: {
+              "distance": "string",
+              "origin": "string",
+              "destination": "string",
+            }
+        400:
+          description: road cannot be found.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "road"
+      summary: "Delete an existing road"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: roadId
+          type: string
+          required: true
+          description: Id of an road 
+      responses:
+        200:
+          description: Delete road successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+        400:
+          description: Delete road failed.
+      security:
+          - bearerAuth: []
+
+  /admin/road/create:
+    post:
+      tags:
+        - "road"
+      summary: "Create a new road"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: road
+          description: a new road.
+          schema:
+            type: object
+            required:
+              - distance
+              - origin 
+              - destination
+            properties:
+              distance:           
+                  type: number
+              origin: 
+                  type: string
+              destination: 
+                  type: string
+      responses:
+        200:
+          description: Create road successfully.
+          schema:
+            type: object
+            example: {
+              "distance": "string",
+              "origin": "string",
+              "destination": "string",
+            }
+        400:
+          description: Create road failed. 
+      security:
+        - bearerAuth: []
+
+  /admin/product-shipment:
+    get:
+      tags:
+        - "product-shipment"
+      summary: get product-shipment
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: pageSize
+          type: string
+          description: limit number of bill on a page
+        - in: query
+          name: page
+          type: string
+          description: num of page
+        - in: query
+          name: keyword
+          type: string
+          description: keyword
+        - in: query
+          name: sortBy
+          type: string
+          description: sort by
+        - in: query
+          name: keyword
+          type: string
+          description: search by keyword
+        - in: query
+          name: product_id
+          type: string
+          description:  product_id
+      responses:
+        200:
+          description: get product shipment successfully.
+          schema:
+            type: object
+            example: {
+              "quantity": "string",
+              "product_id": "string",
+            }
+        400:
+          description: product shipment in not found.
+      security:
+        - bearerAuth: []
+
+  /admin/product-shipment/{id}:
+    get:
+      tags:
+        - "product-shipment"
+      summary: get product-shipment by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: Id of a product-shipment 
+      responses:
+        200:
+          description: get product-shipment successfully.
+          schema:
+            type: object
+            example: {
+              "quantity": "string",
+              "product_id": "string",
+            }
+        400:
+          description: product-shipmentID is not found. 
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - "product-shipment"
+      summary: Admin update product-shipment 
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: Id of an product-shipment 
+        - in: body
+          name: product-shipment
+          description: Update product-shipment.
+          schema:
+            type: object
+            required:
+              - quantity
+              - product_id
+            properties:
+              quantity:
+                type: number 
+              product_id:
+                type: string
+      responses:
+        200:
+          description: Update bill  successfully.
+          schema:
+            type: object
+            example: {
+                "quantity": "string",
+                "product_id": "string",
+            }
+        400:
+          description: product-shipment cannot found.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "product-shipment"
+      summary: "Delete an existing product-shipment"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: Id of an product-shipment 
+      responses:
+        200:
+          description: Delete product-shipment successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+        400:
+          description: Delete product-shipment failed.
+      security:
+          - bearerAuth: []
+
+  /admin/product-shipment/create:
+    post:
+      tags:
+        - "product-shipment"
+      summary: "Create a new product-shipment"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: product-shipment
+          description: a new product-shipment.
+          schema:
+            type: object
+            properties:
+              quantity:
+                type: number 
+              product_id:
+                type: string
+      responses:
+        200:
+          description: Create product shipment successfully.
+          schema:
+            type: object
+            example: {
+              "quantity": "string",
+              "product_id": "string",
+            }
+        400:
+          description: Create product shipment failed. 
+      security:
+        - bearerAuth: []
+
+  /admin/bill:
+    get:
+      tags:
+        - "bill"
+      summary: get bills
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: pageSize
+          type: string
+          description: limit number of bill on a page
+        - in: query
+          name: page
+          type: string
+          description: num of page
+        - in: query
+          name: keyword
+          type: string
+          description: keyword
+        - in: query
+          name: sortBy
+          type: string
+          description: sort by
+        - in: query
+          name: service
+          type: string
+          description:  service
+        - in: query
+          name: road
+          type: string
+          description:  road
+        - in: query
+          name: car
+          type: string
+          description:  car
+        - in: query
+          name: driver
+          type: string
+          description:  driver
+        - in: query
+          name: status
+          type: string
+          description:  status (ex waiting, processing, completed)
+      responses:
+        200:
+          description: get bill successfully.
+          schema:
+            type: object
+            example: {
+              "service": "string",
+              "road": "string",
+              "car": "string",
+              "driver": "string",
+              "product_shipment": "string",
+              "status": "string",
+            }
+        400:
+          description: bill in not found.
+      security:
+        - bearerAuth: []
+
+  /admin/bill/{billId}:
+    get:
+      tags:
+        - "bill"
+      summary: get bill by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: billId
+          type: string
+          required: true
+          description: Id of a bill 
+      responses:
+        200:
+          description: get bill successfully.
+          schema:
+            type: object
+            example: {
+              "service": "string",
+              "road": "string",
+              "car": "string",
+              "driver": "string",
+              "product_shipment": "string",
+              "status": "string",
+            }
+        400:
+          description: billId is not found. 
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - "bill"
+      summary: Admin update bill 
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: billId
+          type: string
+          required: true
+          description: Id of an bill 
+        - in: body
+          name: bill
+          description: a new bill.
+          schema:
+            type: object
+            required:
+              - product_shipment
+            properties:
+              service:
+                type: string 
+              road:
+                type: string
+              car:
+                type: string 
+              driver:
+                type: string 
+              product_shipment:
+                type: string 
+              status:
+                type: string
+                enum: ['waiting', 'accepted', 'processing', 'completed', 'refused']
+      responses:
+        200:
+          description: Update bill  successfully.
+          schema:
+            type: object
+            example: {
+              "service": "string",
+              "road": "string",
+              "car": "string",
+              "driver": "string",
+              "product_shipment": "string",
+              "status": "string",
+            }
+        400:
+          description: bill cannot be found.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "bill"
+      summary: "Delete an existing bill"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: billId
+          type: string
+          required: true
+          description: Id of an bill 
+      responses:
+        200:
+          description: Delete bill successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+        400:
+          description: Delete bill failed.
+      security:
+          - bearerAuth: []
+
+  /admin/bill/create:
+    post:
+      tags:
+        - "bill"
+      summary: "Create a new bill"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: bill
+          description: a new bill.
+          schema:
+            type: object
+            properties:
+              service:
+                type: string 
+              road:
+                type: string
+              car:
+                type: string 
+              driver:
+                type: string 
+              product_shipment:
+                type: string 
+              status:
+                type: string
+                enum: ['waiting', 'accepted', 'processing', 'completed', 'refused']
+      responses:
+        200:
+          description: Create bill successfully.
+          schema:
+            type: object
+            example: {
+              "service": "string",
+              "road": "string",
+              "car": "string",
+              "driver": "string",
+              "product_shipment": "string",
+              "status": "string",
+            }
+        400:
+          description: Create bill failed. 
+      security:
+        - bearerAuth: []
+
   /admin/consultancy:
     get:
       tags:

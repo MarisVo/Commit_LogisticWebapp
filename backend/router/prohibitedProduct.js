@@ -22,12 +22,14 @@ prohibitedProductRoute.get('/',
                     { name: { $regex: keyword, $options: 'i' } },
                 ]
             } : {}
+
+            const length = await ProhibitedProduct.count()
             const listCar = await ProhibitedProduct.find(listKeyword)            
             .limit(pageSize)
             .skip(pageSize*page)
             .sort(`${sortBy}`)
             
-            if (listCar) return sendSuccess(res, "Get prohobited product successful.", listCar)
+            if (listCar) return sendSuccess(res, "Get prohobited product successful.", {length, listCar})
             return sendError(res, "Information not found.")
         } catch (error) {
             console.log(error)
