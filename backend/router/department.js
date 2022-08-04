@@ -24,7 +24,6 @@ departmentRoute.get("/:id", async (req, res) => {
       );
     return sendError(res, "department information is not found.");
   } catch (error) {
-    console.log(error);
     return sendServerError(res);
   }
 });
@@ -61,7 +60,6 @@ departmentRoute.get("/", async (req, res) => {
       });
     return sendError(res, "Department information is not found.");
   } catch (error) {
-    console.log(error);
     return sendServerError(res);
   }
 });
