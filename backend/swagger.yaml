@@ -2501,7 +2501,19 @@ paths:
         - in: query
           name: pageSize
           type: string
-          description: number of consultancy in a page  
+          description: number of consultancy in a page 
+        - in: query
+          name: keyword
+          type: string
+          description: search by keyword
+        - in: query
+          name: status
+          type: string
+          description: filter by value true/false
+        - in: query
+          name: sortBy
+          type: string
+          description: sort by field, -updatedAt        
       responses:
         200:
           description: get consultancy successfully.

@@ -14,7 +14,29 @@ consultancyAdminRoute.get('/', async (req, res) => {
     try {
         const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0
         const page = req.query.page ? parseInt(req.query.page) : 0
-        const consultancy = await Consultancy.find({}).limit(pageSize).skip(pageSize*page)
+        const {keyword, sortBy, status} = req.query
+        var keywordCondition = keyword ? { $or:[
+             
+                {name: { $regex: keyword, $options: 'i'}} ,     
+                {email: { $regex: keyword, $options: 'i'}} ,     
+                {phone: { $regex: keyword, $options: 'i'}} ,     
+                {service: { $regex: keyword, $options: 'i'}} ,     
+                {province: { $regex: keyword, $options: 'i'}} ,     
+                {ward: { $regex: keyword, $options: 'i'}} ,     
+                {district: { $regex: keyword, $options: 'i'}} ,  
+                {parcel: { $regex: keyword, $options: 'i'}}   
+                                                               
+            ]} : {} 
+        var filterCondition = status ? {solved_status: status} : {}
+        const consultancy = await Consultancy.find(
+            {
+                $and: [            
+                    filterCondition,
+                    keywordCondition                
+                ]
+            }
+        )
+        .limit(pageSize).skip(pageSize*page).sort(`${sortBy}`)
         if (consultancy)
             return sendSuccess(res, 'get consultancy information successfully.', consultancy)
         return sendError(res, 'consultancy information is not found.')
