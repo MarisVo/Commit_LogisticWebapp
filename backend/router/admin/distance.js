@@ -22,12 +22,15 @@ distanceAdminRoute.post("/create/:serviceId", async (req, res) => {
   const { fromProvince, toProvince, zonecode, dist } = req.body;
 
   try {
-    const isExist = await Distance.exists({ fromProvince, toProvince });
-    if (isExist) {
-      return sendError(res, "Distance already exists.");
-    }
-    const service = await DeliveryService.exists({ _id: req.params.serviceId });
+    const service = await DeliveryService.findById(req.params.serviceId)
+    .populate("distances");
     if (service) {
+      const distances = service.distances
+      for (let i = 0; i < distances.length; i++) {
+        if (service.distances[i].fromProvince === fromProvince && service.distances[i].toProvince === toProvince) {
+          return sendError(res, "Distance already exists.");
+        }
+      }
       const distance = await Distance.create({
         fromProvince,
         toProvince,
