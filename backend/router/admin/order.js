@@ -34,14 +34,14 @@ orderAdminRoute.get('/', async (req, res) => {
 
 
 /**
- * @route GET /api/admin/order/:id
- * @description get list of order
+ * @route GET /api/admin/order/:orderId
+ * @description get an order
  * @access private
  */
-orderAdminRoute.get('/:id', async (req, res) => {
+orderAdminRoute.get('/:orderId', async (req, res) => {
     try {
-        const {id} = req.params
-        const order = await Order.find({_id: id})
+        const {orderId} = req.params
+        const order = await Order.find({orderId})
         if (order)
             return sendSuccess(res, 'get order information successfully.', order)
         return sendError(res, 'order information is not found.')
@@ -97,7 +97,7 @@ orderAdminRoute.post('/create',
             if (! _receiver){            
                 _receiver = await Receiver.create({name, phone, identity, street, ward, district, province})
             }          
-            const order = await Order.create({ orderId, service, customerId, receiver:_receiver, origin, destination})            
+            const order = await Order.create({ orderId, service, customer: customerId, receiver:_receiver, origin, destination})            
             return sendSuccess(res, 'create new order successfully',order)
         } catch (error) {
             console.log(error)
@@ -107,15 +107,15 @@ orderAdminRoute.post('/create',
 
 
 /**
- * @route PUT /api/admin/order/:id
- * @description update status order by _id
+ * @route PUT /api/admin/order/:orderId
+ * @description update status order by orderId
  * @access private
  */
-orderAdminRoute.put('/:id', async (req, res) => {
+orderAdminRoute.put('/:orderId', async (req, res) => {
     try {
-        const {id} = req.params
+        const {orderId} = req.params
         const {status} = req.body
-        const order = await Order.findByIdAndUpdate(id, {status: status})
+        const order = await Order.findOneAndUpdate({orderId}, {status: status})
         if (order)
             return sendSuccess(res, 'update order information successfully.', order)
         return sendError(res, 'order information is not found.')
@@ -126,14 +126,14 @@ orderAdminRoute.put('/:id', async (req, res) => {
 })
 
 /**
- * @route DELETE /api/admin/order/:id
- * @description admin delete order by _id
+ * @route DELETE /api/admin/order/:orderId
+ * @description admin delete order by orderId
  * @access private
  */
- orderAdminRoute.delete('/:id', async (req, res) => {
+ orderAdminRoute.delete('/:orderId', async (req, res) => {
     try {
-        const {id} = req.params
-        const order = await Order.findByIdAndRemove(id)
+        const {orderId} = req.params
+        const order = await Order.findOneAndRemove({orderId})
         if (order)
             return sendSuccess(res, 'delete order information successfully.', order)
         return sendError(res, 'order information is not found.')

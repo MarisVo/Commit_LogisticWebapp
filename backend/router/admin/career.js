@@ -47,7 +47,6 @@ careerAdminRoute.post("/:departmentId", async (req, res) => {
       return sendSuccess(res, "Added career in department file successfully");
     }
   } catch (error) {
-    console.log(error)
     return sendServerError(res);
   }
   return sendSuccess(res, "career registered successfully.");
@@ -87,8 +86,7 @@ careerAdminRoute.put("/:id", async (req, res) => {
     }
     return sendError(res, "Career does not exist.");
   } catch (error) {
-    console.log(error);
-    return sendError(res);
+    return sendServerError(res);
   }
 });
 
@@ -112,7 +110,7 @@ careerAdminRoute.delete("/:id", async (req, res) => {
       });
   } catch (error) {
     console.log(error);
-    return sendError(res);
+    return sendServerError(res);
   }
 });
 

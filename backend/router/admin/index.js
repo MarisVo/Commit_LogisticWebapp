@@ -21,7 +21,11 @@ import applicantAdminRoute from "./applicant.js"
 import careerAdminRoute from "./career.js"
 import departmentAdminRoute from "./department.js"
 import productAdminRoute from "./product.js"
-
+import featureAdminRoute from "./feature.js"
+import distanceAdminRoute from "./distance.js"
+import priceAdminRoute from "./price.js"
+import pricelistAdminRoute from "./pricelist.js"
+import customerAdminRoute from "./customer.js"
 const adminRoute = express.Router()
 
 adminRoute.use('/auth', authAdminRoute)
@@ -45,8 +49,11 @@ adminRoute.use('/auth', authAdminRoute)
     .use("/applicant", applicantAdminRoute)
     .use("/career", careerAdminRoute)
     .use("/department", departmentAdminRoute)
-
-    
-    .use("/product", productAdminRoute);
+    .use("/product", productAdminRoute)
+    .use("/feature", featureAdminRoute)
+    .use('/distance', distanceAdminRoute)
+    .use('/price', priceAdminRoute)
+    .use('/pricelist', pricelistAdminRoute)
+    .use("/customer", customerAdminRoute)
 
 export default adminRoute
