@@ -16,90 +16,70 @@ import { MdOutlineEditCalendar } from "react-icons/md";
 import { TiDeleteOutline } from "react-icons/ti";
 import { Link } from "react-router-dom";
 
-import { Tabs } from "antd";
+import { Pagination, Tabs } from "antd";
 import  axios  from "axios";
 import { useContext } from "react";
 import { MainContext } from "../../context/MainContext";
 const { TabPane } = Tabs;
 const Purchase = () => {
   const [open, setOpen] = useState(false);
-  const [order, setOrder] = useState();
+  const [order, setOrder] = useState([]);
   const handleOpen = () => {
     setOpen(!open);
     console.log(open);
   };
-  const order1 = {
-    orderId: 232321,
-    /*  service: {
-      type: Schema.Types.ObjectId,
-      ref: "delivery_services",
-    }, */
-    products: [
-      {
-        name: "oppo",
-        quantity: 2,
-        unit: "KG",
-      },
-    ],
-    customer: {
-      name: "Khoa",
-      address: "B5/10",
-      description: null,
-      customer_type: "passer",
-      rank_passers: {
-        point: 0,
-        level: "unrank",
-      },
-      companyTaxcode_business: null,
-      accepted_business: false,
-    },
-    /*    trips: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "trips",
-      },
-    ], */
-    receiver: {
-      name: "Nguyen Van Toan",
-      phone: "09947273",
-      identity: {
-        type: String,
-        required: true,
-        unique: true,
-      },
-      street: "duong 9 ",
-      ward: "Lac Dao",
-      district: "Phan Thiet",
-      province: "Binh Thuan",
-    },
-    total_price: 1000000,
-  };
-  const [img, setImg] = useState("");
+  const navigate = useNavigate()
+   const [pagination, setPagination] = useState({
+    page: 1,
+    pageSize: 2,
+  });
+  const [params, setParams] = useState({
+    ...pagination,
+    page: pagination.page - 1
+  });
   const {accessToken} = useContext(MainContext)
-   useEffect(() => {
-    const getOrder = async () => {
+  const handllePage = (newPagination)=>{
+    console.log(newPagination)
+      setParams({
+      ...params,
+      ...newPagination,
+      page: newPagination - 1,
+    });
+  }
+
+   const fetchapi = async(params={})=>{
       try {
         const res = await axios.get(
-          `http://localhost:8000/api/order`,  {
-          headers: { authorization: `Bearer ${accessToken}` },
-        }
+          `http://localhost:8000/api/order`,{
+             params: params,
+            headers: { authorization: `Bearer ${accessToken}` },
+          }, 
         );
-        console.log(res.data);
-        /* setProduct(res.data); */
+        console.log(params)
+        const {data} = res.data
+        console.log(data);
+        setOrder(data);
+        setPagination({
+        pageSize: params?.pageSize,
+        page: params?.page ,
+      });
       } catch (err) {
         console.log(err);
       }
     };
-    getOrder()
-  },[]);
-
-  const navigate = useNavigate();
+  
+   useEffect(() => {
+    fetchapi(params)
+  },[params]);
+ 
   const [key, setKey] = useState("tất cả");
   function handleTabs(key) {
     setKey(key);
     navigate(`/user/purchase?type=${key}`);
   }
-
+  const handleDate=(string)=>{
+    return string.split("T")[0]
+  }
   return (
     <div className="pt-[68px]">
      {/*  <div className="w-20 h-20">
@@ -109,6 +89,7 @@ const Purchase = () => {
           className="w-[100%] h-[100%] object-contain"
         />
       </div> */}
+  
       <div className="bg-gray-100 relative ">
         <SideBar className="" handleOpen={handleOpen} open={open} />
         <div>
@@ -143,23 +124,27 @@ const Purchase = () => {
             </Tabs>
           </div>
 
-          <div className="  flex items-center text-gray-400 focus-within:text-gray-600 my-1">
-            <IoSearchOutline className="w-5 h-5 absolute ml-4 pointer-events-none " />
+          <div className=" relative flex items-center text-gray-400 focus-within:text-gray-600 my-1">
             <input
               type="text"
               name="search"
               placeholder="Tìm kiếm sản phẩm,id đơn hàng"
               autoComplete="off"
-              className="w-full pr-3 pl-10 py-2 font-semibold placeholder-gray-500 text-black rounded-2xl border-none ring-2 ring-gray-300 focus:ring-yellow-500 focus:ring-2"
+              className="w-full pr-3 pl-10 py-2 font-semibold placeholder-gray-500 text-black rounded-xl border-none ring-2 ring-gray-300 focus:ring-yellow-500 focus:ring-2"
             />
+            <IoSearchOutline className="w-5 h-5 absolute ml-4 pointer-events-none " />
+          {/*   <button className=" right-0   absolute p-[6px]  font-bold items-center min-w-[70px] flex rounded-xl  bg-yellow-500 focus:ring-yellow-600   border-button_color border-2  text-[#00003B] ">Search</button> */}
           </div>
 
-          <div className="flex flex-col mt-2 bg-white rounded-sm shadow-xl">
-            <div className="  overflow-auto mb-3 w-[100%]">
+
+        {order?.map((orderItem,index)=>{
+          return(
+            <div key={index} className="flex flex-col mt-2 bg-white rounded-sm shadow-xl">
+              <div className="  overflow-auto mb-3 w-[100%]" >
               <div className="flex justify-between items-center border-gray-300 border-b-[1px] py-2 bg-[#ffd124]">
                 <div className="flex flex-nowrap items-center mx-2">
                   <div className=" text-lg sm:text-lg font-bold ml-2 text-[#00003B]">
-                    #{order1.orderId}
+                    {orderItem.orderId}
                   </div>
                 </div>
                 <div className=" flex flex-nowrap items-center mx-2 flex-row">
@@ -168,7 +153,7 @@ const Purchase = () => {
                     className=" text-[10px] font-medium  sm:mr-4 sm:text-sm  hover:translate-y-[-1px] transition-all hover:text-yellow-500  cursor-pointer "
                     to="/user/purchase/order/2323"
                   >
-                    Đang giao hàng
+                     {orderItem.status}
                   </Link>
                 </div>
               </div>
@@ -191,28 +176,23 @@ const Purchase = () => {
                     <div className="text-base font-semibold md:text-lg mr-1">
                       Ngày tạo đơn:
                     </div>
-                    <div className="text-base font-semibold md:text-lg">1/7/2020</div>
+                    <div className="text-base font-semibold md:text-lg" >{handleDate(`${orderItem.createdAt}`)}</div>
                   </div>
                 </div>
               </div>
 
               <div className="flex justify-end  sm:mr-4 mb-1 mt-5">
-                {/*                 <div className="flex justify-end mb-2 mr-2">
-                  <button className="p-2 max-w-[100px] ml-3 flex items-center placeholder:font-semibold bg-yellow-500  border-button_color border-2  hover:translate-y-[-1px] transition-all  rounded-sm">
-                    <TiDeleteOutline />
-                    <div className="text-[#00003B] text-sm">Hủy đơn</div>
-                  </button>
-                </div> */}
+ 
                 <div className="flex justify-end mb-1 mr-2">
-                  <Link className=" " to="/user/purchase/order/2323">
-                    <button className="p-2 ml-3 font-bold items-center max-w-[140px] flex  bg-yellow-500  border-button_color border-2  hover:translate-y-[-1px] transition-all text-[#00003B] rounded-sm">
+                  <div className=" " to={`/user/purchase/order/${orderItem._id}`} >
+                    <button  className="p-2 ml-3 font-bold items-center max-w-[140px] flex  bg-yellow-500  border-button_color border-2  hover:translate-y-[-1px] transition-all text-[#00003B] rounded-sm">
                       <BiTargetLock />
                       <div>Tra hành trình</div>
                     </button>
-                  </Link>
+                  </div>
                 </div>
                 <div className="flex justify-end mb-1 mr-2">
-                  <Link className=" " to="/user/purchase/232">
+                  <Link className=" " to={`/user/purchase/${orderItem.orderId}`}>
                     <button className="p-2 ml-3 font-bold max-w-[140px] items-center flex  bg-yellow-500  border-button_color border-2  hover:translate-y-[-1px] transition-all text-[#00003B] rounded-sm">
                       <MdOutlineEditCalendar className="mr-1" />
                       <div> Chi tiết đơn</div>
@@ -220,7 +200,13 @@ const Purchase = () => {
                   </Link>
                 </div>
               </div>
-            </div>
+            </div>  
+          </div>
+       )
+         })} 
+          <div className="flex justify-center mt-3 items-center">
+            <Pagination  defaultCurrent={pagination.current} onChange={handllePage} total={30} />;
+
           </div>
         </div>
       </div>

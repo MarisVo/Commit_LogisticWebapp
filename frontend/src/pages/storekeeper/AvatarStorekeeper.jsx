@@ -8,7 +8,6 @@ function AvatarStorekeeper() {
   const {logoutHandle} = useContext(MainContext)
   const menu = (
     <Menu
-  
       items={[
         {
           key: "1",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
 import SideBar from "../../components/SideBar";
 import { IoLocationOutline } from "react-icons/io5";
@@ -10,19 +10,55 @@ import { GiWeight } from "react-icons/gi";
 import { BsCoin } from "react-icons/bs";
 import { AiOutlinePhone } from "react-icons/ai";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
+import axios from "axios";
+import { MainContext } from "../../context/MainContext";
 const PurchaseDetail = () => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
-
+  const params = useParams()
   const handleOpen = () => {
     setOpen(!open);
     console.log(open);
   };
-
+   const {accessToken} = useContext(MainContext)
   useEffect(() => {
-    console.log(location);
-  });
+    console.log(params.id)
+    const getDetailOrder = async()=>{
+      try{
+      const res = await axios.get(`http://localhost:8000/api/order/${params.id}`,{
+          headers: { authorization: `Bearer ${accessToken}` }
+      })
+      console.log(res)
+      const {data} =res.data
+      console.log(data)   
+      const {customer} =data[0]
+      console.log(customer)   
+    }
+    catch(err){
+        console.log(err)
+      }
+    }
+    getDetailOrder()
+    /* const getCustomer = async()=>{
+      try{
+        const res =  axios.get(`http://localhost:8000/api/order/${params.id}`,{
+            headers: { authorization: `Bearer ${accessToken}` }
+        })
+        console.log(res)
+        const {data} =res.data
+  
+        console.log(data)
+
+      }catch(err){
+        console.log(err)
+      }
+    }
+    getCustomer() */
+    
+
+
+  },[]);
   const order = {
     formProvince: "Ho Chi Minh",
     fromDistrict: "Quan 2",

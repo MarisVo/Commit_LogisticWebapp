@@ -71,7 +71,7 @@ const App = () => {
     <MainProvider>
       <BrowserRouter>
         <div className="wrapper">
-          {/* <ScrollToTop /> */}
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<DefaultLayout />}>
               <Route index element={<Home />}></Route>
