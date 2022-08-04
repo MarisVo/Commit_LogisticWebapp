@@ -26,7 +26,6 @@ distanceRoute.get("/", async (req, res) => {
       });
     return sendError(res, "distance information is not found.");
   } catch (error) {
-    console.log(error);
     return sendServerError(res);
   }
 });
@@ -50,7 +49,6 @@ distanceRoute.get("/:id", async (req, res) => {
       );
     return sendError(res, "Distance information is not found.");
   } catch (error) {
-    console.log(error);
     return sendServerError(res);
   }
 });
@@ -112,8 +110,7 @@ distanceRoute.put("/:id", async (req, res) => {
     }
     return sendError(res, "Distance does not exist.");
   } catch (error) {
-    console.log(error);
-    return sendError(res);
+    return sendServerError(res);
   }
 });
 

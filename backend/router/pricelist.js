@@ -28,7 +28,10 @@ priceListRoute.get("/", async (req, res) => {
         }
       }
     }
-    const length = files.length;
+    var length = 0;
+    const hasPriceList = await DeliveryService.find({}, {price_files: true});
+    console.log(hasPriceList)
+    hasPriceList.forEach(_id => length += _id.price_files.length);
     if (files.length) {
       return sendSuccess(res, "get pricelist information successfully.", {
         length,
@@ -37,7 +40,6 @@ priceListRoute.get("/", async (req, res) => {
     }
     return sendError(res, "pricelist information is not found.");
   } catch (error) {
-    console.log(error);
     return sendServerError(res);
   }
 });

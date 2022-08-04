@@ -31,8 +31,7 @@ applicantAdminRoute.put("/:id", async (req, res) => {
     }
     return sendError(res, "Applicant does not exist.");
   } catch (error) {
-    console.log(error);
-    return sendError(res);
+    return sendServerError(res);
   }
 });
 
@@ -162,7 +161,7 @@ applicantAdminRoute.delete("/:id", async (req, res) => {
       });
   } catch (error) {
     console.log(error);
-    return sendError(res);
+    return sendServerError(res);
   }
 });
 

@@ -21,7 +21,6 @@ featureRoute.get("/:id", async (req, res) => {
       return sendSuccess(res, "get feature information successfully.", feature);
     return sendError(res, "feature information is not found.");
   } catch (error) {
-    console.log(error);
     return sendServerError(res);
   }
 });
@@ -58,7 +57,6 @@ featureRoute.get("/service/:serviceId", async (req, res) => {
     }
     return sendError(res, "feature information is not found.");
   } catch (error) {
-    console.log(error);
     return sendServerError(res);
   }
 });
@@ -101,7 +99,6 @@ featureRoute.get("/", async (req, res) => {
       });
     return sendError(res, "Feature information is not found.");
   } catch (error) {
-    console.log(error);
     return sendServerError(res);
   }
 });

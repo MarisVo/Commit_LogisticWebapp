@@ -17,7 +17,6 @@ priceRoute.get("/:id", async (req, res) => {
     if (price) return sendSuccess(res, "get price successful.", price);
     return sendError(res, "price information not found.");
   } catch (error) {
-    console.log(error);
     return sendServerError(res);
   }
 });
@@ -48,7 +47,6 @@ priceRoute.get("/service/:serviceId", async (req, res) => {
     }
     return sendError(res, "Price information is not found.");
   } catch (error) {
-    console.log(error);
     return sendServerError(res);
   }
 });
