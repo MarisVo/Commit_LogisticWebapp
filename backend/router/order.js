@@ -29,23 +29,18 @@ orderRoute.post('/create',
             const customerId = req.user.role._id
             const service = await DeliveryService.findOne({name: serviceName })
             if (!service) return sendError(res, 'the service is not exist.')
-            
-            await opencage.geocode({q: `${origin}`, key: OPENCAGE_API_KEY})            
-            .then((data) => {
-                if (data.status.code == 200 && data.results.length > 0) {
-                    if (! data.results[0].geometry) {
-                        return sendError(res, "origin is not found")
-                    }                       
-                }
-            }) 
-            await opencage.geocode({q: `${destination}`, key: OPENCAGE_API_KEY})            
-            .then((data) => {
-                if (data.status.code == 200 && data.results.length > 0) {
-                    if (! data.results[0].geometry) {
-                        return sendError(res, "destination is not found")
-                    }                       
-                }
-            })            
+            var data = await opencage.geocode({q: `${origin}`, key: OPENCAGE_API_KEY})            
+            if (data.status.code == 200 && data.results.length > 0) {
+                if (! data.results[0].geometry) {
+                    return sendError(res, "origin is not found")
+                }                       
+            }
+            data = await opencage.geocode({q: `${destination}`, key: OPENCAGE_API_KEY})            
+            if (data.status.code == 200 && data.results.length > 0) {
+                if (! data.results[0].geometry) {
+                    return sendError(res, "destination is not found")
+                }                       
+            }
             const orderId = await genarateOrderID()
             var _receiver = null
             _receiver = await Receiver.findOne({identity : identity})
@@ -70,12 +65,13 @@ orderRoute.get('/',
     verifyToken,
     verifyCustomer,
     async (req, res) => {
-        try {
+        try {            
             const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0
             const page = req.query.page ? parseInt(req.query.page) : 0
             const customerId = req.user.role._id
             const order = await Order.find({customer: customerId}).limit(pageSize).skip(pageSize*page).sort('-updatedAt')
-            return sendSuccess(res, 'get order successfully', order)
+            const length = await Order.count({customer: customerId})
+            return sendSuccess(res, 'get order successfully', {length, order})
         } catch (error) {
             console.log(error)
             return sendServerError(res)
