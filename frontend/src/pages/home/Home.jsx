@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "antd/dist/antd.css";
 import { Carousel, Tabs, Select } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 import appStore from "../../assets/images/appStore.png";
 import ggPlay from "../../assets/images/ggPlay.png";
 import { getDistrictsByProvinceCode, getProvinces } from "sub-vn";
-import { IoLocationOutline } from "react-icons/io5";
-import { FiMap } from "react-icons/fi";
-import axios from "axios";
-import { END_POINT } from "../../utils/constant";
-import { Fade, Zoom, Reveal } from "react-reveal";
+import { Fade, Zoom} from "react-reveal";
 import { useContext } from "react";
 import { MainContext } from "../../context/MainContext";
 import { data } from "autoprefixer";
@@ -150,19 +146,11 @@ const coops = [
 ];
 
 const Home = () => {
-  const navigate = useNavigate();
-  const [defaultService, setDefaultService] = useState("vận đơn");
-  function callback(dichVu) {
-    setDefaultService(dichVu);
-    navigate(`/track?type=${dichVu}`);
-  }
   const [listProvinces, setListProvince] = useState([]);
   const [listDistricts, setListDistricts] = useState([]);
-  const [currentProvince, setCurrentProvince] = useState(null);
-  const [currentDistrict, setCurrentDistrict] = useState(null);
   const [person, setPerson] = useState(1);
-  const [warehouses, setWarehouse] = useState([]);
   const { setMetadata, dataWarehouse, setDataWarehouse } = useContext(MainContext);
+  console.log(dataWarehouse);
   // const searchWarehouse = (e) => {
   //   e.preventDefault()
   //   if (currentDistrict && currentProvince) {
@@ -193,14 +181,17 @@ const Home = () => {
         title: "Trang chủ | TKTL",
       };
     });
-    const dataProv = getProvinces();
-    setListProvince(dataProv);
+    const dataProvinces = getProvinces();
+    setListProvince(dataProvinces);
+    const provinceCode = dataProvinces.find(
+      (province) => province.name === dataWarehouse.province
+    )?.code;
+    const dataDistricts = getDistrictsByProvinceCode(provinceCode);
+    setListDistricts(dataDistricts);
   }, []);
   const handleSelectProvince = (provinceSelected) => {
-    const provinceCode = listProvinces.find((province) => province.name === provinceSelected).code;
+    const provinceCode = listProvinces.find((province) => province.name === provinceSelected)?.code;
     const dataDistricts = getDistrictsByProvinceCode(provinceCode);
-    // setCurrentProvince(provinceSelected)
-    // setCurrentDistrict(null)
     setDataWarehouse({
       province: provinceSelected,
       district: null,
@@ -211,8 +202,8 @@ const Home = () => {
     // setCurrentDistrict(districtSelected);
     setDataWarehouse({
       ...dataWarehouse,
-      district:districtSelected
-    })
+      district: districtSelected,
+    });
   };
   const showPerson = (id) => {
     const numberId = coops.find((coop) => coop.id === id).id;
@@ -282,14 +273,18 @@ const Home = () => {
                 className="w-full lg:w-2/5"
                 placeholder="Tỉnh/Thành Phố"
                 onClear={() => {
-                  setCurrentDistrict(null);
+                  setDataWarehouse({
+                    province: null,
+                    district: null,
+                  });
                   setListDistricts([]);
                 }}
+                value={dataWarehouse.province}
                 onChange={(value) => handleSelectProvince(value)}
               >
                 {listProvinces.map((city) => (
                   <Option key={city.code} value={city.name}>
-                    {city.name}{" "}
+                    {city.name}
                   </Option>
                 ))}
               </Select>
@@ -298,23 +293,27 @@ const Home = () => {
                 allowClear
                 className="w-full lg:w-2/5"
                 placeholder="Quận/Huyện"
-                onChange={(value) => handleSelectDistrict(value)}
+                onSelect={(value) => handleSelectDistrict(value)}
                 value={dataWarehouse.district}
+                onClear={() =>
+                  setDataWarehouse({
+                    ...dataWarehouse,
+                    district: null,
+                  })
+                }
               >
-                {/* <Option value={null} >Quận/Huyện</Option> */}
                 {listDistricts.map((distr) => (
                   <Option key={distr.code} value={distr.name}>
                     {distr.name}
                   </Option>
                 ))}
               </Select>
-              <div
-                // onClick={searchWarehouse}
-                
-                className="text-white bg-yellow-500 hover:bg-yellow-400 focus:ring-2  focus:ring-red-500 font-medium rounded-lg text-lg w-full lg:w-44 lg:ml-2 px-5 py-2.5 text-center "
+              <Link
+                to="tra-cuu/buu-cuc"
+                className="inline-block h-full w-full text-white  bg-yellow-500 hover:bg-yellow-400 focus:ring-2  focus:ring-red-500 font-medium rounded-lg text-lg lg:w-44 lg:ml-2 px-5 py-2.5 text-center"
               >
-                <Link to='tra-cuu/buu-cuc'>Tìm kiếm</Link>
-              </div>
+                Tìm kiếm
+              </Link>
             </form>
           </TabPane>
           <TabPane

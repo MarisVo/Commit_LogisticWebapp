@@ -58,6 +58,32 @@ function InventoryDetail() {
     //         </div>
     //     )
     // }
+    {
+      title: "",
+      dataIndex: "action",
+      render: (a, record) => (
+        <div className="flex flex-row gap-y-1 gap-x-3">
+          <button
+            className="flex items-baseline gap-x-1 hover:text-blue-600"
+            // onClick={() => handleClickEdit(record)}
+          >
+            <AiFillEdit className="translate-y-[1px]" />
+            Sửa
+          </button>
+          <button
+            className="flex items-baseline gap-x-1 hover:text-red-600"
+            // onClick={() => {
+            //   setIsDeleteVisible(true);
+            //   setIdCompare(record._id);
+            //   setNameCompare(record.name);
+            // }}
+          >
+            <AiOutlineDelete className="translate-y-[1px]" />
+            Xóa
+          </button>
+        </div>
+      ),
+    },
   ];
   const data2 = [
     {

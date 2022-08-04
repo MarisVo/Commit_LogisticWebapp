@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { getProvinces, getDistrictsByProvinceCode } from "sub-vn";
 import { IoLocationOutline } from "react-icons/io5";
+import { FiMap } from "react-icons/fi";
 import { useLocation } from "react-router-dom";
 import { END_POINT } from "../../utils/constant";
 import { MainContext } from "../../context/MainContext";
@@ -14,49 +15,62 @@ export default function BuuCuc() {
   const [districtSelected, setDistrictSelected] = useState(null);
   const [isValid, setIsValid] = useState(true);
   const [result, setResult] = useState([]);
-  console.log(provinceSelected);
-  console.log("result", result);
-
   const pathname = useLocation();
   // get all provinces
+ 
   useEffect(() => {
-    setProvinces(getProvinces());
-	setProvinceSelected(dataWarehouse.province)
-	setDistrictSelected(dataWarehouse.district)
+    const getProvince = getProvinces()
+    setProvinces(getProvince);
+    setProvinceSelected(dataWarehouse.province);
+    setDistrictSelected(dataWarehouse.district);
+    const provinceCode = getProvince.find((province) =>
+      province.name.includes(dataWarehouse.province)
+    )?.code;
+    const dataDistricts = getDistrictsByProvinceCode(provinceCode);
+    setDistricts(dataDistricts);
+    const province = dataWarehouse.province?.replace("Thành phố ", "")?.replace("Tỉnh ", "");
     if (dataWarehouse.province && dataWarehouse.district) {
-      const find = async () => {
+      const findWarehouse = async () => {
         try {
           const res = await axios.get(`${END_POINT}/warehouse`, {
-            params: dataWarehouse,
+            params: {
+              ...dataWarehouse,
+              province
+            },
           });
           setResult(res.data.data);
-
         } catch (error) {
           console.log(error);
         }
       };
-      find();
+      findWarehouse();
     }
   }, []);
-
+  // useEffect( ()=>{
+  //   const provinceCode = getProvinces().find((province) =>
+  //     province.name.includes(dataWarehouse.province)
+  //   )?.code;
+  //   const dataDistricts = getDistrictsByProvinceCode(provinceCode);
+  //   setDistricts(dataDistricts);
+  // },[])
   useEffect(() => {
     dataWarehouse.district && window.scrollTo(0, 350);
   }, [pathname]);
 
-//   // get all districts by province code
-//   useEffect(() => {
-//     setDistricts(getDistrictsByProvinceCode(provinceSelected));
-//   }, [provinceSelected]);
+  //   // get all districts by province code
+  //   useEffect(() => {
+  //     setDistricts(getDistrictsByProvinceCode(provinceSelected));
+  //   }, [provinceSelected]);
   const handleSelectProvince = (provinceSelected) => {
-	setDataWarehouse({
-		province: null,
-		district: null,
-	  });
-	//   setIsValid(()=>false)
+    setDataWarehouse({
+      province: null,
+      district: null,
+    });
+    //   setIsValid(()=>false)
     const provinceCode = provinces.find((province) => province.name === provinceSelected)?.code;
     const dataDistricts = getDistrictsByProvinceCode(provinceCode);
-    setProvinceSelected(provinceSelected)
-    setDistrictSelected(null)
+    setProvinceSelected(provinceSelected);
+    setDistrictSelected(null);
     setDistricts(dataDistricts);
   };
   const handleSubmit = async () => {
@@ -68,17 +82,17 @@ export default function BuuCuc() {
 
     try {
       // find province and district by code
-    //   let province = provinces?.find((province) => province.code === provinceSelected)?.name || "";
-    //   let district = districts?.find((district) => district.code === districtSelected)?.name || "";
+      //   let province = provinces?.find((province) => province.code === provinceSelected)?.name || "";
+      //   let district = districts?.find((district) => district.code === districtSelected)?.name || "";
 
       // replace Thành phố || Tỉnh to empty
-    //   province = province.replace("Thành phố ", "").replace("Tỉnh ", "");
-	let province = provinceSelected.replace("Thành phố ", "").replace("Tỉnh ", "");
+      //   province = province.replace("Thành phố ", "").replace("Tỉnh ", "");
+      let province = provinceSelected.replace("Thành phố ", "").replace("Tỉnh ", "");
 
       const res = await axios.get(`${END_POINT}/warehouse`, {
         params: {
           province,
-          district : districtSelected
+          district: districtSelected,
         },
       });
 
@@ -103,11 +117,15 @@ export default function BuuCuc() {
             id="city"
             className="search-select w-full h-full  "
             // onChange={(e) => {setProvinceSelected(e.target.value)}}
-			onChange={(e)=>handleSelectProvince(e.target.value)}
+            onChange={(e) => handleSelectProvince(e.target.value)}
           >
-            {dataWarehouse.province?<option value={dataWarehouse.province}>{dataWarehouse.province}</option>:<option data-select2-id="select2-data-81-rsyi" value="">
-              Tỉnh/ Thành phố
-            </option>}
+            {dataWarehouse.province ? (
+              <option value={dataWarehouse.province}>{dataWarehouse.province}</option>
+            ) : (
+              <option data-select2-id="select2-data-81-rsyi" value="">
+                Tỉnh/ Thành phố
+              </option>
+            )}
 
             {provinces?.length > 0 &&
               provinces.map((province) => (
@@ -138,7 +156,11 @@ export default function BuuCuc() {
             className=" w-full h-full  "
             onChange={(e) => setDistrictSelected(e.target.value)}
           >
-            {dataWarehouse.district?<option value={dataWarehouse.district}>{dataWarehouse.district}</option>:<option value="">Quận/ Huyện</option>}
+            {dataWarehouse.district ? (
+              <option value={dataWarehouse.district}>{dataWarehouse.district}</option>
+            ) : (
+              <option value="">Quận/ Huyện</option>
+            )}
 
             {districts?.length > 0 &&
               districts.map((district) => (
@@ -172,22 +194,46 @@ export default function BuuCuc() {
       {/* result */}
       <div className="mt-14 flex flex-wrap">
         {result?.length > 0 ? (
-          result.map((warehouse) => (
-            <div id="bill" className="w-1/2 px-10 lg:px-0" key={warehouse._id}>
-              <div className="m-2 bg-[#FFF2F4] min-h-[140px] rounded-[10px] border-[#fdb0b0] border flex items-center">
-                <div className="p-6">
-                  <p className="text-[#F0B90B] font-black text-[20px] mb-1">{warehouse.name}</p>
+          // result.map((warehouse) => (
+          //   <div id="bill" className="w-1/2 px-10 lg:px-0" key={warehouse._id}>
+          //     <div className="m-2 bg-[#FFF2F4] min-h-[140px] rounded-[10px] border-[#fdb0b0] border flex items-center">
+          //       <div className="p-6">
+          //         <p className="text-[#F0B90B] font-black text-[20px] mb-1">{warehouse.name}</p>
 
-                  <div className="flex items-baseline">
-                    <div className="w-4 h-4 pt-0.5 mr-2">
-                      <IoLocationOutline />
-                    </div>
-                    <span className="text-[16px] font-medium mb-0">{warehouse.street}</span>
-                  </div>
-                </div>
-              </div>
+          //         <div className="flex items-baseline">
+          //           <div className="w-4 h-4 pt-0.5 mr-2">
+          //             <IoLocationOutline />
+          //           </div>
+          //           <span className="text-[16px] font-medium mb-0">{warehouse.street}</span>
+          //         </div>
+          //       </div>
+          //     </div>
+          //   </div>
+          // ))
+          <div className=" mt-4 grid grid-cols-1 lg:grid-cols-2 mx-auto gap-y-3 gap-x-6">
+        {result.map((warehouse) => (
+          <div
+            key={warehouse._id}
+            className="flex flex-col bg-[#FFF2F4] border-[#fdb0b0] border bg-opacity-70 p-4 rounded-xl gap-y-6"
+          >
+            <div className="flex flex-row justify-between">
+              <span className="text-xl font-extrabold text-red-700">{warehouse.name}</span>
+              <a
+                href={`https://www.google.com/maps?q=${warehouse?.lon}${warehouse?.lat}`}
+                target="_blank"
+                className="flex items-center text-red-600"
+              >
+                <FiMap className="w-4 h-4 inline-block mr-2" />
+                <span className=" text-lg text-inherit font-semibold">Tìm đường đi</span>
+              </a>
             </div>
-          ))
+            <div className="flex items-stretch">
+              <IoLocationOutline className="w-4 h-4 inline-block mr-2" />
+              <span className="font-semibold">{warehouse.street}</span>
+            </div>
+          </div>
+        ))}
+      </div>
         ) : (
           <div id="bill" className="w-full px-10 lg:px-0">
             <div className="m-2 bg-[#FFF2F4] min-h-[100px] rounded-[10px] border-[#fdb0b0] border flex items-center justify-center">
