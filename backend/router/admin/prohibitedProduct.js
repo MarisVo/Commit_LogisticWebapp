@@ -79,9 +79,8 @@ const prohibitedProductAdminRoute = express.Router()
             if (!isExist) 
                 return sendError(res, "Prohibited product not exists.")
             
-            await ProhibitedProduct.findByIdAndRemove(id)
-                .then(()=> { return sendSuccess(res, "Delete prohibited product successfully.")})  
-                .catch((err) => { return sendError(res, err)})  
+            const data = await ProhibitedProduct.findByIdAndRemove(id)
+            return sendSuccess(res, "Delete prohibited product successfully.", data)
         } catch (error) {
             console.log(error)
             return sendServerError(res)

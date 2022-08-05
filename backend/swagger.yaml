@@ -1309,7 +1309,7 @@ paths:
             type: string
           required: true
           description: user id
-        - in: body
+        - in: formData
           name: user
           description: a existing user.
           schema:
@@ -1360,7 +1360,7 @@ paths:
             type: string
           required: true
           description: user id
-        - in: body
+        - in: formData
           name: customer
           description: a existing customer.
           schema:
@@ -1410,7 +1410,7 @@ paths:
             type: string
           required: true
           description: user id
-        - in: body
+        - in: formData
           name: user
           description: a existing user.
           schema:
@@ -1459,7 +1459,7 @@ paths:
             type: string
           required: true
           description: user id
-        - in: body
+        - in: formData
           name: customer
           description: a existing customer.
           schema:
@@ -1607,7 +1607,7 @@ paths:
           type: string
           required: true
           description: Id of an car 
-        - in: body
+        - in: formData
           name: road
           description: a new car.
           schema:
@@ -1676,7 +1676,7 @@ paths:
       consumes:
         - application/json
       parameters:
-        - in: body
+        - in: formData
           name: car
           description: a new car.
           schema:
@@ -1773,7 +1773,7 @@ paths:
       consumes:
         - application/json
       parameters:
-        - in: body
+        - in: formData
           name: prohibited product
           description: a new prohibited product.
           schema:
@@ -1832,7 +1832,7 @@ paths:
             type: string
           required: true
           description: prohibited product id
-        - in: body
+        - in: formData
           name: prohibited product
           description: a existing prohibited product.
           schema:
@@ -1994,7 +1994,7 @@ paths:
           type: string
           required: true
           description: Id of an road 
-        - in: body
+        - in: formData
           name: road
           description: a new road.
           schema:
@@ -2056,7 +2056,7 @@ paths:
       consumes:
         - application/json
       parameters:
-        - in: body
+        - in: formData
           name: road
           description: a new road.
           schema:
@@ -2171,7 +2171,7 @@ paths:
           type: string
           required: true
           description: Id of an product-shipment 
-        - in: body
+        - in: formData
           name: product-shipment
           description: Update product-shipment.
           schema:
@@ -2233,7 +2233,7 @@ paths:
       consumes:
         - application/json
       parameters:
-        - in: body
+        - in: formData
           name: product-shipment
           description: a new product-shipment.
           schema:
@@ -2361,7 +2361,7 @@ paths:
           type: string
           required: true
           description: Id of an bill 
-        - in: body
+        - in: formData
           name: bill
           description: a new bill.
           schema:
@@ -2435,7 +2435,7 @@ paths:
       consumes:
         - application/json
       parameters:
-        - in: body
+        - in: formData
           name: bill
           description: a new bill.
           schema:

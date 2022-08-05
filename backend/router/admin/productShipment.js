@@ -144,13 +144,9 @@ productShipmentAdminRoute.delete('/:id', async (req, res) => {
         //delete document "product_shipment" in "prouct" collection
         await Product.updateMany({}, { $pull: { product_shipments: id  } });
        
-        await ProductShipment.findByIdAndRemove(id)
-            .then(() => {
-                return sendSuccess(res, "Delete product shipment successfully.")
-            })
-            .catch((err) => {
-                return sendServerError(res, err)
-            })
+        const data = await ProductShipment.findByIdAndRemove(id)
+        return sendSuccess(res, "Delete product shipment successfully.", data)
+           
     }
     catch (error) {
         console.log(error)
