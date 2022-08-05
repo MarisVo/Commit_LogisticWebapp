@@ -105,7 +105,7 @@ consultancyAdminRoute.delete('/:id',
             return sendSuccess(res, "Delete successfully.") 
         } catch (error) {
             console.log(error)
-            return sendError(res)
+            return sendServerError(res)
         }
     }
 )

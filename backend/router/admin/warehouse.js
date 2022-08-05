@@ -23,13 +23,13 @@ warehouseAdminRoute.post('/',
             const isExist = await Warehouse.exists({ name })
             if (isExist) return sendError(res, 'the warehouse\'s name is existed.')
             var lat = 0, lon = 0
-            await opencage.geocode({q: `${street},${ward},${district},${province}`, key: OPENCAGE_API_KEY})            
-            .then((data) => {
+            const data = await opencage.geocode({q: `${street},${ward},${district},${province}`, key: OPENCAGE_API_KEY})            
+            if(data) {
                 if (data.status.code == 200 && data.results.length > 0) {
                     lat = data.results[0].geometry.lat
                     lon = data.results[0].geometry.lng 
                 }
-            })
+            }
             if(lon || lat) {
                 await Warehouse.create({
                     name, phone, street, ward, district, province, lon, lat
@@ -65,13 +65,13 @@ warehouseAdminRoute.put('/:id',
                 }
                 
                 if (street && ward && district && province){
-                    await opencage.geocode({q: `${street},${ward},${district},${province}`, key: OPENCAGE_API_KEY})            
-                    .then((data) => {
+                    const data = await opencage.geocode({q: `${street},${ward},${district},${province}`, key: OPENCAGE_API_KEY})            
+                    if(data) {
                         if (data.status.code == 200 && data.results.length > 0) {
                             lat = data.results[0].geometry.lat
                             lon = data.results[0].geometry.lng 
                         }
-                    })
+                    }
                     if(lon || lat) {
                         await Warehouse.findByIdAndUpdate(id, {name, phone, street, ward, district, province, lon, lat})
                         return sendSuccess(res, "Update warehouse successfully",{name, phone, street, ward, district, province, lon, lat})
@@ -99,12 +99,11 @@ warehouseAdminRoute.delete('/:id',
             const isExist = await Warehouse.exists({_id: id});
             if (!isExist) return sendError(res, "Warehouse not exist");
             
-            await Warehouse.findByIdAndRemove(id)
-                .then((data)=> { return sendSuccess(res, "Delete warehouse successfully.", data)})  
-                .catch((err) => { return sendError(res, err)})  
+            const data = await Warehouse.findByIdAndRemove(id)
+            return sendSuccess(res, "Delete warehouse successfully.", data)
         } catch (error) {
             console.log(error)
-            return sendError(res)
+            return sendServerError(res)
         }
     }
 )

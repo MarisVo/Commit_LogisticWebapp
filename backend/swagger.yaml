@@ -781,36 +781,21 @@ paths:
       summary: "Create a new commitment"
       consumes:
         - multipart/form-data
+        - application/json
       parameters:
-        - in: body
-          name: commitment
-          description: a new commitment.
-          schema:
-            type: object
-            required:
-              - heading
-            properties:
-              heading:
-                type: string
-              detail:
-                type: string  
+        - in: formData
+          name: heading
+          description: heading
+          type: string
+          required: true
+        - in: formData
+          name: detail
+          description: detail
+          type: string
         - in: formData
           name: logo
           description: a logo commitment.
           type: file
-      requestBody:
-        content: 
-          application/json:
-            schema:            
-              type: object
-              properties:      
-                name:           
-                  type: string
-                logo: 
-                  type: string
-                  format: base64
-                detail:   
-                  type: string
       responses:
         200:
           description: Create commitment successfully.
@@ -839,38 +824,18 @@ paths:
             type: string
           required: true
           description: commitment id
-        - in: body
-          name: commitment
-          description: a existing commitment.
-          schema:
-            type: object
-            required:
-              - heading
-            properties:
-              heading:
-                type: string
-              detail:
-                type: string
+        - in: formData
+          name: heading
+          description: heading
+          type: string
+        - in: formData
+          name: detail
+          description: detail
+          type: string
         - in: formData
           name: logo
           description: a logo commitment.
           type: file
-      requestBody:
-        content:
-          application/json:
-            schema:
-              schema:
-            type: object
-            required:
-              - heading
-            properties:
-              name:
-                type: string
-              logo:
-                type: string
-                format: base64 
-              detail:
-                type: string
       responses:
         200:
           description: Update commitment successfully.
@@ -980,31 +945,16 @@ paths:
       consumes:
         - multipart/form-data
       parameters:
-        - in: body
-          name: partner
+        - in: formData
+          name: name
           description: a new partner.
-          schema:
-            type: object
-            required:
-              - name
-            properties:
-              name:
-                type: string
+          type: string
+          required: true
         - in: formData
           name: logo
           description: a logo commitment.
           type: file  
-      requestBody:
-        content: 
-          multipart/form-data: 
-            schema:            
-              type: object
-              properties:      
-                name:           
-                  type: string
-                logo: 
-                  type: string
-                  format: base64
+          required: true      
       responses:
         200:
           description: Create partner successfully.
@@ -1028,35 +978,17 @@ paths:
       parameters:
         - in: path
           name: partnerId
-          schema: 
-            type: string
+          type: string
           required: true
           description: partner id
-        - in: body
-          name: partner
-          description: a existing partner.
-          schema:
-            type: object
-            required:
-              - name
-            properties:
-              name:
-                type: string
+        - in: formData
+          name: name
+          description: a new partner.
+          type: string
         - in: formData
           name: logo
           description: a logo commitment.
-          type: file
-      requestBody:
-        content: 
-          multipart/form-data: 
-            schema:            
-              type: object
-              properties:      
-                name:           
-                  type: string
-                logo: 
-                  type: string
-                  format: base64
+          type: file  
       responses:
         200:
           description: Update partner successfully.
@@ -2922,35 +2854,20 @@ paths:
           type: string
           required: true
           description: Id of a service 
-        - in: body
-          name: participant
-          description: a new participant.
-          schema:
-            type: object
-            required:
-              - name, description
-            properties:
-              name:
-                type: string
-              description:
-                type: string
+        - in: formData
+          name: name
+          description: name of participant.
+          type: string  
+          required: true
+        - in: formData
+          name: description
+          description: description of participant.
+          type: string  
+          required: true
         - in: formData
           name: banner
           description: banner of participant.
-          type: file          
-      requestBody:
-        content: 
-          multipart/form-data: 
-            schema:            
-              type: object
-              properties:      
-                name:           
-                  type: string
-                banner: 
-                  type: string
-                  format: base64
-                description:
-                  type: string
+          type: file  
       responses:
         200:
           description: Create participant successfully.
@@ -2977,34 +2894,19 @@ paths:
           name: participantId
           type: string
           required: true
-          description: Id of a participant 
-        - in: body
-          name: participant
-          description: a new participant.
-          schema:
-            type: object            
-            properties:
-              name:
-                type: string
-              description:
-                type: string
+          description: Id of a participant          
+        - in: formData
+          name: name
+          description: name of participant.
+          type: string  
+        - in: formData
+          name: description
+          description: description of participant.
+          type: string  
         - in: formData
           name: banner
           description: banner of participant.
-          type: file          
-      requestBody:
-        content: 
-          multipart/form-data: 
-            schema:            
-              type: object
-              properties:      
-                name:           
-                  type: string
-                banner: 
-                  type: string
-                  format: base64
-                description:
-                  type: string
+          type: file            
       responses:
         200:
           description: Create participant successfully.
@@ -3138,39 +3040,25 @@ paths:
           type: string
           required: true
           description: Id of a service 
-        - in: body
+        - in: formData
+          name: name
+          description: name of customer.
+          type: string 
+          required: true
+        - in: formData
+          name: description
+          description: description of customer.
+          type: string 
+          required: true
+        - in: formData
           name: quote
-          description: a new quote.
-          schema:
-            type: object
-            required:
-              - name, description, quote
-            properties:
-              name:
-                type: string
-              description:
-                type: string
-              quote:
-                type: string
+          description: detail of quote.
+          type: string 
+          required: true  
         - in: formData
           name: avatar
           description: avatar of quote.
-          type: file          
-      requestBody:
-        content: 
-          multipart/form-data: 
-            schema:            
-              type: object
-              properties:      
-                name:           
-                  type: string                
-                description:
-                  type: string
-                quote:
-                  type: string
-                avatar: 
-                  type: string
-                  format: base64
+          type: file   
       responses:
         200:
           description: Create quote successfully.
@@ -3199,37 +3087,22 @@ paths:
           type: string
           required: true
           description: Id of a quote 
-        - in: body
+        - in: formData
+          name: name
+          description: name of customer.
+          type: string 
+        - in: formData
+          name: description
+          description: description of customer.
+          type: string 
+        - in: formData
           name: quote
-          description: a new quote.
-          schema:
-            type: object            
-            properties:
-              name:
-                type: string
-              description:
-                type: string
-              quote:
-                type: string
+          description: detail of quote.
+          type: string 
         - in: formData
           name: avatar
           description: avatar of quote.
-          type: file          
-      requestBody:
-        content: 
-          multipart/form-data: 
-            schema:            
-              type: object
-              properties:      
-                name:           
-                  type: string                
-                description:
-                  type: string
-                quote:
-                  type: string
-                avatar: 
-                  type: string
-                  format: base64
+          type: file  
       responses:
         200:
           description: Create quote successfully.
