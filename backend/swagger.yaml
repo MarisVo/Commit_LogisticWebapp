@@ -5345,36 +5345,7 @@ paths:
         200:
           description: Delete customer successfully.
       security:
-        - bearerAuth: []
-  /applicant/{applicantId}:
-    get:
-      tags:
-        - "applicant"
-      summary: get applicant by id
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          name: applicantId
-          type: string
-          required: true
-          description: Id of an applicant 
-      responses:
-        200:
-          description: get applicant successfully.
-          schema:
-            type: object
-            example: {
-              "firstName": "string",
-              "lastName": "string",    
-              "phoneNumber": "string",   
-              "email" : "string",
-              "source": "string",
-              "message": "string",
-              "status": "string",       
-            }          
-        400:
-          description: applicant is not found.    
+        - bearerAuth: []        
   /applicant/{careerId}:
     post:
       tags:
@@ -5499,6 +5470,36 @@ paths:
       security:
         - bearerAuth: []
   /admin/applicant/{applicantId}:
+    get:
+      tags:
+        - "applicant"
+      summary: get applicant by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: applicantId
+          type: string
+          required: true
+          description: Id of an applicant 
+      responses:
+        200:
+          description: get applicant successfully.
+          schema:
+            type: object
+            example: {
+              "firstName": "string",
+              "lastName": "string",    
+              "phoneNumber": "string",   
+              "email" : "string",
+              "source": "string",
+              "message": "string",
+              "status": "string",       
+            }          
+        400:
+          description: applicant is not found.
+      security:
+        - bearerAuth: []
     put:
       tags:
         - "applicant"
