@@ -5390,6 +5390,220 @@ paths:
           description: Delete customer successfully.
       security:
         - bearerAuth: []
+  /applicant/{applicantId}:
+    get:
+      tags:
+        - "applicant"
+      summary: get applicant by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: applicantId
+          type: string
+          required: true
+          description: Id of an applicant 
+      responses:
+        200:
+          description: get applicant successfully.
+          schema:
+            type: object
+            example: {
+              "firstName": "string",
+              "lastName": "string",    
+              "phoneNumber": "string",   
+              "email" : "string",
+              "source": "string",
+              "message": "string",
+              "status": "string",       
+            }          
+        400:
+          description: applicant is not found.    
+  /applicant/{careerId}:
+    post:
+      tags:
+        - "applicant"
+      summary: "Create a new applicant"
+      consumes:
+        - multipart/form-data
+        - application/json
+      parameters:
+        - in: path
+          name: careerId
+          type: string
+          required: true
+          description: Id of a career 
+          required: true
+        - in: formData
+          name: firstName
+          description: firstName of applicant.
+          type: string 
+          required: true
+        - in: formData
+          name: lastName
+          description: lastName of applicant.
+          required: true
+        - in: formData
+          name: phoneNumber
+          description: phoneNumber of applicant.
+          type: string 
+          required: true
+        - in: formData
+          name: email
+          description: email of applicant.
+          type: string 
+          required: true
+        - in: formData
+          name: source
+          description: source of interest of applicant(staff, friend, email, phone, facebook, linkedin, search, event, other).
+          type: string 
+          required: true
+        - in: formData
+          name: message
+          description: Custom message.
+          type: string  
+          required: true  
+        - in: formData
+          name: file
+          description: CV file of applicant.
+          type: file 
+          required: true         
+      responses:
+        200:
+          description: Create applicant successfully.
+          schema:
+            type: object
+            example: {
+              "firstName": "string",
+              "lastName": "string",    
+              "phoneNumber": "string",   
+              "email" : "string",
+              "source": "string",
+              "message": "string",
+              "status": "string",    
+            }        
+        400:
+          description: Create applicant failed.
+  /admin/applicant:
+    get:
+      tags:
+        - "applicant"
+      summary: get applicant
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: page
+          type: string
+          description: num of page
+        - in: query
+          name: pageSize
+          type: string
+          description: number of applicants in a page 
+        - in: query
+          name: sortBy
+          type: string
+          description: sort in order (firstName, lastName, -updatedAt)
+        - in: query
+          name: keyword
+          type: string
+          description: search by keyword
+        - in: query
+          name: department
+          type: string
+          description: filter by department
+        - in: query
+          name: type
+          type: string
+          description: filter by type
+        - in: query
+          name: location
+          type: string
+          description: filter by location
+        - in: query
+          name: state
+          type: string
+          description: filter by state
+      responses:
+        200:
+          description: get applicant successfully.
+          schema:
+            type: object
+            example: {
+              "firstName": "string",
+              "lastName": "string",    
+              "phoneNumber": "string",   
+              "email" : "string",
+              "source": "string",
+              "message": "string",
+              "status": "string",       
+            }          
+        400:
+          description: applicant is not found.  
+      security:
+        - bearerAuth: []
+  /admin/applicant/{applicantId}:
+    put:
+      tags:
+        - "applicant"
+      summary: "Update a existing applicant status"
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: applicantId
+          schema: 
+            type: string
+          required: true
+          description: applicant id
+        - in: body
+          name: applicant
+          description: an existing applicant.
+          schema:
+            type: object      
+            required: 
+            - status   
+            properties:
+              status:
+                type: string
+                description: (approved, pending, rejected)                 
+      responses:
+        200:
+          description: Update applicant successfully.
+          schema:
+            type: object
+            example: {
+              "firstName": "string",
+              "lastName": "string",    
+              "phoneNumber": "string",   
+              "email" : "string",
+              "source": "string",
+              "message": "string",
+              "status": "string",          
+            }      
+        400:
+          description: Update applicant failed.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "applicant"
+      summary: "Delete an existing applicant"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: applicantId
+          type: string
+          required: true
+          description: Id of a applicant 
+      responses:
+        200:
+          description: Delete applicant successfully.
+        400:
+          description: Delete applicant failed.
+      security:
+        - bearerAuth: []
 
 securityDefinitions:
   bearerAuth:
