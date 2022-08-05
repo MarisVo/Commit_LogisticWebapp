@@ -4570,7 +4570,7 @@ paths:
           type: string
           required: true
           description: Id of a service 
-          - in: query
+        - in: query
           name: sortBy
           type: string
           description: sort in order
