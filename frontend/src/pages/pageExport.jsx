@@ -32,11 +32,9 @@ export { default as StaffRegister } from "./Admin/Staff_regis.jsx";
 export { default as PageNotFound } from "./PageNotFound";
 
 export { default as LayerStorekeeper } from "../layouts/StorekeeperLayout";
-
-export { default as ProductsManager } from "./Storekeeper/Bill";
+export { default as Bills } from "./Storekeeper/Bills";
 export { default as Inventory } from "./Storekeeper/Inventory";
-export {default as InventoryDetail} from "./Storekeeper/InventoryDetail"
-
+export { default as InventoryDetail } from "./Storekeeper/InventoryDetail";
 //----------------------------------------------//
 export { default as Purchase } from "./Purchase/Purchase.jsx";
 export { default as PurchaseDriver } from "./Purchase/PurchaseDriver.jsx";
@@ -63,10 +61,11 @@ export { default as AdminCareer } from "./Admin/AdminCareer.jsx";
 export { default as AdminApplicant } from "./Admin/AdminApplicant.jsx";
 export { default as AdminDepartment } from "./Admin/AdminDepartment.jsx";
 export { default as AdminWarehouse } from "./Admin/AdminWarehouse.jsx";
-export { default as AdminCar} from "./Admin/AdminCar.jsx";
+export { default as AdminCar } from "./Admin/AdminCar.jsx";
 export { default as AdminRoad } from "./Admin/AdminRoad.jsx";
 export { default as AdminCustomer } from "./Admin/AdminCustomer.jsx";
 export { default as AdminStaff } from "./Admin/AdminStaff.jsx";
 export { default as AdminOrder } from "./Admin/AdminOrder.jsx";
+export {default as AdminMaintenance} from "./Admin/AdminMaintenance"
 
 

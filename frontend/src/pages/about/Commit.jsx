@@ -7,8 +7,9 @@ function Commit() {
     useEffect(() => {
         const fetchApi = async () => {
             try {
-                const { data: response } = await axios.get(`${END_POINT}/commitment`)
-                setData(response.data)
+                const res = await axios.get(`${END_POINT}/commitment`)
+                res.status===200 && setData(res.data.data.commits)
+                console.log(res)
             }
             catch (error) {
                 console.log(error.message)
@@ -26,11 +27,11 @@ function Commit() {
                 <div className='flex-1'>
                     <img src="https://jtexpress.vn/themes/jtexpress/assets/images/dd-about-us.png" className='w-[76px] h-[63px] hidden lg:block' />
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-y-10 gap-x-4 mt-8 mb-4 rounded-2xl">
-                        {data.map((api, key) => (
-                            <div key={key} className="p-3 bg-[#F0B90B] even:bg-opacity-40 lg:min-h-[350px] rounded-xl">
-                                <img src={api.logo} className="mb-7" />
-                                <div className="uppercase text-lg font-black my-3 text-teal-600 ">{api.heading}</div>
-                                <div className="whitespace-pre-line">{api.detail}</div>
+                        {data.map((commit) => (
+                            <div key={commit._id} className="p-3 bg-[#F0B90B] even:bg-opacity-40 lg:min-h-[350px] rounded-xl">
+                                <img src={commit.logo} className="mb-7" />
+                                <div className="uppercase text-lg font-black my-3 text-teal-600 ">{commit.heading}</div>
+                                <div className="whitespace-pre-line">{commit.detail}</div>
                             </div>)
                         )}
 

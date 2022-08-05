@@ -32,7 +32,7 @@ import {
   Notification,
   PurchaseDriver,
   LayerStorekeeper,
-  ProductsManager,
+  Bills,
   Inventory,
   InventoryDetail,
   StandardService,
@@ -57,21 +57,21 @@ import {
   AdminStaff,
   AdminOrder,
   Staff_Register,
-
-
+  AdminMaintenance,
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainProvider, { MainContext } from "./context/MainContext";
 import ProtectedRoute from "./layouts/ProtectLayout";
 import StaffRoute from "./layouts/StaffLayout";
 import CustomerRoute from "./layouts/CustomerRoute";
-
+import Metadata from './SEO/Metadata';
 const App = () => {
   return (
     <MainProvider>
+      <Metadata>
       <BrowserRouter>
         <div className="wrapper">
-          {/* <ScrollToTop /> */}
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<DefaultLayout />}>
               <Route index element={<Home />}></Route>
@@ -134,10 +134,10 @@ const App = () => {
             <Route element={<StaffRoute />}>
               <Route path="dang-nhap-nhan-vien" element={<StaffLogin /> } />
               <Route path="storekeeper" element={<LayerStorekeeper />}>
-                <Route index element={<ProductsManager />} />
-                <Route path="xuat-nhap" element={<ProductsManager />} />
-                <Route path="ton-kho" element={<Inventory />} />
-                <Route path="ton-kho/:id" element={<InventoryDetail />} />
+                <Route index element={<Bills />} />
+                <Route path="bills" element={<Bills />} />
+                <Route path="inventory" element={<Inventory />} />
+                <Route path="inventory/:id" element={<InventoryDetail />} />
               </Route>
               <Route path="admin" element={<AdminPage />}>
                 <Route path="about" element={<AdminAbout />}></Route>
@@ -156,12 +156,14 @@ const App = () => {
                 <Route path="customer" element={<AdminCustomer/>}></Route>
                 <Route path="order" element={<AdminOrder/>}></Route>
                 <Route path="staff_regis" element={<StaffRegister />}></Route>
+                <Route path="maintenance" element={<AdminMaintenance />}> </Route>
               </Route>
             </Route>
 
           </Routes>
         </div>
       </BrowserRouter>
+      </Metadata>
     </MainProvider>
   );
 };

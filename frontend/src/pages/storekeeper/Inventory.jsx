@@ -44,14 +44,13 @@ function Inventory() {
       title: "",
       dataIndex: "detail",
       key: "detail",
-      render: (a, e) => (
-        <a
-          href="ton-kho/1"
+      render: (a,{_id}) => (
+        <div
           // onClick={() => { setIsModalVisible(true) }}
           className="text-blue-700 cursor-pointer"
         >
-          Chi tiết
-        </a>
+          <Link to={_id}>Chi tiết</Link>
+        </div>
       ),
     },
   ];

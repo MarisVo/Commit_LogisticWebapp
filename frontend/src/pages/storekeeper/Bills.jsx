@@ -1,36 +1,47 @@
 import { Table, Input } from "antd";
+import { Link } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
 import axios from "axios";
 import { END_POINT } from "../../utils/constant";
+import BillDetail from "./BillDetail";
+import EditStatus from "./EditStatus";
 function Products() {
   const [data, setData] = useState([]);
+  const [dataRecord, setDataRecord] = useState({});
   const [loading, setLoading] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isDetailVisible, setIsDetailVisible] = useState(false);
+  const [isEditVisible, setIsEditVisible] = useState(false);
   const columns2 = [
     {
       title: "Mã đơn",
-      dataIndex: "code_bill",
-      key: "code_bill",
+      dataIndex: "_id",
     },
     {
       title: "Thời gian cập nhật lần cuối",
       dataIndex: "updateAt",
       sorter: true,
+      render: (a) => <div>{a?.split("T")[0]}</div>,
     },
     {
-      title: "Driver",
-      dataIndex: "driver",
+      title: "Thời gian Tạo",
+      dataIndex: "createAt",
+      sorter: true,
+      render: (a) => <div>{a?.split("T")[0]}</div>,
     },
-    {
-      title: "Bưu cục đi",
-      dataIndex: "origin",
-    },
-    {
-      title: "Bưu cục đến",
-      dataIndex: "destination",
-    },
+    // {
+    //   title: "Driver",
+    //   dataIndex: "driver",
+    // },
+    // {
+    //   title: "Bưu cục đi",
+    //   dataIndex: "origin",
+    // },
+    // {
+    //   title: "Bưu cục đến",
+    //   dataIndex: "destination",
+    // },
     {
       title: "Trạng thái",
       dataIndex: "status",
@@ -73,10 +84,12 @@ function Products() {
       title: "",
       dataIndex: "detail",
       key: "detail",
-      render: (a, e) => (
+      render: (a, record) => (
         <div
           onClick={() => {
-            setIsModalVisible(true);
+            setIsDetailVisible(true);
+            setDataRecord(record);
+            console.log(record);
           }}
           className="text-blue-700 cursor-pointer"
         >
@@ -91,7 +104,10 @@ function Products() {
         <div className="flex flex-row gap-y-1 gap-x-3">
           <button
             className="flex items-baseline gap-x-1 hover:text-blue-600 "
-            // onClick={() => handleClickEdit(record)}
+            onClick={() => {
+              setIsEditVisible(true);
+              setDataRecord(record);
+            }}
           >
             <AiFillEdit className="translate-y-[1px]" />
             Sửa
@@ -139,9 +155,7 @@ function Products() {
     try {
       const { data: response } = await axios.get(`${END_POINT}/bill`);
       setData(response.data);
-      const { data: product } = await axios.get(`${END_POINT}/`);
       console.log(response);
-      console.log(product);
     } catch (error) {
       console.log(error);
     }
@@ -156,11 +170,16 @@ function Products() {
       </div>
       <Table
         columns={columns2}
-        dataSource={data2}
+        dataSource={data}
         pagination={true}
         loading={loading}
         scroll={{ x: 700 }}
       />
+      {isDetailVisible && (
+        <BillDetail onClose={() => setIsDetailVisible(false)} dataForFetch={dataRecord} />
+      )}
+
+      {isEditVisible && <EditStatus onClose={() => setIsEditVisible(false)} data={dataRecord} />}
     </>
   );
 }
