@@ -4458,6 +4458,10 @@ paths:
           type: string
           description: num of page
         - in: query
+          name: sortBy
+          type: string
+          description: sort in order
+        - in: query
           name: fromProvince
           type: string
           description: Origin province
@@ -4566,6 +4570,18 @@ paths:
           type: string
           required: true
           description: Id of a service 
+          - in: query
+          name: sortBy
+          type: string
+          description: sort in order
+        - in: query
+          name: fromProvince
+          type: string
+          description: Origin province
+        - in: query
+          name: toProvince
+          type: string
+          description: Destination province
       responses:
         200:
           description: get distance successfully.
