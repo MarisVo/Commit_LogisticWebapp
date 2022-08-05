@@ -75,7 +75,7 @@ app.use(session({
     cookie: { maxAge: SESSION_AGE },
     saveUninitialized: false,
     store,
-    resave: true
+    resave: false
 }))
 app.use(express.json())
 app.use(cors())
@@ -84,7 +84,7 @@ app.use(bodyParser.json())
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/public', publicRoute)
-    .use('/api/admin', verifyToken, verifyAdmin, adminRoute)
+    .use('/api/admin', verifyToken, verifyAdmin , adminRoute)
     .use('/api/auth', authRoute)
     .use('/api/tracking', trackingRoute)
     .use('/api/order', orderRoute)

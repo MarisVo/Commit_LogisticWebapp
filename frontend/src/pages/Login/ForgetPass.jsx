@@ -5,10 +5,10 @@ import styled from 'styled-components';
 import * as axios from 'axios'
 
 const ForgetForm = styled.div`
-  .Forget {
+.Forget{
     height: 100vh;
     display: flex;
-    flex-direction: row;
+    flex-direction:row;
     @media (max-width: 768px) {
       flex-direction: column;
     }
@@ -19,44 +19,35 @@ const ForgetForm = styled.div`
     align-items: center;
     padding-top: 100px;
     padding-bottom: 50px;
-    background-color: #fbab7e;
-    background-image: linear-gradient(62deg, #fbab7e 0%, #f7ce68 100%);
-    overflow: auto;
-  }
-
-  .Forget-header {
+    background-color: #FBAB7E;
+    background-image: linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%);
+    overflow:auto;
+}
+.Forget-header{
     max-width: 500px;
     width: 100%;
     background-color: #fff;
     padding: 25px 30px;
     border-radius: 5px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
-  }
-
-  .ant-typography {
+    box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+}
+.ant-typography{
     font-size: 45px;
     font-weight: 500;
     position: relative;
-  }
-
-  .ant-input-affix-wrapper {
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px,
-      rgba(0, 0, 0, 0.1) 0px 2px 4px 0px,
-      rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
-  }
-  .ant-select {
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px,
-      rgba(0, 0, 0, 0.1) 0px 2px 4px 0px,
-      rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
-  }
-  .sign {
-    text-align: right;
-  }
-  a {
-    color: #348ceb;
-  }
-`;
-
+}
+.ant-input-affix-wrapper {
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+}
+.ant-select {
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+}
+.sign{
+    text-align:right;
+}
+a {
+  color: #348ceb;
+}`
 const ButtonContainer = styled.div`
 .ant-btn-primary {
     margin-top: 30px;
@@ -70,10 +61,10 @@ const ButtonContainer = styled.div`
     letter-spacing: 1px;
     cursor: pointer;
     transition: all 0.3s ease;
-    background-color: #fbab7e;
-    &:hover {
-      background-color: #fbab7e;
-      background-image: linear-gradient(250deg, #e3ed1f 0%, #f7ce68 100%);
+    background-color: #FBAB7E;
+    &:hover{
+        background-color: #FBAB7E;
+        background-image: linear-gradient(250deg, #e3ed1f 0%, #F7CE68 100%);
     }
 }`;
 
@@ -94,7 +85,6 @@ function ForgetPass() {
       },
     });
   };
-
   const failed404 = () => {
     message.error({
       content: 'Email hoặc số điện thoại không tồn tại',
@@ -104,7 +94,6 @@ function ForgetPass() {
       },
     });
   };
-
   const failed400 = () => {
     message.error({
       content: 'Tạo mật khẩu mới không thành công',
@@ -116,8 +105,8 @@ function ForgetPass() {
   };
 
   const emailphone = Form.useWatch('email/phone', form);
-  var email;
-  var phone;
+  let email;
+  let phone;
   (isValidEmail(emailphone)) ? email = emailphone : phone = emailphone
 
   const onFinish = async() => {
@@ -135,7 +124,6 @@ function ForgetPass() {
       if(error.message == "Request failed with status code 404") {
         failed404();
       }
-
       if(error.message == "Request failed with status code 400") {
         failed400();
       }
@@ -173,16 +161,17 @@ function ForgetPass() {
                     <Input placeholder="Nhập email hoặc số điện thoại" />
                 </Form.Item>
 
-            <Form.Item wrapperCol={{ span: 24 }}>
-              <ButtonContainer>
-                <Button block type="primary" htmlType="submit">
-                  Xác nhận
-                </Button>
-              </ButtonContainer>
-            </Form.Item>
-          </Form>
+                <Form.Item wrapperCol={{ span: 24 }}>
+                    <ButtonContainer>
+                        <Button block type="primary" htmlType="submit">
+                            Xác nhận
+                        </Button>
+                    </ButtonContainer>
+                </Form.Item>
+              
+            </Form>
+          </div>
         </div>
-      </div>
     </ForgetForm>
   );
 }

@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
-import SideBar from "../../components/SideBar";
+import SideBar from "../../components/SideBarCustomer";
 import {
   AiOutlineEye,
   AiOutlineEyeInvisible,
-  AiOutlineEdit,
+  AiOutlineEdit
 } from "react-icons/ai";
-import { axios } from "axios";
+import { useContext } from "react";
+import { MainContext } from "../../context/MainContext";
+import axios from "axios";
 
 export default function Profile() {
   const oldPwRef = useRef(null);
@@ -20,6 +22,7 @@ export default function Profile() {
     newPw: "",
     verify_password: "",
   });
+  const { accessToken } = useContext(MainContext);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [open, setOpen] = useState(false);
@@ -27,6 +30,9 @@ export default function Profile() {
   const [information, setInformation] = useState({
     name: "Nguyễn Văn Thật",
     address: "B5/3 Phường An Phú Tp Thủ Đức",
+    tax:"55123124142",
+    phone:"090875827",
+    email:"buidangkhoa252001@gmail.com"
   });
   const handleOpen = () => {
     setOpen(!open);
@@ -52,19 +58,6 @@ export default function Profile() {
     }
 
     return hiddenPassword;
-  };
-  const hidephone = (valuephone) => {
-    let phone = valuephone; //989238382
-    let hiddenPhone = "";
-    for (let i = 0; i < phone.length; i++) {
-      if (i < phone.length - 3) {
-        hiddenPhone += "*";
-      } else {
-        hiddenPhone += phone[i];
-      }
-    }
-
-    return hiddenPhone;
   };
   const handleEyeOp = () => {
     setEyeOp(!eyeOp);
@@ -105,10 +98,26 @@ export default function Profile() {
       setFormErrors({});
     }
   }, [isModalVisible]);
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
+    console.log(cPassword)
     setFormErrors(validate);
-    setIsSubmit(true);
+    try {
+      const res = await axios.put(
+        "http://localhost:8000/api/auth/change-pw" ,
+        
+          cPassword
+        ,
+        {
+          headers: { authorization: `Bearer ${accessToken}` },
+        }
+      );
+      console.log(res)
+      setIsSubmit(true);
+    } catch (err) {
+      console.log(err);
+      setFormErrors({oldPw:"wrong current password"})
+    }
   };
   const validate = () => {
     const { oldPw, verify_password, newPw } = cPassword;
@@ -168,6 +177,7 @@ export default function Profile() {
     setInformation({ ...information, [name]: value });
     console.log(information);
   };
+
   return (
     <div>
       <>
@@ -299,124 +309,138 @@ export default function Profile() {
             />
           </span>
 
-          <div className="grid grid-cols-5 mx-1 sm:mx-20 lg:mx-60 md:mx-28 py-5 bg-gray-100  ">
-            <div className=" col-span-5 bg-white rounded-lg   shadow-xl">
-              <div className="flex justify-start flex-col ml-4 border-b-2  pl-4 pb-3 pt-3">
-                <div className="text-xl font-bold mb-1 lg:text-2xl">
+          <div className="grid grid-cols-5 mx-1 sm:mx-16 lg:mx-[250px] md:mx-28 py-5 bg-gray-100 overflow-hidden  ">
+            <div className=" col-span-5 bg-[#f8faff] rounded-lg   shadow-xl mb-3">
+              <div className="flex justify-start flex-col  border-b-2  pl-4 pb-3 pt-3">
+                <div className="text-xl font-bold mb-1 lg:text-2xl mt-2">
                   Hồ Sơ Của Tôi
                 </div>
-                <div>Quản lý thông tin hồ sơ để bảo mật tài khoản</div>
+                <div className="text-base">Quản lý thông tin hồ sơ để bảo mật tài khoản</div>
               </div>
-              <form className=" lg:mx-7 mx-1 my-4 ">
-                <div className=" flex flex-col  ">
-                  <div className="flex mb-3 sm:py-1">
-                    <div className="flex items-center w-2/5   justify-end ">
-                      <label className=" mr-3 text-yellow-600 lg:text-base">
-                        Tên
-                      </label>
+              <form className=" lg:mx-5 sm:mx-4 md:mx-5 mx-[8px] my-4 ">
+                <div className=" grid grid-cols-2 justify-items-center  ">
+                  <div className="col-span-1">
+                    <div className="flex mb-6 sm:py-1 flex-col  ">
+                      <div className="flex items-center   justify-start ">
+                        <label className=" mr-3 text-yellow-600 lg:text-lg text-base">
+                          Tên:
+                        </label>
+                      </div>
+                      <div className="flex  ">
+                        <input
+                          className="outline-none border-[1px] sm:px-2 rounded-md py-[6px] px-1 border-gray-200 text-base  max-w-[160px] md:min-w-[260px] sm:min-w-[210px] line-clamp-1"
+                          type="text"
+                          name="name"
+                          onChange={handleForm}
+                          defaultValue={information.name}
+                        />
+                      </div>
                     </div>
+                    <div className="flex mb-6 sm:py-1 flex-col  ">
+                      <div className="flex items-center   justify-start flex-row">
+                       
+                          <div className=" mr-3 text-yellow-600 lg:text-lg text-base">
+                            Mật khẩu:
+                          </div>
+                           <div
+                              className="text-xs text-center text-yellow-500 cursor-pointer lg:text-base"
+                              onClick={handleShowModal}
+                            >
+                             <AiOutlineEdit/>
+                           </div>
 
-                    <div className="flex  ">
-                      {/* <div className="text-black-700 mr-3 lg:text-base">
-                        Nguyễn Văn Thật
-                      </div> */}
-                      <input
-                        className="outline-none border-[1px] border-gray-200  min-w-[160px] md:min-w-[260px] line-clamp-1"
-                        type="text"
-                        name="name"
-                        onChange={handleForm}
-                        defaultValue={information.name}
-                      />
+                        </div>
+            
+                      <div className="flex  ">
+                        <input
+                          className="outline-none border-[1px] sm:px-2 rounded-md py-[6px] px-1 border-gray-200 text-base  max-w-[160px] md:min-w-[260px] sm:min-w-[210px] line-clamp-1"
+                          type="password"
+                          
+                          defaultValue="12312321"
+                        />
+                      </div>
                     </div>
+                    <div className="flex mb-6 sm:py-1 flex-col  ">
+                      <div className="flex items-center   justify-start ">
+                        <label className=" mr-3 text-yellow-600 lg:text-xl text-base">
+                          Địa chỉ:
+                        </label>
+                      </div>
+                      <div className="flex  ">
+                        <input
+                          className="outline-none border-[1px] sm:px-2 rounded-md py-[6px] px-1 border-gray-200 text-base  max-w-[160px] md:min-w-[260px] sm:min-w-[210px] line-clamp-1"
+                          type="text"
+                          name="address"
+                          onChange={handleForm}
+                          defaultValue={information.address}
+                        />
+                      </div>
+                    </div>
+                  
+                    
                   </div>
-                  <div className="flex mb-3 sm:py-1">
-                    <div className="flex items-center w-2/5   justify-end flex-shrink-0">
-                      <label className=" mr-3 text-yellow-600 lg:text-base">
-                        Địa chỉ
-                      </label>
+                  <div className="col-span-1 ">
+                      {/* col 2*/}
+                   <div className="flex mb-6 sm:py-1 flex-col  ">
+                      <div className="flex items-center   justify-start ">
+                        <label className=" mr-3 text-yellow-600 lg:text-lg text-base">
+                          Email:
+                        </label>
+                      </div>
+                      <div className="flex  ">
+                        <input
+                          className="outline-none border-[1px] sm:px-2 rounded-md py-[6px] px-1 border-gray-200 text-base  max-w-[160px] md:min-w-[260px] sm:min-w-[210px] line-clamp-1"
+                          type="text"
+                          name="email"
+                          onChange={handleForm}
+                          defaultValue={information.email}
+                        />
+                      </div>
                     </div>
-
-                    <div className="flex  ">
-                      {/*  <div className="text-black-700 mr-3 lg:text-base line-clamp-1">
-                        B5/3 Phường An Phú Tp Thủ Đức
-                      </div> */}
-                      <input
-                        className="outline-none border-[1px] border-gray-200  min-w-[160px] md:min-w-[260px] line-clamp-1"
-                        type="text"
-                        name="address"
-                        onChange={handleForm}
-                        defaultValue={information.address}
-                      />
+                    <div className="flex mb-6 sm:py-1 flex-col  ">
+                      <div className="flex items-center   justify-start ">
+                        <label className=" mr-3 text-yellow-600 lg:text-lg text-base">
+                          Số điện thoại:
+                        </label>
+                      </div>
+                      <div className="flex  ">
+                        <input
+                          className="outline-none border-[1px] sm:px-2 rounded-md py-[6px] px-1 border-gray-200 text-base  max-w-[160px] md:min-w-[260px] sm:min-w-[210px] line-clamp-1"
+                          type="text"
+                          name="phone"
+                          onChange={handleForm}
+                          defaultValue={information.phone}
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex mb-3 sm:py-1">
-                    <div className="flex items-center w-2/5   justify-end ">
-                      <label className=" mr-3 text-yellow-600 lg:text-base">
-                        Email
-                      </label>
-                    </div>
-                    <div className="flex ">
-                      <div className="text-black-700 lg:text-base">
-                        {hideemail("nguyenvanthat123@gmail.com")}
+                    <div className="flex mb-6 sm:py-1 flex-col  ">
+                      <div className="flex items-center   justify-start ">
+                        <label className=" mr-3 text-yellow-600 lg:text-lg text-base">
+                          Mã số thuế:
+                        </label>
+                      </div>
+                      <div className="flex  ">
+                        <input
+                          className="outline-none border-[1px] sm:px-2 rounded-md py-[6px] px-1 border-gray-200 text-base  max-w-[160px] md:min-w-[260px] sm:min-w-[210px] line-clamp-1"
+                          type="text"
+                          name="tax"
+                          onChange={handleForm}
+                          defaultValue={information.tax}
+                        />
                       </div>
                     </div>
                   </div>
-                  <div className="flex mb-3  sm:py-1 ">
-                    <div className="flex items-center w-2/5   justify-end ">
-                      <label className=" mr-3 text-yellow-600 lg:text-base">
-                        Mật khẩu
-                      </label>
-                    </div>
-                    <div className="flex  ">
-                      <div
-                        className="text-black-700 mr-3 lg:text-base"
-                        type="password"
-                      >
-                        {hidepassword("khoa12")}
-                      </div>
-                      <div
-                        className="text-xs text-center text-yellow-500 cursor-pointer lg:text-base"
-                        onClick={handleShowModal}
-                      >
-                        Thay đổi
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex mb-3 sm:py-1">
-                    <div className="flex items-center w-2/5   justify-end lg:text-base ">
-                      <label className=" mr-3 text-yellow-600 ">
-                        Số điện thoại
-                      </label>
-                    </div>
-                    <div className="flex ">
-                      <div className="text-black-700 lg:text-base ">
-                        {hidephone("093222128")}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex mb-3 sm:py-1">
-                    <div className="flex items-center w-2/5   justify-end lg:text-base ">
-                      <label className=" mr-3 text-yellow-600 ">
-                        Mã số thuế
-                      </label>
-                    </div>
-                    <div className="flex ">
-                      <div className="text-black-700 lg:text-base ">
-                        51312312
-                      </div>
-                    </div>
-                  </div>
+                </div>
                   <div className="flex mb-3 ">
                     <div className="flex items-center w-2/5  justify-end ">
                       <label className="text-gray-500 mr-3  "></label>
                     </div>
                     <div className="flex ">
-                      <button className="py-2 px-4 mt-2 font-semibold bg-yellow-500  hover:translate-y-[-1px] transition-all text-[#00003B] rounded-sm">
-                        Save
+                      <button className="py-2 px-4 mt-2 mb-4 round-md font-extrabold bg-[#ffd124]  hover:translate-y-[-1px] transition-all text-[#00003B] rounded-sm">
+                        Cập nhật
                       </button>
                     </div>
                   </div>
-                </div>
               </form>
             </div>
           </div>

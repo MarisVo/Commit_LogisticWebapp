@@ -1,20 +1,28 @@
 import { DownOutlined } from "@ant-design/icons";
 import { Dropdown, Menu, message, Space, Avatar } from "antd";
-import React from "react";
+import React, { useContext } from "react";
 import { Link, Navigate } from "react-router-dom";
+import { MainContext } from "../../../context/MainContext";
 
-const menu = (
-  <Menu
-
-  items={[
-      {
-          key: "1",
-        label : (  <Link to="/"> Back To Main Page</Link>),
-      },
-    ]}
-  />
-);
 export default function AdminDropDownAvatar() {
+  const { user, logoutHandle } = useContext(MainContext);
+  
+  const menu = (
+    <Menu
+  
+    items={[
+        {
+            key: "1",
+          label : (  <Link to="/"> Back To Main Page</Link>),
+        },
+        {
+            key: "2",
+          label : (<div  onClick={logoutHandle} > <Link to="/"> Log out</Link> </div> ),
+        },
+      ]}
+    />
+  );
+  
   return (
     <>
       <Dropdown overlay={menu}>

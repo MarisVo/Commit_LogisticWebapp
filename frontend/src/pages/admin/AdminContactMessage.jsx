@@ -1,53 +1,78 @@
 import { Input, Table } from "antd";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useEffect } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import AdminEditMessage from "../../components/Admin/Message/AdminEditMessage";
-import AdminNewMessage from "../../components/Admin/Message/AdminNewMessage";
+import { MainContext } from "../../context/MainContext";
+// import AdminNewMessage from "../../components/Admin/Message/AdminNewMessage";
 import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
-import { handleSearch } from "../../components/Admin/HandleSearch/HandleSearch";
+
+// import { handleSearch } from "../../components/Admin/HandleSearch/HandleSearch";
 
 export default function AdminContactMessage() {
+  const [change, setChange] = useState(1)
+  const api = "http://localhost:8000/api/admin/message"
+  const { accessToken } = useContext(MainContext)
+  const [dataStore,setStoreData] = useState([])
+  const [id, setId] = useState('')
   //   state open edit commit modal
   const [isModalVisibleEdit, setIsModalVisibleEdit] = useState(false);
-  //   state open add commit modal
-  const [isModalVisibleAdd, setIsModalVisibleAdd] = useState(false);
+
   // call total message :
   const getMessageAPI = async () => {
     try {
       const result = await axios({
-        url: "",
+        url: api,
         method: "get",
-        headers: "Bearer",
+        headers: { authorization: `Bearer ${accessToken}` },
       });
       if (result.status === 200) {
-        setDataMessgae(result.data);
+        setDataMessgae(result.data.data);
+        setStoreData(result.data.data)
+        // console.log(result.data.data);
       }
     } catch (error) {
-      console.log(error.response);
+      console.log(error);
     }
   };
   const onClose = () => {
     setIsModalVisibleEdit(false);
   };
-  //   close add modal
-  const onCloseAddModal = () => {
-    setIsModalVisibleAdd(false);
-  };
+
+
   useEffect(() => {
     getMessageAPI();
-  }, []);
+  }, [change]);
   // delete API :
 
   const deleteAPI = async (id) => {
     try {
       const result = await axios({
-        url: `url${id}`,
+        url: `${api}/${id}`,
         method: "delete",
+        headers: { authorization: `Bearer ${accessToken}` },
       });
       if (result.status === 200) {
         alert("đã xóa thành công ");
+        setChange(change + 1)
+      }
+    } catch (err) {
+      console.log(err.response);
+    }
+  };
+
+  const editApi = async (item, id) => {
+    try {
+      const result = await axios({
+        url: `${api}/${id}`,
+        method: "put",
+        data: item,
+        headers: { authorization: `Bearer ${accessToken}` },
+      });
+      if (result.status === 200) {
+        alert("cập thành công ");
+        // setChange(change+1)
       }
     } catch (err) {
       console.log(err.response);
@@ -82,46 +107,20 @@ export default function AdminContactMessage() {
       date: "",
     },
   ]);
-  const [dataRender, setDataRender] = useState([
-    {
-      name: "a",
-      email: "a@gmail42424.com",
-      phone: "424",
-      message: "new message",
-      id: 1,
-      date: "",
-    },
-    {
-      name: "b",
-      email: "bfasf@gmail.com",
-      phone: "4422424",
-      message: "new message",
-      id: 2,
-      date: "",
-    },
-    {
-      name: "c",
-      email: "chjhr@gmail.com",
-      phone: "4565624",
-      message: "new message",
-      id: 3,
-      date: "",
-    },
-  ]);
   // colummns table
   const columns = [
     {
       title: "name",
       dataIndex: "name",
       key: "name",
-      width: "10%",
+      width: "14.2%",
       sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
       title: "email",
       dataIndex: "email",
       key: "email",
-      width: "20%",
+      width: "14.2%",
       sorter: (a, b) => a.email.length - b.email.length,
       //   ...getColumnSearchProps("heading"),
     },
@@ -129,6 +128,7 @@ export default function AdminContactMessage() {
       title: "phone",
       dataIndex: "phone",
       key: "phone",
+      width: "14%",
       // ...getColumnSearchProps("details"),
       sorter: (a, b) => a.phone - b.phone,
       //   sortDirections: ["descend", "ascend"],
@@ -137,28 +137,53 @@ export default function AdminContactMessage() {
       title: "message",
       dataIndex: "message",
       key: "message",
-      // ...getColumnSearchProps("details"),
-      sorter: (a, b) => a.message.length - b.message.length,
-      //   sortDirections: ["descend", "ascend"],
     },
     {
       title: "date",
-      dataIndex: "date",
-      key: "date",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      width: "14%",
       // ...getColumnSearchProps("details"),
-      // sorter: (a, b) => a.detail.length - b.detail.length,
-      //   sortDirections: ["descend", "ascend"],
+      sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+      sortDirections: ["descend", "ascend"],
     },
     {
-      title: "Tao Tac",
-      dataIndex: "id",
-      width: "20%",
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      key: "status",
+      width: "12%",
+      filters: [
+        {
+          text: 'seen',
+          value: 'seen',
+        },
+        {
+          text: 'unseen',
+          value: 'unseen',
+        },
+      ],
+      onFilter: (value, record) => record.status === value,
+      render: (status) => (
+        <>
+          {status === "seen" ?
+            <div className="text-green-600 font-bold bg-green-200 text-center rounded-lg py-1">seen</div>
+            :
+            <div className='text-red-600 font-bold bg-red-300 text-center rounded-lg py-1'>unseen</div>
+          }
+        </>
+      )
+    },
+    {
+      title: "",
+      dataIndex: "_id",
+      width: "14%",
       render: (a, e) => (
         <div className="flex flex-row justify-around gap-y-1 gap-x-3">
           <button
             className="flex items-baseline gap-x-1 hover:text-blue-600"
             onClick={() => {
               console.log(a);
+              setId(a)
               setIsModalVisibleEdit(!isModalVisibleEdit);
               setDataEditMessage(e);
             }}
@@ -169,6 +194,7 @@ export default function AdminContactMessage() {
           <button
             className="flex items-baseline gap-x-1 hover:text-red-600"
             onClick={() => {
+              // console.log(a)
               deleteAPI(a);
             }}
           >
@@ -179,36 +205,61 @@ export default function AdminContactMessage() {
       ),
     },
   ];
+
+  const acceptEdit = async (e) => {
+    const tableData = e.target.parentElement.parentElement.parentElement.querySelector('select')
+    const items = {
+      status: tableData.value,
+    }
+    console.log(items);
+    try {
+      await setTimeout(() => {
+        // setChange(change+1)
+        editApi(items, id)
+        setIsModalVisibleEdit(false)
+        getMessageAPI();
+      }, 2000)
+    }
+    catch {
+
+    }
+  }
+
+  const onSearch = (value) => {
+    // console.log(value)
+    // getMessageAPI()
+    setDataMessgae(dataStore.filter(e=>{
+      return e.name.toLowerCase().includes(value.toLowerCase())||e.email.toLowerCase().includes(value.toLowerCase())||
+      e.message.toLowerCase().includes(value.toLowerCase())||e.phone.toLowerCase().includes(value.toLowerCase())
+      ||e.status.toLowerCase().includes(value.toLowerCase())
+    }))
+    console.log(dataMessage);
+    if(value===""||value===undefined){
+      getMessageAPI();
+    }
+  };
+
+
   return (
     <>
-      <div className="flex   justify-between mb-4">
-        <AdminNewMessage isModalVisibleAdd={isModalVisibleAdd} onClose={onCloseAddModal}></AdminNewMessage>
+      <div className="flex justify-center mb-[30px]">
         <AdminEditMessage
-          isModalVisibleEdit={isModalVisibleEdit}
-          infor={dataEditMessage}
-          setDataEditMessage={setDataEditMessage}
+          isVisible={isModalVisibleEdit}
+          data={dataEditMessage}
+          onOk={acceptEdit}
           onClose={onClose}
         ></AdminEditMessage>
-        <span className="text-2xl font-blod py-4 px-2">Message</span>
         <Input.Search
           className="w-1/3 lg:w-[400px]"
           placeholder="Search"
-          onChange={(e) => {
-            handleSearch(dataMessage, e.target.value, setDataRender,["name","email"]);
-          }}
+          onSearch={onSearch}
+        // onChange={(e) => {
+        //   handleSearch(dataMessage, e.target.value, setDataRender,["name","email"]);
+        // }}
         />
 
-        <div className=" relative">
-          <button
-            className="inline-flex justify-around items-center absolute right-10 w-32 border rounded-lg p-2 shadow-xl hover:bg-yellow-100"
-            onClick={() => setIsModalVisibleAdd(!isModalVisibleAdd)}
-          >
-            <AiOutlinePlus className="" />
-            Thêm Mới
-          </button>
-        </div>
       </div>
-      <Table columns={columns} dataSource={dataRender} />
+      <Table columns={columns} dataSource={dataMessage} />
     </>
   );
 }

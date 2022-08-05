@@ -1,9 +1,11 @@
 import logoJT from "../assets/icons/logo-J&T.svg";
 import { FaChevronDown, FaBars } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { /*useEffect,*/ useState } from "react";
 import { Menu } from "antd";
 import "antd/dist/antd.css";
+import { useContext } from "react";
+import { MainContext } from "../context/MainContext";
 
 function getItem(label, key, children) {
   return {
@@ -67,14 +69,22 @@ const items = [
 const rootSubmenuKeys = ["sub1", "sub2", "sub3", "sub4", "sub5", "sub6"];
 
 const Header = () => {
+  const { user, logoutHandle } = useContext(MainContext);
   const navigate = useNavigate();
-  const [defaultService, setDefaultService] = useState("cước vận chuyển");
-  function callback(dichVu) {
-    setDefaultService(dichVu);
-    navigate(`/track?type=${dichVu}`);
+  // const [defaultService, setDefaultService] = useState("cước vận chuyển");
+  // function callback(dichVu) {
+  //   console.log(dichVu)
+  //   setDefaultService(dichVu);
+  //   navigate(`/track?type=${dichVu}`);
+  // }
+
+  // xử lý thêm màu menu
+  let {pathname}=useLocation()
+  const comparePath=(path)=>{
+    if(pathname.includes(path)) return "text-yellow-500"
   }
-  const [openKeys, setOpenKeys] = useState([]);
   //Logic mobile-navigation --- Còn lỗi
+  const [openKeys, setOpenKeys] = useState([]);
   const onOpenChange = (keys) => {
     const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
     if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
@@ -89,30 +99,32 @@ const Header = () => {
       setIsOpen(!isOpen);
     }
   };
-  // alert('render header')
+  const Logout = () => {
+    logoutHandle();
+  };
 
   return (
-    <div className="fixed bg-white inset-x-0 h-[65px]  z-20 shadow-xl">
+    <div className='fixed bg-white inset-x-0 h-[65px] z-20'>
       <div className=" flex justify-between items-center h-full px-4 lg:px-0 container mx-auto text-sm ">
         <div className="bt lg:hidden" onClick={() => setIsOpen(!isOpen)}>
           <FaBars className="w-7 h-7" />
         </div>
         <Link to="/">
-          <img src={logoJT} className="" />
+          <img src={logoJT} className="" alt="logo-JnT"/>
         </Link>
         <ul className="hidden lg:flex h-full justify-center items-center m-0">
-          <li>
+          <div className="rounded-md hover:bg-yellow-200 ">
             <Link
               to="/"
-              className=" flex items-center px-4 py-2 rounded-md hover:bg-yellow-200"
+              className={`flex items-center  px-4 py-2 ${pathname==="/" && "text-yellow-500"}`}
             >
               Trang chủ
             </Link>
-          </li>
+          </div>
           <div className="group hover:bg-yellow-200 rounded-md">
             <Link
               to="ve-chung-toi"
-              className="inline-flex items-center px-4 py-2"
+              className={`inline-flex items-center px-4 py-2 ${comparePath("/ve-chung-toi")||comparePath("/cam-ket") }`}
             >
               Giới thiệu
               <FaChevronDown className="h-4 w-4 pl-[6px]" />
@@ -137,14 +149,13 @@ const Header = () => {
             </ul>
           </div>
           <div className="group hover:bg-yellow-200 rounded-md">
-            <Link to="tra-cuu" className="inline-flex items-center  px-4 py-2">
+            <Link to="tra-cuu" className={`inline-flex items-center  px-4 py-2 ${comparePath("/tra-cuu") }`}>
               Tra cứu
               <FaChevronDown className="h-4 w-4 pl-[6px]" />
             </Link>
             <ul
               className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg animate-up"
-              defaultactivekey="cước vận chuyển"
-              onChange={callback}
+              // onChange={callback}
             >
               <li>
                 <Link
@@ -194,7 +205,7 @@ const Header = () => {
             </ul>
           </div>
           <div className="group hover:bg-yellow-200 rounded-md">
-            <Link to="dich-vu" className="inline-flex items-center px-4 py-2">
+            <Link to="dich-vu" className={`inline-flex items-center px-4 py-2 ${comparePath("/dich-vu")||comparePath("chuyen-phat") }`}>
               Dịch vụ
               <FaChevronDown className="h-4 w-4 pl-[6px]" />
             </Link>
@@ -240,7 +251,7 @@ const Header = () => {
           <div className="group hover:bg-yellow-200 rounded-md">
             <Link
               to="tuyen-dung"
-              className="inline-flex items-center px-4 py-2"
+              className={`inline-flex items-center px-4 py-2 ${comparePath("/tuyen-dung") || comparePath("/cuoc-song")}`}
             >
               Tuyển dụng
               <FaChevronDown className="h-4 w-4 pl-[6px]" />
@@ -267,7 +278,7 @@ const Header = () => {
           <div className="group hover:bg-yellow-200 rounded-md">
             <Link
               to="tu-van/lien-he"
-              className="inline-flex items-center px-4 py-2"
+              className={`inline-flex items-center px-4 py-2 ${comparePath("/tu-van") }`}
             >
               Tư vấn
               <FaChevronDown className="h-4 w-4 pl-[6px]" />
@@ -292,18 +303,43 @@ const Header = () => {
             </ul>
           </div>
         </ul>
-        <Link to="/dang-nhap">
-          <div className="px-4 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
-            <span className="font-semibold text-white">Đăng nhập</span>
+        {user ? (
+          <div className="hidden md:flex ">
+            <Link to="/khach-hang/trang-ca-nhan">
+              <div className="px-4 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
+                <span className="font-semibold ">
+                Thông tin
+
+                </span>
+              </div>
+            </Link>
+            <div>
+              <div
+                onClick={Logout}
+                className="px-4 ml-3 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer"
+              >
+                <span href="#" className="font-semibold ">
+                  Đăng xuất
+                </span>
+              </div>
+            </div>
           </div>
-        </Link>
-        <Link to="/dang-ki">
-          <div className="px-6 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
-            <span href="#" className="font-semibold text-white">
-              Đăng kí
-            </span>
+        ) : (
+          <div className="hidden md:flex">
+            <Link to="/dang-nhap">
+              <div className="px-4 py-2 mr-3 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
+                <span className="font-semibold ">Đăng nhập</span>
+              </div>
+            </Link>
+            <Link to="/dang-ki">
+              <div className="px-6 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
+                <span href="#" className="font-semibold ">
+                  Đăng kí
+                </span>
+              </div>
+            </Link>
           </div>
-        </Link>
+        )}
       </div>
 
       {/* Phần mobile menu */}

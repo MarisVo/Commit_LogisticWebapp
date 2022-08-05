@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { LeftOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
-import SideBar from "../../components/SideBar";
+import SideBar from "../../components/SideBarCustomer";
 import { FaTruckMoving } from "react-icons/fa";
 import { Steps } from "antd";
 import { Link } from "react-router-dom";
@@ -31,11 +31,11 @@ function PurchaseStage() {
           </span>
         </div>
         <div className=" sm:mx-6 lg:mx-32 pb-4 pt-2 mx-2 ">
-          <div className=" bg-gray-white  bg-white  rounded-sm shadow-xl ">
+          <div className=" bg-gray-white  bg-white  rounded-sm shadow-xl pb-2">
             <div className="flex items-center justify-between cursor-pointer ml-2 mr-3 ">
               <Link
                 className="flex items-center justify-start mt-1  hover:translate-y-[-1px] transition-all hover:text-yellow-500  "
-                to="/user/account/profile"
+                to="/khach-hang/trang-ca-nhan"
               >
                 <LeftOutlined className="text-[12px] sm:text-xs" />
                 <span className="  font-medium sm:mt-1   cursor-pointer text-[12px] sm:text-xs">
@@ -52,17 +52,7 @@ function PurchaseStage() {
               </div>
             </div>
 
-            <div className="flex items-end justify-evenly md:justify-right mb-4 ">
-              <button
-                onClick={newStage}
-                className="px-4 py-2 sm:px-4  sm:min-w-[100px] hover:translate-y-[-1px] transition-all font-semibold text-[#00003B] bg-yellow-500 rounded-sm"
-              >
-                Hủy
-              </button>
-              <button className="p-2 sm:px-4 sm:min-w-[100px]  hover:translate-y-[-1px] transition-all font-semibold bg-yellow-500 rounded-sm text-[#00003B]">
-                Liên hệ tài xế
-              </button>
-            </div>
+          
             <div className="grid grid-cols-3  mx-2  my-3 ">
               <div className="col-span-3 sm:col-span-1 justify-self-center mb-2 ml-4 md:ml-6 ">
                 <div className="text-xl font-semibold text-[#00003B] ">
@@ -117,6 +107,17 @@ function PurchaseStage() {
                 </div>
               </div>
             </div>
+              <div className="flex items-end justify-evenly md:justify-right mb-4 ">
+              <button
+                onClick={newStage}
+                className="px-4 py-2 sm:px-4  min-w-[100px] hover:translate-y-[-1px] transition-all font-semibold text-[#00003B] bg-yellow-500 rounded-sm"
+              >
+                Hủy
+              </button>
+              <button className="p-2 sm:px-4 min-w-[100px]  hover:translate-y-[-1px] transition-all font-semibold bg-yellow-500 rounded-sm text-[#00003B]">
+                Liên hệ tài xế
+              </button>
+            </div>
           </div>
 
           <div className="flex flex-col mt-2 bg-white rounded-sm shadow-lg">
@@ -132,7 +133,7 @@ function PurchaseStage() {
                   <FaTruckMoving className=" sm:mr-2 mr-[3px]" />
                   <Link
                     className=" text-[10px] font-medium  sm:mr-4 sm:text-sm  hover:translate-y-[-1px] transition-all hover:text-yellow-500  cursor-pointer "
-                    to="/user/purchase/order/2323"
+                    to="/khach-hang/dat-hang/don-hang/2323"
                   >
                     Đang xử lý
                   </Link>

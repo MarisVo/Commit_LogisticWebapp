@@ -1,13 +1,16 @@
 import React from 'react'
 import { Tabs } from 'antd';
-import MienNam from './area/tieuChuan/MienNam';
-import MienNamNhanh from './area/nhanh/MienNam.nhanh';
-import MienNamSuper from './area/Super/MienNam.super';
+import MienNam from './Area/TieuChuan/MienNam';
+import MienNamNhanh from './Area/Nhanh/MienNam.nhanh';
+import MienNamSuper from './Area/Super/MienNam.super';
 
 const { TabPane } = Tabs;
 export default function BangGia() {
     return (
-        <div className='price_list '>
+        <div className='price_list ' style={{ 
+			maxWidth: "1200px",
+			margin:"auto"
+		 }}>
             <div className='p-7'>
                 <div className="flex rounded-[2px] h-[43px] items-center w-full my-[20px] mb-[40px]">
                     <form className="w-full mb-[10px] lg:mb-0" data-request="onSearchPriceList" id="form-price-list">
