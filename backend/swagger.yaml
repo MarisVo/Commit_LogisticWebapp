@@ -3685,7 +3685,7 @@ paths:
             }          
         400:
           description: applicant is not found.    
-  /applicant/:careerId:
+  /applicant/{careerId}:
     post:
       tags:
         - "applicant"
@@ -3750,8 +3750,6 @@ paths:
             }        
         400:
           description: Create applicant failed.
-      security:
-        - bearerAuth: []
   /admin/applicant:
     get:
       tags:
