@@ -5112,6 +5112,8 @@ paths:
               sub_detail: 
                 type: string
               target:
+                type: string     
+              tip:
                 type: string               
       responses:
         200:
