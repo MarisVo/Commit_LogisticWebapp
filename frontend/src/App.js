@@ -57,8 +57,7 @@ import {
   AdminStaff,
   AdminOrder,
   Staff_Register,
-
-
+  AdminMaintenance,
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainProvider, { MainContext } from "./context/MainContext";
@@ -157,6 +156,7 @@ const App = () => {
                 <Route path="customer" element={<AdminCustomer/>}></Route>
                 <Route path="order" element={<AdminOrder/>}></Route>
                 <Route path="staff_regis" element={<StaffRegister />}></Route>
+                <Route path="maintenance" element={<AdminMaintenance />}> </Route>
               </Route>
             </Route>
 

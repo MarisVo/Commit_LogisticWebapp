@@ -192,7 +192,7 @@ export default function BuuCuc() {
       </div>
 
       {/* result */}
-      <div className="mt-14 flex flex-wrap">
+      <div className="mt-14 flex flex-wrap"> 
         {result?.length > 0 ? (
           // result.map((warehouse) => (
           //   <div id="bill" className="w-1/2 px-10 lg:px-0" key={warehouse._id}>
@@ -210,13 +210,14 @@ export default function BuuCuc() {
           //     </div>
           //   </div>
           // ))
-          <div className=" mt-4 grid grid-cols-1 lg:grid-cols-2 mx-auto gap-y-3 gap-x-6">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 mx-auto gap-y-3 gap-x-6 lg:mx-0">
         {result.map((warehouse) => (
           <div
             key={warehouse._id}
             className="flex flex-col bg-[#FFF2F4] border-[#fdb0b0] border bg-opacity-70 p-4 rounded-xl gap-y-6"
           >
-            <div className="flex flex-row justify-between">
+            <div className="flex flex-row justify-between gap-x-1">
               <span className="text-xl font-extrabold text-red-700">{warehouse.name}</span>
               <a
                 href={`https://www.google.com/maps?q=${warehouse?.lon}${warehouse?.lat}`}
@@ -224,7 +225,7 @@ export default function BuuCuc() {
                 className="flex items-center text-red-600"
               >
                 <FiMap className="w-4 h-4 inline-block mr-2" />
-                <span className=" text-lg text-inherit font-semibold">Tìm đường đi</span>
+                <span className=" text-lg text-inherit font-semibold min-w-[131px]">Tìm đường đi</span>
               </a>
             </div>
             <div className="flex items-stretch">

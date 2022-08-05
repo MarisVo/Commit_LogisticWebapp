@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "antd/dist/antd.css";
 import { Carousel, Tabs, Select } from "antd";
 import { Link} from "react-router-dom";
 import appStore from "../../assets/images/appStore.png";
@@ -213,7 +212,7 @@ const Home = () => {
     <div className="">
       <Carousel autoplay autoplaySpeed={2000} effect="fade">
         <div>
-          <a href="">
+          <a href="/">
             <img
               src="https://jtexpress.vn/storage/app/uploads/public/629/6bd/ca2/6296bdca297c7512128382.jpg"
               className="w-full h-[200px] md:h-[300px] lg:h-[550px] object-cover"
@@ -222,7 +221,7 @@ const Home = () => {
           </a>
         </div>
         <div>
-          <a href="">
+          <a href="/">
             <img
               src="https://jtexpress.vn/storage/app/uploads/public/629/6ce/a24/6296cea2443e2392069160.jpg"
               className="w-full h-[200px] md:h-[300px] lg:h-[550px] object-cover"
@@ -231,7 +230,7 @@ const Home = () => {
           </a>
         </div>
         <div>
-          <a href="">
+          <a href="/">
             <img
               src="https://jtexpress.vn/storage/app/uploads/public/629/5ed/e5b/6295ede5b2956262118810.jpg"
               className="w-full h-[200px] md:h-[300px] lg:h-[550px] object-cover"

@@ -154,6 +154,15 @@ export default function AdminPage() {
       "15",
       <DesktopOutlined> </DesktopOutlined>
     ),
+    getItem(
+      <div>
+
+        <Link to="maintenance">Maintenance</Link>
+
+      </div>,
+      "16",
+      <DesktopOutlined> </DesktopOutlined>
+    ),
 
     // getItem("User", "sub1", <UserOutlined />, [getItem("Tom", "3"), getItem("Bill", "4"), getItem("Alex", "5")]),
   ];
