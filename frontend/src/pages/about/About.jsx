@@ -7,9 +7,10 @@ function About() {
     useEffect(() => {
         const fetchApi = async () => {
             try {
-                const {data:response} = await axios.get(`${END_POINT}/about`)
-                setData(response.data)
-                setBanners(response.data.banners)
+                const res = await axios.get(`${END_POINT}/about`)
+                setData(res.data.data)
+                setBanners(res.data.data.banners)
+                console.log(res)
             }
             catch (error) {
                 console.error(error.message)

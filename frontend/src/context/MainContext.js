@@ -7,6 +7,10 @@ const MainProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState(null);
   const [refreshToken, setRefreshToken] = useState(null);
   const [user, setUser] = useState(null);
+  const [dataWarehouse, setDataWarehouse] = useState({
+    province: null,
+    district: null
+  })
   const [metadata, setMetadata] = useState({
     title: 'Tien Kim Thanh Logistics',
     description: 'Webapp of Tien Kim Thanh Logistics for logistic services',
@@ -97,7 +101,9 @@ const MainProvider = ({ children }) => {
         logoutHandle,
         checkAuthenticated,
         metadata,
-        setMetadata
+        setMetadata,
+        dataWarehouse,
+        setDataWarehouse
       }}
     >
       {children}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
-import SideBar from "../../components/SideBar";
+import SideBarDriver from "../../components/SideBarDriver";
 import { FaTruckMoving } from "react-icons/fa";
 import {
   AiOutlineGift,
@@ -89,13 +89,13 @@ const PurchaseDriver = () => {
   const [key, setKey] = useState("tất cả");
   function handleTabs(key) {
     setKey(key);
-    navigate(`/user/purchase?type=${key}`);
+    navigate(`/khach-hang/dat-hang?type=${key}`);
   }
 
   return (
     <div className="pt-[68px]">
       <div className="bg-gray-100 relative ">
-        <SideBar className="" handleOpen={handleOpen} open={open} />
+        <SideBarDriver className="" handleOpen={handleOpen} open={open} />
         <div>
           <span className="w-6 h-6 absolute top-[4%] left-[0%] z-3  md:top-[15%]  ">
             <IoArrowForwardCircleOutline
@@ -148,7 +148,7 @@ const PurchaseDriver = () => {
                   <FaTruckMoving className=" sm:mr-2 mr-[3px]" />
                   <Link
                     className=" text-[10px] font-medium  sm:mr-4 sm:text-sm  hover:translate-y-[-1px] transition-all hover:text-yellow-500  cursor-pointer "
-                    to="/user/purchase/order/2323"
+                    to="/khach-hang/dat-hang/don-hang/123"
                   >
                     Chưa giao
                   </Link>
@@ -186,7 +186,7 @@ const PurchaseDriver = () => {
                   </button>
                 </div> */}
                 <div className="flex justify-end mb-1 mr-2">
-                  <Link className=" " to="/user/purchase/order/2323">
+                  <Link className=" " to="/tai-xe/thong-bao/don-hang">
                     <button
                       onClick={handleStatus()}
                       className="p-2 ml-3 items-center max-w-[140px] flex font-semibold bg-yellow-500  border-button_color border-2  hover:translate-y-[-1px] transition-all text-[#00003B] rounded-sm"
@@ -197,7 +197,7 @@ const PurchaseDriver = () => {
                   </Link>
                 </div>
                 <div className="flex justify-end mb-1 mr-2">
-                  <Link className=" " to="/user/purchase/232">
+                  <Link className=" " to="/khach-hang/dat-hang/123">
                     <button className="p-2 ml-3 max-w-[140px] items-center flex font-semibold bg-yellow-500  border-button_color border-2  hover:translate-y-[-1px] transition-all text-[#00003B] rounded-sm">
                       <MdOutlineEditCalendar className="mr-1" />
                       <div> Chi tiết đơn</div>

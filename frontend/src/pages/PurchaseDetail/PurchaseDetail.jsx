@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
-import SideBar from "../../components/SideBar";
+import SideBar from "../../components/SideBarCustomer";
 import { IoLocationOutline } from "react-icons/io5";
 
 import { AiOutlineGift, AiOutlineUser, AiOutlineInbox } from "react-icons/ai";

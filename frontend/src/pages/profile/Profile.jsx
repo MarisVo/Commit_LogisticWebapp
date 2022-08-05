@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
-import SideBar from "../../components/SideBar";
+import SideBar from "../../components/SideBarCustomer";
 import {
   AiOutlineEye,
   AiOutlineEyeInvisible,

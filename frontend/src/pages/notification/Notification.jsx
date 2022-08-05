@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
-import SideBar from "../../components/SideBar";
+import SideBar from "../../components/SideBarCustomer";
 import { Link } from "react-router-dom";
 import { io } from "socket.io-client";
 
@@ -60,7 +60,7 @@ function Notification() {
                     </div>
                   </div>
                   <div className="flex flex-shrink-0">
-                    <Link to="/user/purchase/order/2323">
+                    <Link to="khach-hang/dat-hang/don-hang/2323">
                        <button className="py-2 px-4 mt-2 mb-4 round-md font-extrabold bg-[#ffd124]  hover:translate-y-[-1px] transition-all text-[#00003B] rounded-sm">
                        Chi tiết
                       </button>
@@ -87,7 +87,7 @@ function Notification() {
                     </div>
                   </div>
                   <div className="flex flex-shrink-0">
-                    <Link to="/user/purchase/order/2323">
+                    <Link to="/khach-hang/dat-hang/don-hang/2323">
                        <button className="py-2 px-4 mt-2 mb-4 round-md font-extrabold bg-[#ffd124]  hover:translate-y-[-1px] transition-all text-[#00003B] rounded-sm">
                        Chi tiết
                       </button>

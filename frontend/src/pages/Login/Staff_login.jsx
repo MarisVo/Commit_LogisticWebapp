@@ -148,6 +148,9 @@ function StaffLogin() {
         else if(data.user.role.staff_type==="storekeeper") {
           navigate("/storekeeper", { replace: true });
         }
+        else if(data.user.role.staff_type==="driver") {
+          navigate("/tai-xe/dat-hang", { replace: true });
+        }
     } catch(error) {
       if(error.message == "Request failed with status code 403") {
         failed403();

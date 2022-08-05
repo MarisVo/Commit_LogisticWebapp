@@ -32,7 +32,7 @@ import {
   Notification,
   PurchaseDriver,
   LayerStorekeeper,
-  ProductsManager,
+  Bills,
   Inventory,
   InventoryDetail,
   StandardService,
@@ -57,6 +57,8 @@ import {
   AdminStaff,
   AdminOrder,
   Staff_Register,
+  AdminMaintenance,
+  NotificationDriver
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainProvider, { MainContext } from "./context/MainContext";
@@ -64,6 +66,7 @@ import ProtectedRoute from "./layouts/ProtectLayout";
 import StaffRoute from "./layouts/StaffLayout";
 import CustomerRoute from "./layouts/CustomerRoute";
 import Metadata from './SEO/Metadata';
+import DriverRoute from "./layouts/DriverRoute";
 const App = () => {
   return (
     <MainProvider>
@@ -106,13 +109,14 @@ const App = () => {
               <Route path="chuyen-phat-do-tuoi-song" element={<FreshService />} />
               {/* ----------------------Profile------------------ */}
               <Route element={<CustomerRoute />}>
-                <Route path="user/account/profile" element={<Profile />} />
-                <Route path="user/purchase" element={<Purchase />} />
-                <Route path="driver/purchase" element={<PurchaseDriver />} />
-                <Route path="user/purchase/:id" element={<PurchaseDetail />} />
-                <Route path="user/purchase/order/:id" element={<PurchaseStage />} />
-                <Route path="user/notifications/order" element={<Notification />} />
+                <Route path="khach-hang/trang-ca-nhan" element={<Profile />} />
+                <Route path="khach-hang/dat-hang" element={<Purchase />} />
+                <Route path="khach-hang/dat-hang/:id" element={<PurchaseDetail />} />
+                <Route path="khach-hang/dat-hang/don-hang/:id" element={<PurchaseStage />} />
+                <Route path="khach-hang/thong-bao/don-hang" element={<Notification />} />
               </Route>
+             
+            
               {/* -------------------------Đăng kí/Đăng nhập------------- */}
                 <Route element={<ProtectedRoute/>}>
               <Route path="dang-ki" element={<Register /> } />
@@ -127,13 +131,19 @@ const App = () => {
             </Route>
 
             <Route element={<StaffRoute />}>
+                <Route path="/" element={<DefaultLayout />}>
+                    <Route element={<DriverRoute />}>
+                        <Route path="tai-xe/dat-hang" element={<PurchaseDriver />} />
+                        <Route path="tai-xe/thong-bao/don-hang" element={<NotificationDriver />} /> 
+                    </Route>
+               <Route path="dang-nhap-nhan-vien" element={<StaffLogin /> } />
+           </Route>
               <Route path="dang-ki-nhan-vien" element={<StaffRegister /> } />
-              <Route path="dang-nhap-nhan-vien" element={<StaffLogin /> } />
               <Route path="storekeeper" element={<LayerStorekeeper />}>
-                <Route index element={<ProductsManager />} />
-                <Route path="xuat-nhap" element={<ProductsManager />} />
-                <Route path="ton-kho" element={<Inventory />} />
-                <Route path="ton-kho/:id" element={<InventoryDetail />} />
+                <Route index element={<Bills />} />
+                <Route path="bills" element={<Bills />} />
+                <Route path="inventory" element={<Inventory />} />
+                <Route path="inventory/:id" element={<InventoryDetail />} />
               </Route>
               <Route path="admin" element={<AdminPage />}>
                 <Route path="about" element={<AdminAbout />}></Route>
@@ -152,6 +162,7 @@ const App = () => {
                 <Route path="customer" element={<AdminCustomer/>}></Route>
                 <Route path="order" element={<AdminOrder/>}></Route>
                 <Route path="staff_regis" element={<StaffRegister />}></Route>
+                <Route path="maintenance" element={<AdminMaintenance />}> </Route>
               </Route>
             </Route>
 

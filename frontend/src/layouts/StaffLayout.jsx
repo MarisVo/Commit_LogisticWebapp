@@ -13,14 +13,16 @@ function  StaffRoute ()  {
      if(login){
        await checkAuthenticated()
      }
-    console.log(user)
-  }, [])
+  }, [user])
    useEffect(()=>{
      if(user?.role.staff_type==="admin"){
        navigate("/admin", { replace: true });
     }
     else if(user?.role.staff_type==="storekeeper") {
        navigate("/storekeeper", { replace: true });
+    }
+    else if(user?.role.staff_type==="driver"){
+        navigate("/tai-xe/dat-hang", { replace: true });
     }
   },[user])
   console.log(user)
