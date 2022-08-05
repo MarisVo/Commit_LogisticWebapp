@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
-import SideBar from "../../components/SideBarCustomer";
+import SideBarDriver from "../../components/SideBarDriver";
 import { Link } from "react-router-dom";
 import { io } from "socket.io-client";
 
-function Notification() {
+function NotificationDriver() {
   const [open, setOpen] = useState(false);
   const socket = useRef();
   const handleOpen = () => {
@@ -23,7 +23,7 @@ function Notification() {
   return (
     <div className="pt-[72px]">
       <div className="bg-gray-100 overflow-y-hidden relative ">
-        <SideBar className="" handleOpen={handleOpen} open={open} />
+        <SideBarDriver className="" handleOpen={handleOpen} open={open} />
         <span className="w-6 h-6 fixed top-[12%] left-[0%] z-3 transition sm:top-[11%]  lg:top-[15%]">
           <IoArrowForwardCircleOutline
             className="w-6 h-6 z-50   "
@@ -103,4 +103,4 @@ function Notification() {
   );
 }
 
-export default Notification;
+export default NotificationDriver;

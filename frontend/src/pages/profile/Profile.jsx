@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
-import SideBar from "../../components/SideBar";
+import SideBar from "../../components/SideBarCustomer";
 import {
   AiOutlineEye,
   AiOutlineEyeInvisible,
@@ -309,7 +309,7 @@ export default function Profile() {
             />
           </span>
 
-          <div className="grid grid-cols-5 mx-1 sm:mx-16 lg:mx-[270px] md:mx-28 py-5 bg-gray-100 overflow-hidden  ">
+          <div className="grid grid-cols-5 mx-1 sm:mx-16 lg:mx-[250px] md:mx-28 py-5 bg-gray-100 overflow-hidden  ">
             <div className=" col-span-5 bg-[#f8faff] rounded-lg   shadow-xl mb-3">
               <div className="flex justify-start flex-col  border-b-2  pl-4 pb-3 pt-3">
                 <div className="text-xl font-bold mb-1 lg:text-2xl mt-2">

@@ -83,15 +83,15 @@ const MainProvider = ({ children }) => {
       setAccessToken(null);
       setRefreshToken(null)
       setUser(null);
-      alert("logoutsuccess");
+      alert("Đăng xuất thành công");
       window.location.href = "/";
     } catch (err) {
       console.log(err);
     }
   };
-  useEffect(()=>{
+  /* useEffect(()=>{
    checkAuthenticated()
-  },[])
+  },[]) */
   return (
     <MainContext.Provider
       value={{

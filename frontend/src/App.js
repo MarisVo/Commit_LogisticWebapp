@@ -58,6 +58,7 @@ import {
   AdminOrder,
   Staff_Register,
   AdminMaintenance,
+  NotificationDriver
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainProvider, { MainContext } from "./context/MainContext";
@@ -65,6 +66,7 @@ import ProtectedRoute from "./layouts/ProtectLayout";
 import StaffRoute from "./layouts/StaffLayout";
 import CustomerRoute from "./layouts/CustomerRoute";
 import Metadata from './SEO/Metadata';
+import DriverRoute from "./layouts/DriverRoute";
 const App = () => {
   return (
     <MainProvider>
@@ -107,23 +109,20 @@ const App = () => {
               <Route path="chuyen-phat-do-tuoi-song" element={<FreshService />} />
               {/* ----------------------Profile------------------ */}
               <Route element={<CustomerRoute />}>
-                <Route path="user/account/profile" element={<Profile />} />
-                <Route path="user/purchase" element={<Purchase />} />
-                <Route path="driver/purchase" element={<PurchaseDriver />} />
-                <Route path="user/purchase/:id" element={<PurchaseDetail />} />
-                <Route path="user/purchase/order/:id" element={<PurchaseStage />} />
-                <Route path="user/notifications/order" element={<Notification />} />
+                <Route path="khach-hang/trang-ca-nhan" element={<Profile />} />
+                <Route path="khach-hang/dat-hang" element={<Purchase />} />
+                <Route path="khach-hang/dat-hang/:id" element={<PurchaseDetail />} />
+                <Route path="khach-hang/dat-hang/don-hang/:id" element={<PurchaseStage />} />
+                <Route path="khach-hang/thong-bao/don-hang" element={<Notification />} />
               </Route>
+             
+            
               {/* -------------------------Đăng kí/Đăng nhập------------- */}
                 <Route element={<ProtectedRoute/>}>
               <Route path="dang-ki" element={<Register /> } />
               <Route path="dang-nhap" element={<Login /> } />
               <Route path="quen-mat-khau" element={<ForgetPass />} />
               <Route path="xac-thuc-otp" element={<Register_OTP />} />
-             
-
-              <Route path="dang-ki-nhan-vien" element={<StaffRegister /> } />
-
                 </Route>            
               {/* -----------------------Tư vấn----------------------- */}
               <Route path="tu-van/lien-he" element={<Contact />} />
@@ -132,7 +131,14 @@ const App = () => {
             </Route>
 
             <Route element={<StaffRoute />}>
-              <Route path="dang-nhap-nhan-vien" element={<StaffLogin /> } />
+                <Route path="/" element={<DefaultLayout />}>
+                    <Route element={<DriverRoute />}>
+                        <Route path="tai-xe/dat-hang" element={<PurchaseDriver />} />
+                        <Route path="tai-xe/thong-bao/don-hang" element={<NotificationDriver />} /> 
+                    </Route>
+               <Route path="dang-nhap-nhan-vien" element={<StaffLogin /> } />
+           </Route>
+              <Route path="dang-ki-nhan-vien" element={<StaffRegister /> } />
               <Route path="storekeeper" element={<LayerStorekeeper />}>
                 <Route index element={<Bills />} />
                 <Route path="bills" element={<Bills />} />
