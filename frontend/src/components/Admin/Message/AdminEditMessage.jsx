@@ -42,7 +42,7 @@ function AdminEditMessage({ isVisible, onClose, onOk, loading, disable, data }) 
                             </Item> */}
                             <Item label="Tình trạng">
                                 
-                                    <select defaultValue={data.status}>
+                                    <select defaultValue={data.status} style={{padding:'5px'}}>
                                         <option value="unseen">unseen</option>
                                         <option value="seen">seen</option>
                                     </select>

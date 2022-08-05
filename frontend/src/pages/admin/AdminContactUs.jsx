@@ -1,34 +1,54 @@
 import { Button, Checkbox, Form, Input } from "antd";
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { TOKEN } from "./adminToken";
 import { useEffect } from "react";
+import { MainContext } from "../../context/MainContext";
 export default function AdminContactUs() {
+  const {accessToken} = useContext(MainContext);
   const [contactState, setContactState] = useState({
-    address: "string",
-    phone: "phone",
-    email: "email@gmail.com",
-    facebook: "url",
-    instagram: "url",
-    tiktok: "url",
-    youtube: "url",
+    // address: "string",
+    // phone: "phone",
+    // email: "email@gmail.com",
+    // facebook: "url",
+    // instagram: "url",
+    // tiktok: "url",
+    // youtube: "url",
   });
   const callContactData = async () => {
     try {
       const result = await axios({
-        url: "",
+        url: "http://localhost:8000/api/contactUs",
         method: "get",
-        headers: "Bears" + TOKEN,
+        headers: { authorization: `Bearer ${accessToken}` },
       });
       console.log(result);
       if (result.status === 200) {
-        setContactState(result.data);
+        setContactState(result.data.data);
       }
     } catch (error) {
       console.log(error.response);
     }
   };
+
+  const postApi =  async (values,id) =>{
+    try {
+      const result = await axios({
+        url: `http://localhost:8000/api/admin/contactUs/`,
+        method: "post",
+        headers: { authorization: `Bearer ${accessToken}` },
+        data:values,
+      });
+      console.log(result);
+      if (result.status === 200) {
+        // setContactState(result.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 
   useEffect(() => {
     callContactData();
@@ -38,6 +58,8 @@ export default function AdminContactUs() {
     console.log("Success:", values);
     alert("Thông tin được update");
     setContactState(values);
+    postApi(values);
+    callContactData()
   };
 
   const onFinishFailed = (errorInfo) => {
