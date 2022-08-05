@@ -57,18 +57,17 @@ import {
   AdminStaff,
   AdminOrder,
   Staff_Register,
-
-
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainProvider, { MainContext } from "./context/MainContext";
 import ProtectedRoute from "./layouts/ProtectLayout";
 import StaffRoute from "./layouts/StaffLayout";
 import CustomerRoute from "./layouts/CustomerRoute";
-
+import Metadata from './SEO/Metadata';
 const App = () => {
   return (
     <MainProvider>
+      <Metadata>
       <BrowserRouter>
         <div className="wrapper">
           <ScrollToTop />
@@ -120,10 +119,6 @@ const App = () => {
               <Route path="dang-nhap" element={<Login /> } />
               <Route path="quen-mat-khau" element={<ForgetPass />} />
               <Route path="xac-thuc-otp" element={<Register_OTP />} />
-             
-
-              <Route path="dang-ki-nhan-vien" element={<StaffRegister /> } />
-
                 </Route>            
               {/* -----------------------Tư vấn----------------------- */}
               <Route path="tu-van/lien-he" element={<Contact />} />
@@ -132,6 +127,7 @@ const App = () => {
             </Route>
 
             <Route element={<StaffRoute />}>
+              <Route path="dang-ki-nhan-vien" element={<StaffRegister /> } />
               <Route path="dang-nhap-nhan-vien" element={<StaffLogin /> } />
               <Route path="storekeeper" element={<LayerStorekeeper />}>
                 <Route index element={<ProductsManager />} />
@@ -162,6 +158,7 @@ const App = () => {
           </Routes>
         </div>
       </BrowserRouter>
+      </Metadata>
     </MainProvider>
   );
 };

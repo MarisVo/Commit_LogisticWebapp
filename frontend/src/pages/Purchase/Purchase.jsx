@@ -112,7 +112,7 @@ const Purchase = () => {
               size="large"
               tabPosition="top"
               type="line"
-              className="pt-2 px-2 lg:px-4"
+              className="pt-1 px-2 lg:px-2"
               tabBarStyle={{ color: "#ffbb00" }}
             >
               <TabPane tab="Tất cả" key="tất cả"></TabPane>

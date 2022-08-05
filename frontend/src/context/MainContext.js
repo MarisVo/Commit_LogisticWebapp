@@ -7,6 +7,16 @@ const MainProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState(null);
   const [refreshToken, setRefreshToken] = useState(null);
   const [user, setUser] = useState(null);
+  const [metadata, setMetadata] = useState({
+    title: 'Tien Kim Thanh Logistics',
+    description: 'Webapp of Tien Kim Thanh Logistics for logistic services',
+    meta: {
+      name: {
+        title: 'Tien Kim Thanh Logistics',
+        keywords: 'logistic,logistics,trucking,transport,TKTL,Tien Kim Thanh',
+      }
+    }
+  })
 
   const checkAuthenticated = async () => {
     let token = null, refresh = null
@@ -69,15 +79,15 @@ const MainProvider = ({ children }) => {
       setAccessToken(null);
       setRefreshToken(null)
       setUser(null);
-      alert("logoutsuccess");
+      alert("Đăng xuất thành công");
       window.location.href = "/";
     } catch (err) {
       console.log(err);
     }
   };
-  useEffect(()=>{
+  /* useEffect(()=>{
    checkAuthenticated()
-  },[])
+  },[]) */
   return (
     <MainContext.Provider
       value={{
@@ -86,6 +96,8 @@ const MainProvider = ({ children }) => {
         loginHandle,
         logoutHandle,
         checkAuthenticated,
+        metadata,
+        setMetadata
       }}
     >
       {children}

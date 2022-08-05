@@ -5,6 +5,9 @@ import cors from "cors"
 import YAML from 'yamljs'
 import { Server } from 'socket.io'
 import session from 'express-session'
+import path from 'path'
+const __dirname = path.resolve(path.dirname(''))
+import bodyParser from "body-parser"
 
 import authRoute from "./router/auth.js"
 import adminRoute from "./router/admin/index.js"
@@ -23,6 +26,13 @@ import applicantRoute from "./router/applicant.js"
 import careerRoute from "./router/career.js"
 import departmentRoute from "./router/department.js"
 import participantRoute from "./router/participant.js"
+import productRoute from "./router/product.js"
+import featureRoute from "./router/feature.js"
+import distanceRoute from "./router/distance.js"
+import priceRoute from "./router/price.js"
+import priceListRoute from "./router/pricelist.js"
+import serviceRoute from "./router/service.js"
+import customerRoute from "./router/customer.js"
 
 // swagger setup
 import swaggerUi from 'swagger-ui-express'
@@ -45,9 +55,12 @@ dotenv.config()
 /**
  * Connect MongoDB
  */
-mongoose.connect(process.env.MONGO_URI, () => {
-    console.log('Connect MongoDB successfully.')
-}).catch(error => console.log(error.reason))
+mongoose.connect(process.env.MONGO_URI)
+const db = mongoose.connection
+db.on('error', () => console.log('MongoDB connection error.'))
+db.once('open', () => {
+    console.log('Connected to MongoDB successfully.')
+})
 
 const PORT = process.env.PORT || 8000
 export const TOKEN_LIST = {}
@@ -69,11 +82,10 @@ app.use(session({
     resave: false
 }))
 app.use(express.json())
-app.use(express.static('public'))
-app.use(cors({
-    origin: 'http://localhost:3000',
-    credentials: true
-}))
+app.use(cors())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/public', publicRoute)
@@ -99,7 +111,25 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/career', careerRoute)
     .use('/api/department', departmentRoute)
     .use('/api/participant', participantRoute)
+    .use('/api/feature', featureRoute)
     .use('/api/notification', verifyToken, notificationRoute)
+    .use('/api/product', productRoute)
+    .use('/api/distance', distanceRoute)
+    .use('/api/price', priceRoute)
+    .use('/api/pricelist', priceListRoute)
+    .use('/api/service', serviceRoute)
+    .use('/api/customer', customerRoute)
+
+app.use(express.static(path.join(__dirname, process.env.BUILD_DIST)));
+
+app.get('/*', async (req, res) => {
+    try {
+        res.sendFile(path.join(__dirname, process.env.BUILD_DIST + 'index.html'))
+    } catch (error) {
+        console.log(error.message)
+        res.sendStatus(500)
+    }
+})
 
 io.on(NOTIFY_EVENT.connection, socket => {
     // console.log('Connected to a user successfully.')
