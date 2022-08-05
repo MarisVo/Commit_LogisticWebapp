@@ -80,13 +80,13 @@ distanceRoute.get("/service/:serviceId", async (req, res) => {
       if (toProvince) {
         query.toProvince = toProvince;
       }
-      for (let i = 0; i < service.distances.length; i++) {
-        if (service.distances.length) {
+      if (service.distances.length) {
+        for (let i = 0; i < service.distances.length; i++) {
           ids.push(service.distances[i]);
         }
       }
       query._id = ids;
-      const length = await Distance.count();
+      const length = service.distances.length;
       const distance = await Distance.find( query )
         .limit(pageSize)
         .skip(pageSize * page)
