@@ -24,7 +24,12 @@ import applicantRoute from "./router/applicant.js"
 import careerRoute from "./router/career.js"
 import departmentRoute from "./router/department.js"
 import participantRoute from "./router/participant.js"
+import productRoute from "./router/product.js"
 import featureRoute from "./router/feature.js"
+import distanceRoute from "./router/distance.js"
+import priceRoute from "./router/price.js"
+import priceListRoute from "./router/pricelist.js"
+import serviceRoute from "./router/service.js"
 import customerRoute from "./router/customer.js"
 
 // swagger setup
@@ -33,10 +38,6 @@ const swaggerDocument = YAML.load('./swagger.yaml')
 
 import { verifyAdmin, verifyToken } from "./middleware/index.js"
 import userRoute from "./router/user.js"
-import roadRoute from "./router/road.js"
-import carRoute from "./router/car.js"
-import billRoute from "./router/bill.js"
-import productShipmentRoute from "./router/productShipment.js"
 import prohibitedProductRoute from "./router/prohibitedProduct.js"
 
 import { clearTokenList } from "./service/jwt.js"
@@ -84,10 +85,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/quote', quoteRoute)
     .use('/api/warehouse', warehouseRoute)
     .use('/api/user', userRoute)
-    .use('/api/road', roadRoute)
-    .use('/api/car', carRoute)
-    .use('/api/product-shipment', productShipmentRoute)
-    .use('/api/bill', billRoute)
     .use('/api/prohibited-product', prohibitedProductRoute)
     .use('/api/applicant', applicantRoute)
     .use('/api/career', careerRoute)
@@ -95,6 +92,11 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/participant', participantRoute)
     .use('/api/feature', featureRoute)
     .use('/api/notification', verifyToken, notificationRoute)
+    .use('/api/product', productRoute)
+    .use('/api/distance', distanceRoute)
+    .use('/api/price', priceRoute)
+    .use('/api/pricelist', priceListRoute)
+    .use('/api/service', serviceRoute)
     .use('/api/customer', customerRoute)
 
 io.on(NOTIFY_EVENT.connection, socket => {
