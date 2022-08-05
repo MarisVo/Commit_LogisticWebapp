@@ -65,8 +65,7 @@ departmentAdminRoute.put("/:id", async (req, res) => {
     }
     return sendError(res, "Department does not exist.");
   } catch (error) {
-    console.log(error);
-    return sendError(res);
+    return sendServerError(res);
   }
 });
 
@@ -89,8 +88,7 @@ departmentAdminRoute.delete("/:id", async (req, res) => {
         return sendError(res, err);
       });
   } catch (error) {
-    console.log(error);
-    return sendError(res);
+    return sendServerError(res);
   }
 });
 

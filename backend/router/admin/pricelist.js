@@ -91,7 +91,7 @@ priceListAdminRoute.put(
       }
       return sendError(res, "service does not exist.");
     } catch (error) {
-      return sendError(res);
+      return sendServerError(res);
     }
   }
 );
@@ -116,7 +116,7 @@ priceListAdminRoute.delete("/:serviceId", async (req, res) => {
     );
     return sendSuccess(res, "Delete price list successfully");
   } catch (error) {
-    return sendError(res, "Delete price list failed");
+    return sendServerError(res, "Delete price list failed");
   }
 });
 

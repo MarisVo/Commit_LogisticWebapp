@@ -56,7 +56,6 @@ featureAdminRoute.post(
         return sendSuccess(res, "create new feature successfully.");
       }
     } catch (error) {
-      console.log(error);
       if (req.files) req.files.map((file) => unlinkSync(file.path));
       return sendServerError(res);
     }
@@ -97,8 +96,7 @@ featureAdminRoute.put(
       return sendError(res, "Feature does not exist.");
     } catch (error) {
       if (req.files) req.files.map((file) => unlinkSync(file.path));
-      console.log(error);
-      return sendError(res);
+      return sendServerError(res);
     }
   }
 );
@@ -122,8 +120,7 @@ featureAdminRoute.delete("/:id", async (req, res) => {
         return sendError(res, err);
       });
   } catch (error) {
-    console.log(error);
-    return sendError(res);
+    return sendServerError(res);
   }
 });
 

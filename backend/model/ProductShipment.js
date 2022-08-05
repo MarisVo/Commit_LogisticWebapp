@@ -6,6 +6,11 @@ const ProductShipmentSchema = new Schema(
         quantity: {
             type: Number,
             required: true
+        },
+        product_id: {
+            type: Schema.Types.ObjectId,
+            ref: 'product_shipments', 
+            required: true
         }
     },
     { timestamps: true }

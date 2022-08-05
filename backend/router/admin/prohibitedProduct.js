@@ -84,7 +84,7 @@ const prohibitedProductAdminRoute = express.Router()
                 .catch((err) => { return sendError(res, err)})  
         } catch (error) {
             console.log(error)
-            return sendError(res)
+            return sendServerError(res)
         }
     })
 
