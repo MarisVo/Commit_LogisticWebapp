@@ -12,6 +12,29 @@ import Career from "../../model/Career.js";
 const applicantAdminRoute = express.Router();
 
 /**
+ * @route GET /api/admin/applicant/:id
+ * @description admin get applicant status information
+ * @access private
+ */
+applicantAdminRoute.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const applicant = await Applicant.findById({ _id: id });
+    if (!applicant) return sendError(res, "Applicant not exists.");
+    if (applicant)
+      return sendSuccess(
+        res,
+        "get applicant information successfully.",
+        applicant
+      );
+    return sendError(res, "applicant information is not found.");
+  } catch (error) {
+    console.log(error);
+    return sendServerError(res);
+  }
+});
+
+/**
  * @route PUT /api/admin/applicant/:id
  * @description update status of an existing applicant
  * @access private
