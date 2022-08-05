@@ -93,7 +93,7 @@ contactMsgAdminRoute.delete('/:id',
             return sendSuccess(res, "Delete message successfully.") 
         } catch (error) {
             console.log(error)
-            return sendError(res)
+            return sendServerError(res)
         }
     }
 )
