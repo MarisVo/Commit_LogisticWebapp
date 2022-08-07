@@ -395,18 +395,19 @@ export default function AdminOrder() {
         setLoading(true)
         setIsDisable(true)
         const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('input')
+        const select = e.target.parentElement.parentElement.parentElement.querySelectorAll('select')
         const newItem = {
             receiver: {
                 "name": tableData[0].value,
-                "phone": tableData[7].value,
-                "identity": tableData[3].value,
+                "phone": tableData[6].value,
+                "identity": select[0].value,
             },
-            total_price: tableData[5].value,
+            total_price: tableData[4].value,
             destination: tableData[2].value,
-            serviceName: tableData[4].value,
+            serviceName: tableData[3].value,
             origin: tableData[1].value,
             // status: tableData[3].value,
-            customerEmail: tableData[6].value
+            customerEmail: tableData[5].value
         }
         try {
             await setTimeout(() => {
