@@ -38,14 +38,14 @@ export default function AdminPage() {
   const items = [
     getItem(
       <div>
-        <Link to="about">About</Link>
+        <Link to="about">Về chúng tôi</Link>
       </div>,
       "1",
       <MdGroup />
     ),
     getItem(
       <div>
-        <Link to="contact-us">Contact Us</Link>
+        <Link to="contact-us">Liên hệ</Link>
       </div>,
       "2",
       <MdConnectWithoutContact />
@@ -53,21 +53,21 @@ export default function AdminPage() {
 
     getItem(
       <div>
-        <Link to="commitment">Commitment</Link>
+        <Link to="commitment">Cam kết</Link>
       </div>,
       "3",
       <FaHandshake />
     ),
     getItem(
       <div>
-        <Link to="message">Contact message</Link>
+        <Link to="message">Gửi tin nhắn</Link> {/*contact message*/}
       </div>,
       "4",
       <AiOutlineMessage />
     ),
     getItem(
       <div>
-        <Link to="service">Delivery service</Link>
+        <Link to="service">Dịch cụ vận chuyển</Link>
       </div>,
       "5",
       <MdOutlineDeliveryDining />
@@ -75,28 +75,28 @@ export default function AdminPage() {
 
     getItem(
       <div>
-        <Link to="partner">partner</Link>
+        <Link to="partner">Đối tác</Link>
       </div>,
       "6",
       <FaHandshake />
     ),
     getItem(
       <div>
-        <Link to="career">career</Link>
+        <Link to="career">Việc làm</Link>
       </div>,
       "7",
       <BsPaperclip />
     ),
     getItem(
       <div>
-        <Link to="applicant">applicant</Link>
+        <Link to="applicant">Ứng viên</Link>
       </div>,
       "8",
       <ImProfile />
     ),
     getItem(
       <div>
-        <Link to="department">department</Link>
+        <Link to="department">Phòng ban</Link>
       </div>,
       "9",
       <AiOutlinePartition />
@@ -104,7 +104,7 @@ export default function AdminPage() {
     getItem(
       <div>
 
-        <Link to="warehouse">warehouse</Link>
+        <Link to="warehouse">Kho bãi</Link>
 
 
       </div>,
@@ -114,7 +114,7 @@ export default function AdminPage() {
     getItem(
       <div>
 
-        <Link to="car">car</Link>
+        <Link to="car">Phương tiện</Link>
 
       </div>,
       "11",
@@ -123,7 +123,7 @@ export default function AdminPage() {
     getItem(
       <div>
 
-        <Link to="road">road</Link>
+        <Link to="road">Hành trình</Link>
 
       </div>,
       "12",
@@ -131,7 +131,7 @@ export default function AdminPage() {
     ),
     getItem(
       <div>
-        <Link to="staff_regis">add staff</Link>
+        <Link to="staff_regis">Thêm nhân viên mới</Link>
       </div>,
       "13",
       <DesktopOutlined> </DesktopOutlined>
@@ -139,7 +139,7 @@ export default function AdminPage() {
     getItem(
       <div>
 
-        <Link to="staff">staff</Link>
+        <Link to="staff">Nhân viên</Link>
 
       </div>,
       "14",
@@ -148,7 +148,7 @@ export default function AdminPage() {
     getItem(
       <div>
 
-        <Link to="order">order</Link>
+        <Link to="order">Đơn hàng</Link>
 
       </div>,
       "15",
@@ -157,7 +157,7 @@ export default function AdminPage() {
     getItem(
       <div>
 
-        <Link to="maintenance">Maintenance</Link>
+        <Link to="maintenance">Bảo trì, sửa chữa</Link>
 
       </div>,
       "16",
