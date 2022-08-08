@@ -35,6 +35,9 @@ export { default as LayerStorekeeper } from "../layouts/StorekeeperLayout";
 export { default as Bills } from "./Storekeeper/Bills";
 export { default as Inventory } from "./Storekeeper/Inventory";
 export { default as InventoryDetail } from "./Storekeeper/InventoryDetail";
+export { default as NotiStorekeeper } from "./Storekeeper/Notification/NotiStorekeeper";
+
+
 //----------------------------------------------//
 export { default as Purchase } from "./Purchase/Purchase.jsx";
 export { default as PurchaseDriver } from "./Purchase/PurchaseDriver.jsx";
