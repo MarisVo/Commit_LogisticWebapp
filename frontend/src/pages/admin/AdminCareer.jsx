@@ -195,11 +195,9 @@ function AdminCareer() {
   };
   const handleClickEdit = (record) => {
     setIsEditVisible(true);
-    // const [dataEdit] = data.filter((ele) => ele.name === record.name);
     setDataForEdit(record);
   };
   const searchByKeyword = (value) => {
-    // fetchData({ ...pagination, page: pagination.current - 1, keyword: value });
     setParams({
       ...params,
       page: 0,
