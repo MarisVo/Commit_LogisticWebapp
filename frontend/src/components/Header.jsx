@@ -1,7 +1,7 @@
 import logoJT from "../assets/icons/logo-J&T.svg";
 import { FaChevronDown, FaBars } from "react-icons/fa";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { /*useEffect,*/ useState } from "react";
+import { useState } from "react";
 import { Menu } from "antd";
 import "antd/dist/antd.css";
 import { useContext } from "react";
