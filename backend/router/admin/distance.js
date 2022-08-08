@@ -35,7 +35,7 @@ distanceAdminRoute.post("/create/:serviceId", async (req, res) => {
         fromProvince,
         toProvince,
         zonecode,
-        dist,
+        distance: dist,
       });
 
       await DeliveryService.findOneAndUpdate(
@@ -66,13 +66,13 @@ distanceAdminRoute.put("/:id", async (req, res) => {
         fromProvince: fromProvince,
         toProvince: toProvince,
         zonecode: zonecode,
-        dist: dist,
+        distance: dist,
       });
       return sendSuccess(res, "Update distance successfully.", {
         fromProvince: fromProvince,
         toProvince: toProvince,
         zonecode: zonecode,
-        dist: dist,
+        distance: dist,
       });
     }
     return sendError(res, "distance does not exist.");
