@@ -8,7 +8,8 @@ const CarFleetSchema = new Schema(
             required: true
         },
         director: {
-            type: String,
+            type: Schema.Types.ObjectId,
+            ref: 'staffs',
             required: true
         },
         turnover: [

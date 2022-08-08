@@ -1,3 +1,4 @@
+import { RETURN_ZONE, PRODUCT_UNIT } from "../constant.js"
 import Order from "../model/Order.js"
 
 export const genarateOrderID = async () => {
@@ -17,7 +18,16 @@ export const genarateOrderID = async () => {
     }
 }
 
-export const calculateShipmentFee = (distance, quantity, price) => {
+/**
+ * calculate shipment fee
+ * @param {Distance} distance 
+ * @param {Number} quantity
+ * @param {Price} price 
+ * @param {String} unit // PRODUCT_UNIT: 'kg' || 'm3' || 'ton'
+ * @param {{height: Number, width: Number, length: Number}} size
+ * @returns total price
+ */
+export const calculateShipmentFee = (distance, quantity, price, unit, size = null) => {
     let totalPrice = 0
     const priceIdx = Object.keys(RETURN_ZONE).indexOf(distance.zonecode)
 
