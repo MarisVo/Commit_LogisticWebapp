@@ -149,7 +149,6 @@ const Home = () => {
   const [listDistricts, setListDistricts] = useState([]);
   const [person, setPerson] = useState(1);
   const { setMetadata, dataWarehouse, setDataWarehouse } = useContext(MainContext);
-  console.log(dataWarehouse);
   // const searchWarehouse = (e) => {
   //   e.preventDefault()
   //   if (currentDistrict && currentProvince) {

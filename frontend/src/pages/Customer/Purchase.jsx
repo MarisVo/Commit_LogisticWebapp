@@ -14,14 +14,17 @@ import { Pagination, Tabs } from "antd";
 import  axios  from "axios";
 import { useContext } from "react";
 import { MainContext } from "../../context/MainContext";
+import useNavigateHook from './../../hooks/useNavigateHook';
 const { TabPane } = Tabs;
 const Purchase = () => {
   const [open, setOpen] = useState(false);
   const [order, setOrder] = useState([]);
+  const  { pushQuery} = useNavigateHook()
   const handleOpen = () => {
     setOpen(!open);
     console.log(open);
   };
+  const [total,setTotal] = useState(1)
   const navigate = useNavigate()
    const [pagination, setPagination] = useState({
     page: 1,
@@ -39,6 +42,8 @@ const Purchase = () => {
       ...newPagination,
       page: newPagination - 1,
     });
+    console.log(params)
+    
   }
 
    const fetchapi = async(params={})=>{
@@ -50,13 +55,17 @@ const Purchase = () => {
           }, 
         );
         console.log(params)
+          console.log(res)
         const {data} = res.data
-        console.log(data);
-        setOrder(data);
+        console.log('length',data.length)
+        console.log("order",data.order)
+      setTotal(data.length)
+        setOrder(data.order);
         setPagination({
         pageSize: params?.pageSize,
-        page: params?.page ,
+        page: params?.page,
       });
+      pushQuery(params)
       } catch (err) {
         console.log(err);
       }
@@ -207,7 +216,7 @@ const Purchase = () => {
          })} 
       </div>
           <div className="flex justify-center mt-2 mb-3 items-center">
-            <Pagination  defaultCurrent={pagination.current} onChange={handllePage} total={30} />;
+            <Pagination  defaultCurrent={pagination.current} onChange={handllePage} total={total} pageSize={pagination.pageSize}/>;
           </div>
     </div>
   );

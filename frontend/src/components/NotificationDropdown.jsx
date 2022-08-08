@@ -66,7 +66,7 @@ function NotificationDropdown() {
             <div className="flex flex-col gap-y-2">
               <h4 className="font-bold m-0">{data.title}</h4>
               <h5 className="m-0">{data.message}</h5>
-              <span className="text-xs text-blue-500">{data.updateAt?.split("T")[0]}</span>
+              <span className="text-xs text-blue-500">{data.updatedAt?.split("T")[0]}</span>
             </div>
           </div>
           ))}
