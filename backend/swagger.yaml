@@ -4478,7 +4478,7 @@ paths:
             type: object
             example: {
                   "fromProvince": "string",
-                  "toProvince": "path",
+                  "toProvince": "string",
                   "zonecode": "string",
                   "distance":  "number",
             }
@@ -4504,7 +4504,7 @@ paths:
             type: object
             example: {
               "fromProvince": "string",
-              "toProvince": "path",
+              "toProvince": "string",
               "zonecode": "string",
               "distance":  "number",            
             }
@@ -4540,7 +4540,7 @@ paths:
             type: object
             example: {
               "fromProvince": "string",
-              "toProvince": "path",
+              "toProvince": "string",
               "zonecode": "string",
               "distance":  "number",
             }
@@ -4589,7 +4589,7 @@ paths:
             type: object
             example: {
               "fromProvince": "string",
-              "toProvince": "path",
+              "toProvince": "string",
               "zonecode": "string",
               "distance":  "number",          
             }
@@ -4637,7 +4637,7 @@ paths:
             type: object
             example: {
               "fromProvince": "string",
-              "toProvince": "path",
+              "toProvince": "string",
               "zonecode": "string",
               "distance":  "number",
             }
@@ -4685,7 +4685,7 @@ paths:
             type: object
             example: {
               "fromProvince": "string",
-              "toProvince": "path",
+              "toProvince": "string",
               "zonecode": "string",
               "distance":  "number",
             }
