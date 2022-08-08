@@ -22,6 +22,21 @@ const CarSchema = new Schema(
         tonnage: {
             type: Number,
             required: true
+        },
+        car_fleet: {
+            type: Schema.Types.ObjectId,
+            ref: 'car_fleets',
+            required: true
+        },
+        insurance: {
+            seri: {
+                type: String,
+                required: true
+            },
+            expired: {
+                type: Date,
+                required: true
+            }
         }
     },
     { timestamps: true }
