@@ -84,12 +84,11 @@ participantAdminRoute.delete('/:id',
             const isExist = await Participant.exists({_id: id})
             if (!isExist) return sendError(res, "participant not exists.")
             await DeliveryService.updateOne({},{ $pull: { participants: id}})
-            await Participant.findByIdAndRemove(id)
-                .then((data)=> { return sendSuccess(res, "Delete participant successfully.",data)})  
-                .catch((err) => { return sendError(res, err)})  
+            const data = await Participant.findByIdAndRemove(id)
+            return sendSuccess(res, "Delete participant successfully.",data)
         } catch (error) {
             console.log(error)
-            return sendError(res)
+            return sendServerError(res)
         }
     }
 )

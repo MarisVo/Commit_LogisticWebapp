@@ -83,7 +83,7 @@ priceAdminRoute.put("/:id", async (req, res) => {
     }
     return sendError(res, "price does not exist.");
   } catch (error) {
-    return sendError(res);
+    return sendServerError(res);
   }
 });
 
@@ -106,7 +106,7 @@ priceAdminRoute.delete("/:id", async (req, res) => {
         return sendError(res, err);
       });
   } catch (error) {
-    return sendError(res);
+    return sendServerError(res);
   }
 });
 
