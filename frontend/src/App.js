@@ -35,6 +35,7 @@ import {
   Bills,
   Inventory,
   InventoryDetail,
+  NotiStorekeeper,
   StandardService,
   Service,
   FastService,
@@ -138,6 +139,8 @@ const App = () => {
                 <Route path="bills" element={<Bills />} />
                 <Route path="inventory" element={<Inventory />} />
                 <Route path="inventory/:id" element={<InventoryDetail />} />
+                <Route path="thong-bao" element={<NotiStorekeeper />} />
+                
               </Route>
               <Route path="admin" element={<AdminPage />}>
                 <Route path="about" element={<AdminAbout />}></Route>

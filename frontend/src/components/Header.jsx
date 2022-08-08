@@ -105,18 +105,18 @@ const Header = () => {
 
   return (
     <div className='fixed bg-white inset-x-0 h-[65px] z-20'>
-      <div className=" flex justify-between items-center h-full px-4 lg:px-0 container mx-auto text-sm ">
+      <div className="relative lg:static flex justify-between items-center h-full px-4 lg:px-0 container mx-auto text-sm ">
         <div className="bt lg:hidden" onClick={() => setIsOpen(!isOpen)}>
           <FaBars className="w-7 h-7" />
         </div>
         <Link to="/">
-          <img src={logoJT} className="" alt="logo-JnT"/>
+          <img src={logoJT} className="absolute left-1/2 -translate-y-1/2 -translate-x-1/2 lg:static lg:translate-x-0 lg:translate-y-0" alt="logo-JnT"/>
         </Link>
         <ul className="hidden lg:flex h-full justify-center items-center m-0">
           <div className="rounded-md hover:bg-yellow-200 ">
             <Link
               to="/"
-              className={`flex items-center  px-4 py-2 ${pathname==="/" && "text-yellow-500"}`}
+              className={`flex items-center px-4 py-2 ${pathname==="/" && "text-yellow-500"}`}
             >
               Trang chủ
             </Link>

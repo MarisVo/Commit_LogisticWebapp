@@ -169,6 +169,7 @@ function Products() {
         <Input.Search className="max-w-xl lg:w-[400px] mx-auto" placeholder="Search" />
       </div>
       <Table
+        rowKey={(record) => record._id}
         columns={columns2}
         dataSource={data}
         pagination={true}
