@@ -36,13 +36,14 @@ export { default as Bills } from "./Storekeeper/Bills";
 export { default as Inventory } from "./Storekeeper/Inventory";
 export { default as InventoryDetail } from "./Storekeeper/InventoryDetail";
 //----------------------------------------------//
-export { default as Purchase } from "./Purchase/Purchase.jsx";
+export { default as Purchase } from "./Customer/Purchase.jsx";
 export { default as PurchaseDriver } from "./Purchase/PurchaseDriver.jsx";
-export { default as PurchaseStage } from "./PurchaseStage/PurchaseStage.jsx";
-export { default as Profile } from "./Profile/Profile.jsx";
-export { default as Notification } from "./Notification/Notification.jsx";
+export { default as PurchaseStage } from "./Customer/PurchaseStage.jsx";
+export { default as ChangePassword } from "./Customer/ChangePassword.jsx";
+export { default as Profile } from "./Customer/Profile.jsx";
+export { default as Notification } from "./Customer/Notification.jsx";
 export { default as NotificationDriver } from "./Notification/NotificationDriver.jsx";
-export { default as PurchaseDetail } from "./PurchaseDetail/PurchaseDetail.jsx";
+export { default as PurchaseDetail } from "./Customer/PurchaseDetail.jsx";
 //---------------------------------------------//
 export { default as StandardService } from "./Services/StandardService.jsx";
 export { default as Service } from "./Services/Service.jsx";

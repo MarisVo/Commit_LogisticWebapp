@@ -58,7 +58,8 @@ import {
   AdminOrder,
   Staff_Register,
   AdminMaintenance,
-  NotificationDriver
+  NotificationDriver,
+  ChangePassword
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainProvider, { MainContext } from "./context/MainContext";
@@ -111,6 +112,7 @@ const App = () => {
               <Route element={<CustomerRoute />}>
                 <Route path="khach-hang/trang-ca-nhan" element={<Profile />} />
                 <Route path="khach-hang/dat-hang" element={<Purchase />} />
+                <Route path="khach-hang/thay-doi-mat-khau" element={<ChangePassword />} />
                 <Route path="khach-hang/dat-hang/:id" element={<PurchaseDetail />} />
                 <Route path="khach-hang/dat-hang/don-hang/:id" element={<PurchaseStage />} />
                 <Route path="khach-hang/thong-bao/don-hang" element={<Notification />} />

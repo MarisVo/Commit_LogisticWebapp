@@ -19,7 +19,7 @@ function PurchaseStage() {
     setStage(stage + 1);
   };
   return (
-    <div className="pt-[72px]">
+    <div className="">
       <div className="bg-gray-100 relative">
         <SideBar className="" handleOpen={handleOpen} open={open} />
         <div>
@@ -30,7 +30,6 @@ function PurchaseStage() {
             />
           </span>
         </div>
-        <div className=" sm:mx-6 lg:mx-32 pb-4 pt-2 mx-2 ">
           <div className=" bg-gray-white  bg-white  rounded-sm shadow-xl pb-2">
             <div className="flex items-center justify-between cursor-pointer ml-2 mr-3 ">
               <Link
@@ -51,8 +50,6 @@ function PurchaseStage() {
                 </div>
               </div>
             </div>
-
-          
             <div className="grid grid-cols-3  mx-2  my-3 ">
               <div className="col-span-3 sm:col-span-1 justify-self-center mb-2 ml-4 md:ml-6 ">
                 <div className="text-xl font-semibold text-[#00003B] ">
@@ -211,7 +208,6 @@ function PurchaseStage() {
             </div>
           </div>
         </div>
-      </div>
     </div>
   );
 }

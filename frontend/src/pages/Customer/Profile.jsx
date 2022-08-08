@@ -100,8 +100,7 @@ export default function Profile() {
   }, [isModalVisible]);
   const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log(cPassword)
-    setFormErrors(validate);
+ /*    setFormErrors(validate); */
     try {
       const res = await axios.put(
         "http://localhost:8000/api/auth/change-pw" ,
@@ -112,21 +111,19 @@ export default function Profile() {
           headers: { authorization: `Bearer ${accessToken}` },
         }
       );
-      console.log(res)
       setIsSubmit(true);
     } catch (err) {
-      console.log(err);
-      setFormErrors({oldPw:"wrong current password"})
+    setFormErrors(validate(err.response.data.message[0]));
     }
   };
-  const validate = () => {
+const validate = (message) => {
     const { oldPw, verify_password, newPw } = cPassword;
     const errors = {};
-    /*  if (oldPw !== password) {
-       errors.oldPw = "Wrong password";
-     } */
     if (!oldPw) {
-      errors.oldPw = "This field is required";
+      errors.oldPw = "Vui lòng nhập trường này";
+    }
+    if (oldPw && message==="c") {
+      errors.oldPw = "Sai mật khẩu,vui lòng nhập lại";
     }
     if (!newPw) {
       errors.newPw = "This field is required";
@@ -299,18 +296,8 @@ export default function Profile() {
           </div>
         </div>
       </>
-      <div className="pt-[68px] relative">
-        <div className="bg-gray-100 relative ">
-          <SideBar className="" handleOpen={handleOpen} open={open} />
-          <span className="w-6 h-6 absolute top-[10%] left-[0%] z-3 transition  lg:top-[15%]">
-            <IoArrowForwardCircleOutline
-              className="w-6 h-6 z-50 "
-              onClick={() => handleOpen()}
-            />
-          </span>
-
-          <div className="grid grid-cols-5 mx-1 sm:mx-16 lg:mx-[250px] md:mx-28 py-5 bg-gray-100 overflow-hidden  ">
-            <div className=" col-span-5 bg-[#f8faff] rounded-lg   shadow-xl mb-3">
+      <div className=" relative">
+        <div className=" relative ">
               <div className="flex justify-start flex-col  border-b-2  pl-4 pb-3 pt-3">
                 <div className="text-xl font-bold mb-1 lg:text-2xl mt-2">
                   Hồ Sơ Của Tôi
@@ -445,7 +432,7 @@ export default function Profile() {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+    /*   </div> */
+   /*  </div> */
   );
 }
