@@ -4,7 +4,7 @@ import SideBar from "../../components/SideBarCustomer";
 import { Link } from "react-router-dom";
 import { io } from "socket.io-client";
 
-function Notification() {
+function NotificationCustomer() {
   const [open, setOpen] = useState(false);
   const socket = useRef();
   const handleOpen = () => {
@@ -91,4 +91,4 @@ function Notification() {
   );
 }
 
-export default Notification;
+export default NotificationCustomer;

@@ -22,11 +22,12 @@ export default function Profile() {
     newPw: "",
     verify_password: "",
   });
-  const { accessToken } = useContext(MainContext);
+  const { setMetadata,accessToken } = useContext(MainContext);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [open, setOpen] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+   
   const [information, setInformation] = useState({
     name: "Nguyễn Văn Thật",
     address: "B5/3 Phường An Phú Tp Thủ Đức",
@@ -142,7 +143,14 @@ const validate = (message) => {
     }
     return errors;
   };
-
+   useEffect(() => {
+    setMetadata((prev) => {
+      return {
+        ...prev,
+        title: "Trang cá nhân | TKTL",
+      };
+    });
+     }, []);
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       /* const handleChangePassword = async () => {

@@ -12,7 +12,6 @@ function CustomerRoute() {
   const [width,setWidth]=useState(window.innerWidth)
   const handleOpen = () => {
     setOpen(!open);
-    console.log(open);
   };
   
   useEffect(()=>{
@@ -22,7 +21,6 @@ function CustomerRoute() {
      window.addEventListener("resize",getWidth)
      if(width>=640){
        setOpen(false)
-       console.log(width)
       }
      return()=>{
        window.removeEventListener("resize",getWidth)

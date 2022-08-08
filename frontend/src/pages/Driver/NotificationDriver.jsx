@@ -19,20 +19,9 @@ function NotificationDriver() {
     /* socket.current.emit("send",)
   socket.current.on("receive",)    */
   }, [socket]);
-
-  return (
-    <div className="pt-[72px]">
+  return(
+   <div className="">
       <div className="bg-gray-100 overflow-y-hidden relative ">
-        <SideBarDriver className="" handleOpen={handleOpen} open={open} />
-        <span className="w-6 h-6 fixed top-[12%] left-[0%] z-3 transition sm:top-[11%]  lg:top-[15%]">
-          <IoArrowForwardCircleOutline
-            className="w-6 h-6 z-50   "
-            onClick={() => handleOpen()}
-          />
-        </span>
-
-        <div className=" sm:mx-12 lg:mx-60 pb-4 pt-2 mx-1 ">
-          <div className=" bg-gray-white  bg-[#f8faff]  rounded-sm shadow-xl">
             <div className="flex justify-end align-center m-w-[100%] rounded-sm sm:border-gray-400 sm:border-b-[1px] bg-white sm:pb-1 flex-nowrap ">
               <div className=" m-w-[70px] mx-2 p-1 flex-shrink-0 cursor-pointer mt-2 ">
                 <span className=" font-light text-sm md:text-sm text text-black hover:text-yellow-500 ">
@@ -98,9 +87,8 @@ function NotificationDriver() {
             </div>
           </div>
         </div>
-      </div>
-    </div>
   );
 }
+
 
 export default NotificationDriver;

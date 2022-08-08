@@ -235,5 +235,3 @@ const CareerOpportunities = () => {
 };
 
 export default CareerOpportunities;
-
-// ok chua ong oke rooif as
