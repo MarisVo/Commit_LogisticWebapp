@@ -52,7 +52,7 @@ function NotiStorekeeper() {
             <div className="flex flex-col gap-y-1">
               <span className="font-bold">{data.title}</span>
               <span>{data.message}</span>
-              <span className="text-xs text-blue-500">22-08-01</span>
+              <span className="text-xs text-blue-500">{data.updatedAt?.split("T")[0]}</span>
             </div>
           </div>
           ))}
