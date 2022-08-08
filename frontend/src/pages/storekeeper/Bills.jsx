@@ -1,13 +1,15 @@
 import { Table, Input } from "antd";
 import { Link } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
 import axios from "axios";
 import { END_POINT } from "../../utils/constant";
 import BillDetail from "./BillDetail";
 import EditStatus from "./EditStatus";
-function Products() {
+import { MainContext } from "../../context/MainContext";
+function Bills() {
+  const { accessToken } = useContext(MainContext);
   const [data, setData] = useState([]);
   const [dataRecord, setDataRecord] = useState({});
   const [loading, setLoading] = useState(false);
@@ -153,9 +155,10 @@ function Products() {
   ];
   const fetchData = async () => {
     try {
-      const { data: response } = await axios.get(`${END_POINT}/bill`);
-      setData(response.data);
-      console.log(response);
+      const { data: response } = await axios.get(`${END_POINT}/admin/bill`, {
+        headers: { authorization: `Bearer ${accessToken}` },
+      });
+      setData(response.data.bills);
     } catch (error) {
       console.log(error);
     }
@@ -185,4 +188,4 @@ function Products() {
   );
 }
 
-export default Products;
+export default Bills;
