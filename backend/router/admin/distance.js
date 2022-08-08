@@ -22,6 +22,10 @@ distanceAdminRoute.post("/create/:serviceId", async (req, res) => {
   const { fromProvince, toProvince, zonecode, dist } = req.body;
 
   try {
+    const isExist = await Distance.exists({ fromProvince, toProvince });
+    if (isExist) {
+      return sendError(res, "Distance already exists.");
+    }
     const service = await DeliveryService.exists({ _id: req.params.serviceId });
     if (service) {
       const distance = await Distance.create({
@@ -38,7 +42,6 @@ distanceAdminRoute.post("/create/:serviceId", async (req, res) => {
     }
     return sendSuccess(res, "create distance successfully.");
   } catch (error) {
-    console.log(error);
     return sendServerError(res);
   }
 });
@@ -71,8 +74,7 @@ distanceAdminRoute.put("/:id", async (req, res) => {
     }
     return sendError(res, "distance does not exist.");
   } catch (error) {
-    console.log(error);
-    return sendError(res);
+    return sendServerError(res);
   }
 });
 
@@ -95,8 +97,7 @@ distanceAdminRoute.delete("/:id", async (req, res) => {
         return sendError(res, err);
       });
   } catch (error) {
-    console.log(error);
-    return sendError(res);
+    return sendServerError(res);
   }
 });
 

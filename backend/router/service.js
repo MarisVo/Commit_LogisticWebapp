@@ -31,15 +31,18 @@ serviceRoute.get("/", async (req, res) => {
     if (tip) {
       query.location = tip;
     }
+    const length = await DeliveryService.count();
     const service = await DeliveryService.find({ $and: [query, keywordCondition] })
       .limit(pageSize)
       .skip(pageSize * page)
-      .sort(`${sortBy}`);
+      .sort(`${sortBy}`)
+      .populate("quotes")
+      .populate("features")
+      .populate("participants");
     if (service)
-      return sendSuccess(res, "get service information successfully.", service);
+      return sendSuccess(res, "get service information successfully.", {length, service});
     return sendError(res, "Service information is not found.");
   } catch (error) {
-    console.log(error);
     return sendServerError(res);
   }
 });
@@ -54,13 +57,13 @@ serviceRoute.get("/", async (req, res) => {
 serviceRoute.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const service = await DeliveryService.findOne({ _id: id });
+    const service = await DeliveryService.findOne({ _id: id })
+    .populate("quotes", "features", "participants"); //?
     if (!service) return sendError(res, "Service does not exist.");
     if (service)
       return sendSuccess(res, "get service information successfully.", service);
     return sendError(res, "Service information is not found.");
   } catch (error) {
-    console.log(error);
     return sendServerError(res);
   }
 });

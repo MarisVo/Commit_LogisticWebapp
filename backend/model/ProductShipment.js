@@ -6,6 +6,17 @@ const ProductShipmentSchema = new Schema(
         quantity: {
             type: Number,
             required: true
+        },
+        size: {
+          type: {
+            height: Number,
+            width: Number,
+            length: Number
+          }
+        },
+        value: {
+            type: Number,
+            required: true
         }
     },
     { timestamps: true }
