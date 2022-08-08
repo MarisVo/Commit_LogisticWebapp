@@ -34,7 +34,7 @@ const SideBar = ({ open, handleOpen }) => {
               <FaPen />
               <div className=" m-w-[70px] mx-2 mt-1 flex-shrink-0 cursor-pointer text-[#00003B] ">
                 <Link
-                  to="/user/account/profile"
+                  to="/khach-hang/trang-ca-nhan"
                   className=" font-normal text-sm md:text-base text text-black hover:text-yellow-500 preventselect"
                 >
                   Sửa hồ sơ
@@ -49,7 +49,7 @@ const SideBar = ({ open, handleOpen }) => {
               <IoPersonOutline className="mr-2 w-[18px] h-[18px] shrink-0" />
               <Link
                 className="text-lg  text-[#00003B] hover:text-yellow-500 preventselect"
-                to="/user/account/profile"
+                to="/khach-hang/trang-ca-nhan"
               >
                 Tài khoản của tôi
               </Link>
@@ -59,7 +59,7 @@ const SideBar = ({ open, handleOpen }) => {
               <IoClipboardOutline className="mr-2 w-[18px] h-[18px] shrink-0" />
               <Link
                 className="text-lg  text-[#00003B] hover:text-yellow-500 preventselect"
-                to="/user/purchase"
+                to="/khach-hang/dat-hang"
               >
                 Đơn mua hàng
               </Link>
@@ -68,7 +68,7 @@ const SideBar = ({ open, handleOpen }) => {
               <IoNotificationsOutline className="mr-2 w-[18px] h-[18px] shrink-0" />
               <Link
                 className="text-lg  text-[#00003B] hover:text-yellow-500 preventselect"
-                to="/user/notifications/order"
+                to="/khach-hang/thong-bao/don-hang"
               >
                 Thông báo
               </Link>

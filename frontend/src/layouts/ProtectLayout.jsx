@@ -19,10 +19,6 @@ function ProtectedRoute() {
   if ( user && user.role.customer_type) {
     return <Navigate to="/" />;
   }
-  if (user && !user.role.customer_type) {
-    return <Navigate to="/admin" />;
-  }
-
   return <Outlet />;
 };
 export default ProtectedRoute

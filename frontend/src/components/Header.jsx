@@ -305,7 +305,7 @@ const Header = () => {
         </ul>
         {user ? (
           <div className="hidden md:flex ">
-            <Link to="/user/account/profile">
+            <Link to="/khach-hang/trang-ca-nhan">
               <div className="px-4 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
                 <span className="font-semibold ">
                 Thông tin

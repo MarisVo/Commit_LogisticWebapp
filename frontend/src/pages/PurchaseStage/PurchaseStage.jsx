@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { LeftOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
-import SideBar from "../../components/SideBar";
+import SideBar from "../../components/SideBarCustomer";
 import { FaTruckMoving } from "react-icons/fa";
 import { Steps } from "antd";
 import { Link } from "react-router-dom";
@@ -35,7 +35,7 @@ function PurchaseStage() {
             <div className="flex items-center justify-between cursor-pointer ml-2 mr-3 ">
               <Link
                 className="flex items-center justify-start mt-1  hover:translate-y-[-1px] transition-all hover:text-yellow-500  "
-                to="/user/account/profile"
+                to="/khach-hang/trang-ca-nhan"
               >
                 <LeftOutlined className="text-[12px] sm:text-xs" />
                 <span className="  font-medium sm:mt-1   cursor-pointer text-[12px] sm:text-xs">
@@ -133,7 +133,7 @@ function PurchaseStage() {
                   <FaTruckMoving className=" sm:mr-2 mr-[3px]" />
                   <Link
                     className=" text-[10px] font-medium  sm:mr-4 sm:text-sm  hover:translate-y-[-1px] transition-all hover:text-yellow-500  cursor-pointer "
-                    to="/user/purchase/order/2323"
+                    to="/khach-hang/dat-hang/don-hang/2323"
                   >
                     Đang xử lý
                   </Link>
