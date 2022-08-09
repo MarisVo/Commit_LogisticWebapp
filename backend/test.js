@@ -19,19 +19,19 @@ const price = [
         next: false,
         sidestep: 1,
         // prices is an array include 4 elements, which is corresponding with price of each RETURN_ZONE
-        prices: [1, 2, 3, 4]
+        prices: [1000, 2000, 3000, 4000]
     },
     {
         next: false,
         sidestep: 1,
         // prices is an array include 4 elements, which is corresponding with price of each RETURN_ZONE
-        prices: [2, 3, 4, 5]
+        prices: [2000, 3000, 4000, 5000]
     },
     {
         next: true,
         sidestep: 0.5,
         // prices is an array include 4 elements, which is corresponding with price of each RETURN_ZONE
-        prices: [1.5, 2.5, 3.5, 4.5]
+        prices: [1500, 2500, 3500, 4500]
     }
 ]
 

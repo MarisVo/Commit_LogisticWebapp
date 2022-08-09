@@ -54,10 +54,9 @@ export const calculateShipmentFee = (distance, quantity, price, unit, tax = [], 
             }
         })
     }
-    return totalPrice
+    return Math.ceil(totalPrice / 1000) * 1000
 }
 
-// unit KG
 const calculateShipmentFeeUtl = (distance, weight, price) => {
     let totalPrice = 0
     const priceIdx = Object.keys(RETURN_ZONE).indexOf(distance.zonecode)
