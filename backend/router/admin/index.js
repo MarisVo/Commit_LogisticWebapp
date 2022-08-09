@@ -55,5 +55,5 @@ adminRoute.use('/auth', authAdminRoute)
     .use('/price', priceAdminRoute)
     .use('/pricelist', pricelistAdminRoute)
     .use("/customer", customerAdminRoute)
-
+    
 export default adminRoute

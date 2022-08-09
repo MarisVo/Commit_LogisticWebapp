@@ -17,6 +17,44 @@ module.exports = {
       backgroundImage: {
         history: "url('/src/assets/images/map-world-in-mobile.png')",
       },
+      keyframes: {
+        up: {
+          '0%': {
+            transform: 'translateY(25px)',
+            opacity: 0
+          },
+          '100%':{
+            transform: 'translateY(0)',
+            opacity: 1
+          }
+        },
+        modal:{
+          '0%':{
+            opacity: 0,
+            transform: 'translateY(-150px)',
+          },
+          '100%':{
+            opacity: 1,
+            transform: 'translateY(0)'
+          }
+        },
+        menu_in:{
+          '0%':{
+            opacity: 0,
+            transform: 'translateX(-150px)',
+          },
+          '100%':{
+            opacity: 1,
+            transform: 'translateX(0)'
+          }
+        },
+
+      },
+      animation:{
+        'up':'up 0.3s ease-in-out',
+        'modal_in':'modal 0.3s ease',
+        'menu_in':'menu_in 0.3s ease-in-out',
+      }
     },
   },
   plugins: [
