@@ -77,27 +77,4 @@ applicantRoute.post(
   }
 );
 
-/**
- * @route GET /api/applicant/:id
- * @description get applicant status information
- * @access public
- */
-applicantRoute.get("/:id", async (req, res) => {
-  const { id } = req.params;
-  try {
-    const applicant = await Applicant.findById({ _id: id });
-    if (!applicant) return sendError(res, "Applicant not exists.");
-    if (applicant)
-      return sendSuccess(
-        res,
-        "get applicant information successfully.",
-        applicant
-      );
-    return sendError(res, "applicant information is not found.");
-  } catch (error) {
-    console.log(error);
-    return sendServerError(res);
-  }
-});
-
 export default applicantRoute;

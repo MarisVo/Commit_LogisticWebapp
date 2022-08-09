@@ -781,36 +781,21 @@ paths:
       summary: "Create a new commitment"
       consumes:
         - multipart/form-data
+        - application/json
       parameters:
-        - in: body
-          name: commitment
-          description: a new commitment.
-          schema:
-            type: object
-            required:
-              - heading
-            properties:
-              heading:
-                type: string
-              detail:
-                type: string  
+        - in: formData
+          name: heading
+          description: heading
+          type: string
+          required: true
+        - in: formData
+          name: detail
+          description: detail
+          type: string
         - in: formData
           name: logo
           description: a logo commitment.
           type: file
-      requestBody:
-        content: 
-          application/json:
-            schema:            
-              type: object
-              properties:      
-                name:           
-                  type: string
-                logo: 
-                  type: string
-                  format: base64
-                detail:   
-                  type: string
       responses:
         200:
           description: Create commitment successfully.
@@ -839,38 +824,18 @@ paths:
             type: string
           required: true
           description: commitment id
-        - in: body
-          name: commitment
-          description: a existing commitment.
-          schema:
-            type: object
-            required:
-              - heading
-            properties:
-              heading:
-                type: string
-              detail:
-                type: string
+        - in: formData
+          name: heading
+          description: heading
+          type: string
+        - in: formData
+          name: detail
+          description: detail
+          type: string
         - in: formData
           name: logo
           description: a logo commitment.
           type: file
-      requestBody:
-        content:
-          application/json:
-            schema:
-              schema:
-            type: object
-            required:
-              - heading
-            properties:
-              name:
-                type: string
-              logo:
-                type: string
-                format: base64 
-              detail:
-                type: string
       responses:
         200:
           description: Update commitment successfully.
@@ -980,31 +945,16 @@ paths:
       consumes:
         - multipart/form-data
       parameters:
-        - in: body
-          name: partner
+        - in: formData
+          name: name
           description: a new partner.
-          schema:
-            type: object
-            required:
-              - name
-            properties:
-              name:
-                type: string
+          type: string
+          required: true
         - in: formData
           name: logo
           description: a logo commitment.
           type: file  
-      requestBody:
-        content: 
-          multipart/form-data: 
-            schema:            
-              type: object
-              properties:      
-                name:           
-                  type: string
-                logo: 
-                  type: string
-                  format: base64
+          required: true      
       responses:
         200:
           description: Create partner successfully.
@@ -1028,35 +978,17 @@ paths:
       parameters:
         - in: path
           name: partnerId
-          schema: 
-            type: string
+          type: string
           required: true
           description: partner id
-        - in: body
-          name: partner
-          description: a existing partner.
-          schema:
-            type: object
-            required:
-              - name
-            properties:
-              name:
-                type: string
+        - in: formData
+          name: name
+          description: a new partner.
+          type: string
         - in: formData
           name: logo
           description: a logo commitment.
-          type: file
-      requestBody:
-        content: 
-          multipart/form-data: 
-            schema:            
-              type: object
-              properties:      
-                name:           
-                  type: string
-                logo: 
-                  type: string
-                  format: base64
+          type: file  
       responses:
         200:
           description: Update partner successfully.
@@ -2501,7 +2433,19 @@ paths:
         - in: query
           name: pageSize
           type: string
-          description: number of consultancy in a page  
+          description: number of consultancy in a page 
+        - in: query
+          name: keyword
+          type: string
+          description: search by keyword
+        - in: query
+          name: status
+          type: string
+          description: filter by value true/false
+        - in: query
+          name: sortBy
+          type: string
+          description: sort by field, -updatedAt        
       responses:
         200:
           description: get consultancy successfully.
@@ -2910,35 +2854,20 @@ paths:
           type: string
           required: true
           description: Id of a service 
-        - in: body
-          name: participant
-          description: a new participant.
-          schema:
-            type: object
-            required:
-              - name, description
-            properties:
-              name:
-                type: string
-              description:
-                type: string
+        - in: formData
+          name: name
+          description: name of participant.
+          type: string  
+          required: true
+        - in: formData
+          name: description
+          description: description of participant.
+          type: string  
+          required: true
         - in: formData
           name: banner
           description: banner of participant.
-          type: file          
-      requestBody:
-        content: 
-          multipart/form-data: 
-            schema:            
-              type: object
-              properties:      
-                name:           
-                  type: string
-                banner: 
-                  type: string
-                  format: base64
-                description:
-                  type: string
+          type: file  
       responses:
         200:
           description: Create participant successfully.
@@ -2965,34 +2894,19 @@ paths:
           name: participantId
           type: string
           required: true
-          description: Id of a participant 
-        - in: body
-          name: participant
-          description: a new participant.
-          schema:
-            type: object            
-            properties:
-              name:
-                type: string
-              description:
-                type: string
+          description: Id of a participant          
+        - in: formData
+          name: name
+          description: name of participant.
+          type: string  
+        - in: formData
+          name: description
+          description: description of participant.
+          type: string  
         - in: formData
           name: banner
           description: banner of participant.
-          type: file          
-      requestBody:
-        content: 
-          multipart/form-data: 
-            schema:            
-              type: object
-              properties:      
-                name:           
-                  type: string
-                banner: 
-                  type: string
-                  format: base64
-                description:
-                  type: string
+          type: file            
       responses:
         200:
           description: Create participant successfully.
@@ -3126,39 +3040,25 @@ paths:
           type: string
           required: true
           description: Id of a service 
-        - in: body
+        - in: formData
+          name: name
+          description: name of customer.
+          type: string 
+          required: true
+        - in: formData
+          name: description
+          description: description of customer.
+          type: string 
+          required: true
+        - in: formData
           name: quote
-          description: a new quote.
-          schema:
-            type: object
-            required:
-              - name, description, quote
-            properties:
-              name:
-                type: string
-              description:
-                type: string
-              quote:
-                type: string
+          description: detail of quote.
+          type: string 
+          required: true  
         - in: formData
           name: avatar
           description: avatar of quote.
-          type: file          
-      requestBody:
-        content: 
-          multipart/form-data: 
-            schema:            
-              type: object
-              properties:      
-                name:           
-                  type: string                
-                description:
-                  type: string
-                quote:
-                  type: string
-                avatar: 
-                  type: string
-                  format: base64
+          type: file   
       responses:
         200:
           description: Create quote successfully.
@@ -3187,37 +3087,22 @@ paths:
           type: string
           required: true
           description: Id of a quote 
-        - in: body
+        - in: formData
+          name: name
+          description: name of customer.
+          type: string 
+        - in: formData
+          name: description
+          description: description of customer.
+          type: string 
+        - in: formData
           name: quote
-          description: a new quote.
-          schema:
-            type: object            
-            properties:
-              name:
-                type: string
-              description:
-                type: string
-              quote:
-                type: string
+          description: detail of quote.
+          type: string 
         - in: formData
           name: avatar
           description: avatar of quote.
-          type: file          
-      requestBody:
-        content: 
-          multipart/form-data: 
-            schema:            
-              type: object
-              properties:      
-                name:           
-                  type: string                
-                description:
-                  type: string
-                quote:
-                  type: string
-                avatar: 
-                  type: string
-                  format: base64
+          type: file  
       responses:
         200:
           description: Create quote successfully.
@@ -5015,27 +4900,22 @@ paths:
       summary: "Create a new priceList"
       consumes:
         - multipart/form-data
-        - application/json
       parameters:
         - in: path
           name: serviceId
           type: string
           required: true
           description: Id of a service 
-        - in: body
-          name: priceList
-          description: a new priceList.
-          schema:
-            type: object
-            required:
-              - province 
-            properties:
-              province:
-                type: string
+        - in: formData
+          name: province
+          description: Province name to which the price files are associated.
+          type: string
+          required: true   
         - in: formData
           name: file
           description: file for priceList.
-          type: file          
+          type: file  
+          required: true        
       requestBody:
         content: 
           multipart/form-data: 
@@ -5243,6 +5123,8 @@ paths:
               sub_detail: 
                 type: string
               target:
+                type: string     
+              tip:
                 type: string               
       responses:
         200:
@@ -5519,6 +5401,221 @@ paths:
       responses:
         200:
           description: Delete customer successfully.
+      security:
+        - bearerAuth: []        
+  /applicant/{careerId}:
+    post:
+      tags:
+        - "applicant"
+      summary: "Create a new applicant"
+      consumes:
+        - multipart/form-data
+        - application/json
+      parameters:
+        - in: path
+          name: careerId
+          type: string
+          required: true
+          description: Id of a career 
+          required: true
+        - in: formData
+          name: firstName
+          description: firstName of applicant.
+          type: string 
+          required: true
+        - in: formData
+          name: lastName
+          description: lastName of applicant.
+          required: true
+        - in: formData
+          name: phoneNumber
+          description: phoneNumber of applicant.
+          type: string 
+          required: true
+        - in: formData
+          name: email
+          description: email of applicant.
+          type: string 
+          required: true
+        - in: formData
+          name: source
+          description: source of interest of applicant(staff, friend, email, phone, facebook, linkedin, search, event, other).
+          type: string 
+          required: true
+        - in: formData
+          name: message
+          description: Custom message.
+          type: string  
+          required: true  
+        - in: formData
+          name: file
+          description: CV file of applicant.
+          type: file 
+          required: true         
+      responses:
+        200:
+          description: Create applicant successfully.
+          schema:
+            type: object
+            example: {
+              "firstName": "string",
+              "lastName": "string",    
+              "phoneNumber": "string",   
+              "email" : "string",
+              "source": "string",
+              "message": "string",
+              "status": "string",    
+            }        
+        400:
+          description: Create applicant failed.
+  /admin/applicant:
+    get:
+      tags:
+        - "applicant"
+      summary: get applicant
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: page
+          type: string
+          description: num of page
+        - in: query
+          name: pageSize
+          type: string
+          description: number of applicants in a page 
+        - in: query
+          name: sortBy
+          type: string
+          description: sort in order (firstName, lastName, -updatedAt)
+        - in: query
+          name: keyword
+          type: string
+          description: search by keyword
+        - in: query
+          name: department
+          type: string
+          description: filter by department
+        - in: query
+          name: type
+          type: string
+          description: filter by type
+        - in: query
+          name: location
+          type: string
+          description: filter by location
+        - in: query
+          name: state
+          type: string
+          description: filter by state
+      responses:
+        200:
+          description: get applicant successfully.
+          schema:
+            type: object
+            example: {
+              "firstName": "string",
+              "lastName": "string",    
+              "phoneNumber": "string",   
+              "email" : "string",
+              "source": "string",
+              "message": "string",
+              "status": "string",       
+            }          
+        400:
+          description: applicant is not found.  
+      security:
+        - bearerAuth: []
+  /admin/applicant/{applicantId}:
+    get:
+      tags:
+        - "applicant"
+      summary: get applicant by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: applicantId
+          type: string
+          required: true
+          description: Id of an applicant 
+      responses:
+        200:
+          description: get applicant successfully.
+          schema:
+            type: object
+            example: {
+              "firstName": "string",
+              "lastName": "string",    
+              "phoneNumber": "string",   
+              "email" : "string",
+              "source": "string",
+              "message": "string",
+              "status": "string",       
+            }          
+        400:
+          description: applicant is not found.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - "applicant"
+      summary: "Update a existing applicant status"
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: applicantId
+          schema: 
+            type: string
+          required: true
+          description: applicant id
+        - in: body
+          name: applicant
+          description: an existing applicant.
+          schema:
+            type: object      
+            required: 
+            - status   
+            properties:
+              status:
+                type: string
+                description: (approved, pending, rejected)                 
+      responses:
+        200:
+          description: Update applicant successfully.
+          schema:
+            type: object
+            example: {
+              "firstName": "string",
+              "lastName": "string",    
+              "phoneNumber": "string",   
+              "email" : "string",
+              "source": "string",
+              "message": "string",
+              "status": "string",          
+            }      
+        400:
+          description: Update applicant failed.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - "applicant"
+      summary: "Delete an existing applicant"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: applicantId
+          type: string
+          required: true
+          description: Id of a applicant 
+      responses:
+        200:
+          description: Delete applicant successfully.
+        400:
+          description: Delete applicant failed.
       security:
         - bearerAuth: []
 

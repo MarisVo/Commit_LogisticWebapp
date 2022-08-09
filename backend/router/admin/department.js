@@ -80,13 +80,8 @@ departmentAdminRoute.delete("/:id", async (req, res) => {
     const isExist = await Department.exists({ _id: id });
     if (!isExist) return sendError(res, "Department does not exist.");
 
-    await Department.findByIdAndRemove(id)
-      .then(() => {
-        return sendSuccess(res, "Delete department successfully.");
-      })
-      .catch((err) => {
-        return sendError(res, err);
-      });
+    const department = await Department.findByIdAndRemove(id)
+    return sendSuccess(res, "Delete department successfully.", department);
   } catch (error) {
     return sendServerError(res);
   }

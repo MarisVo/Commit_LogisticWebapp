@@ -12,6 +12,29 @@ import Career from "../../model/Career.js";
 const applicantAdminRoute = express.Router();
 
 /**
+ * @route GET /api/admin/applicant/:id
+ * @description admin get applicant status information
+ * @access private
+ */
+applicantAdminRoute.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const applicant = await Applicant.findById({ _id: id });
+    if (!applicant) return sendError(res, "Applicant not exists.");
+    if (applicant)
+      return sendSuccess(
+        res,
+        "get applicant information successfully.",
+        applicant
+      );
+    return sendError(res, "applicant information is not found.");
+  } catch (error) {
+    console.log(error);
+    return sendServerError(res);
+  }
+});
+
+/**
  * @route PUT /api/admin/applicant/:id
  * @description update status of an existing applicant
  * @access private
@@ -59,6 +82,7 @@ applicantAdminRoute.get("/", async (req, res) => {
         }
       : {};
     var query = {};
+    var ids = [];
     if (department) {
       var departmentQuery = {};
       departmentQuery.name = department;
@@ -72,56 +96,88 @@ applicantAdminRoute.get("/", async (req, res) => {
         }
       }
       const careers = await Career.find({_id: idsDep});
-      const ids = [];
+      const idsComp = [];
       for (let j = 0; j < careers.length; j++) {
         for (let i = 0; i < careers[j].applicants.length; i++) {
           if (careers[j].applicants.length) {
-            ids.push(careers[j].applicants[i]);
+            idsComp.push(careers[j].applicants[i]);
           }
         }
       }
-      query._id = ids;
+      if (ids.length) {
+        for (let i = 0; i < idsComp.length; i++){
+          if (!ids.every((value) => value === idsComp[i])) {
+            idsComp.splice(idsComp[i], 1);
+          }
+        }
+      }
+      ids = idsComp;
     }
     if (type) {
       var careerQuery = {};
       careerQuery.type = type;
       const careers = await Career.find(careerQuery);
-      const ids = [];
+      const idsComp = [];
       for (let j = 0; j < careers.length; j++) {
         for (let i = 0; i < careers[j].applicants.length; i++) {
           if (careers[j].applicants.length) {
-            ids.push(careers[j].applicants[i]);
+            idsComp.push(careers[j].applicants[i]);
           }
         }
       }
-      query._id = ids;
+      if (ids.length) {
+        for (let i = 0; i < idsComp.length; i++){
+          if (!ids.every((value) => value === idsComp[i])) {
+            idsComp.splice(idsComp[i], 1);
+          }
+        }
+      }
+      ids = idsComp;
     }
     if (location) {
       var careerQuery = {};
       careerQuery.location = location;
       const careers = await Career.find(careerQuery);
-      const ids = [];
+      const idsComp = [];
       for (let j = 0; j < careers.length; j++) {
         for (let i = 0; i < careers[j].applicants.length; i++) {
           if (careers[j].applicants.length) {
-            ids.push(careers[j].applicants[i]);
+            idsComp.push(careers[j].applicants[i]);
           }
         }
       }
-      query._id = ids;
+      if (ids.length) {
+        for (let i = 0; i < idsComp.length; i++){
+          if (!ids.every((value) => value === idsComp[i])) {
+            idsComp.splice(idsComp[i], 1);
+          }
+        }
+      }
+      ids = idsComp;
     }
     if (state) {
       var careerQuery = {};
       careerQuery.state = state;
       const careers = await Career.find(careerQuery);
-      const ids = [];
+      const idsComp = [];
       for (let j = 0; j < careers.length; j++) {
         for (let i = 0; i < careers[j].applicants.length; i++) {
           if (careers[j].applicants.length) {
-            ids.push(careers[j].applicants[i]);
+            idsComp.push(careers[j].applicants[i]);
           }
         }
       }
+      if (ids.length) {
+        for (let i = 0; i < idsComp.length; i++){
+          if (!ids.every((value) => value === idsComp[i])) {
+            idsComp.splice(idsComp[i], 1);
+          }
+        }
+      }
+      ids = idsComp;
+    }
+    if (ids.length) {
+      console.log(ids);
       query._id = ids;
     }
     const applicant = await Applicant.find({ $and: [query, keywordCondition] })
@@ -152,103 +208,8 @@ applicantAdminRoute.delete("/:id", async (req, res) => {
     const isExist = await Applicant.exists({ _id: id });
     if (!isExist) return sendError(res, "Applicant does not exist.");
     await Career.updateOne({}, { $pull: { applicants: id } });
-    await Applicant.findByIdAndRemove(id)
-      .then(() => {
-        return sendSuccess(res, "Delete applicant successfully.");
-      })
-      .catch((err) => {
-        return sendError(res, err);
-      });
-  } catch (error) {
-    console.log(error);
-    return sendServerError(res);
-  }
-});
-
-/**
- * @route GET /api/admin/applicant/search/:keyword
- * @description get applicant information by keyword
- * @access public
- */
-
-applicantAdminRoute.get("/search/:keyword", async (req, res) => {
-  try {
-    const { keyword } = req.params;
-    const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0;
-    const page = req.query.page ? parseInt(req.query.page) : 0;
-    const applicant = await Applicant.find({ $in: [keyword] })
-      .limit(pageSize)
-      .skip(pageSize * page);
-    if (applicant)
-      return sendSuccess(
-        res,
-        "get applicant information successfully.",
-        applicant
-      );
-    return sendError(res, "applicant information is not found.");
-  } catch (error) {
-    console.log(error);
-    return sendServerError(res);
-  }
-});
-
-/**
- * @route GET /api/admin/applicant/filter
- * @description filter applicant information
- * @access public
- */
-
-applicantAdminRoute.get("/filter", async (req, res) => {
-  try {
-    const { department, type, location, state } = req.query;
-
-    const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0;
-    const page = req.query.page ? parseInt(req.query.page) : 0;
-    const applicant = await Applicant.find({
-      $or: [
-        { department: department },
-        { type: type },
-        { location: location },
-        { state: state },
-      ],
-    })
-      .limit(pageSize)
-      .skip(pageSize * page);
-    if (applicant)
-      return sendSuccess(
-        res,
-        "get applicant information successfully.",
-        applicant
-      );
-    return sendError(res, "applicant information is not found.");
-  } catch (error) {
-    console.log(error);
-    return sendServerError(res);
-  }
-});
-
-/**
- * @route GET /api/admin/applicant/sort
- * @description sort applicant information
- * @access public
- */
-
-applicantAdminRoute.get("/sort", async (req, res) => {
-  try {
-    const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0;
-    const page = req.query.page ? parseInt(req.query.page) : 0;
-    const sortBy = req.query.sortBy;
-    const applicant = await Applicant.find({})
-      .limit(pageSize)
-      .skip(pageSize * page)
-      .sort(-sortBy);
-    if (applicant)
-      return sendSuccess(
-        res,
-        "get applicant information successfully.",
-        applicant
-      );
-    return sendError(res, "applicant information is not found.");
+    const applicant = await Applicant.findByIdAndRemove(id)
+    return sendSuccess(res, "Delete applicant successfully.", applicant);
   } catch (error) {
     console.log(error);
     return sendServerError(res);
