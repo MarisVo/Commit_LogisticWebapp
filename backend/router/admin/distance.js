@@ -22,17 +22,20 @@ distanceAdminRoute.post("/create/:serviceId", async (req, res) => {
   const { fromProvince, toProvince, zonecode, dist } = req.body;
 
   try {
-    const isExist = await Distance.exists({ fromProvince, toProvince });
-    if (isExist) {
-      return sendError(res, "Distance already exists.");
-    }
-    const service = await DeliveryService.exists({ _id: req.params.serviceId });
+    const service = await DeliveryService.findById(req.params.serviceId)
+    .populate("distances");
     if (service) {
+      const distances = service.distances
+      for (let i = 0; i < distances.length; i++) {
+        if (service.distances[i].fromProvince === fromProvince && service.distances[i].toProvince === toProvince) {
+          return sendError(res, "Distance already exists.");
+        }
+      }
       const distance = await Distance.create({
         fromProvince,
         toProvince,
         zonecode,
-        dist,
+        distance: dist,
       });
 
       await DeliveryService.findOneAndUpdate(
@@ -63,13 +66,13 @@ distanceAdminRoute.put("/:id", async (req, res) => {
         fromProvince: fromProvince,
         toProvince: toProvince,
         zonecode: zonecode,
-        dist: dist,
+        distance: dist,
       });
       return sendSuccess(res, "Update distance successfully.", {
         fromProvince: fromProvince,
         toProvince: toProvince,
         zonecode: zonecode,
-        dist: dist,
+        distance: dist,
       });
     }
     return sendError(res, "distance does not exist.");
@@ -89,7 +92,7 @@ distanceAdminRoute.delete("/:id", async (req, res) => {
     const isExist = await Distance.exists({ _id: id });
     if (!isExist) return sendError(res, "distance does not exist.");
     await DeliveryService.findOneAndUpdate({distances: id}, { $pull: { distances: id } });
-    const distance = await Distance.findByIdAndRemove(id)
+    const distance = await Distance.findByIdAndRemove(id);
     return sendSuccess(res, "Delete distance successfully.", distance);
   } catch (error) {
     return sendServerError(res);
