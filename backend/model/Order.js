@@ -24,10 +24,7 @@ const OrderSchema = new Schema(
             ref: 'receivers',
             required: true
         },
-        total_price: {
-            type: Number,
-            default: null
-        },
+        total_price: Number,
         status: {
             type: String,
             enum: Object.values(ORDER_STATUS),

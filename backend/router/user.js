@@ -26,12 +26,14 @@ userRoute.get('/',
                     { phone: { $regex: keyword, $options: 'i' } },
                 ]
             } : {}
-            const listUser = await User.find(listKeyword)
+
+            const length = await User.count()
+            const listUser = await User.find({listKeyword}, {password: false})
             .limit(pageSize)
             .skip(pageSize*page)
             .sort(`${sortBy}`)
 
-            if (listUser) return sendSuccess(res, "Get user successful.", listUser)
+            if (listUser) return sendSuccess(res, "Get user successful.", {length, listUser})
             return sendError(res, "Information not found.")
         } catch (error) {
             console.log(error)
@@ -48,7 +50,8 @@ userRoute.get('/:id',
     async (req, res) => {
         try {
             const { id } = req.params
-            const user = await User.findById(id)
+            const user = await User.findById(id, {password: false})
+
             if (user) return sendSuccess(res, "Get user successful.", user)
             return sendError(res, "Not information found.")
         } catch (error) {

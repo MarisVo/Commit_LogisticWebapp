@@ -24,7 +24,8 @@ orderAdminRoute.get('/', async (req, res) => {
         const {orderId, customerName, customerPhone, customerEmail} = req.query
         const order = await Order.find({}).limit(pageSize).skip(pageSize*page).sort('-updatedAt')
         if (order)
-            return sendSuccess(res, 'get order information successfully.', order)
+            var length = order.length
+            return sendSuccess(res, 'get order information successfully.', {length, order})
         return sendError(res, 'order information is not found.')
     } catch (error) {
         console.log(error)
@@ -71,26 +72,21 @@ orderAdminRoute.post('/create',
             })
             if (!customer) return sendError(res, 'customer not found')
             const customerId = customer.role._id
-            console.log(customerId)
             const service = await DeliveryService.findOne({name: serviceName })
             if (!service) return sendError(res, 'the service is not exist.')
             
-            await opencage.geocode({q: `${origin}`, key: OPENCAGE_API_KEY})            
-            .then((data) => {
-                if (data.status.code == 200 && data.results.length > 0) {
-                    if (! data.results[0].geometry) {
-                        return sendError(res, "origin is not found")
-                    }                       
-                }
-            }) 
-            await opencage.geocode({q: `${destination}`, key: OPENCAGE_API_KEY})            
-            .then((data) => {
-                if (data.status.code == 200 && data.results.length > 0) {
-                    if (! data.results[0].geometry) {
-                        return sendError(res, "destination is not found")
-                    }                       
-                }
-            })            
+            var data = await opencage.geocode({q: `${origin}`, key: OPENCAGE_API_KEY})            
+            if (data.status.code == 200 && data.results.length > 0) {
+                if (! data.results[0].geometry) {
+                    return sendError(res, "origin is not found")
+                }                       
+            }
+            data = await opencage.geocode({q: `${destination}`, key: OPENCAGE_API_KEY})            
+            if (data.status.code == 200 && data.results.length > 0) {
+                if (! data.results[0].geometry) {
+                    return sendError(res, "destination is not found")
+                }                       
+            }
             const orderId = await genarateOrderID()
             var _receiver = null
             _receiver = await Receiver.findOne({identity : identity})

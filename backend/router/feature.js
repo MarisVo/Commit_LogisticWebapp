@@ -21,7 +21,6 @@ featureRoute.get("/:id", async (req, res) => {
       return sendSuccess(res, "get feature information successfully.", feature);
     return sendError(res, "feature information is not found.");
   } catch (error) {
-    console.log(error);
     return sendServerError(res);
   }
 });
@@ -47,14 +46,17 @@ featureRoute.get("/service/:serviceId", async (req, res) => {
           ids.push(service.features[i]);
         }
       }
+      const length = await Feature.count();
       const feature = await Feature.find({ _id: ids })
         .limit(pageSize)
         .skip(pageSize * page);
-      return sendSuccess(res, "get feature information successfully.", feature);
+      return sendSuccess(res, "get feature information successfully.", {
+        length,
+        feature,
+      });
     }
     return sendError(res, "feature information is not found.");
   } catch (error) {
-    console.log(error);
     return sendServerError(res);
   }
 });
@@ -85,15 +87,18 @@ featureRoute.get("/", async (req, res) => {
     if (detail) {
       query.detail = detail;
     }
+    const length = await Feature.count();
     const feature = await Feature.find({ $and: [query, keywordCondition] })
       .limit(pageSize)
       .skip(pageSize * page)
       .sort(`${sortBy}`);
     if (feature)
-      return sendSuccess(res, "Get feature information successfully.", feature);
+      return sendSuccess(res, "Get feature information successfully.", {
+        length,
+        feature,
+      });
     return sendError(res, "Feature information is not found.");
   } catch (error) {
-    console.log(error);
     return sendServerError(res);
   }
 });

@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
 import SideBar from "../../components/SideBarCustomer";
 import { IoLocationOutline } from "react-icons/io5";
-
 import { AiOutlineGift, AiOutlineUser, AiOutlineInbox } from "react-icons/ai";
 import { TbSteeringWheel } from "react-icons/tb";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
@@ -21,7 +20,7 @@ const PurchaseDetail = () => {
   const location = useLocation();
   const params = useParams()
   const handleOpen = () => {
-    setOpen(!open);
+    setOpen(!open);     
     console.log(open);
   };
    const {accessToken} = useContext(MainContext)
@@ -73,7 +72,6 @@ const PurchaseDetail = () => {
     }
    getCustomer()
    getService()
-    
   },[]);
   const order = {
     formProvince: "Ho Chi Minh",
@@ -87,6 +85,7 @@ const PurchaseDetail = () => {
     serviceId: "string",
     serviceName: "string",
   };
+
 
   return (
     <div className="pt-[68px]">

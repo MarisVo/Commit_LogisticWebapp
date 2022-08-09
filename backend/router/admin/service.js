@@ -20,7 +20,7 @@ const serviceAdminRoute = express.Router();
 serviceAdminRoute.post("/", async (req, res) => {
   const errors = createServiceValidate(req.body);
   if (errors) return sendError(res, errors);
-  let { name, sub_detail, target } = req.body;
+  let { name, sub_detail, target, tip } = req.body;
 
   try {
     const isExist = await DeliveryService.exists({ name });
@@ -31,10 +31,10 @@ serviceAdminRoute.post("/", async (req, res) => {
       name,
       sub_detail,
       target,
+      tip,
     });
     return sendSuccess(res, "create new service successfully.", service);
   } catch (error) {
-    console.log(error);
     return sendServerError(res);
   }
 });
@@ -120,7 +120,6 @@ serviceAdminRoute.put("/:id", async (req, res) => {
         return sendError(res, err);
       });
   } catch (error) {
-    console.log(error);
     return sendServerError(res);
   }
 });
@@ -144,8 +143,7 @@ serviceAdminRoute.delete("/:id", async (req, res) => {
         return sendError(res, err);
       });
   } catch (error) {
-    console.log(error);
-    return sendError(res);
+    return sendServerError(res);
   }
 });
 
