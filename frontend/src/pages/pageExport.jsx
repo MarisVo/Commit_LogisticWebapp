@@ -54,7 +54,7 @@ export { default as SuperService } from "./services/SuperService.jsx";
 export { default as FreshService } from "./services/FreshService.jsx";
 //---------------------------------------------//
 
-export { default as AdminPage } from "./admin/adminLayout/AdminPage.jsx";
+export { default as AdminPage } from "./admin/Adminlayout/AdminPage.jsx";
 export { default as AdminAbout } from "./admin/AdminAbout.jsx";
 export { default as AdminContactUs } from "./admin/AdminContactUs.jsx";
 export { default as AdminCommitment } from "./admin/AdminCommitment.jsx";
