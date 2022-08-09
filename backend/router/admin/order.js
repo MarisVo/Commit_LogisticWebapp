@@ -24,7 +24,8 @@ orderAdminRoute.get('/', async (req, res) => {
         const {orderId, customerName, customerPhone, customerEmail} = req.query
         const order = await Order.find({}).limit(pageSize).skip(pageSize*page).sort('-updatedAt')
         if (order)
-            return sendSuccess(res, 'get order information successfully.', order)
+            var length = order.length
+            return sendSuccess(res, 'get order information successfully.', {length, order})
         return sendError(res, 'order information is not found.')
     } catch (error) {
         console.log(error)
@@ -34,14 +35,14 @@ orderAdminRoute.get('/', async (req, res) => {
 
 
 /**
- * @route GET /api/admin/order/:id
- * @description get list of order
+ * @route GET /api/admin/order/:orderId
+ * @description get an order
  * @access private
  */
-orderAdminRoute.get('/:id', async (req, res) => {
+orderAdminRoute.get('/:orderId', async (req, res) => {
     try {
-        const {id} = req.params
-        const order = await Order.find({_id: id})
+        const {orderId} = req.params
+        const order = await Order.find({orderId})
         if (order)
             return sendSuccess(res, 'get order information successfully.', order)
         return sendError(res, 'order information is not found.')
@@ -71,33 +72,28 @@ orderAdminRoute.post('/create',
             })
             if (!customer) return sendError(res, 'customer not found')
             const customerId = customer.role._id
-            console.log(customerId)
             const service = await DeliveryService.findOne({name: serviceName })
             if (!service) return sendError(res, 'the service is not exist.')
             
-            await opencage.geocode({q: `${origin}`, key: OPENCAGE_API_KEY})            
-            .then((data) => {
-                if (data.status.code == 200 && data.results.length > 0) {
-                    if (! data.results[0].geometry) {
-                        return sendError(res, "origin is not found")
-                    }                       
-                }
-            }) 
-            await opencage.geocode({q: `${destination}`, key: OPENCAGE_API_KEY})            
-            .then((data) => {
-                if (data.status.code == 200 && data.results.length > 0) {
-                    if (! data.results[0].geometry) {
-                        return sendError(res, "destination is not found")
-                    }                       
-                }
-            })            
+            var data = await opencage.geocode({q: `${origin}`, key: OPENCAGE_API_KEY})            
+            if (data.status.code == 200 && data.results.length > 0) {
+                if (! data.results[0].geometry) {
+                    return sendError(res, "origin is not found")
+                }                       
+            }
+            data = await opencage.geocode({q: `${destination}`, key: OPENCAGE_API_KEY})            
+            if (data.status.code == 200 && data.results.length > 0) {
+                if (! data.results[0].geometry) {
+                    return sendError(res, "destination is not found")
+                }                       
+            }
             const orderId = await genarateOrderID()
             var _receiver = null
             _receiver = await Receiver.findOne({identity : identity})
             if (! _receiver){            
                 _receiver = await Receiver.create({name, phone, identity, street, ward, district, province})
             }          
-            const order = await Order.create({ orderId, service, customerId, receiver:_receiver, origin, destination})            
+            const order = await Order.create({ orderId, service, customer: customerId, receiver:_receiver, origin, destination})            
             return sendSuccess(res, 'create new order successfully',order)
         } catch (error) {
             console.log(error)
@@ -107,15 +103,15 @@ orderAdminRoute.post('/create',
 
 
 /**
- * @route PUT /api/admin/order/:id
- * @description update status order by _id
+ * @route PUT /api/admin/order/:orderId
+ * @description update status order by orderId
  * @access private
  */
-orderAdminRoute.put('/:id', async (req, res) => {
+orderAdminRoute.put('/:orderId', async (req, res) => {
     try {
-        const {id} = req.params
+        const {orderId} = req.params
         const {status} = req.body
-        const order = await Order.findByIdAndUpdate(id, {status: status})
+        const order = await Order.findOneAndUpdate({orderId}, {status: status})
         if (order)
             return sendSuccess(res, 'update order information successfully.', order)
         return sendError(res, 'order information is not found.')
@@ -126,14 +122,14 @@ orderAdminRoute.put('/:id', async (req, res) => {
 })
 
 /**
- * @route DELETE /api/admin/order/:id
- * @description admin delete order by _id
+ * @route DELETE /api/admin/order/:orderId
+ * @description admin delete order by orderId
  * @access private
  */
- orderAdminRoute.delete('/:id', async (req, res) => {
+ orderAdminRoute.delete('/:orderId', async (req, res) => {
     try {
-        const {id} = req.params
-        const order = await Order.findByIdAndRemove(id)
+        const {orderId} = req.params
+        const order = await Order.findOneAndRemove({orderId})
         if (order)
             return sendSuccess(res, 'delete order information successfully.', order)
         return sendError(res, 'order information is not found.')

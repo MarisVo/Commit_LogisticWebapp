@@ -1,150 +1,145 @@
-import express from 'express'
-import { unlinkSync } from 'fs'
-import { handleFilePath, RETURN_ZONE, upload } from '../../constant.js'
-import { sendError, sendServerError, sendSuccess } from '../../helper/client.js'
-import { createUploadDir } from '../../middleware/index.js'
-import DeliveryService from '../../model/DeliveryService.js'
-import Distance from '../../model/Distance.js'
-import Price from '../../model/Price.js'
-import { createDistanceValidate, createPriceValidate, createServiceValidate, uploadPricelistValidate } from '../../validation/service.js'
+import express from "express";
+import { unlinkSync } from "fs";
+import { handleFilePath, uploadResources } from "../../constant.js";
+import {
+  sendError,
+  sendServerError,
+  sendSuccess,
+} from "../../helper/client.js";
+import { createAssetsDir, createLogoDir } from "../../middleware/index.js";
+import DeliveryService from "../../model/DeliveryService.js";
+import { createServiceValidate } from "../../validation/service.js";
 
-const serviceAdminRoute = express.Router()
-
-/**
-* @route POST /api/admin/service/:serviceId/price/create
-* @description create price table for delivery service
-* @access private
-*/
-serviceAdminRoute.post('/:serviceId/price/create',
-    async (req, res) => {
-        const errors = createPriceValidate(req.body)
-        if (errors)
-            return sendError(res, errors)
-
-        const validateTypesOfData = Object.values(req.body).every(value => {
-            return Array.isArray(value) && value.every(v => {
-                return v.hasOwnProperty('next') && v.hasOwnProperty('sidestep') && v.hasOwnProperty('prices') && Array.isArray(v.prices) && v.prices.length === Object.keys(RETURN_ZONE).length
-            })
-        })
-        if (!validateTypesOfData)
-            return sendError(res, 'request\'s body is incorrect.')
-
-        const { kg, ton, m3 } = req.body
-
-        try {
-            const service = await DeliveryService.exists({ _id: req.params.serviceId })
-            if (service) {
-                const price = await Price.create({
-                    uKG: kg,
-                    uM3: m3,
-                    uTON: ton
-                })
-                await DeliveryService.findOneAndUpdate({ _id: service._id }, { price: price._id })
-            }
-            return sendSuccess(res, 'create price table successfully.')
-        }
-        catch (error) {
-            return sendServerError(res)
-        }
-    }
-)
+const serviceAdminRoute = express.Router();
 
 /**
- * @route POST /api/admin/service/:serviceId/pricelist
- * @description upload price files for service
- * @access private
- */
-serviceAdminRoute.post('/:serviceId/pricelist',
-    createUploadDir,
-    upload.single('pricelist'),
-    async (req, res) => {
-        const errors = uploadPricelistValidate(req.body)
-        if (errors) {
-            if (req.file) unlinkSync(req.file.path)
-            return sendError(res, errors)
-        }
-        const file = handleFilePath(req.file)
-
-        const { province } = req.body
-
-        try {
-            const isExist = await DeliveryService.exists({ _id: req.params.serviceId })
-            if (isExist) {
-                await DeliveryService.updateOne({
-                    _id: isExist._id
-                },
-                    {
-                        $push: { price_files: { province, file } }
-                    })
-                return sendSuccess(res, 'upload pricelist file successfully')
-            }
-            if (req.file) unlinkSync(req.file.path)
-            return sendError(res, "product's name had existed.")
-        } catch (error) {
-            if (req.file) unlinkSync(req.file.path)
-            return sendServerError(res)
-        }
-    }
-)
-
-/**
- * @route POST /api/admin/service/:serviceId/distance/create
- * @description create delivery road for delivery service
- * @access private
- */
-serviceAdminRoute.post('/:serviceId/distance/create',
-    async (req, res) => {
-        const errors = createDistanceValidate(req.body)
-        if (errors)
-            return sendError(res, errors)
-
-        const { fromProvince, toProvince, zonecode } = req.body
-
-        try {
-            const service = await DeliveryService.exists({ _id: req.params.serviceId })
-            if (service) {
-                const distance = await Distance.create({
-                    fromProvince,
-                    toProvince,
-                    zonecode
-                })
-                await DeliveryService.findOneAndUpdate({ _id: service._id }, { $push: { distances: distance } })
-            }
-            return sendSuccess(res, 'create distance successfully.')
-        }
-        catch (error) {
-            console.log(error)
-            return sendServerError(res)
-        }
-    }
-)
-
-/**
- * @route POST /api/admin/service/create
+ * @route POST /api/admin/service/
  * @description create new delivery service
  * @access private
  */
-serviceAdminRoute.post('/create',
-    async (req, res) => {
-        const errors = createServiceValidate(req.body)
-        if (errors)
-            return sendError(res, errors)
+serviceAdminRoute.post("/", async (req, res) => {
+  const errors = createServiceValidate(req.body);
+  if (errors) return sendError(res, errors);
+  let { name, sub_detail, target, tip } = req.body;
 
-        const { name, subDetail, target } = req.body
-
-        try {
-            await DeliveryService.create({
-                name,
-                sub_detail: subDetail,
-                target
-            })
-            return sendSuccess(res, 'create new service successfully.')
-        }
-        catch (error) {
-            console.log(error)
-            return sendServerError(res)
-        }
+  try {
+    const isExist = await DeliveryService.exists({ name });
+    if (isExist) {
+      return sendError(res, "This service is already existed.");
     }
-)
+    const service = await DeliveryService.create({
+      name,
+      sub_detail,
+      target,
+      tip,
+    });
+    return sendSuccess(res, "create new service successfully.", service);
+  } catch (error) {
+    return sendServerError(res);
+  }
+});
 
-export default serviceAdminRoute
+/**
+ * @route POST /api/admin/service/banner/serviceId
+ * @description create/update service banner
+ * @access private
+ */
+serviceAdminRoute.post(
+  "/banner/:serviceId",
+  createAssetsDir,
+  uploadResources.single("banner"),
+  async (req, res) => {
+    const file = handleFilePath(req.file);
+    const id = req.params.serviceId;
+    try {
+      const isExist = await DeliveryService.exists({ id });
+      if (isExist) {
+        await DeliveryService.findOneAndUpdate({ _id: id }, { banner: file });
+      } else await DeliveryService.create({ banner: file });
+      return sendSuccess(res, "upload banner successfully.");
+    } catch (error) {
+      if (req.file) unlinkSync(req.file.path);
+      return sendServerError(res);
+    }
+  }
+);
+
+/**
+ * @route POST /api/admin/service/logo/:servcieId
+ * @description create/update service logo
+ * @access private
+ */
+serviceAdminRoute.post(
+  "/logo/:serviceId",
+  createLogoDir,
+  uploadResources.single("logo"),
+  async (req, res) => {
+    const file = handleFilePath(req.file);
+    const id = req.params.serviceId;
+    try {
+      const isExist = await DeliveryService.exists({ id });
+      if (isExist) {
+        await DeliveryService.findOneAndUpdate({ _id: id }, { logo: file });
+      } else await DeliveryService.create({ logo: file });
+      return sendSuccess(res, "upload logo successfully.");
+    } catch (error) {
+      if (req.file) unlinkSync(req.file.path);
+      return sendServerError(res);
+    }
+  }
+);
+
+/**
+ * @route PUT /api/admin/service/:id
+ * @description update content of service by serviceId
+ * @access private
+ */
+serviceAdminRoute.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const isExist = await DeliveryService.exists({ _id: id });
+    if (!isExist) return sendError(res, "Service does not exist");
+
+    const { name, sub_detail, target, tip } = req.body;
+
+    await DeliveryService.findByIdAndUpdate(id, {
+      name: name,
+      sub_detail: sub_detail,
+      target: target,
+      tip: tip,
+    })
+      .then(() => {
+        return sendSuccess(res, "Update service successfully", {
+          name: name,
+          sub_detail: sub_detail,
+          target: target,
+          tip: tip,
+        });
+      })
+      .catch((err) => {
+        return sendError(res, err);
+      });
+  } catch (error) {
+    return sendServerError(res);
+  }
+});
+
+/**
+ * @route DELETE /api/admin/service/:id
+ * @description delete a existing service
+ * @access private
+ */
+serviceAdminRoute.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const isExist = await DeliveryService.exists({ _id: id });
+    if (!isExist) return sendError(res, "service does not exist.");
+
+    const service = await DeliveryService.findByIdAndRemove(id)
+    return sendSuccess(res, "Delete service successfully.", service);
+  } catch (error) {
+    return sendServerError(res);
+  }
+});
+
+export default serviceAdminRoute;

@@ -13,7 +13,7 @@ const SideBar = ({ open, handleOpen }) => {
   return (
     <div>
       <div
-        className={` w-35vh  md:min-h-[100%]  duration-700 flex flex-col transition-all ease-out  delay-100  z-100  border-t-4 rounded-lg fixed top-0 left-0 bg-white   min-h-full ${
+        className={` w-35vh  md:min-h-[100%]  duration-700 flex flex-col transition-all ease-out  delay-100  z-[102]   border-t-4 rounded-lg fixed top-0 left-0 bg-white   min-h-full ${
           open
             ? ` peer:transition ease-out delay-150 duration-400`
             : `translate-x-[-300px] duration-1000 ease-in duration-400  `
@@ -25,7 +25,7 @@ const SideBar = ({ open, handleOpen }) => {
               className="flex justify-end "
               onClick={() => handleOpen(!open)}
             >
-              <IoArrowBackCircleOutline className="w-6 h-6 z-100" />
+              <IoArrowBackCircleOutline className="w-6 h-6 z-101" />
             </div>
             <div className="text-xl font-semibold text-[#00003B] ">
               Nguyễn Văn Thật
@@ -34,7 +34,7 @@ const SideBar = ({ open, handleOpen }) => {
               <FaPen />
               <div className=" m-w-[70px] mx-2 mt-1 flex-shrink-0 cursor-pointer text-[#00003B] ">
                 <Link
-                  to="/user/account/profile"
+                  to="/khach-hang/trang-ca-nhan"
                   className=" font-normal text-sm md:text-base text text-black hover:text-yellow-500 preventselect"
                 >
                   Sửa hồ sơ
@@ -49,7 +49,7 @@ const SideBar = ({ open, handleOpen }) => {
               <IoPersonOutline className="mr-2 w-[18px] h-[18px] shrink-0" />
               <Link
                 className="text-lg  text-[#00003B] hover:text-yellow-500 preventselect"
-                to="/user/account/profile"
+                to="/khach-hang/trang-ca-nhan"
               >
                 Tài khoản của tôi
               </Link>
@@ -59,7 +59,7 @@ const SideBar = ({ open, handleOpen }) => {
               <IoClipboardOutline className="mr-2 w-[18px] h-[18px] shrink-0" />
               <Link
                 className="text-lg  text-[#00003B] hover:text-yellow-500 preventselect"
-                to="/user/purchase"
+                to="/khach-hang/dat-hang"
               >
                 Đơn mua hàng
               </Link>
@@ -68,7 +68,7 @@ const SideBar = ({ open, handleOpen }) => {
               <IoNotificationsOutline className="mr-2 w-[18px] h-[18px] shrink-0" />
               <Link
                 className="text-lg  text-[#00003B] hover:text-yellow-500 preventselect"
-                to="/user/notifications/order"
+                to="/khach-hang/thong-bao/don-hang"
               >
                 Thông báo
               </Link>
@@ -77,11 +77,11 @@ const SideBar = ({ open, handleOpen }) => {
         </div>
       </div>
       <div
-        class={`${
+        className={`${
           open
-            ? `z-99 lg:hidden fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-40 `
-            : `opacity-0 z-99`
-        }   transition-all ease-out  delay-100   `}
+            ? `z-100 lg:hidden fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-40 `
+            : `opacity-0 `
+        }   transition-all ease-out  delay-100  `}
       ></div>
     </div>
   );
