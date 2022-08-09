@@ -61,24 +61,24 @@ staffAdminRoute.delete('/:id', async (req, res) => {
  */
  staffAdminRoute.put('/:id', async (req, res) => {
     let id = req.params.id;
-    const {name, staff_type} = req.body;
+    const {name, staff_type, department, car_fleet} = req.body;
     const isExist = await Staff.exists({_id: id})
     if (!isExist) {return sendError(res,'Staff does not exist')}
-    if (staff_type === '') {
-        return sendError(res, "Staff-type not found")
-    }
-    if (!((staff_type == STAFF.ADMIN || staff_type == STAFF.DRIVER || staff_type == STAFF.SHIPPER || staff_type == STAFF.STOREKEEPER || staff_type == STAFF.STAFF))) {
+    if (staff_type) {
+        if (((staff_type != STAFF.ADMIN && staff_type != STAFF.DRIVER && staff_type != STAFF.SHIPPER && staff_type != STAFF.STOREKEEPER && staff_type != STAFF.STAFF))) {
+            return sendError(res, "Staff-type not found")
+        }
+    } else if (staff_type == '') {
         return sendError(res, "Staff-type not found")
     }
 
     try {
-        const result = await Staff.findByIdAndUpdate(id, {name: name, staff_type})
+        await Staff.findByIdAndUpdate(id, {name: name, staff_type, department: department, car_fleet : car_fleet})
         return sendSuccess(res, "Staff updated successfully")
     }
     catch (err) {
-        sendServerError(res)
+        sendServerError(res, err.message)
     }
-
 })
 //!----------------------------------------------------------------
 // staffAdminRoute.post('/create/:name/:staffType/', async (req, res) => {
