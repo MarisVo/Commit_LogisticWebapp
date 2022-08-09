@@ -61,10 +61,8 @@ tags:
   description: "Endpoint Consultancy"
 - name: "notification"
   description: "Endpoint Notification for user's realtime interaction"
-<<<<<<< HEAD
 - name: "staff"
   description: "Endpoint Staff"
-=======
 - name: "warehouse" 
   description: "Endpoint Warehouse" 
 - name: "participant" 
@@ -81,7 +79,6 @@ tags:
   description: "Endpoint PriceList"
 - name: "customer"
   description: "Endpoint Customer"
->>>>>>> develop-be
 paths:
   /auth/verify-token:
     post:
@@ -5577,7 +5574,6 @@ paths:
           description: Delete applicant failed.
       security:
         - bearerAuth: []
-<<<<<<< HEAD
   /admin/staff:
     get:
       tags: 
@@ -5653,9 +5649,8 @@ paths:
           description: Update staff information failed.
       security:
         - bearerAuth: []
-=======
 
->>>>>>> develop-be
+
 securityDefinitions:
   bearerAuth:
     type: "apiKey"

@@ -20,16 +20,13 @@ import orderAdminRoute from "./order.js"
 import applicantAdminRoute from "./applicant.js"
 import careerAdminRoute from "./career.js"
 import departmentAdminRoute from "./department.js"
-<<<<<<< HEAD
 import staffAdminRoute from "./staff.js"
-=======
 import productAdminRoute from "./product.js"
 import featureAdminRoute from "./feature.js"
 import distanceAdminRoute from "./distance.js"
 import priceAdminRoute from "./price.js"
 import pricelistAdminRoute from "./pricelist.js"
 import customerAdminRoute from "./customer.js"
->>>>>>> develop-be
 const adminRoute = express.Router()
 
 adminRoute.use('/auth', authAdminRoute)
@@ -53,9 +50,7 @@ adminRoute.use('/auth', authAdminRoute)
     .use("/applicant", applicantAdminRoute)
     .use("/career", careerAdminRoute)
     .use("/department", departmentAdminRoute)
-<<<<<<< HEAD
-    .use("/staff", staffAdminRoute);
-=======
+    .use("/staff", staffAdminRoute)
     .use("/product", productAdminRoute)
     .use("/feature", featureAdminRoute)
     .use('/distance', distanceAdminRoute)
@@ -63,5 +58,4 @@ adminRoute.use('/auth', authAdminRoute)
     .use('/pricelist', pricelistAdminRoute)
     .use("/customer", customerAdminRoute)
     
->>>>>>> develop-be
 export default adminRoute

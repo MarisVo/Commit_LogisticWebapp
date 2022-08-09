@@ -66,7 +66,6 @@ userAdminRoute.put('/active/:id', async (req, res) => {
     } catch (error) {
         console.log(error)
         return sendServerError(res)
-<<<<<<< HEAD
      }            
 }) 
 //! ------------------------------------------------------------------------------------------------
@@ -87,9 +86,5 @@ userAdminRoute.put('/active/:id', async (req, res) => {
 //         res.send(err);
 //     })
 // })
-=======
-    }
-})
 
->>>>>>> develop-be
 export default userAdminRoute
