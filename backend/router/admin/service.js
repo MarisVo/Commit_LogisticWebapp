@@ -135,13 +135,8 @@ serviceAdminRoute.delete("/:id", async (req, res) => {
     const isExist = await DeliveryService.exists({ _id: id });
     if (!isExist) return sendError(res, "service does not exist.");
 
-    await DeliveryService.findByIdAndRemove(id)
-      .then(() => {
-        return sendSuccess(res, "Delete service successfully.");
-      })
-      .catch((err) => {
-        return sendError(res, err);
-      });
+    const service = await DeliveryService.findByIdAndRemove(id)
+    return sendSuccess(res, "Delete service successfully.", service);
   } catch (error) {
     return sendServerError(res);
   }

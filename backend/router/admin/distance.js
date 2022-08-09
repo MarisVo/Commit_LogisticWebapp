@@ -89,13 +89,8 @@ distanceAdminRoute.delete("/:id", async (req, res) => {
     const isExist = await Distance.exists({ _id: id });
     if (!isExist) return sendError(res, "distance does not exist.");
     await DeliveryService.findOneAndUpdate({distances: id}, { $pull: { distances: id } });
-    await Distance.findByIdAndRemove(id)
-      .then(() => {
-        return sendSuccess(res, "Delete distance successfully.");
-      })
-      .catch((err) => {
-        return sendError(res, err);
-      });
+    const distance = await Distance.findByIdAndRemove(id)
+    return sendSuccess(res, "Delete distance successfully.", distance);
   } catch (error) {
     return sendServerError(res);
   }

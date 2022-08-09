@@ -4884,27 +4884,22 @@ paths:
       summary: "Create a new priceList"
       consumes:
         - multipart/form-data
-        - application/json
       parameters:
         - in: path
           name: serviceId
           type: string
           required: true
           description: Id of a service 
-        - in: body
-          name: priceList
-          description: a new priceList.
-          schema:
-            type: object
-            required:
-              - province 
-            properties:
-              province:
-                type: string
+        - in: formData
+          name: province
+          description: Province name to which the price files are associated.
+          type: string
+          required: true   
         - in: formData
           name: file
           description: file for priceList.
-          type: file          
+          type: file  
+          required: true        
       requestBody:
         content: 
           multipart/form-data: 
