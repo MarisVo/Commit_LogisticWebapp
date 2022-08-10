@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Carousel } from "antd";
 import styled from "styled-components";
+import { MainContext } from "../../context/MainContext";
 const CarouselWrapper = styled(Carousel)`
   > ul {
     margin-bottom: 30px;
@@ -19,6 +20,16 @@ const CarouselWrapper = styled(Carousel)`
   }
 `;
 export default function FastService() {
+  const { setMetadata } = useContext(MainContext);
+   useEffect(() => {
+    setMetadata((prev) => {
+      return {
+        ...prev,
+        title: "Dịch vụ nhanh | TKTL",
+      };
+    });
+    
+  }, []);
   return (
     <section id="layout-content ">
       <div className="h-full lg:h-[610px] w-full relative pt-12 ">

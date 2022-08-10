@@ -26,15 +26,7 @@ const ChangePassword = () => {
   const { accessToken } = useContext(MainContext);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
-  const [open, setOpen] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [information, setInformation] = useState({
-    name: "Nguyễn Văn Thật",
-    address: "B5/3 Phường An Phú Tp Thủ Đức",
-    tax:"55123124142",
-    phone:"090875827",
-    email:"buidangkhoa252001@gmail.com"
-  });
 
   const handleEyeOp = () => {
     setEyeOp(!eyeOp);
@@ -134,9 +126,8 @@ const ChangePassword = () => {
   }, [formErrors, cPassword, isSubmit]);
 
     return (
-         <div className=" min-w-[350px] top-[15%] sm:min-w-[550px]  md:mx-auto flex justify-center items-center">
-            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 min-w-[350px] sm:min-w-[400px] mx-1 ">
-
+         <div className="  top-[20%] w-[70%] h-[60vh]  md:mx-auto flex justify-center items-center">
+            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 h-[100%] w-[80%] py-2 mx-1 ">
               <div className="pb-6 pt-[6px] px-6 ">
                 <h3 className="mb-3 text-xl font-semibold text-gray-900 dark:text-white ">
                   Thay đổi

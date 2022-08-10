@@ -94,14 +94,14 @@ const App = () => {
                 <Route path="tra-cuu/hang-cam-gui" element={<Track number="hang-cam-gui" />} />
 
                 {/* ------------------------Tuyển dụng------------------- */}
-                <Route path="tuyen-dung" element={<CareerOpportunities />}>
-                  <Route path="chi-tiet-viec-lam-noi-bat" element={<RecruitmentDetails />} />
+               {/*  <Route path="tuyen-dung" element={<CareerOpportunities />}>
+                  <Route path="chi-tiet-viec-lam-noi-bat" element={<RecruitmentDetails />} /> */}
                   {/* <Route
                   path="chi-tiet-viec-lam-moi"
                   element={<RecruitmentDetails />}
                 /> */}
-                </Route>
-                <Route path="cuoc-song" element={<Life />} />
+             {/*    </Route> */}
+               {/*  <Route path="cuoc-song" element={<Life />} /> */}
                 {/* ------------------------Dịch vụ---------------------- */}
                 <Route path="dich-vu" element={<Service />} />
                 <Route path="chuyen-phat-tieu-chuan" element={<StandardService />} />

@@ -16,20 +16,6 @@ function getItem(label, key, icon, children) {
     };
   }
 const items = [
-  /* getItem(
-      <div className="">
-        <Link to="/khach-hang/trang-ca-nhan"><div className="text-base font-medium">Tài khoản </div></Link>
-      </div>,
-      "1",
-      <IoPersonOutline className="text-xl ml-[-26px] md:ml-[-16px] lg:ml-0" />
-    ),
-    getItem(
-      <div>
-        <Link to="/khach-hang/thay-doi-mat-khau"><div className="text-base font-medium">Đổi mật khẩu</div></Link>
-      </div>,
-      "2",
-      <RiLockPasswordLine className="text-xl ml-[-26px] md:ml-[-16px] lg:ml-0"/>
-    ), */
     getItem(
       <div className="">
         <Link to="/tai-xe/dat-hang"><div className="text-base font-medium">Đơn mua hàng</div></Link>

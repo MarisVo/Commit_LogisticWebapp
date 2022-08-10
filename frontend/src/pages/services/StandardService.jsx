@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Carousel } from "antd";
 import styled from "styled-components";
+import { MainContext } from "../../context/MainContext";
+import axios from "axios";
 const CarouselWrapper = styled(Carousel)`
   > ul {
     margin-bottom: 30px;
@@ -19,6 +21,30 @@ const CarouselWrapper = styled(Carousel)`
   }
 `;
 export default function StandardService() {
+  const { setMetadata } = useContext(MainContext);
+   useEffect(() => {
+    setMetadata((prev) => {
+      return {
+        ...prev,
+        title: "Dịch vụ tiêu chuẩn | TKTL",
+      };
+    });
+    
+  }, []);
+  useEffect(()=>{
+     try{
+        const getservice = async()=>{
+           const res = await axios.get(`http://localhost:8000/api/service/62e88c091580f678229d2547`)
+           console.log(res)
+           const {data} =res.data
+           console.log(data)
+        }
+        getservice()
+     }
+     catch(err){
+      console.log(err)
+     }
+  },[])
   return (
     <section id="layout-content">
       <div className="h-full lg:h-[610px] w-full relative pt-12">
@@ -300,10 +326,7 @@ export default function StandardService() {
                 ></img>
                 <div className="mx-8 sm:mx-[70px] md:mx-[130px] lg:mx-[320px] mt-[12px]">
                   <div className="text-white font-semibold text-lg text-center sm:text-xl md:text-2xl preventselect">
-                    Tôi đã từng hợp tác với nhiều đơn vị chuyển phát nhưng cuối
-                    cùng quyết định đồng hành cùng J&T.Phải nói rằng,hệ thống
-                    bưu cục đồng nhất về chất lượng khắp 63 tỉnh thành là điểm
-                    tôi hài lòng nhất
+                    Tôi đã từng hợp tác với nhiều đơn vị chuyển phát nhưng cuối cùng quyết định đồng hành cùng J&T.Phải nói rằng,hệ thống bưu cục đồng nhất về chất lượng khắp 63 tỉnh thành là điểm tôi hài lòng nhất
                   </div>
                 </div>
                 <h1 className="text-white font-bold text-lg mt-[14px] preventselect">

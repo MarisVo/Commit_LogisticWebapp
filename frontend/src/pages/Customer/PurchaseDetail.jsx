@@ -20,7 +20,7 @@ const PurchaseDetail = () => {
   const location = useLocation();
   const params = useParams()
   const handleOpen = () => {
-    setOpen(!open);
+    setOpen(!open);     
     console.log(open);
   };
    const {accessToken} = useContext(MainContext)
@@ -86,19 +86,12 @@ const PurchaseDetail = () => {
     serviceId: "string",
     serviceName: "string",
   };
+  
 
   return (
     <div className="">
       <div className="bg-gray-100 relative ">
-        <SideBar className="" handleOpen={handleOpen} open={open} />
-        <div>
-          <span className="w-6 h-6 absolute top-[4%] left-[0%] z-3  md:top-[15%]  ">
-            <IoArrowForwardCircleOutline
-              className="w-6 h-6 z-25   "
-              onClick={() => handleOpen()}
-            />
-          </span>
-        </div>
+      
        {/*  <div className=" sm:mx-20 lg:mx-52 py-4 bg-gray-white mx-2 mb-2 "> */}
           <div className="flex flex-col mt-2 bg-white rounded-sm shadow-lg mb-3 ">
             <div className="  overflow-auto mb-3">
