@@ -15,8 +15,7 @@ const Login = ({navigation}) => {
                         navigation.navigate("HomeTabs")
                     }}>
                         <Text style={{color:"red",textAlign:"center",fontSize:40}}>Login</Text>
-                    </TouchableOpacity>
-            
+                    </TouchableOpacity>           
                 </View>
             </SafeAreaView>
         </ImageBackground>
