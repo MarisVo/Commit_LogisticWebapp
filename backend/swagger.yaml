@@ -2681,7 +2681,9 @@ paths:
               "lat": "string",       
             }
         400:
-          description: warehouse is not found.  
+          description: warehouse is not found.
+      security:
+        - bearerAuth: []
   /warehouse/{warehouseId}:
     get:
       tags:
@@ -2711,7 +2713,45 @@ paths:
               "lat": "string",       
             }          
         400:
-          description: warehouse is not found.    
+          description: warehouse is not found.   
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - "warehouse"
+      summary: Update warehouse for storekeeper
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: warehouseId
+          type: string
+          required: true
+          description: Id of a warehouse
+        - in: body
+          name: warehouse
+          description: updated warehouse
+          schema:
+            type: object      
+            properties:
+              name: 
+                type: string
+              phone:
+                type: integer
+              street: 
+                type: string
+              ward: 
+                type: string
+              district: 
+                type: string
+              province: 
+                type: string
+              lon: 
+                type: string
+              lat: 
+                type: string
+      security:
+        - bearerAuth: []
   /participant:
      get:
       tags:
