@@ -60,6 +60,14 @@ applicantRoute.post(
       const sendMailSuccess = await sendAutoMail(options);
 
       if (!sendMailSuccess) return sendError(res, "send CV failed.");
+      const confirmation = {
+        from: contact.hr_mailbox,
+        to: applicant.email,
+        subject: "[Logistic-Webapp] Application",
+        html: `<p>Submission successful.</p>`,
+      };
+      const sendConfirmationSuccess = await sendAutoMail(confirmation);
+      if (!sendConfirmationSuccess) return sendError(res, "Confirmation cannot be sent to applicant email.");
       const ret = await applicant.save();
       const careerId = req.params.careerId;
       const career = await Career.findByIdAndUpdate(
