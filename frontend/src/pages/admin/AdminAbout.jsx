@@ -154,8 +154,8 @@ export default function AdminAbout() {
     postApi(items)
     postApiBanner(fileBanners);
     postApiLogo(valueLogo);
-    console.log(fileListBanners);
-    console.log(fileListLogo);
+    // console.log(valueLogo);
+    // console.log(fileListLogo);
     // callAboutData()
     alert("Cập nhật thành công")
    }

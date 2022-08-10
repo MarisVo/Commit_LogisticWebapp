@@ -41,14 +41,14 @@ export default function CuocVanChuyen() {
 	}, []);
 
 	// get all districts by province code
-	useEffect(() => {
-		setDistrictsFrom(getDistrictsByProvinceCode(provinceCodeFrom));
-	}, [provinceCodeFrom]);
+	// useEffect(() => {
+	// 	setDistrictsFrom(getDistrictsByProvinceCode(provinceCodeFrom));
+	// }, [provinceCodeFrom]);
 
 	// get all wards by district code
-	useEffect(() => {
-		setWardsFrom(getWardsByDistrictCode(districtCodeFrom));
-	}, [districtCodeFrom]);
+	// useEffect(() => {
+	// 	setWardsFrom(getWardsByDistrictCode(districtCodeFrom));
+	// }, [districtCodeFrom]);
 
 	// =================== TO EFFECT =======================//
 	// get all provinces
@@ -57,24 +57,24 @@ export default function CuocVanChuyen() {
 	}, []);
 
 	// get all districts by province code
-	useEffect(() => {
-		setDistrictsTo(getDistrictsByProvinceCode(provinceCodeTo));
-	}, [provinceCodeTo]);
+	// useEffect(() => {
+	// 	setDistrictsTo(getDistrictsByProvinceCode(provinceCodeTo));
+	// }, [provinceCodeTo]);
 
 	// get all wards by district code
-	useEffect(() => {
-		setWardsTo(getWardsByDistrictCode(districtCodeTo));
-	}, [districtCodeTo]);
+	// useEffect(() => {
+	// 	setWardsTo(getWardsByDistrictCode(districtCodeTo));
+	// }, [districtCodeTo]);
 
 	const handleSubmit = async () => {
 		// check empty field
 		if (
 			!provinceCodeFrom ||
 			!provinceCodeTo ||
-			!districtCodeFrom ||
-			!districtCodeTo ||
-			!wardCodeFrom ||
-			!wardCodeTo ||
+			// !districtCodeFrom ||
+			// !districtCodeTo ||
+			// !wardCodeFrom ||
+			// !wardCodeTo ||
 			!weight
 		) {
 			setIsValid(false);
@@ -84,10 +84,22 @@ export default function CuocVanChuyen() {
 
 		const provinceFrom = provincesFrom.find(prov => prov.code === provinceCodeFrom);
 		const provinceTo = provincesTo.find(prov => prov.code === provinceCodeTo);
-		const districtFrom = districtsFrom.find(prov => prov.code === districtCodeFrom);
-		const districtTo = districtsTo.find(prov => prov.code === districtCodeTo);
-		const wardFrom = wardsFrom.find(prov => prov.code === wardCodeFrom);
-		const wardTo = wardsTo.find(prov => prov.code === wardCodeTo);
+		console.log({
+			fromProvince: provinceFrom.name,
+				// fromDistrict: districtFrom.name,
+				// fromWard: wardFrom.district_name,
+				toProvince: provinceTo.name,
+				// toDistrict: districtTo.name,
+				// toWard: wardTo.district_name,
+				unit,
+				quantity: weight,
+				serviceId: "62e65fbc5d837fd33a08a1d4",
+				serviceName: "express",
+		});
+		// const districtFrom = districtsFrom.find(prov => prov.code === districtCodeFrom);
+		// const districtTo = districtsTo.find(prov => prov.code === districtCodeTo);
+		// const wardFrom = wardsFrom.find(prov => prov.code === wardCodeFrom);
+		// const wardTo = wardsTo.find(prov => prov.code === wardCodeTo);
 
 
 
@@ -95,15 +107,15 @@ export default function CuocVanChuyen() {
 
 			const {data} = await axios.post("http://localhost:8000/api/tracking/postage", {
 				fromProvince: provinceFrom.name,
-				fromDistrict: districtFrom.name,
-				fromWard: wardFrom.district_name,
+				// fromDistrict: districtFrom.name,
+				// fromWard: wardFrom.district_name,
 				toProvince: provinceTo.name,
-				toDistrict: districtTo.name,
-				toWard: wardTo.district_name,
+				// toDistrict: districtTo.name,
+				// toWard: wardTo.district_name,
 				unit,
 				quantity: weight,
-				serviceId: "62a991c45b1e73890c891df7",
-				serviceName: "create price for a service",
+				serviceId: "62e65fbc5d837fd33a08a1d4",
+				serviceName: "express",
 			})
 
 			setPrice(data.data.result);
@@ -182,7 +194,8 @@ export default function CuocVanChuyen() {
 					</div>
 					<div className="text-red-500 select_val" />
 				</div>
-				<div className="w-full md:w-1/3 flex flex-col">
+				
+				{/* <div className="w-full md:w-1/3 flex flex-col">
 					<div className="w-full h-[43px]">
 						<select
 							className=" w-full h-full "
@@ -248,14 +261,10 @@ export default function CuocVanChuyen() {
 						</span>
 					</div>
 					<div className="text-red-500 select_val" />
-				</div>
+				</div> */}
+
 			</div>
 			<div>
-				<div className="tabs_inside_title flex items-center mb-[30px]">
-					<div className="tabs_inside_title__active border-[#fcd535] border-b-4 text-lg">
-						Gửi hàng trong Việt Nam
-					</div>
-				</div>
 				<div className>
 					<div>
 						<span className="mb-[16px] inline-block  font-bold text-xl text-[#F0B90B]">
@@ -304,7 +313,8 @@ export default function CuocVanChuyen() {
 								</div>
 								<div className="text-red-500 select_val" />
 							</div>
-							<div className="w-full md:w-1/3 flex flex-col">
+
+							{/* <div className="w-full md:w-1/3 flex flex-col">
 								<div className="w-full select2-stupid item-tariff h-[43px]">
 									<select
 										name="to_district"
@@ -425,7 +435,8 @@ export default function CuocVanChuyen() {
 									</span>
 								</div>
 								<div className="text-red-500 select_val" />
-							</div>
+							</div> */}
+
 						</div>
 						<div className="grid grid-cols-1 lg:grid-cols-3 gap-[24px] mt-[48px]">
 							<div>

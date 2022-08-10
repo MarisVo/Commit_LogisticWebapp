@@ -54,9 +54,9 @@ function AddNewOrder({ isVisible, onClose, onOk, loading, disable }) {
                             <Item label="Thiết bị">
                                 <Input />
                             </Item>
-                            <Item label="Tổng giá tiền">
+                            {/* <Item label="Tổng giá tiền">
                                 <InputNumber />
-                            </Item>
+                            </Item> */}
                             <Item label="Email khách hàng">
                                 <Input />
                             </Item>

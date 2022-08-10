@@ -16,7 +16,7 @@ export default function AdminOrder() {
     const { accessToken } = useContext(MainContext)
     // console.log(accessToken)
     const api = "http://localhost:8000/api/admin/order";
-    const apiListOrder = "http://localhost:8000/api/order/tracking/"
+    // const apiListOrder = "http://localhost:8000/api/order/tracking/"
     const [id, setId] = useState()
     const [dataEdit, setDataEdit] = useState()
     const [openEdit, setOpenEdit] = useState(false)
@@ -24,8 +24,6 @@ export default function AdminOrder() {
     const [loading, setLoading] = useState(false);
     const [isDisable, setIsDisable] = useState(false)
 
-    const [openSplit, setOpenSplit] = useState(false)
-    const [dataSplit, setDataSplit] = useState()
 
     const [open, setOpen] = useState(false)
     const [change,setChange] = useState(1);
@@ -62,8 +60,6 @@ export default function AdminOrder() {
             if (res.status === 200) {
                 setData(res.data.data);
                 console.log(data);
-                //    const id = res.map(e=>e.orderId);
-                //    console.log(id);
             }
         }
         catch (error) {
@@ -82,7 +78,7 @@ export default function AdminOrder() {
             });
             console.log(res);
             if (res.status === 200) {
-                setData(res.data.data);
+                // setData(res.data.data);
                 console.log(id);
             }
         }
@@ -149,7 +145,7 @@ export default function AdminOrder() {
     const handledit = (e, id) => {
         // const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('td');
         const items = data.filter(e => {
-            return e._id === id;
+            return e.orderId === id;
         })
         console.log(items);
         const oldData = {
@@ -173,22 +169,7 @@ export default function AdminOrder() {
         setOpenDel(true)
     }
 
-    // const handleSplit = (dataIndex, id) => {
-    //     // console.log(data);
-    //     // dataIndex.push({
-    //     //     bill:dataIndex.length+1,
-    //     // })
-    //     setOpenSplit(true)
-    //     const newData = data.filter(e => e.id === id);
-    //     const index = data.findIndex(e => e.id === id);
-    //     newData[0].product = dataIndex;
-    //     console.log(index);
-    //     const getData = data.slice(0, data.length)
-    //     getData.splice(index, 1, newData[0])
-    //     setDataSplit(dataIndex)
-    //     // setData(getData)
-    //     // console.log(getData);
-    // }
+   
 
 
 
@@ -312,23 +293,6 @@ export default function AdminOrder() {
             width: "14.2%",
             ...getColumnSearchProps('service'),
         },
-        // {
-        //     title: "Sản phẩm",
-        //     dataIndex: "product",
-        //     // key: "id",
-        //     width: "14.2%",
-        //     render: (product, dataSource) => (
-        //         <>
-        //             {/* <li className='m-auto ml-0'>Sản phẩm</li> */}
-        //             <Button type="Button" className='btn btn-primary' onClick={(e) => handleSplit(product, dataSource.id)}>Tách</Button>
-        //             <ul>
-        //                 {product.map(e => (
-        //                     <li className='m-auto mt-4'>Lô hàng {e.bill}</li>
-        //                 ))}
-        //             </ul>
-        //         </>
-        //     )
-        // },
         {
             title: "Xuất phát",
             dataIndex: "origin",
@@ -341,26 +305,26 @@ export default function AdminOrder() {
             dataIndex: 'status',
             key: "status",
             width: "12%",
-            filters: [
-                {
-                    text: 'Xác nhận',
-                    value: 'Xác nhận',
-                },
-                {
-                    text: 'Từ chối',
-                    value: 'Từ chối',
-                },
-            ],
-            onFilter: (value, record) => record.status === value,
-            render: (status) => (
-                <>
-                    {status === "Xác nhận" ?
-                        <div className="text-green-600 font-bold bg-green-200 text-center rounded-lg py-1">Xác nhận</div>
-                        :
-                        <div className='text-red-600 font-bold bg-red-300 text-center rounded-lg py-1'>Từ chối</div>
-                    }
-                </>
-            )
+            // filters: [
+            //     {
+            //         text: 'Xác nhận',
+            //         value: 'Xác nhận',
+            //     },
+            //     {
+            //         text: 'Từ chối',
+            //         value: 'Từ chối',
+            //     },
+            // ],
+            // onFilter: (value, record) => record.status === value,
+            // render: (status) => (
+            //     <>
+            //         {status === "Xác nhận" ?
+            //             <div className="text-green-600 font-bold bg-green-200 text-center rounded-lg py-1">Xác nhận</div>
+            //             :
+            //             <div className='text-red-600 font-bold bg-red-300 text-center rounded-lg py-1'>Từ chối</div>
+            //         }
+            //     </>
+            // )
         },
         {
             title: '',
@@ -368,14 +332,14 @@ export default function AdminOrder() {
             width: "14.2%",
             render: (e, data) => (
                 <div className="flex flex-row justify-around">
-                    <button className="flex flex-row " role="button" onClick={(e) => handledit(e, data._id)}>
+                    <button className="flex flex-row " role="button" onClick={(e) => handledit(e, data.orderId)}>
                         <AiFillEdit style={{
                             marginTop: "0.2rem",
                             marginRight: "0.5rem"
                         }} />
                         Sửa
                     </button>
-                    <button className="flex flex-row " role="button" onClick={(e) => handleDel(e, data._id)}>
+                    <button className="flex flex-row " role="button" onClick={(e) => handleDel(e, data.orderId)}>
                         <AiOutlineDelete style={{
                             marginTop: "0.2rem",
                             marginRight: "0.5rem"
@@ -399,24 +363,24 @@ export default function AdminOrder() {
         const newItem = {
             receiver: {
                 "name": tableData[0].value,
-                "phone": tableData[6].value,
+                "phone": tableData[5].value,
                 "identity": select[0].value,
             },
-            total_price: tableData[4].value,
+            // total_price: tableData[4].value,
             destination: tableData[2].value,
             serviceName: tableData[3].value,
             origin: tableData[1].value,
             // status: tableData[3].value,
-            customerEmail: tableData[5].value
+            customerEmail: tableData[4].value
         }
+        postDataToApi(newItem);
         try {
             await setTimeout(() => {
-                postDataToApi(newItem)
-                console.log(newItem);
                 setLoading(false)
                 setOpen(false)
                 setIsDisable(false)
-
+                setChange(change+1);
+                getDataFromApi()
             }, 2000)
         }
         catch {
@@ -431,10 +395,10 @@ export default function AdminOrder() {
             await setTimeout(() => {
                 delDataToApi(id)
                 setChange(change+1)
-                // console.log(id);
                 setLoading(false)
                 setOpenDel(false)
                 setIsDisable(false)
+                getDataFromApi()
             }, 2000)
         }
         catch {
@@ -453,11 +417,11 @@ export default function AdminOrder() {
         try {
             await setTimeout(() => {
                 setChange('edit')
-                getDataFromApi()
                 editDataToApi(items,id)
                 setLoading(false)
                 setOpenEdit(false)
                 setIsDisable(false)
+                getDataFromApi()
 
             }, 2000)
         }
@@ -471,7 +435,7 @@ export default function AdminOrder() {
         <div>
             <div className='flex justify-end mb-4'>
                 <button
-                    className="p-2 w-32 hover:opacity-80 border-black border-2 "
+                    className="p-2 w-32 hover:opacity-80 border border-black border-2 "
                     onClick={() => setOpen(true)}
                 >
                     +Thêm

@@ -58,7 +58,9 @@ import {
   AdminOrder,
   Staff_Register,
   AdminMaintenance,
-  NotificationDriver
+  NotificationDriver,
+  AdminProhibitProduct,
+  AdminBill,
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainProvider, { MainContext } from "./context/MainContext";
@@ -163,6 +165,8 @@ const App = () => {
                 <Route path="order" element={<AdminOrder/>}></Route>
                 <Route path="staff_regis" element={<StaffRegister />}></Route>
                 <Route path="maintenance" element={<AdminMaintenance />}> </Route>
+                <Route path="hang_cam_gui" element={<AdminProhibitProduct />}> </Route>
+                <Route path="don_hang" element={<AdminBill />}> </Route>
               </Route>
             </Route>
 

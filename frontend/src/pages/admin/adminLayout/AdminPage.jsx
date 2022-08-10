@@ -163,6 +163,25 @@ export default function AdminPage() {
       "16",
       <DesktopOutlined> </DesktopOutlined>
     ),
+    getItem(
+      <div>
+
+        <Link to="hang_cam_gui">Hàng cấm gửi</Link>
+
+      </div>,
+      "17",
+      <DesktopOutlined> </DesktopOutlined>
+    ),
+
+    getItem(
+      <div>
+
+        <Link to="don_hang">Đơn hàng</Link>
+
+      </div>,
+      "18",
+      <DesktopOutlined> </DesktopOutlined>
+    ),
 
     // getItem("User", "sub1", <UserOutlined />, [getItem("Tom", "3"), getItem("Bill", "4"), getItem("Alex", "5")]),
   ];
