@@ -14,19 +14,18 @@ const distanceRoute = express.Router();
 distanceRoute.get("/", async (req, res) => {
   try {
     const { fromProvince, toProvince } = req.query;
+    const length = await Distance.count();
     const distance = await Distance.find({
       fromProvince: fromProvince,
       toProvince: toProvince,
     });
     if (distance)
-      return sendSuccess(
-        res,
-        "get distance information successfully.",
-        distance
-      );
+      return sendSuccess(res, "get distance information successfully.", {
+        length,
+        distance,
+      });
     return sendError(res, "distance information is not found.");
   } catch (error) {
-    console.log(error);
     return sendServerError(res);
   }
 });
@@ -50,7 +49,6 @@ distanceRoute.get("/:id", async (req, res) => {
       );
     return sendError(res, "Distance information is not found.");
   } catch (error) {
-    console.log(error);
     return sendServerError(res);
   }
 });
@@ -76,14 +74,14 @@ distanceRoute.get("/service/:serviceId", async (req, res) => {
           ids.push(service.distances[i]);
         }
       }
+      const length = await Distance.count();
       const distance = await Distance.find({ _id: ids })
         .limit(pageSize)
         .skip(pageSize * page);
-      return sendSuccess(
-        res,
-        "get distance information successfully.",
-        distance
-      );
+      return sendSuccess(res, "get distance information successfully.", {
+        length,
+        distance,
+      });
     }
     return sendError(res, "Distance information is not found.");
   } catch (error) {
@@ -112,8 +110,7 @@ distanceRoute.put("/:id", async (req, res) => {
     }
     return sendError(res, "Distance does not exist.");
   } catch (error) {
-    console.log(error);
-    return sendError(res);
+    return sendServerError(res);
   }
 });
 

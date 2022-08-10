@@ -6,6 +6,10 @@ const ProductShipmentSchema = new Schema(
         quantity: {
             type: Number,
             required: true
+        },
+        value: {
+            type: Number,
+            required: true
         }
     },
     { timestamps: true }

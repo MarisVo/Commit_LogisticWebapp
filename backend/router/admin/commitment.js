@@ -86,12 +86,14 @@ commitmentAdminRoute.delete('/:id',
             const isExist = await Commitment.exists({_id: id})
             if (!isExist) return sendError(res, "Commitment not exists.")
             
-            await Commitment.findByIdAndRemove(id)
-                .then(()=> { return sendSuccess(res, "Delete commitment successfully.")})  
-                .catch((err) => { return sendError(res, err)})  
+            const commit = await Commitment.findByIdAndRemove(id)
+            if (commit) {
+                return sendSuccess(res, "Delete commitment successfully.", commit)
+            }
+            return sendError(res, err)
         } catch (error) {
             console.log(error)
-            return sendError(res)
+            return sendServerError(res)
         }
     }
 )
