@@ -18,7 +18,7 @@ warehouseAdminRoute.post('/',
         if (errors)
             return sendError(res, errors)
 
-        const { name, phone, street, ward, district, province} = req.body
+        const { name, phone, street, ward, district, province, storekeeper} = req.body
         try {
             const isExist = await Warehouse.exists({ name })
             if (isExist) return sendError(res, 'the warehouse\'s name is existed.')
@@ -32,7 +32,7 @@ warehouseAdminRoute.post('/',
             }
             if(lon || lat) {
                 await Warehouse.create({
-                    name, phone, street, ward, district, province, lon, lat
+                    name, phone, street, ward, district, province, storekeeper , lon, lat
                 })
                 return sendSuccess(res, 'create new warehouse successfully.')
             }
