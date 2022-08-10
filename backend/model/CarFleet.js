@@ -12,19 +12,12 @@ const CarFleetSchema = new Schema(
             ref: 'staffs',
             required: true
         },
-        turnover: [
+        bills: [
             {
-                bill: {
-                    type: Schema.Types.ObjectId,
-                    ref: 'bills',
-                    required: true
-                },
-                income: {
-                    type: Number,
-                    required: true
-                }
-            },
-            { timestamps: true }
+                type: Schema.Types.ObjectId,
+                ref: 'bills',
+                required: true
+            }
         ]
     },
     { timestamps: true }

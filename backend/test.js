@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client'
 import express from 'express'
-import { NOTIFY_EVENT } from './constant.js'
+import { NOTIFY_EVENT, PRODUCT_UNIT } from './constant.js'
 import dotenv from "dotenv"
 import { calculateShipmentFee } from './service/order.js'
 
@@ -16,26 +16,26 @@ const app = express()
 
 const price = [
     {
-        next: true,
+        next: false,
         sidestep: 1,
         // prices is an array include 4 elements, which is corresponding with price of each RETURN_ZONE
-        prices: [1, 2, 3, 4]
-    },
-    {
-        next: true,
-        sidestep: 1,
-        // prices is an array include 4 elements, which is corresponding with price of each RETURN_ZONE
-        prices: [2, 3, 4, 5]
+        prices: [1000, 2000, 3000, 4000]
     },
     {
         next: false,
+        sidestep: 1,
+        // prices is an array include 4 elements, which is corresponding with price of each RETURN_ZONE
+        prices: [2000, 3000, 4000, 5000]
+    },
+    {
+        next: true,
         sidestep: 0.5,
         // prices is an array include 4 elements, which is corresponding with price of each RETURN_ZONE
-        prices: [1.5, 2.5, 3.5, 4.5]
+        prices: [1500, 2500, 3500, 4500]
     }
 ]
 
-console.log(calculateShipmentFee(200, 4, price, 2, 3, 2))
+console.log(calculateShipmentFee({zonecode: 'A'}, 10.25, {uM3: price}, PRODUCT_UNIT.M3, [{value:0.2, base:false}, {value:0.15, base:true}]))
 
 app.listen(3000, () => {
     console.log('client is running at port 3000.')
