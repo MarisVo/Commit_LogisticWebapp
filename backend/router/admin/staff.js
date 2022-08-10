@@ -48,9 +48,7 @@ staffAdminRoute.delete('/:id', async (req, res) => {
         const staff = await Staff.deleteOne({_id: id})
         const userfind = await User.find({role: id})
         await User.findByIdAndRemove(userfind[0]._id)
-            .then(() => {
-                return sendSuccess(res, "Delete staff user successfully.")
-            })
+        return sendSuccess(res, "Delete staff user successfully.")
     }
     catch (err) {sendServerError(res)};
 })
