@@ -16,31 +16,31 @@ export default function Track({ number }) {
     const [defaultService, setDefaultService] = useState("cước vận chuyển")
     function callback(dichVu) {
         setDefaultService(dichVu);
-        navigate(`/tra-cuu?type=${dichVu}`)   
+        navigate(`/tra-cuu/${dichVu}`)   
     }
     return (
         <>
-            <div className='carousel'>
+            <div className='carousel' style={{paddingTop:"50px"}}>
                 <a href="#">
                     <img className='h-full' src="https://jtexpress.vn/storage/app/uploads/public/628/5cf/ebd/6285cfebd1130135260962.jpg" alt="" />
                 </a>
             </div>
             <div className='custom-tab shadow-[#000000] container mx-auto text-xl '
                 style={{ maxWidth: "1200px" }} >
-                <Tabs defaultActiveKey='cước vận chuyển' onChange={callback} centered size='large' tabPosition='top' type='line' className='p-3' tabBarStyle={{ color: "#fcd535" }} >
-                    <TabPane tab="Cước vận chuyển" key="cước vận chuyển" >
+                <Tabs activeKey={number} onChange={callback} centered size='large' tabPosition='top' type='line' className='p-3' tabBarStyle={{ color: "#fcd535" }} >
+                    <TabPane tab="Cước vận chuyển" key="cuoc-van-chuyen" >
                         <CuocVanChuyen />
                     </TabPane>
-                    <TabPane tab="Vận đơn" key="vận đơn">
+                    <TabPane tab="Vận đơn" key="van-don">
                         <VanDon />
                     </TabPane>
-                    <TabPane tab="Bưu cục" key="bưu cục">
+                    <TabPane tab="Bưu cục" key="buu-cuc">
                         <BuuCuc />
                     </TabPane>
-                    <TabPane tab="Bảng giá" key="bảng giá">
+                    <TabPane tab="Bảng giá" key="bang-gia">
                         <BangGia />
                     </TabPane>
-                    <TabPane tab="Hàng cấm gửi" key="hàng cấm gửi">
+                    <TabPane tab="Hàng cấm gửi" key="hang-cam-gui">
                         <HangCamGui />
                     </TabPane>
                 </Tabs>

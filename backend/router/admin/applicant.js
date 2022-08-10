@@ -12,6 +12,29 @@ import Career from "../../model/Career.js";
 const applicantAdminRoute = express.Router();
 
 /**
+ * @route GET /api/admin/applicant/:id
+ * @description admin get applicant status information
+ * @access private
+ */
+applicantAdminRoute.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const applicant = await Applicant.findById({ _id: id });
+    if (!applicant) return sendError(res, "Applicant not exists.");
+    if (applicant)
+      return sendSuccess(
+        res,
+        "get applicant information successfully.",
+        applicant
+      );
+    return sendError(res, "applicant information is not found.");
+  } catch (error) {
+    console.log(error);
+    return sendServerError(res);
+  }
+});
+
+/**
  * @route PUT /api/admin/applicant/:id
  * @description update status of an existing applicant
  * @access private
@@ -31,8 +54,7 @@ applicantAdminRoute.put("/:id", async (req, res) => {
     }
     return sendError(res, "Applicant does not exist.");
   } catch (error) {
-    console.log(error);
-    return sendError(res);
+    return sendServerError(res);
   }
 });
 
@@ -186,16 +208,11 @@ applicantAdminRoute.delete("/:id", async (req, res) => {
     const isExist = await Applicant.exists({ _id: id });
     if (!isExist) return sendError(res, "Applicant does not exist.");
     await Career.updateOne({}, { $pull: { applicants: id } });
-    await Applicant.findByIdAndRemove(id)
-      .then(() => {
-        return sendSuccess(res, "Delete applicant successfully.");
-      })
-      .catch((err) => {
-        return sendError(res, err);
-      });
+    const applicant = await Applicant.findByIdAndRemove(id)
+    return sendSuccess(res, "Delete applicant successfully.", applicant);
   } catch (error) {
     console.log(error);
-    return sendError(res);
+    return sendServerError(res);
   }
 });
 

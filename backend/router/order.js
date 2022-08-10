@@ -26,33 +26,28 @@ orderRoute.post('/create',
         const { serviceName, receiver, origin, destination } = req.body
         const {name, phone, identity} = receiver
         try {
-            const {customerId} = req.user.role._id
+            const customerId = req.user.role._id
             const service = await DeliveryService.findOne({name: serviceName })
             if (!service) return sendError(res, 'the service is not exist.')
-            
-            await opencage.geocode({q: `${origin}`, key: OPENCAGE_API_KEY})            
-            .then((data) => {
-                if (data.status.code == 200 && data.results.length > 0) {
-                    if (! data.results[0].geometry) {
-                        return sendError(res, "origin is not found")
-                    }                       
-                }
-            }) 
-            await opencage.geocode({q: `${destination}`, key: OPENCAGE_API_KEY})            
-            .then((data) => {
-                if (data.status.code == 200 && data.results.length > 0) {
-                    if (! data.results[0].geometry) {
-                        return sendError(res, "destination is not found")
-                    }                       
-                }
-            })            
+            var data = await opencage.geocode({q: `${origin}`, key: OPENCAGE_API_KEY})            
+            if (data.status.code == 200 && data.results.length > 0) {
+                if (! data.results[0].geometry) {
+                    return sendError(res, "origin is not found")
+                }                       
+            }
+            data = await opencage.geocode({q: `${destination}`, key: OPENCAGE_API_KEY})            
+            if (data.status.code == 200 && data.results.length > 0) {
+                if (! data.results[0].geometry) {
+                    return sendError(res, "destination is not found")
+                }                       
+            }
             const orderId = await genarateOrderID()
             var _receiver = null
             _receiver = await Receiver.findOne({identity : identity})
             if (! _receiver){            
                 _receiver = await Receiver.create({name, phone, identity})
             }          
-            const order = await Order.create({ orderId, service, customerId, receiver:_receiver, origin, destination})            
+            const order = await Order.create({ orderId, service, customer: customerId, receiver:_receiver, origin, destination})            
             return sendSuccess(res, 'create new order successfully', order)
         } catch (error) {
             console.log(error)
@@ -70,12 +65,13 @@ orderRoute.get('/',
     verifyToken,
     verifyCustomer,
     async (req, res) => {
-        try {
+        try {            
             const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0
             const page = req.query.page ? parseInt(req.query.page) : 0
-            const {customerId} = req.user.role._id
-            const order = await Order.find({customerId: customerId}).limit(pageSize).skip(pageSize*page).sort('-updatedAt')
-            return sendSuccess(res, 'get order successfully', order)
+            const customerId = req.user.role._id
+            const order = await Order.find({customer: customerId}).limit(pageSize).skip(pageSize*page).sort('-updatedAt')
+            const length = await Order.count({customer: customerId})
+            return sendSuccess(res, 'get order successfully', {length, order})
         } catch (error) {
             console.log(error)
             return sendServerError(res)
@@ -85,17 +81,17 @@ orderRoute.get('/',
 
 /**
  * @route GET /api/order/:orderId
- * @description customer see their order by _id  
+ * @description customer see their order by orderId  
  * @access private
  */
-orderRoute.get('/:id',
+orderRoute.get('/:orderId',
     verifyToken,
     verifyCustomer,
     async (req, res) => {
         try {
-            const {customerId} = req.user.role._id
+            const customerId = req.user.role._id
             const {orderId} = req.params
-            const order = await Order.find({_id: orderId, customerId: customerId})
+            const order = await Order.find({orderId: orderId, customer: customerId})
             if (order)
                 return sendSuccess(res, 'get order successfully', order)
             return sendError(res, 'no information')
@@ -124,6 +120,4 @@ orderRoute.get('/tracking/:lstOrderId', async (req, res) => {
     }
 })
 
-// Khách Yêu cầu hủy đơn
-// 
 export default orderRoute

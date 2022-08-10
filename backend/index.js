@@ -4,8 +4,10 @@ import mongoose from "mongoose"
 import cors from "cors"
 import YAML from 'yamljs'
 import { Server } from 'socket.io'
+import session from 'express-session'
+import path from 'path'
+const __dirname = path.resolve(path.dirname(''))
 import bodyParser from "body-parser"
-
 
 import authRoute from "./router/auth.js"
 import adminRoute from "./router/admin/index.js"
@@ -24,7 +26,12 @@ import applicantRoute from "./router/applicant.js"
 import careerRoute from "./router/career.js"
 import departmentRoute from "./router/department.js"
 import participantRoute from "./router/participant.js"
+import productRoute from "./router/product.js"
 import featureRoute from "./router/feature.js"
+import distanceRoute from "./router/distance.js"
+import priceRoute from "./router/price.js"
+import priceListRoute from "./router/pricelist.js"
+import serviceRoute from "./router/service.js"
 import customerRoute from "./router/customer.js"
 
 // swagger setup
@@ -33,24 +40,23 @@ const swaggerDocument = YAML.load('./swagger.yaml')
 
 import { verifyAdmin, verifyToken } from "./middleware/index.js"
 import userRoute from "./router/user.js"
-import roadRoute from "./router/road.js"
-import carRoute from "./router/car.js"
-import billRoute from "./router/bill.js"
-import productShipmentRoute from "./router/productShipment.js"
 import prohibitedProductRoute from "./router/prohibitedProduct.js"
 
 import { clearTokenList } from "./service/jwt.js"
-import { NOTIFY_EVENT } from "./constant.js"
-import { handleDisconnect, sendNotify } from "./socket/handle.js"
+import { NOTIFY_EVENT, SESSION_AGE } from "./constant.js"
+import { addSocketSession, handleDisconnect, sendNotify } from "./socket/handle.js"
 import notificationRoute from "./router/notification.js"
 dotenv.config()
 
 /**
  * Connect MongoDB
  */
-mongoose.connect(process.env.MONGO_URI, () => {
-    console.log('Connect MongoDB successfully.')
-}).catch(error => console.log(error.reason))
+mongoose.connect(process.env.MONGO_URI)
+const db = mongoose.connection
+db.on('error', () => console.log('MongoDB connection error.'))
+db.once('open', () => {
+    console.log('Connected to MongoDB successfully.')
+})
 
 const PORT = process.env.PORT || 8000
 export const TOKEN_LIST = {}
@@ -62,16 +68,23 @@ const io = new Server(process.env.SOCKET_PORT, {
         origin: '*'
     }
 })
+const store = new session.MemoryStore()
 
+app.use(session({
+    secret: process.env.SESSION_NAME,
+    cookie: { maxAge: SESSION_AGE },
+    saveUninitialized: false,
+    store,
+    resave: false
+}))
 app.use(express.json())
-app.use(express.static('public'))
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/public', publicRoute)
-    .use('/api/admin', verifyToken, verifyAdmin, adminRoute)
+    .use('/api/admin', verifyToken, verifyAdmin , adminRoute)
     .use('/api/auth', authRoute)
     .use('/api/tracking', trackingRoute)
     .use('/api/order', orderRoute)
@@ -84,10 +97,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/quote', quoteRoute)
     .use('/api/warehouse', warehouseRoute)
     .use('/api/user', userRoute)
-    .use('/api/road', roadRoute)
-    .use('/api/car', carRoute)
-    .use('/api/product-shipment', productShipmentRoute)
-    .use('/api/bill', billRoute)
     .use('/api/prohibited-product', prohibitedProductRoute)
     .use('/api/applicant', applicantRoute)
     .use('/api/career', careerRoute)
@@ -95,7 +104,23 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/participant', participantRoute)
     .use('/api/feature', featureRoute)
     .use('/api/notification', verifyToken, notificationRoute)
+    .use('/api/product', productRoute)
+    .use('/api/distance', distanceRoute)
+    .use('/api/price', priceRoute)
+    .use('/api/pricelist', priceListRoute)
+    .use('/api/service', serviceRoute)
     .use('/api/customer', customerRoute)
+
+app.use(express.static(path.join(__dirname, process.env.BUILD_DIST)));
+
+app.get('/*', async (req, res) => {
+    try {
+        res.sendFile(path.join(__dirname, process.env.BUILD_DIST + 'index.html'))
+    } catch (error) {
+        console.log(error.message)
+        res.sendStatus(500)
+    }
+})
 
 io.on(NOTIFY_EVENT.connection, socket => {
     // console.log('Connected to a user successfully.')
@@ -105,7 +130,7 @@ io.on(NOTIFY_EVENT.connection, socket => {
     })
 
     socket.on(NOTIFY_EVENT.addSession, userId => {
-        SOCKET_SESSIONS.push({ socketId: socket.id, userId })
+        addSocketSession(socket, userId)
     })
 
     socket.on(NOTIFY_EVENT.send, (userId, data) => {

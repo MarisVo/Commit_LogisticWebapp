@@ -39,32 +39,8 @@ customerRoute.get('/', async (req, res) => {
         sendSuccess(res, "Get customers successfully", result)
     }
     catch (err) {
-        sendServerError(res, err);
+        sendServerError(res);
     }
 })
-/**
- * @route POST /api/customer/
- * @description Create a new customer
- * @access public
- */
-// customerRoute.post('/', async (req, res) => {
-//     let {name, address, description, customer_type, rank_passers, companyTaxcode_business, accepted_business} = req.body
-//     let customer = new Customer({
-//         name: name,
-//         address: address,
-//         description: description,
-//         customer_type: customer_type,
-//         rank_passers: rank_passers,
-//         companyTaxcode_business: companyTaxcode_business,
-//         accepted_business: accepted_business
-//     })
-//     try {
-//         await customer.save()
-//         .then(() =>{sendSuccess(res, "Create customer successfully")})
-//     }
-//     catch (err) {
-//         sendError(res, err);
-//     }
-// })
 
 export default customerRoute

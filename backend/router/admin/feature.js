@@ -56,7 +56,6 @@ featureAdminRoute.post(
         return sendSuccess(res, "create new feature successfully.");
       }
     } catch (error) {
-      console.log(error);
       if (req.files) req.files.map((file) => unlinkSync(file.path));
       return sendServerError(res);
     }
@@ -97,8 +96,7 @@ featureAdminRoute.put(
       return sendError(res, "Feature does not exist.");
     } catch (error) {
       if (req.files) req.files.map((file) => unlinkSync(file.path));
-      console.log(error);
-      return sendError(res);
+      return sendServerError(res);
     }
   }
 );
@@ -114,16 +112,10 @@ featureAdminRoute.delete("/:id", async (req, res) => {
     const isExist = await Feature.exists({ _id: id });
     if (!isExist) return sendError(res, "Feature does not exist.");
     await DeliveryService.findOneAndUpdate({features: id}, { $pull: { features: id } });
-    await Feature.findByIdAndRemove(id)
-      .then(() => {
-        return sendSuccess(res, "Delete feature successfully.");
-      })
-      .catch((err) => {
-        return sendError(res, err);
-      });
+    const feature = await Feature.findByIdAndRemove(id)
+    return sendSuccess(res, "Delete feature successfully.", feature);
   } catch (error) {
-    console.log(error);
-    return sendError(res);
+    return sendServerError(res);
   }
 });
 

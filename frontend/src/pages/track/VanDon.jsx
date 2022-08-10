@@ -25,7 +25,10 @@ export default function VanDon() {
 	};
 
 	return (
-		<div className="p-7">
+		<div className="p-7" style={{ 
+			maxWidth: "1200px",
+			margin:"auto"
+		 }}>
 			<textarea
 				value={billCode}
 				onChange={(e) => setBillCode(e.target.value)}
