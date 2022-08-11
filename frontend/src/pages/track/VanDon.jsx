@@ -5,8 +5,8 @@ import moment from 'moment';
 import { MainContext } from '../../context/MainContext';
 
 export default function VanDon() {
-	const {accessToken} = useContext(MainContext);
-	const [billCode, setBillCode] = useState();
+	const {accessToken,order} = useContext(MainContext);
+	const [billCode, setBillCode] = useState(order);
 	const [showResult, setShowResult] = useState(false);
 	const [data, setData] = useState(false); // list order
 
@@ -25,6 +25,7 @@ export default function VanDon() {
 		if (data.data.success) {
 			setShowResult(true);
 			setData(data.data.orders);
+			// setBillCode("")
 		} else {
 			alert('Mã vận đơn không tồn tại');
 		}

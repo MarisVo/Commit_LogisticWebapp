@@ -205,7 +205,8 @@ const Home = () => {
   // const [banners, setBanners] = useState(banner.banners);
   const [partners, setPartner] = useState(partnersFake);
   const [person, setPerson] = useState(1);
-  const { setMetadata, dataWarehouse, setDataWarehouse } = useContext(MainContext);
+  const [keyOrder, setKeyOrder] = useState('');
+  const { setMetadata, dataWarehouse, setDataWarehouse, order, setOrder } = useContext(MainContext);
 
   // const searchWarehouse = (e) => {
   //   e.preventDefault()
@@ -255,12 +256,12 @@ const Home = () => {
         console.log(error);
       }
     };
-    const fetchParner = async ()=>{
-      try{
+    const fetchParner = async () => {
+      try {
         const res = await axios.get(`${END_POINT}/partner`)
         // if(status===200) return setPartner(res.data.data.partners)
-        if(res.data.data.length>0) return setPartner(res.data.data.partners)
-      }catch (error){
+        if (res.data.data.length > 0) return setPartner(res.data.data.partners)
+      } catch (error) {
         console.log(error)
       }
     }
@@ -349,15 +350,20 @@ const Home = () => {
             <div>
               <form className="flex flex-col lg:flex-row ">
                 <input
+                  value={keyOrder}
+                  onChange={e => setKeyOrder(e.target.value)}
                   className="border border-gray-300 text-[#F0B90B] text-sm rounded focus:ring-yellow-500 focus:border-yellow-500 block w-full p-3 mb-2 lg:mb-0   "
                   placeholder="Nhập mã vận đơn của bạn (cách nhau bới dấu phẩy), tối đa 10 vận đơn"
                 ></input>
-                <button
-                  type="submit"
+                <Link
+                  to="tra-cuu/van-don"
                   className="text-white bg-yellow-500 hover:bg-yellow-400 focus:ring-4  focus:ring-red-500 font-medium rounded-lg text-lg w-full lg:w-44 lg:ml-2 px-5 py-2.5 text-center "
+                  onClick={(e) => {
+                      setOrder(keyOrder)
+                    }}
                 >
-                  Tìm kiếm
-                </button>
+                    Tìm kiếm
+                </Link>
               </form>
             </div>
           </TabPane>
@@ -417,7 +423,7 @@ const Home = () => {
           </TabPane>
           <TabPane
             tab={
-              <Link to="tra-cuu/cuoc-van-chuyen" className="text-lg h-[30px] text-[#fcd535]">
+              <Link to="tra-cuu/bang-gia" className="text-lg h-[30px] text-[#fcd535]">
                 Bảng giá
               </Link>
             }
