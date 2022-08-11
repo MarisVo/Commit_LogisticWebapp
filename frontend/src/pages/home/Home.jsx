@@ -206,6 +206,31 @@ const Home = () => {
   const [partners, setPartner] = useState(partnersFake);
   const [person, setPerson] = useState(1);
   const { setMetadata, dataWarehouse, setDataWarehouse } = useContext(MainContext);
+
+  // const searchWarehouse = (e) => {
+  //   e.preventDefault()
+  //   if (currentDistrict && currentProvince) {
+  //     const find = async () => {
+  //       try {
+  //         const { data: response } = await axios.get(
+  //           `${END_POINT}/warehouse`,
+  //           {
+  //             params: {
+  //               province: currentProvince,
+  //               district: currentDistrict,
+  //             },
+  //           }
+  //         );
+  //         setWarehouse(response.data);
+  //       } catch (error) {}
+  //     };
+  //     find();
+  //   } else {
+  //     alert("Mời chọn đủ thông tin tra cứu");
+  //   }
+  // };
+
+
   useEffect(() => {
     setMetadata((prev) => {
       return {

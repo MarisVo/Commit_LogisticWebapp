@@ -41,6 +41,10 @@ const WarehouseSchema = new Schema(
                     type: Schema.Types.ObjectId,
                     ref: 'product_shipments'
                 },
+                turnover: {
+                    type: Number,
+                    required: true
+                },
                 status: {
                     type: String,
                     enum: Object.values(SHIPMENT_MANAGER),

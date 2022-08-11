@@ -29,7 +29,7 @@ import {
   PurchaseStage,
   PurchaseDetail,
   Profile,
-  Notification,
+  NotificationCustomer,
   PurchaseDriver,
   LayerStorekeeper,
   Bills,
@@ -60,6 +60,8 @@ import {
   Staff_Register,
   AdminMaintenance,
   NotificationDriver,
+  ChangePassword
+
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainProvider, { MainContext } from "./context/MainContext";
@@ -69,7 +71,7 @@ import CustomerRoute from "./layouts/CustomerRoute";
 import Metadata from "./SEO/Metadata";
 import DriverRoute from "./layouts/DriverRoute";
 const App = () => {
-  return (
+ return (
     <MainProvider>
       <Metadata>
         <BrowserRouter>
@@ -92,14 +94,14 @@ const App = () => {
                 <Route path="tra-cuu/hang-cam-gui" element={<Track number="hang-cam-gui" />} />
 
                 {/* ------------------------Tuyển dụng------------------- */}
-                <Route path="tuyen-dung" element={<CareerOpportunities />}>
-                  <Route path="chi-tiet-viec-lam-noi-bat" element={<RecruitmentDetails />} />
+               {/*  <Route path="tuyen-dung" element={<CareerOpportunities />}>
+                  <Route path="chi-tiet-viec-lam-noi-bat" element={<RecruitmentDetails />} /> */}
                   {/* <Route
                   path="chi-tiet-viec-lam-moi"
                   element={<RecruitmentDetails />}
                 /> */}
-                </Route>
-                <Route path="cuoc-song" element={<Life />} />
+             {/*    </Route> */}
+               {/*  <Route path="cuoc-song" element={<Life />} /> */}
                 {/* ------------------------Dịch vụ---------------------- */}
                 <Route path="dich-vu" element={<Service />} />
                 <Route path="chuyen-phat-tieu-chuan" element={<StandardService />} />
@@ -107,13 +109,14 @@ const App = () => {
                 <Route path="sieu-dich-vu-chuyen-phat" element={<SuperService />} />
                 <Route path="chuyen-phat-do-tuoi-song" element={<FreshService />} />
                 {/* ----------------------Profile------------------ */}
-                <Route element={<CustomerRoute />}>
-                  <Route path="khach-hang/trang-ca-nhan" element={<Profile />} />
-                  <Route path="khach-hang/dat-hang" element={<Purchase />} />
-                  <Route path="khach-hang/dat-hang/:id" element={<PurchaseDetail />} />
-                  <Route path="khach-hang/dat-hang/don-hang/:id" element={<PurchaseStage />} />
-                  <Route path="khach-hang/thong-bao/don-hang" element={<Notification />} />
-                </Route>
+                 <Route element={<CustomerRoute />}>
+                <Route path="khach-hang/trang-ca-nhan" element={<Profile />} />
+                <Route path="khach-hang/dat-hang" element={<Purchase />} />
+                <Route path="khach-hang/thay-doi-mat-khau" element={<ChangePassword />} />
+                <Route path="khach-hang/dat-hang/:id" element={<PurchaseDetail />} />
+                <Route path="khach-hang/dat-hang/don-hang/:id" element={<PurchaseStage />} />
+                <Route path="khach-hang/thong-bao/don-hang" element={<NotificationCustomer />} />
+              </Route>
 
                 {/* -------------------------Đăng kí/Đăng nhập------------- */}
                 <Route element={<ProtectedRoute />}>
