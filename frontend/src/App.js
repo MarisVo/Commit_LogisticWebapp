@@ -60,7 +60,9 @@ import {
   Staff_Register,
   AdminMaintenance,
   NotificationDriver,
-  ChangePassword
+  AdminProhibitProduct,
+  AdminBill,
+  ChangePassword,
 
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -168,9 +170,31 @@ const App = () => {
                   </Route>
                 </Route>
               </Route>
-            </Routes>
-          </div>
-        </BrowserRouter>
+
+              <Route path="admin" element={<AdminPage />}>
+                <Route path="about" element={<AdminAbout />}></Route>
+                <Route path="contact-us" element={<AdminContactUs />}></Route>
+                <Route path="commitment" element={<AdminCommitment />}></Route>
+                <Route path="message" element={<AdminContactMessage />}></Route>
+                <Route path="service" element={<AdminDeliveryService />}></Route>
+                <Route path="partner" element={<AdminPartner />}></Route>
+                <Route path="career" element={<AdminCareer />}></Route>
+                <Route path="applicant" element={<AdminApplicant />}></Route>
+                <Route path="department" element={<AdminDepartment />}></Route>
+                <Route path="warehouse" element={<AdminWarehouse />}></Route>
+                <Route path="car" element={<AdminCar />}></Route>
+                <Route path="road" element={<AdminRoad />}></Route>
+                <Route path="staff" element={<AdminStaff />}></Route>
+                <Route path="customer" element={<AdminCustomer/>}></Route>
+                <Route path="order" element={<AdminOrder/>}></Route>
+                <Route path="staff_regis" element={<StaffRegister />}></Route>
+                <Route path="maintenance" element={<AdminMaintenance />}> </Route>
+                <Route path="hang_cam_gui" element={<AdminProhibitProduct />}> </Route>
+                <Route path="don_hang" element={<AdminBill />}> </Route>
+              </Route>
+          </Routes>
+        </div>
+      </BrowserRouter>
       </Metadata>
     </MainProvider>
   );

@@ -16,7 +16,7 @@ const EmploymentInformation = () => {
             })
             console.log(res);
             if(res.status===200){
-                setJob(res.data.data)
+                setJob( res.data.data.career)
             }
         }
         catch(error){
@@ -25,7 +25,7 @@ const EmploymentInformation = () => {
     }
     useEffect(()=>{
         getDataFromApi()
-    })
+    },[])
 
    
     const professions = [

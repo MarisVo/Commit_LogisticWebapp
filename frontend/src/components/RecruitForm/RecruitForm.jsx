@@ -1,15 +1,20 @@
 import { Form, Formik } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormGroup, Input, Label } from 'reactstrap';
 import isEmpty from 'validator/lib/isEmpty';
 import isEmail from 'validator/lib/isEmail';
+import axios from 'axios';
 
-const RecruitForm = () => {
+const RecruitForm = ({ id }) => {
+
     const [name, setName] = useState('');
+    const [ho, setHo] = useState('')
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
-    const [birthday, setBirthday] = useState('');
+    const [message, setmessage] = useState('');
     const [validationMsg, setValidationMsg] = useState({});
+    const [file, setFile] = useState();
+    const [option, setOption] = useState('');
 
     const validateAll = () => {
         const msg = {};
@@ -23,12 +28,24 @@ const RecruitForm = () => {
             msg.name = 'Vui lòng nhập họ và tên ';
         }
 
+        if (isEmpty(ho)) {
+            msg.ho = 'Vui lòng nhập họ và tên ';
+        }
+
         if (isEmpty(phone)) {
             msg.phone = 'Vui lòng nhập số điện thoại ';
         }
 
-        if (isEmpty(birthday)) {
-            msg.birthday = 'Vui lòng nhập ngày sinh của bạn ';
+        if (isEmpty(message)) {
+            msg.message = 'Vui lòng nhập tin nhắn của bạn ';
+        }
+
+        // if (isEmpty(file)) {
+        //     msg.file = 'Vui lòng gửi file CV của bạn ';
+        // }
+
+        if (isEmpty(option)) {
+            msg.option = 'Vui lòng điền nguồn của bạn ';
         }
 
         setValidationMsg(msg);
@@ -36,20 +53,46 @@ const RecruitForm = () => {
         return true;
     };
 
+    const postData = async (data, id) => {
+        try {
+            const res = await axios({
+                url:`http://localhost:8000/api/applicant/${id}`,
+                method: "post",
+                data: data,
+                // headers: { authorization: `Bearer ${accessToken}` },
+            })
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+
+    useEffect(() => {
+        console.log(id);
+    })
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const isValid = validateAll();
         if (!isValid) return;
-        console.log({
-            name,
-            email,
-            phone,
-            birthday,
-        });
+
+        const items = {
+            firstName: ho,
+            lastName: name,
+            phoneNumber: phone ,
+            email: email,
+            source: option,
+            message: message,
+            status: "pending",
+        }
+        postData(items,id);
+
         setName('');
         setEmail('');
         setPhone('');
-        setBirthday('');
+        setmessage('');
+        setHo('');
+        setOption('');
     };
 
     return (
@@ -60,14 +103,28 @@ const RecruitForm = () => {
                         <h3 className="mb-2 text-3xl font-bold lg:mb-5">Đăng ký ứng tuyển</h3>
                         <Form onSubmit={handleSubmit} className="gap-4 lg:grid lg:grid-cols-2">
                             <FormGroup className="flex flex-col mb-0 lg:mb-3">
-                                <Label for="name">Họ và tên</Label>
+                                <Label for="name">Họ</Label>
+                                <Input
+                                    className="py-2 border placeholder:pl-2 xl:w-[260px] lg:w-[200px]"
+                                    id="name"
+                                    type="text"
+                                    name=""
+                                    value={ho}
+                                    placeholder="Họ"
+                                    onChange={(e) => setHo(e.target.value)}
+                                />
+                                <p className="mt-2 text-sm text-red-400 ">{validationMsg.ho}</p>
+                            </FormGroup>
+
+                            <FormGroup className="flex flex-col mb-0 lg:mb-3">
+                                <Label for="name">Tên</Label>
                                 <Input
                                     className="py-2 border placeholder:pl-2 xl:w-[260px] lg:w-[200px]"
                                     id="name"
                                     type="text"
                                     name=""
                                     value={name}
-                                    placeholder="Họ và tên"
+                                    placeholder="Tên"
                                     onChange={(e) => setName(e.target.value)}
                                 />
                                 <p className="mt-2 text-sm text-red-400 ">{validationMsg.name}</p>
@@ -102,17 +159,44 @@ const RecruitForm = () => {
                             </FormGroup>
 
                             <FormGroup className="flex flex-col mb-0 lg:mb-3">
-                                <Label for="birthday">Năm sinh *</Label>
+                                <Label for="phone">Biết đến qua</Label>
+                                <select style={{ padding: 5, }} onChange={(e) => setOption(e.target.value)}>
+                                    <option value="">Biết đến qua nguồn</option>
+                                    <option value="staff">Nhân viên</option>
+                                    <option value="friend">Bạn bè</option>
+                                    <option value="phone">Điện thoại</option>
+                                    <option value="email">Email</option>
+                                    <option value="linkedin">Linkedin</option>
+                                    <option value="facebook">Facebook</option>
+                                    <option value="search">Tìm kiếm</option>
+                                    <option value="other">Khác</option>
+                                </select>
+                                <p className="mt-2 text-sm text-red-400 ">{validationMsg.option}</p>
+                            </FormGroup>
+
+                            <FormGroup className="flex flex-col mb-0 lg:mb-3">
+                                <Label for="message">Thông điệp</Label>
                                 <Input
                                     className="py-2 border placeholder:pl-2 xl:w-[260px] lg:w-[200px]"
-                                    type="date"
-                                    name="birthday"
-                                    id="birthday"
-                                    value={birthday}
-                                    placeholder="Năm sinh"
-                                    onChange={(e) => setBirthday(e.target.value)}
+                                    type="text"
+                                    value={message}
+                                    placeholder="Thông điệp"
+                                    onChange={(e) => setmessage(e.target.value)}
                                 />
-                                <p className="mt-2 text-sm text-red-400 ">{validationMsg.birthday}</p>
+                                <p className="mt-2 text-sm text-red-400 ">{validationMsg.message}</p>
+                            </FormGroup>
+
+                            <FormGroup className="flex flex-col mb-0 lg:mb-3">
+                                <Label for="phone">CV *</Label>
+                                <Input
+                                    className="py-2 border placeholder:pl-2 xl:w-[260px] lg:w-[200px]"
+                                    type="file"
+                                    name="file"
+                                    id="file"
+                                    placeholder="Số điện thoại"
+                                    onChange={(e) => setFile(e.target.files[0])}
+                                />
+                                {/* <p className="mt-2 text-sm text-red-400 ">{validationMsg.file}</p> */}
                             </FormGroup>
 
                             <FormGroup className=" col-span-full">

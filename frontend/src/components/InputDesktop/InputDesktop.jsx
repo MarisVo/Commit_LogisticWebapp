@@ -13,7 +13,7 @@ const InputDesktop = ({onSearch,onChangeKey, onChangeLocation, onChangeType,onCh
             method:"get",
         })
         if(res.status===200){
-            setDepartment(res.data.data);
+            setDepartment(res.data.data.department);
         }
     }
 

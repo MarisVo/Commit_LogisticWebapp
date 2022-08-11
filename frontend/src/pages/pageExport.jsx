@@ -68,5 +68,9 @@ export { default as AdminCustomer } from "./Admin/AdminCustomer.jsx";
 export { default as AdminStaff } from "./Admin/AdminStaff.jsx";
 export { default as AdminOrder } from "./Admin/AdminOrder.jsx";
 export {default as AdminMaintenance} from "./Admin/AdminMaintenance"
+export {default as AdminProhibitProduct} from "./Admin/AdminProhibitProduct"
+export {default as AdminBill} from "./Admin/AdminBill"
+
+
 
 
