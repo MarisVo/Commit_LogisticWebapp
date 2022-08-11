@@ -79,3 +79,8 @@ export const verifyCustomer = async (req, res, next) => {
         return sendError(res, 'Forbidden.',403)
     next()    
 }
+export const verifyStorekeeper = async (req, res, next) => {
+    if (req.user.role.staff_type !== 'storekeeper')
+        return sendError(res, 'Forbidden.',403)
+    next()    
+}

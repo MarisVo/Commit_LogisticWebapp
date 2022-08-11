@@ -2,7 +2,7 @@ import express, { request } from "express"
 import Warehouse from "../model/Warehouse.js"
 import { sendError, sendServerError, sendSuccess } from "../helper/client.js"
 import ProductShipment from "../model/ProductShipment.js"
-import { verifyToken } from "../middleware/index.js"
+import { verifyToken, verifyStorekeeper } from "../middleware/index.js"
 import { STAFF } from "../constant.js"
 const warehouseRoute = express.Router()
 
@@ -59,10 +59,8 @@ warehouseRoute.get('/:id', verifyToken,
     }
 )
 
-warehouseRoute.put('/:id', verifyToken,
+warehouseRoute.put('/:id', verifyToken, verifyStorekeeper,
     async(req, res) => {
-        const role = req.user.role.staff_type || req.user.role.customer_type
-        if (role && role === STAFF.STOREKEEPER) {
             try{
                 const {id} = req.params
                 const {name, phone, street, ward, district, province} = req.body
@@ -73,10 +71,7 @@ warehouseRoute.put('/:id', verifyToken,
                         console.log(name && name !== warehouse.name)
                         if (name && name !== warehouse.name){
                             const isExistName = await Warehouse.exists({name:name})
-                            if(isExistName) {return sendError(res, "New name is existed.")}
-                            else {
-                                Warehouse.findByIdAndUpdate(id, {name})
-                            }                    
+                            if(isExistName) {return sendError(res, "New name is existed.")}               
                         }
                         
                         if (street && ward && district && province){
@@ -102,9 +97,6 @@ warehouseRoute.put('/:id', verifyToken,
                 console.log(error)
                 return sendServerError(res)
             }
-        } else {
-            sendError(res, "Access denied.")
-        }
     }    
 )
 
