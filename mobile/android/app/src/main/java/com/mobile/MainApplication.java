@@ -12,7 +12,7 @@ import com.facebook.soloader.SoLoader;
 import com.mobile.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-
+import com.oblador.vectoricons.VectorIconsPackage;
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
@@ -29,6 +29,8 @@ public class MainApplication extends Application implements ReactApplication {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
           return packages;
+          packages.add(new VectorIconsPackage())
+
         }
 
         @Override

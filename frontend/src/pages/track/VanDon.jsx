@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { END_POINT } from '../../utils/constant';
 import axios from 'axios';
 import moment from 'moment';
+import { MainContext } from '../../context/MainContext';
 
 export default function VanDon() {
+	const {accessToken} = useContext(MainContext);
 	const [billCode, setBillCode] = useState();
 	const [showResult, setShowResult] = useState(false);
 	const [data, setData] = useState(false); // list order
@@ -14,7 +16,11 @@ export default function VanDon() {
 			return;
 		}
 
-		const { data } = await axios.get(`${END_POINT}/tracking/order/${billCode}`);
+		const { data } = await axios({
+			method:"get",
+			headers: { authorization: `Bearer ${accessToken}` },
+			url:`http://localhost:8000/api/order/tracking/${billCode}`,
+		});
 
 		if (data.data.success) {
 			setShowResult(true);
@@ -51,7 +57,7 @@ export default function VanDon() {
 			{data && data.length > 0 && (
 				<div id="bill" className="px-4 lg:px-0">
 					{data.map((order) => (
-						<div className="mt-14 bg-[#FFF2F4] min-h-[100px] rounded-[10px] flex items-center">
+						<div className="mt-14 bg-[#FFF2F4] min-h-[100px] rounded-[10px] flex items-center" key={order._id}>
 							<div className="text-center mx-10">
 								<p className="text-[16px] font-medium mb-1">
 									{moment(order.created_at).format('HH:mm')}

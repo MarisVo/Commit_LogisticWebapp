@@ -93,18 +93,9 @@ const PurchaseDriver = () => {
   }
 
   return (
-    <div className="pt-[68px]">
+    <div className="">
       <div className="bg-gray-100 relative ">
-        <SideBarDriver className="" handleOpen={handleOpen} open={open} />
-        <div>
-          <span className="w-6 h-6 absolute top-[4%] left-[0%] z-3  md:top-[15%]  ">
-            <IoArrowForwardCircleOutline
-              className="w-6 h-6 z-25   "
-              onClick={() => handleOpen()}
-            />
-          </span>
-        </div>
-        <div className=" sm:mx-16 lg:mx-52 py-4 bg-gray-white mx-2  ">
+        
           <div className="custom-tab shadow-[#000000] container mx-auto text-xl w-[100%] bg-white ">
             <Tabs
               defaultActiveKey="tất cả"
@@ -209,7 +200,7 @@ const PurchaseDriver = () => {
           </div>
         </div>
       </div>
-    </div>
+   
   );
 };
 

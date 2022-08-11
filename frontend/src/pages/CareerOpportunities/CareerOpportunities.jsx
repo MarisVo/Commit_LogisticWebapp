@@ -10,10 +10,11 @@ import EmploymentInformation from '../../components/EmploymentInformation/Employ
 import RecruitmentBanner from '../../components/RecruitmentBanner/RecruitmentBanner';
 import LifeInJT from '../../components/LifeInJT/LifeInJT';
 import { Outlet, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useState,useContext,useEffect } from 'react';
 import axios from 'axios';
 import { RecruitmentDetails } from '../pageExport';
 import { div } from 'react-router-dom';
+import { MainContext } from '../../context/MainContext';
 
 const CareerOpportunities = () => {
     const { pathname } = useLocation()
@@ -28,6 +29,16 @@ const CareerOpportunities = () => {
     const [showAll, setShowAll] = useState(false)
     const [showDetail,setShowDeatail] = useState(false)
     const [dataDetail,setDataDetail]= useState({})
+    const {setMetadata} = useContext(MainContext)
+
+    useEffect(() => {
+        setMetadata((prev) => {
+          return {
+            ...prev,
+            title: "Tìm kiếm | TKTL",
+          };
+        });
+    })
 
 
     const onChangeKey = (e) => {
@@ -57,7 +68,7 @@ const CareerOpportunities = () => {
                 method: "get",
             })
             if (res.status === 200) {
-                setData(res.data.data)
+                setData(res.data.data.career)
                 console.log(data);
             }
         }
@@ -235,5 +246,3 @@ const CareerOpportunities = () => {
 };
 
 export default CareerOpportunities;
-
-// ok chua ong oke rooif as

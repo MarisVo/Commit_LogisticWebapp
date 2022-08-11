@@ -31,7 +31,7 @@ function AddNewOrder({ isVisible, onClose, onOk, loading, disable }) {
                             layout="horizontal"
                         >
                             <Item label="Người nhận">
-                                <Input  />
+                                <Input />
                             </Item>
                             <Item label="Xuất phát">
                                 <Input />
@@ -40,16 +40,25 @@ function AddNewOrder({ isVisible, onClose, onOk, loading, disable }) {
                                 <Input />
                             </Item>
                             <Item label="Tình trạng">
-                                <Input />
+                                <select defaultValue="waiting" style={{padding:'5px'}}>
+                                    <option value="waiting">waiting</option>
+                                    <option value="accepted">accepted</option>
+                                    <option value="probably proceed">probably proceed</option>
+                                    <option value="processing">processing</option>
+                                    <option value="completed">completed</option>
+                                    <option value="refused">refused</option>
+                                    <option value="cancel">cancel</option>
+
+                                </select>
                             </Item>
                             <Item label="Thiết bị">
                                 <Input />
                             </Item>
-                            <Item label="Tổng giá tiền">
+                            {/* <Item label="Tổng giá tiền">
                                 <InputNumber />
-                            </Item>
+                            </Item> */}
                             <Item label="Email khách hàng">
-                                <Input/>
+                                <Input />
                             </Item>
                             <Item label="Số điện thoại">
                                 <InputNumber />

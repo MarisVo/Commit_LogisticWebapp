@@ -109,7 +109,7 @@ const RecruitmentDetails = ({data}) => {
           className="w-full h-[580px] "
         />
 
-        <RecruitForm />
+        <RecruitForm  id={data._id}/>
       </div>
     </>
   );

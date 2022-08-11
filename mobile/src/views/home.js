@@ -11,7 +11,7 @@ const Home = ({navigation}) => {
             <View style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center",height:"10%",borderColor:"black",borderWidth:2}}>
                 <TouchableOpacity style={{height:"100%",aspectRatio:1.6,borderColor:"black",borderWidth:2,justifyContent:"center",alignItems:"center"}}
                     onPress={()=>{
-                        navigation.navigate("Login")
+                        navigation.goBack()
                     }}
                 >
               <Text style={{fontSize:25}}>Back</Text>   
