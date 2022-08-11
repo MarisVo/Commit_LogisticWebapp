@@ -20,8 +20,8 @@ function getItem(label, key, icon, children) {
   };
 }
 const items = [
-  getItem(<Link to="inventory">Hàng tồn kho</Link>, "1", <MdOutlineInventory2 />),
-  getItem(<Link to="bills">Xuất nhập kho</Link>, "2", <BiTransferAlt />),
+  getItem(<Link to="hang-ton-kho">Hàng tồn kho</Link>, "1", <MdOutlineInventory2 />),
+  getItem(<Link to="van-don">Xuất nhập kho</Link>, "2", <BiTransferAlt />),
 ];
 const StorekeeperLayout = () => {
   const [collapsed, setCollapsed] = useState(true);

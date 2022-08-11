@@ -38,7 +38,7 @@ export default function BuuCuc() {
               province
             },
           });
-          setResult(res.data.data);
+          setResult(res.data.data.warehouses);
         } catch (error) {
           console.log(error);
         }
@@ -96,7 +96,7 @@ export default function BuuCuc() {
         },
       });
 
-      setResult(res.data.data);
+      setResult(res.data.data.warehouses);
       setIsValid(true);
     } catch (error) {
       alert("Có lỗi xảy ra, thử chọn 1 địa điểm khác!");
