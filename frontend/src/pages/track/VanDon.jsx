@@ -1,16 +1,28 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { END_POINT } from '../../utils/constant';
 import axios from 'axios';
 import moment from 'moment';
 import { MainContext } from '../../context/MainContext';
 
 export default function VanDon() {
-	const {accessToken,order} = useContext(MainContext);
+	const {accessToken,order, setOrder} = useContext(MainContext);
 	const [billCode, setBillCode] = useState(order);
 	const [showResult, setShowResult] = useState(false);
 	const [data, setData] = useState(false); // list order
+	const [checkEmpty, setCheck] = useState(false);
+
+
+	const check = ()=>{
+		if(billCode!==""&&billCode!==null){
+			handleSubmit()
+		}
+	}
+	useEffect(()=>{
+		setTimeout(check(),1000)
+	},[])
 
 	const handleSubmit = async () => {
+		setOrder("")
 		if (!billCode) {
 			alert('Vui lòng nhập mã vận đơn');
 			return;
@@ -25,9 +37,8 @@ export default function VanDon() {
 		if (data.data.success) {
 			setShowResult(true);
 			setData(data.data.orders);
-			// setBillCode("")
 		} else {
-			alert('Mã vận đơn không tồn tại');
+			setCheck(true)
 		}
 	};
 
@@ -54,6 +65,10 @@ export default function VanDon() {
 					Tra cứu vận đơn
 				</button>
 			</div>
+
+			{checkEmpty&&(
+				<div className='p-[5px]' style={{color:"red", fontSize:18, textAlign:"center"}}>Không có vận đơn</div>
+			)}
 
 			{data && data.length > 0 && (
 				<div id="bill" className="px-4 lg:px-0">

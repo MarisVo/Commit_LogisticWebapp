@@ -128,7 +128,7 @@ export default function CuocVanChuyen() {
 			maxWidth: "1200px",
 			margin: "auto"
 		}}>
-			<div className='flex' style={{ justifyContent: "space-between", alignItems: "baseline" }}>
+			<div className='lg:flex' style={{ justifyContent: "space-between", alignItems: "baseline" }}>
 
 				<div className="w-full  h-[43px] ">
 					<span className="mb-4 inline-block font-bold text-xl text-[#F0B90B]">
@@ -171,7 +171,7 @@ export default function CuocVanChuyen() {
 												id="select2-dropdown-from-prov-tariff-container"
 												title="Tỉnh/ Thành phố"
 											>
-												Tỉnh/ Thành phố
+												{/* Tỉnh/ Thành phố */}
 											</span>
 											<span
 												className="select2-selection__arrow"
@@ -295,7 +295,7 @@ export default function CuocVanChuyen() {
 											<span className="selection">
 												<span tabIndex={0}>
 													<span className=" ml-1" title="Tỉnh/ Thành phố">
-														Tỉnh/ Thành phố
+														{/* Tỉnh/ Thành phố */}
 													</span>
 													<span className="select2-selection__arrow">
 														<b />

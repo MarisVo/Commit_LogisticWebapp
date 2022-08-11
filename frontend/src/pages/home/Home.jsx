@@ -359,7 +359,14 @@ const Home = () => {
                   to="tra-cuu/van-don"
                   className="text-white bg-yellow-500 hover:bg-yellow-400 focus:ring-4  focus:ring-red-500 font-medium rounded-lg text-lg w-full lg:w-44 lg:ml-2 px-5 py-2.5 text-center "
                   onClick={(e) => {
+                    if(keyOrder!==""&&keyOrder!==null){
                       setOrder(keyOrder)
+                    }
+                    else{
+                      e.preventDefault();
+                      alert("Vui lòng điền đầy đủ thông tin")
+                    }
+                      
                     }}
                 >
                     Tìm kiếm
