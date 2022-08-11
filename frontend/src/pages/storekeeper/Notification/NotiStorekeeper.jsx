@@ -32,7 +32,7 @@ function NotiStorekeeper() {
       <div className="w-full md:w-[750px] mx-auto border border-black px-4 py-2 bg-white rounded-md">
         <div className="flex justify-between items-center py-3 border-b border-black">
           <h2 className="m-0 text-xl font-extrabold">Thông báo</h2>
-          <Link to="/storekeeper" className="flex items-center gap-x-2 border rounded-lg py-1 px-2">
+          <Link to="/thu-kho" className="flex items-center gap-x-2 border rounded-lg py-1 px-2">
             <TiArrowBackOutline className="w-6 h-6 font-semibold" />
             Quay lại
           </Link>

@@ -1,4 +1,3 @@
-
 export { default as Home } from "./Home/Home";
 export { default as About } from "./About/About";
 export { default as Commit } from "./About/Commit";
@@ -25,12 +24,8 @@ export { default as Register } from "./Login/Register.jsx";
 export { default as ForgetPass } from "./Login/ForgetPass.jsx";
 export { default as Register_OTP } from "./Login/Register_verify_OTP.jsx";
 export { default as StaffLogin } from "./Login/Staff_login.jsx";
-
 export { default as StaffRegister } from "./Admin/Staff_regis.jsx";
-
-
 export { default as PageNotFound } from "./PageNotFound";
-
 export { default as LayerStorekeeper } from "../layouts/StorekeeperLayout";
 export { default as Bills } from "./Storekeeper/Bills";
 export { default as Inventory } from "./Storekeeper/Inventory";
@@ -39,13 +34,15 @@ export { default as NotiStorekeeper } from "./Storekeeper/Notification/NotiStore
 
 
 //----------------------------------------------//
-export { default as Purchase } from "./Purchase/Purchase.jsx";
-export { default as PurchaseDriver } from "./Purchase/PurchaseDriver.jsx";
-export { default as PurchaseStage } from "./PurchaseStage/PurchaseStage.jsx";
-export { default as Profile } from "./Profile/Profile.jsx";
-export { default as Notification } from "./Notification/Notification.jsx";
-export { default as NotificationDriver } from "./Notification/NotificationDriver.jsx";
-export { default as PurchaseDetail } from "./PurchaseDetail/PurchaseDetail.jsx";
+export { default as Purchase } from "./Customer/Purchase.jsx";
+export { default as PurchaseStage } from "./Customer/PurchaseStage.jsx";
+export { default as ChangePassword } from "./Customer/ChangePassword.jsx";
+export { default as Profile } from "./Customer/Profile.jsx";
+export { default as NotificationCustomer } from "./Customer/NotificationCustomer.jsx";
+export { default as PurchaseDetail } from "./Customer/PurchaseDetail.jsx";
+//----------------------------------------------//
+export { default as PurchaseDriver } from "./Driver/PurchaseDriver.jsx";
+export { default as NotificationDriver } from "./Driver/NotificationDriver.jsx";
 //---------------------------------------------//
 export { default as StandardService } from "./Services/StandardService.jsx";
 export { default as Service } from "./Services/Service.jsx";

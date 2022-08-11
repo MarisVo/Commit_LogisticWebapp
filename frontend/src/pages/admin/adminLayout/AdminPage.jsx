@@ -82,21 +82,21 @@ export default function AdminPage() {
     ),
     getItem(
       <div>
-        <Link to="career">Việc làm</Link>
+        <Link to="viec-lam">Việc làm</Link>
       </div>,
       "7",
       <BsPaperclip />
     ),
     getItem(
       <div>
-        <Link to="applicant">Ứng viên</Link>
+        <Link to="ung-vien">Ứng viên</Link>
       </div>,
       "8",
       <ImProfile />
     ),
     getItem(
       <div>
-        <Link to="department">Phòng ban</Link>
+        <Link to="phong-ban">Phòng ban</Link>
       </div>,
       "9",
       <AiOutlinePartition />
@@ -157,7 +157,7 @@ export default function AdminPage() {
     getItem(
       <div>
 
-        <Link to="maintenance">Bảo trì, sửa chữa</Link>
+        <Link to="phi-bao-tri">Bảo trì, sửa chữa</Link>
 
       </div>,
       "16",

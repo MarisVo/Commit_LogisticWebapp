@@ -1,10 +1,18 @@
 import axios from "axios";
-import { useState, useEffect} from 'react'
+import { useState, useEffect, useContext} from 'react'
+import { MainContext } from "../../context/MainContext";
 import { END_POINT } from "../../utils/constant"
 function About() {
+    const {setMetadata} = useContext(MainContext)
     const [data, setData] = useState({})
     const [banners, setBanners] = useState([])
     useEffect(() => {
+        setMetadata((prev) => {
+            return {
+              ...prev,
+              title: "Về chúng tôi | TKTL",
+            };
+          });
         const fetchApi = async () => {
             try {
                 const res = await axios.get(`${END_POINT}/about`)

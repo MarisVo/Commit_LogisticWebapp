@@ -22,11 +22,12 @@ export default function Profile() {
     newPw: "",
     verify_password: "",
   });
-  const { accessToken } = useContext(MainContext);
+  const { setMetadata,accessToken } = useContext(MainContext);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [open, setOpen] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+   
   const [information, setInformation] = useState({
     name: "Nguyễn Văn Thật",
     address: "B5/3 Phường An Phú Tp Thủ Đức",
@@ -100,8 +101,7 @@ export default function Profile() {
   }, [isModalVisible]);
   const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log(cPassword)
-    setFormErrors(validate);
+ /*    setFormErrors(validate); */
     try {
       const res = await axios.put(
         "http://localhost:8000/api/auth/change-pw" ,
@@ -112,21 +112,19 @@ export default function Profile() {
           headers: { authorization: `Bearer ${accessToken}` },
         }
       );
-      console.log(res)
       setIsSubmit(true);
     } catch (err) {
-      console.log(err);
-      setFormErrors({oldPw:"wrong current password"})
+    setFormErrors(validate(err.response.data.message[0]));
     }
   };
-  const validate = () => {
+const validate = (message) => {
     const { oldPw, verify_password, newPw } = cPassword;
     const errors = {};
-    /*  if (oldPw !== password) {
-       errors.oldPw = "Wrong password";
-     } */
     if (!oldPw) {
-      errors.oldPw = "This field is required";
+      errors.oldPw = "Vui lòng nhập trường này";
+    }
+    if (oldPw && message==="c") {
+      errors.oldPw = "Sai mật khẩu,vui lòng nhập lại";
     }
     if (!newPw) {
       errors.newPw = "This field is required";
@@ -145,7 +143,14 @@ export default function Profile() {
     }
     return errors;
   };
-
+   useEffect(() => {
+    setMetadata((prev) => {
+      return {
+        ...prev,
+        title: "Trang cá nhân | TKTL",
+      };
+    });
+     }, []);
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       /* const handleChangePassword = async () => {
@@ -187,10 +192,10 @@ export default function Profile() {
           } overflow-y-auto overflow-x-hidden fixed  z-50 w-full top-0 left-0   h-full bg-[#1114]`}
         >
           <div className="relative min-w-[350px] top-[15%] sm:min-w-[550px]  md:mx-auto flex justify-center items-center">
-            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 min-w-[350px] sm:min-w-[400px] mx-1 ">
+            <div className="relative bg-white rounded-lg shadow  min-w-[350px] sm:min-w-[400px] mx-1 border-[1px]">
               <div className="flex item-center justify-end ">
                 <span
-                  className="cursor-pointer mr-1 text-base"
+                  className="cursor-pointer mr-1 text-base font-bold"
                   onClick={handleCloseModal}
                 >
                   X
@@ -198,12 +203,12 @@ export default function Profile() {
               </div>
 
               <div className="pb-6 pt-[6px] px-6 ">
-                <h3 className="mb-3 text-xl font-semibold text-gray-900 dark:text-white ">
+                <h3 className="mb-3 text-2xl font-bold  ">
                   Thay đổi
                 </h3>
                 <form className="space-y-4" action="#" onSubmit={handleSubmit}>
                   <div>
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                    <label className="block mb-2 text-sm font-medium ">
                       Mật khẩu cũ
                     </label>
                     <div className="relative">
@@ -214,7 +219,7 @@ export default function Profile() {
                         defaultValue={cPassword.oldPw}
                         onChange={handleChangePassword}
                         placeholder="Add your password"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white relative"
+                       className="border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-white relative"
                       />
                       {eyeOp ? (
                         <AiOutlineEye
@@ -231,7 +236,7 @@ export default function Profile() {
                     <p className="text-red-400">{formErrors.oldPw}</p>
                   </div>
                   <div>
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                    <label className="block mb-2 text-sm font-medium ">
                       Mật khẩu mới
                     </label>
                     <div className="relative">
@@ -242,7 +247,7 @@ export default function Profile() {
                         defaultValue={cPassword.newPw}
                         onChange={handleChangePassword}
                         placeholder="Add your new password"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                        className="border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-white relative"
                       />
                       {eyeNp ? (
                         <AiOutlineEye
@@ -259,7 +264,7 @@ export default function Profile() {
                     <p className="text-red-400">{formErrors.newPw}</p>
                   </div>
                   <div>
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                    <label className="block mb-2 text-sm font-medium ">
                       Xác nhận mật khẩu mới
                     </label>
                     <div className="relative">
@@ -270,7 +275,7 @@ export default function Profile() {
                         defaultValue={cPassword.verify_password}
                         placeholder="Confirm new password"
                         onChange={handleChangePassword}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                        className="border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-white relative"
                       />
                       {eyeCf ? (
                         <AiOutlineEye
@@ -299,18 +304,8 @@ export default function Profile() {
           </div>
         </div>
       </>
-      <div className="pt-[68px] relative">
-        <div className="bg-gray-100 relative ">
-          <SideBar className="" handleOpen={handleOpen} open={open} />
-          <span className="w-6 h-6 absolute top-[10%] left-[0%] z-3 transition  lg:top-[15%]">
-            <IoArrowForwardCircleOutline
-              className="w-6 h-6 z-50 "
-              onClick={() => handleOpen()}
-            />
-          </span>
-
-          <div className="grid grid-cols-5 mx-1 sm:mx-16 lg:mx-[250px] md:mx-28 py-5 bg-gray-100 overflow-hidden  ">
-            <div className=" col-span-5 bg-[#f8faff] rounded-lg   shadow-xl mb-3">
+      <div className=" relative">
+        <div className=" relative ">
               <div className="flex justify-start flex-col  border-b-2  pl-4 pb-3 pt-3">
                 <div className="text-xl font-bold mb-1 lg:text-2xl mt-2">
                   Hồ Sơ Của Tôi
@@ -336,7 +331,7 @@ export default function Profile() {
                         />
                       </div>
                     </div>
-                    <div className="flex mb-6 sm:py-1 flex-col  ">
+                    {/* <div className="flex mb-6 sm:py-1 flex-col  ">
                       <div className="flex items-center   justify-start flex-row">
                        
                           <div className=" mr-3 text-yellow-600 lg:text-lg text-base">
@@ -353,10 +348,26 @@ export default function Profile() {
             
                       <div className="flex  ">
                         <input
-                          className="outline-none border-[1px] sm:px-2 rounded-md py-[6px] px-1 border-gray-200 text-base  max-w-[160px] md:min-w-[260px] sm:min-w-[210px] line-clamp-1"
+                          className="select-none outline-none border-[1px] sm:px-2 rounded-md py-[6px] px-1 border-gray-200 text-base  max-w-[160px] md:min-w-[260px] sm:min-w-[210px] line-clamp-1"
                           type="password"
                           
                           defaultValue="12312321"
+                        />
+                      </div>
+                    </div> */}
+                     <div className="flex mb-6 sm:py-1 flex-col  ">
+                      <div className="flex items-center   justify-start ">
+                        <label className=" mr-3 text-yellow-600 lg:text-lg text-base">
+                          Email:
+                        </label>
+                      </div>
+                      <div className="flex  ">
+                        <input
+                          className="outline-none border-[1px] sm:px-2 rounded-md py-[6px] px-1 border-gray-200 text-base  max-w-[160px] md:min-w-[260px] sm:min-w-[210px] line-clamp-1"
+                          type="text"
+                          name="email"
+                          onChange={handleForm}
+                          defaultValue={information.email}
                         />
                       </div>
                     </div>
@@ -381,7 +392,7 @@ export default function Profile() {
                   </div>
                   <div className="col-span-1 ">
                       {/* col 2*/}
-                   <div className="flex mb-6 sm:py-1 flex-col  ">
+                  {/*  <div className="flex mb-6 sm:py-1 flex-col  ">
                       <div className="flex items-center   justify-start ">
                         <label className=" mr-3 text-yellow-600 lg:text-lg text-base">
                           Email:
@@ -396,7 +407,7 @@ export default function Profile() {
                           defaultValue={information.email}
                         />
                       </div>
-                    </div>
+                    </div> */}
                     <div className="flex mb-6 sm:py-1 flex-col  ">
                       <div className="flex items-center   justify-start ">
                         <label className=" mr-3 text-yellow-600 lg:text-lg text-base">
@@ -445,7 +456,7 @@ export default function Profile() {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+    /*   </div> */
+   /*  </div> */
   );
 }
