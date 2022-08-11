@@ -1774,36 +1774,19 @@ paths:
         - application/json
       parameters:
         - in: formData
-          name: prohibited product
-          description: a new prohibited product.
-          schema:
-            type: object
-            required:
-              - name
-              - detail
-              - image
-            properties:
-              name:           
-                  type: string
-              detail:           
-                  type: string
+          name: name
+          type: string
+          required: true
+          description: name of prohibited product
         - in: formData
-          name: images
-          description: a images prohibited product.
+          name: detail
+          type: string
+          required: true
+          description: detail of prohibited product
+        - in: formData
+          name: image
           type: file
-      requestBody:
-        content: 
-          application/json:
-            schema:            
-              type: object
-              properties:      
-                name:           
-                  type: string
-                images: 
-                  type: string
-                  format: base64
-                detail:   
-                  type: string
+          description: Image of prohibited product
       responses:
         200:
           description: Create prohibited product successfully.
@@ -1828,40 +1811,22 @@ paths:
       parameters:
         - in: path
           name: id
-          schema: 
-            type: string
           required: true
           description: prohibited product id
         - in: formData
-          name: prohibited product
-          description: a existing prohibited product.
-          schema:
-            type: object
-            required:
-              - name
-              - detail
-            properties:
-              name:
-                type: string
-              detail:
-                type: string
+          name: name
+          type: string
+          required: true
+          description: name of prohibited product
         - in: formData
-          name: images
-          description: a images prohibited product.
+          name: detail
+          type: string
+          required: true
+          description: detail of prohibited product
+        - in: formData
+          name: image
           type: file
-      requestBody:
-        content: 
-          multipart/form-data: 
-            schema:            
-              type: object
-              properties:      
-                name:
-                  type: string
-                images:
-                  type: string
-                  format: base64 
-                detail:
-                  type: string
+          description: Image of prohibited product
       responses:
         200:
           description: Update prohibited product successfully.
