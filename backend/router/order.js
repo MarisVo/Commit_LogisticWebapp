@@ -1,6 +1,7 @@
 import express from "express"
 import { sendError, sendServerError, sendSuccess } from "../helper/client.js"
 import { createOrderValidate } from "../validation/order.js"
+import { createReceiverValidate } from "../validation/receiver.js"
 import { locateAddress } from "../service/location.js"
 import { verifyToken, verifyCustomer, verifyCustomerOrAdmin} from '../middleware/index.js'
 import { genarateOrderID } from "../service/order.js"
@@ -21,12 +22,14 @@ const orderRoute = express.Router()
 orderRoute.post('/create',
     verifyToken,
     verifyCustomerOrAdmin,
-    async (req, res) => {
-        const errors = createOrderValidate(req.body)
-        if (errors) return sendError(res, errors)
-        const {customerPhone, customerEmail, serviceName, receiver, origin, destination } = req.body
-        const {name, phone, identity} = receiver
+    async (req, res) => {        
         try {
+            const errors = createOrderValidate(req.body)
+            if (errors) return sendError(res, errors)
+            const {customerPhone, customerEmail, serviceName, receiver, origin, destination } = req.body
+            const {name, phone, identity} = receiver
+            const receiverError = createReceiverValidate(receiver)
+            if(receiverError) return sendError(res, receiverError)
             const userId = req.user.role._id
             var customerId = null   
             //Check whether user is customer or admin         
