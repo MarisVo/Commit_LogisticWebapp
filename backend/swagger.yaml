@@ -3061,18 +3061,18 @@ paths:
     post:
       tags:
         - "order"
-      summary: "Customer create a new order"
+      summary: "Customer or Admin create a new order"
       consumes:
         - application/json
       parameters:
         - in: body
           name: order
-          description: a new order.
+          description: a new order(if user is admin, fill in customerEmail/customerPhone)
           schema:
             type: object      
             required: 
             - serviceName, receiver, origin, destination     
-            properties:
+            properties:              
               serviceName:
                 type: string
               receiver: 
@@ -3087,7 +3087,11 @@ paths:
               origin:
                 type: string               
               destination:
-                type: string               
+                type: string   
+              customerEmail:
+                type: string
+              customerPhone:
+                type: string            
       responses:
         200:
           description: Create new order successfully.
@@ -3112,6 +3116,14 @@ paths:
           name: pageSize
           type: string
           description: Number of order in a page
+        - in: query
+          name: status
+          type: string
+          description: waiting/accepted/probably proceed/processing/completed/refused/cancel          
+        - in: query
+          name: sortBy
+          type: string
+          description: sort by field name, -updatedAt
       responses:
         200:
           description: get order successfully.
@@ -3161,6 +3173,37 @@ paths:
           description: order is not found.
       security:
         - bearerAuth: []
+    put: 
+      tags:
+        - "order"
+      summary: Customer or Admin update information of an waiting order
+      produces:
+        - application/json     
+      parameters:
+        - in: path
+          name: orderId
+          type: string
+          required: true
+          description: Id of a order 
+        - in: body
+          name: updatedOrder
+          description: updatedOrder   
+          schema:
+            type: object                
+            properties:
+              serviceName:
+                type: string   
+              origin:
+                type: string  
+              destination:
+                type: string  
+      responses:
+        200:
+          description: updated order successfully.            
+        400:
+          description: order is not found.
+      security:
+        - bearerAuth: []
 
   /admin/order:
     get:
@@ -3178,6 +3221,14 @@ paths:
           name: pageSize
           type: string
           description: Number of order in a page
+        - in: query
+          name: status
+          type: string
+          description: waiting/accepted/probably proceed/processing/completed/refused/cancel          
+        - in: query
+          name: sortBy
+          type: string
+          description: sort by field name, -updatedAt
       responses:
         200:
           description: get order successfully.
@@ -3247,46 +3298,6 @@ paths:
           description: delete order successfully.                  
         400:
           description: order is not found.
-      security:
-        - bearerAuth: []
-  /admin/order/create:
-    post:
-      tags:
-        - "order"
-      summary: "Admin create a new order for offline customer"
-      consumes:
-        - application/json
-      parameters:
-        - in: body
-          name: order
-          description: a new order.
-          schema:
-            type: object      
-            required: 
-            - serviceName, receiver, origin, destination     
-            properties:
-              serviceName:
-                type: string
-              customerEmail:
-                type: string
-              receiver: 
-                type: object
-                properties:
-                  name:
-                    type: string
-                  phone:
-                    type: string
-                  identity:
-                    type: string                                   
-              origin:
-                type: string               
-              destination:
-                type: string               
-      responses:
-        200:
-          description: Create new order successfully.
-        400:
-          description: Create order failed.
       security:
         - bearerAuth: [] 
   /order/tracking/{lstOrderId}:
