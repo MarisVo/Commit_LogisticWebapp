@@ -61,6 +61,8 @@ tags:
   description: "Endpoint Consultancy"
 - name: "notification"
   description: "Endpoint Notification for user's realtime interaction"
+- name: "staff"
+  description: "Endpoint Staff"
 - name: "warehouse" 
   description: "Endpoint Warehouse" 
 - name: "participant" 
@@ -5548,6 +5550,82 @@ paths:
           description: Delete applicant failed.
       security:
         - bearerAuth: []
+  /admin/staff:
+    get:
+      tags: 
+        - staff
+      summary: get list of staffs
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: id
+          type: string
+          description: id of staff
+        - in: query
+          name: keyword
+          type: string
+          description: keyword for searching staff 
+        - in: query
+          name: sort
+          type: number
+          description: sort staff by order
+        - in: query
+          name: filter
+          type: string
+          description: admin, driver, shipper, storekeeper or staff
+      responses:
+        200:
+          description: Get staff information successfully.
+        400:
+          description: Get staff information failed.
+      security:
+        - bearerAuth: []
+  /admin/staff/{staffId}:
+    delete:
+      tags:
+        - staff
+      summary: Delete staff by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: staffId
+          type: string
+          description: id of staff  
+      responses:
+        200:
+          description: delete staff successfully.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - staff
+      summary: Update staff by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: staffId
+          type: string
+          description: id of staff
+        - in: body
+          name: update content
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              staff_type:
+                type: string
+      responses:
+        200:
+          description: Update staff information successfully.
+        400:
+          description: Update staff information failed.
+      security:
+        - bearerAuth: []
+
 
 securityDefinitions:
   bearerAuth:

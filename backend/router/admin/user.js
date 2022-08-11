@@ -66,7 +66,25 @@ userAdminRoute.put('/active/:id', async (req, res) => {
     } catch (error) {
         console.log(error)
         return sendServerError(res)
-    }
-})
+     }            
+}) 
+//! ------------------------------------------------------------------------------------------------
+// userAdminRoute.post('/create/:email/:phone/:password/:role/:isActive', async (req, res) => {
+//     let {email, phone, password, role, isActive} = req.params;
+//     let user = new User({
+//         email: email,
+//         phone: phone,
+//         password: password,
+//         role: role,
+//         isActive: isActive
+//     })
+//     user.save()
+//     .then((result) => {
+//         res.send("User created successfully")
+//     })
+//     .catch((err) => {
+//         res.send(err);
+//     })
+// })
 
 export default userAdminRoute
