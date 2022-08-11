@@ -13,11 +13,11 @@ export default function AdminDropDownAvatar() {
     items={[
         {
             key: "1",
-          label : (  <Link to="/"> Back To Main Page</Link>),
+          label : (  <Link to="/">Về trang chủ</Link>),
         },
         {
             key: "2",
-          label : (<div  onClick={logoutHandle} > <Link to="/"> Log out</Link> </div> ),
+          label : (<div  onClick={logoutHandle} > <Link to="/">Đăng xuất</Link> </div> ),
         },
       ]}
     />

@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
-import SideBar from "../../components/SideBar";
+import SideBar from "../../components/SideBarCustomer";
 import { IoLocationOutline } from "react-icons/io5";
-
 import { AiOutlineGift, AiOutlineUser, AiOutlineInbox } from "react-icons/ai";
 import { TbSteeringWheel } from "react-icons/tb";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
@@ -10,19 +9,70 @@ import { GiWeight } from "react-icons/gi";
 import { BsCoin } from "react-icons/bs";
 import { AiOutlinePhone } from "react-icons/ai";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
+import axios from "axios";
+import { MainContext } from "../../context/MainContext";
 const PurchaseDetail = () => {
   const [open, setOpen] = useState(false);
+  const [customer, setCustomer] = useState(null);
+  const [receiver, setReceiver] = useState(null);
+  const [service, setService] = useState(null);
   const location = useLocation();
-
+  const params = useParams()
   const handleOpen = () => {
-    setOpen(!open);
+    setOpen(!open);     
     console.log(open);
   };
-
+   const {accessToken} = useContext(MainContext)
   useEffect(() => {
-    console.log(location);
-  });
+    console.log(params.id)
+    const getDetailOrder = async()=>{
+      try{
+      const res = await axios.get(`http://localhost:8000/api/order/${params.id}`,{
+          headers: { authorization: `Bearer ${accessToken}` }
+      })
+      const  {data} =res.data
+      console.log(data)   
+      const {customer,receiver,service} =data[0]
+      if(data){   
+        getCustomer(customer)
+         getService(service)
+      }
+    }
+    catch(err){
+        console.log(err)
+      }
+    }
+    getDetailOrder()
+    const getCustomer = async(customer)=>{
+      try{
+      const rescustomer = await axios.get(`http://localhost:8000/api/customer?id=${customer}`,{
+          headers: { authorization: `Bearer ${accessToken}` }
+      })
+       const {data} =rescustomer.data
+       const res = data[0]
+       console.log("cus",res)
+       setCustomer(res)
+      }catch(err){
+        console.log(err)
+      }
+    }
+    const getService = async(service)=>{
+      try{  
+        const resservice = await axios.get(`http://localhost:8000/api/service/${service}`,{
+          headers: { authorization: `Bearer ${accessToken}` }
+        })
+       const {data} =resservice.data
+       console.log("ser",data)
+       setService(data)
+       
+      }catch(err){
+        console.log(err)
+      }
+    }
+   getCustomer()
+   getService()
+  },[]);
   const order = {
     formProvince: "Ho Chi Minh",
     fromDistrict: "Quan 2",
@@ -35,6 +85,7 @@ const PurchaseDetail = () => {
     serviceId: "string",
     serviceName: "string",
   };
+
 
   return (
     <div className="pt-[68px]">
@@ -64,14 +115,14 @@ const PurchaseDetail = () => {
                   <div className="ml-2 flex items-center py-1">
                     <AiOutlinePhone className="mr-1 w-5 h-5  md:w-7 md:h-7 " />
                     <div className="text-base md:text-lg mr-1">Điện thoại:</div>
-                    <div className="text-base md:text-lg">08279372</div>
+                    <div className="text-base md:text-lg">08279372 </div>
                   </div>
                   <div className="ml-2 flex items-center py-1">
                     <AiOutlineUser className="mr-1 w-5 h-5  md:w-7 md:h-7 " />
                     <div className="text-base md:text-lg mr-1">
                       Tên người gửi:
                     </div>
-                    <div className="text-base md:text-lg">Nguyễn Văn Thật</div>
+                    <div className="text-base md:text-lg">{customer?.name}</div>
                   </div>
                   <div className="ml-2 flex items-center py-1">
                     <div>
@@ -79,7 +130,7 @@ const PurchaseDetail = () => {
                     </div>
                     <div className="text-base md:text-lg mr-1">Địa điểm :</div>
                     <div className="text-base md:text-lg">
-                      B7/2 Nguyễn Thị Định Q2
+                     {customer?.address}
                     </div>
                   </div>
                 </div>
@@ -176,7 +227,7 @@ const PurchaseDetail = () => {
                   <div className="ml-2 flex items-center py-1">
                     <TbSteeringWheel className="mr-1 w-5 h-5  md:w-7 md:h-7 " />
                     <div className="text-base md:text-lg mr-1">Dịch vụ:</div>
-                    <div className="text-base md:text-lg ">J&T fast</div>
+                    <div className="text-base md:text-lg ">J&T {service?.name}</div>
                   </div>
                 </div>
               </div>

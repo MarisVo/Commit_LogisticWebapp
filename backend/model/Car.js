@@ -1,5 +1,4 @@
 import mongoose from "mongoose"
-import { COST } from "../constant.js"
 import { CAR_TYPE } from "../constant.js"
 const { Schema } = mongoose
 
@@ -24,25 +23,21 @@ const CarSchema = new Schema(
             type: Number,
             required: true
         },
-        cost: [
-            {
-                cost_type: {
-                    type: String,
-                    enum: Object.values(COST),
-                    required: true
-                },
-                amount: {
-                    type: Number,
-                    required: true // amount of money
-                },
-                in_progress: {
-                    type: Schema.Types.ObjectId,
-                    ref: 'bills'
-                },
-                detail: String
+        car_fleet: {
+            type: Schema.Types.ObjectId,
+            ref: 'car_fleets',
+            required: true
+        },
+        insurance: {
+            seri: {
+                type: String,
+                required: true
             },
-            { timestamps: true }
-        ]
+            expired: {
+                type: Date,
+                required: true
+            }
+        }
     },
     { timestamps: true }
 )

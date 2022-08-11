@@ -6,6 +6,7 @@ import {
 } from "../../helper/client.js";
 import Department from "../../model/Department.js";
 import { departmentRegisterValidate } from "../../validation/department.js";
+import Staff from "../../model/Staff.js";
 
 const departmentAdminRoute = express.Router();
 
@@ -17,10 +18,10 @@ const departmentAdminRoute = express.Router();
 departmentAdminRoute.post("/", async (req, res) => {
   const errors = departmentRegisterValidate(req.body);
   if (errors) return sendError(res, errors);
-
   let { name, description, location, director, scale } = req.body;
-
   try {
+    const isExist = await Staff.exists({ _id: director });
+    if (!isExist) return sendError(res, "The director staff does not exist.");
     await Department.create({
       name,
       description,
@@ -45,6 +46,8 @@ departmentAdminRoute.put("/:id", async (req, res) => {
   try {
     const department = await Department.findById(id);
     if (department) {
+      const isExist = await Staff.exists({ _id: director });
+      if (!isExist) return sendError(res, "The director staff does not exist.");
       await Department.findByIdAndUpdate(id, {
         name: name,
         description: description,
@@ -62,8 +65,7 @@ departmentAdminRoute.put("/:id", async (req, res) => {
     }
     return sendError(res, "Department does not exist.");
   } catch (error) {
-    console.log(error);
-    return sendError(res);
+    return sendServerError(res);
   }
 });
 
@@ -86,8 +88,7 @@ departmentAdminRoute.delete("/:id", async (req, res) => {
         return sendError(res, err);
       });
   } catch (error) {
-    console.log(error);
-    return sendError(res);
+    return sendServerError(res);
   }
 });
 

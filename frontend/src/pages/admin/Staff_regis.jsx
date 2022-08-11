@@ -141,7 +141,7 @@ function Staff_Register() {
                 } }
             >
                 <Title level={2} className="text-center">
-                    Đăng ký staff
+                    Thêm nhân viên mới
                 </Title>
 
                 <Form.Item

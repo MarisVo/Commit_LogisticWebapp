@@ -423,7 +423,7 @@ export default function AdminStaff() {
           }}
         />
         <button
-          className="p-2 w-32 hover:opacity-80 border border-black border-2 "
+          className="p-2 w-32 hover:opacity-80  border-black border-2 "
           onClick={() => setOpen(true)}
         >
           +Thêm

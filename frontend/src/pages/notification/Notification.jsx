@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
-import SideBar from "../../components/SideBar";
+import SideBar from "../../components/SideBarCustomer";
 import { Link } from "react-router-dom";
 import { io } from "socket.io-client";
 
@@ -31,10 +31,10 @@ function Notification() {
           />
         </span>
 
-        <div className=" sm:mx-12 lg:mx-48 pb-4 pt-2 mx-1 ">
-          <div className=" bg-gray-white  bg-white  rounded-sm shadow-xl">
+        <div className=" sm:mx-12 lg:mx-60 pb-4 pt-2 mx-1 ">
+          <div className=" bg-gray-white  bg-[#f8faff]  rounded-sm shadow-xl">
             <div className="flex justify-end align-center m-w-[100%] rounded-sm sm:border-gray-400 sm:border-b-[1px] bg-white sm:pb-1 flex-nowrap ">
-              <div className=" m-w-[70px] mx-2 p-1 flex-shrink-0 cursor-pointer ">
+              <div className=" m-w-[70px] mx-2 p-1 flex-shrink-0 cursor-pointer mt-2 ">
                 <span className=" font-light text-sm md:text-sm text text-black hover:text-yellow-500 ">
                   Đánh dấu đã đọc tất cả
                 </span>
@@ -49,8 +49,8 @@ function Notification() {
                       alt="#"
                       src="https://images.squarespace-cdn.com/content/v1/56001a27e4b08aa6c7fa74e1/1560511769633-THRKK2P2TKYE2ZNOLSY9/Notify_Red.png"
                     ></img>
-                    <div>
-                      <div className="font-medium text-base sm:text-lg">
+                    <div >
+                      <div className="font-medium text-base sm:text-lg mt-1">
                         Đơn hàng đã hoàn tất
                       </div>
                       <div className="font-light text-sm sm:text-base sm:mb-2">
@@ -60,9 +60,9 @@ function Notification() {
                     </div>
                   </div>
                   <div className="flex flex-shrink-0">
-                    <Link to="/user/purchase/order/2323">
-                      <button className="mr-1 px-[6px] py-[4px] text-[#00003B]  hover:translate-y-[-1px] transition-all sm:p-2 shrink-0 font-semibold bg-yellow-500 rounded-sm ">
-                        Chi tiết
+                    <Link to="khach-hang/dat-hang/don-hang/2323">
+                       <button className="py-2 px-4 mt-2 mb-4 round-md font-extrabold bg-[#ffd124]  hover:translate-y-[-1px] transition-all text-[#00003B] rounded-sm">
+                       Chi tiết
                       </button>
                     </Link>
                   </div>
@@ -87,9 +87,9 @@ function Notification() {
                     </div>
                   </div>
                   <div className="flex flex-shrink-0">
-                    <Link to="/user/purchase/order/2323">
-                      <button className="mr-1 px-[6px] py-[4px] text-[#00003B]  hover:translate-y-[-1px] transition-all sm:p-2 shrink-0 font-semibold bg-yellow-500 rounded-sm ">
-                        Chi tiết
+                    <Link to="/khach-hang/dat-hang/don-hang/2323">
+                       <button className="py-2 px-4 mt-2 mb-4 round-md font-extrabold bg-[#ffd124]  hover:translate-y-[-1px] transition-all text-[#00003B] rounded-sm">
+                       Chi tiết
                       </button>
                     </Link>
                   </div>

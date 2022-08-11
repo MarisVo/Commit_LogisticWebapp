@@ -59,7 +59,8 @@ const DeliveryServiceSchema = new Schema(
             {
                 province: {
                     type: String,
-                    required: true
+                    required: true,
+                    unique: false
                 },
                 file: String,
             }

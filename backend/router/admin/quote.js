@@ -65,9 +65,8 @@ quoteAdminRoute.put('/:id',
             const avatar = handleFilePath(req.file)
             const {name, description, quote} = req.body
             
-            await Quote.findByIdAndUpdate(id, {name, description, quote, avatar:avatar})
-            .then(() => {return sendSuccess(res, "Update quote successfully", {name, description, quote, avatar})})
-            .catch((err) => {return sendError(res, err)})
+            const data = await Quote.findByIdAndUpdate(id, {name, description, quote, avatar:avatar})
+            return sendSuccess(res, "Update quote successfully", {name, description, quote, avatar})
             
         } catch (error) {
             console.log(error)
@@ -90,12 +89,11 @@ quoteAdminRoute.delete('/:id',
             const isExist = await Quote.exists({_id : id});
             if (!isExist) return sendError(res, "Quote not exist");
             await DeliveryService.updateOne({},{ $pull: { quotes: id}})
-            await Quote.findByIdAndRemove(id)
-                .then((data)=> { return sendSuccess(res, "Delete quote successfully.", data)})  
-                .catch((err) => { return sendError(res, err)})  
+            const data = await Quote.findByIdAndRemove(id)
+            return sendSuccess(res, "Delete quote successfully.", data)
         } catch (error) {
             console.log(error)
-            return sendError(res)
+            return sendServerError(res)
         }
     }
 )

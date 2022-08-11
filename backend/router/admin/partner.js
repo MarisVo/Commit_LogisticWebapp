@@ -74,12 +74,11 @@ partnerAdminRoute.delete('/:id',
             const isExist = await Partner.exists({_id: id});
             if (!isExist) return sendError(res, "Partner not exist");
             
-            await Partner.findByIdAndRemove(id)
-                .then((data)=> { return sendSuccess(res, "Delete partner successfully.", data)})  
-                .catch((err) => { return sendError(res, err)})  
+            const data = await Partner.findByIdAndRemove(id)
+            return sendSuccess(res, "Delete partner successfully.", data)
         } catch (error) {
             console.log(error)
-            return sendError(res)
+            return sendServerError(res)
         }
     }
 )

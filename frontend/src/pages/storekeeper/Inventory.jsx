@@ -44,14 +44,13 @@ function Inventory() {
       title: "",
       dataIndex: "detail",
       key: "detail",
-      render: (a, e) => (
-        <a
-          href="ton-kho/1"
+      render: (a,{_id}) => (
+        <div
           // onClick={() => { setIsModalVisible(true) }}
           className="text-blue-700 cursor-pointer"
         >
-          Chi tiết
-        </a>
+          <Link to={_id}>Chi tiết</Link>
+        </div>
       ),
     },
   ];
@@ -79,7 +78,7 @@ function Inventory() {
       const { data: response } = await axios.get(`${END_POINT}/warehouse`, {
         params: params,
       });
-      const dataModify = response.data.map((record) => ({
+      const dataModify = response.data.warehouses.map((record) => ({
         ...record,
         // quantity: record?.inventory_product_shipments?.length,
         quantity:11

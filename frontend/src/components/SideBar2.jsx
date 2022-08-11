@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom"
 import { Menu } from "antd"
-import {useState} from "react"
+import {useContext, useState} from "react"
+import { MainContext } from "../context/MainContext";
 function Sidebar({items,rootSubmenuKeys=[],hiddenSidebar}) {
     const [openKeys, setOpenKeys] = useState([]);
+    const {logoutHandle} = useContext(MainContext)
     const onOpenChange = (keys) => {
         const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
         if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {

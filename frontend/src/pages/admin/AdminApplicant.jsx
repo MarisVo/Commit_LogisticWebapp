@@ -2,7 +2,7 @@ import { Table, Input } from "antd";
 import { useState, useEffect } from "react";
 import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
 import ConfirmModal from "../../components/ConfirmModal";
-import EditApplicant from "../../components/Admin/applicant/EditApplicant";
+import EditApplicant from "../../components/Admin/Applicant/EditApplicant"
 import axios from "axios";
 import { END_POINT } from "../../utils/constant";
 

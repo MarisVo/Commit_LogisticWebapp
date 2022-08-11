@@ -4,6 +4,7 @@ import { END_POINT } from "../../utils/constant";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import AddNewCar from "../../components/Admin/Car/AddCar";
+import EditCar from "../../components/Admin/Car/EditCar";
 import ConfirmModal from "../../components/ConfirmModal";
 import { MainContext } from "../../context/MainContext";
 
@@ -31,13 +32,13 @@ function AdminCar() {
         dataIndex: "action",
         render: (a, record) => (
             <div className="flex flex-row gap-y-1 gap-x-3 justify-around">
-        {/*    <button
+            <button
                 className="flex items-baseline gap-x-1 hover:text-blue-600"
                 onClick={() => handleClickEdit(record)}
             >
                 <AiFillEdit className="translate-y-[1px]" />
                 Sửa
-            </button> */}
+            </button> 
             <button
                 className="flex items-baseline gap-x-1 hover:text-red-600"
                 onClick={() => {
@@ -72,10 +73,11 @@ function AdminCar() {
     const fetchData = async (params = {}) => {
         setLoading(true);
         try {
-        const { data: response } = await axios.get(`${END_POINT}/car`, {
+        const { data: response } = await axios.get(`${END_POINT}/admin/car`, {
             params: params,
+            headers: { authorization: `Bearer ${accessToken}` }
         });
-        setData(response.data);
+        setData(response.data.listCar);
         setLoading(false);
         setPagination({
             total: params?.total,
@@ -107,11 +109,11 @@ function AdminCar() {
         console.log(error);
         }
     };
-    /*const handleClickEdit = (record) => {
+    const handleClickEdit = (record) => {
         setIsEditVisible(true);
         const [dataEdit] = data.filter((ele) => ele.name === record.name);
         setDataForEdit(dataEdit);
-    };*/
+    };
     const searchByKeyword = async (value) => {
         setLoading(true);
         try {
@@ -135,7 +137,7 @@ function AdminCar() {
     return (
         <div>
         <div className="flex justify-between mb-4">
-            <span className="text-3xl font-bold uppercase">Quản lý xe</span>
+            <span className="text-3xl font-bold uppercase">Phương tiện</span>
             <Input.Search
             className="w-1/3 lg:w-[400px]"
             placeholder="Nhập từ khóa"
@@ -165,8 +167,8 @@ function AdminCar() {
             })}
             />
         )}
-        {/*isEditVisible && (
-            <EditDepartment
+        {isEditVisible && (
+            <EditCar
             onClose={() => setIsEditVisible(false)}
             data={dataForEdit}
             refetchData={()=>fetchData({
@@ -174,7 +176,7 @@ function AdminCar() {
                 page: pagination.current - 1,
             })}
             />
-        )*/}
+        )}
         <ConfirmModal //Modal delete 
             isVisible={isDeleteVisible}
             text={`xóa số xe ${nameCompare}`}

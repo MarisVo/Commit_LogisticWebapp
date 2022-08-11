@@ -3,6 +3,8 @@ import 'antd/dist/antd.css'
 import { Form, Button, Input, Select, Typography, message, Modal } from "antd";
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useContext } from 'react';
+import { MainContext } from '../../context/MainContext';
 import axios from 'axios'
 
 const RegisForm = styled.div`
@@ -72,8 +74,17 @@ function isValidEmail(email) {
 const { Title } = Typography;
 
 function Register() {
-  const [form] = Form.useForm();
+  const { setMetadata } = useContext(MainContext);
+  useEffect(() => {
+    setMetadata((prev) => {
+      return {
+        ...prev,
+        title: "Đăng kí | TKTL",
+      };
+    });
+  }, []);
 
+  const [form] = Form.useForm();
   const emailphone = Form.useWatch('email/phone', form);
   let email;
   let phone;
@@ -342,7 +353,7 @@ function Register() {
                   } }
               >
                   <Title level={2} className="text-center">
-                      Đăng ký
+                      Đăng kí
                   </Title>
 
                   <Form.Item
@@ -447,9 +458,9 @@ function Register() {
                     hasFeedback
                   >
                     <Select placeholder="Chọn loại khách hàng">
-                      <Select.Option value="intermediary">intermediary</Select.Option>
-                      <Select.Option value="business">business</Select.Option>
-                      <Select.Option value="passers">passers</Select.Option>
+                      <Select.Option value="intermediary">Trung gian</Select.Option>
+                      <Select.Option value="business">Doanh nghiệp</Select.Option>
+                      <Select.Option value="passers">Khách vãng lai</Select.Option>
                     </Select>
                   </Form.Item>
 
