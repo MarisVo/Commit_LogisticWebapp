@@ -22,7 +22,7 @@ userAdminRoute.delete('/:id', async (req, res) => {
         const userRole = (customerID.role).toString()
         console.log(userRole)
 
-        await User.findByIdAndRemove(id)
+        const data = await User.findByIdAndRemove(id)
             .then(() => {
                 return sendSuccess(res, "Delete user successfully.")
             })
