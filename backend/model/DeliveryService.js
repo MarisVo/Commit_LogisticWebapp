@@ -3,16 +3,18 @@ const { Schema } = mongoose
 import Price from './Price.js'
 
 const DeliveryServiceSchema = new Schema(
-    {
+    {    
         name: {
             type: String,
             required: true,
             unique: true
         },
+
         sub_detail: {
             type: String,
             required: true
         },
+        
         target: {
             type: String,
             required: true

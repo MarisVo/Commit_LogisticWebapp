@@ -126,15 +126,15 @@ const ChangePassword = () => {
   }, [formErrors, cPassword, isSubmit]);
 
     return (
-         <div className="  top-[20%] w-[70%] h-[60vh]  md:mx-auto flex justify-center items-center">
-            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 h-[100%] w-[80%] py-2 mx-1 ">
+         <div className="  top-[20%] w-[70%] h-[60vh]  mx-auto flex justify-center items-center  ">
+            <div className="relative bg-white rounded-lg shadow  h-[100%] w-[100%] lg:w-[80%] py-2 mx-1 border-[1px]">
               <div className="pb-6 pt-[6px] px-6 ">
-                <h3 className="mb-3 text-xl font-semibold text-gray-900 dark:text-white ">
+                <h3 className="mb-3 text-2xl font-bold text-black ">
                   Thay đổi
                 </h3>
                 <form className="space-y-4" action="#" onSubmit={handleSubmit}>
                   <div>
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                    <label className="block mb-2 text-sm font-medium ">
                       Mật khẩu cũ
                     </label>
                     <div className="relative">
@@ -145,7 +145,7 @@ const ChangePassword = () => {
                         defaultValue={cPassword.oldPw}
                         onChange={handleChangePassword}
                         placeholder="Add your password"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white relative"
+                        className="border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-white relative"
                       />
                       {eyeOp ? (
                         <AiOutlineEye
@@ -162,7 +162,7 @@ const ChangePassword = () => {
                     <p className="text-red-400">{formErrors.oldPw}</p>
                   </div>
                   <div>
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                    <label className="block mb-2 text-sm font-medium text-black">
                       Mật khẩu mới
                     </label>
                     <div className="relative">
@@ -173,7 +173,7 @@ const ChangePassword = () => {
                         defaultValue={cPassword.newPw}
                         onChange={handleChangePassword}
                         placeholder="Add your new password"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                        className="border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-white relative"
                       />
                       {eyeNp ? (
                         <AiOutlineEye
@@ -190,7 +190,7 @@ const ChangePassword = () => {
                     <p className="text-red-400">{formErrors.newPw}</p>
                   </div>
                   <div>
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                    <label className="block mb-2 text-sm font-medium text-black">
                       Xác nhận mật khẩu mới
                     </label>
                     <div className="relative">
@@ -201,7 +201,7 @@ const ChangePassword = () => {
                         defaultValue={cPassword.verify_password}
                         placeholder="Confirm new password"
                         onChange={handleChangePassword}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                         className="border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-white relative"
                       />
                       {eyeCf ? (
                         <AiOutlineEye

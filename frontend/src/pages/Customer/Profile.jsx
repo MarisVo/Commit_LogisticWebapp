@@ -192,10 +192,10 @@ const validate = (message) => {
           } overflow-y-auto overflow-x-hidden fixed  z-50 w-full top-0 left-0   h-full bg-[#1114]`}
         >
           <div className="relative min-w-[350px] top-[15%] sm:min-w-[550px]  md:mx-auto flex justify-center items-center">
-            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 min-w-[350px] sm:min-w-[400px] mx-1 ">
+            <div className="relative bg-white rounded-lg shadow  min-w-[350px] sm:min-w-[400px] mx-1 border-[1px]">
               <div className="flex item-center justify-end ">
                 <span
-                  className="cursor-pointer mr-1 text-base"
+                  className="cursor-pointer mr-1 text-base font-bold"
                   onClick={handleCloseModal}
                 >
                   X
@@ -203,12 +203,12 @@ const validate = (message) => {
               </div>
 
               <div className="pb-6 pt-[6px] px-6 ">
-                <h3 className="mb-3 text-xl font-semibold text-gray-900 dark:text-white ">
+                <h3 className="mb-3 text-2xl font-bold  ">
                   Thay đổi
                 </h3>
                 <form className="space-y-4" action="#" onSubmit={handleSubmit}>
                   <div>
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                    <label className="block mb-2 text-sm font-medium ">
                       Mật khẩu cũ
                     </label>
                     <div className="relative">
@@ -219,7 +219,7 @@ const validate = (message) => {
                         defaultValue={cPassword.oldPw}
                         onChange={handleChangePassword}
                         placeholder="Add your password"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white relative"
+                       className="border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-white relative"
                       />
                       {eyeOp ? (
                         <AiOutlineEye
@@ -236,7 +236,7 @@ const validate = (message) => {
                     <p className="text-red-400">{formErrors.oldPw}</p>
                   </div>
                   <div>
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                    <label className="block mb-2 text-sm font-medium ">
                       Mật khẩu mới
                     </label>
                     <div className="relative">
@@ -247,7 +247,7 @@ const validate = (message) => {
                         defaultValue={cPassword.newPw}
                         onChange={handleChangePassword}
                         placeholder="Add your new password"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                        className="border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-white relative"
                       />
                       {eyeNp ? (
                         <AiOutlineEye
@@ -264,7 +264,7 @@ const validate = (message) => {
                     <p className="text-red-400">{formErrors.newPw}</p>
                   </div>
                   <div>
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                    <label className="block mb-2 text-sm font-medium ">
                       Xác nhận mật khẩu mới
                     </label>
                     <div className="relative">
@@ -275,7 +275,7 @@ const validate = (message) => {
                         defaultValue={cPassword.verify_password}
                         placeholder="Confirm new password"
                         onChange={handleChangePassword}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                        className="border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-white relative"
                       />
                       {eyeCf ? (
                         <AiOutlineEye
@@ -331,7 +331,7 @@ const validate = (message) => {
                         />
                       </div>
                     </div>
-                    <div className="flex mb-6 sm:py-1 flex-col  ">
+                    {/* <div className="flex mb-6 sm:py-1 flex-col  ">
                       <div className="flex items-center   justify-start flex-row">
                        
                           <div className=" mr-3 text-yellow-600 lg:text-lg text-base">
@@ -348,10 +348,26 @@ const validate = (message) => {
             
                       <div className="flex  ">
                         <input
-                          className="outline-none border-[1px] sm:px-2 rounded-md py-[6px] px-1 border-gray-200 text-base  max-w-[160px] md:min-w-[260px] sm:min-w-[210px] line-clamp-1"
+                          className="select-none outline-none border-[1px] sm:px-2 rounded-md py-[6px] px-1 border-gray-200 text-base  max-w-[160px] md:min-w-[260px] sm:min-w-[210px] line-clamp-1"
                           type="password"
                           
                           defaultValue="12312321"
+                        />
+                      </div>
+                    </div> */}
+                     <div className="flex mb-6 sm:py-1 flex-col  ">
+                      <div className="flex items-center   justify-start ">
+                        <label className=" mr-3 text-yellow-600 lg:text-lg text-base">
+                          Email:
+                        </label>
+                      </div>
+                      <div className="flex  ">
+                        <input
+                          className="outline-none border-[1px] sm:px-2 rounded-md py-[6px] px-1 border-gray-200 text-base  max-w-[160px] md:min-w-[260px] sm:min-w-[210px] line-clamp-1"
+                          type="text"
+                          name="email"
+                          onChange={handleForm}
+                          defaultValue={information.email}
                         />
                       </div>
                     </div>
@@ -376,7 +392,7 @@ const validate = (message) => {
                   </div>
                   <div className="col-span-1 ">
                       {/* col 2*/}
-                   <div className="flex mb-6 sm:py-1 flex-col  ">
+                  {/*  <div className="flex mb-6 sm:py-1 flex-col  ">
                       <div className="flex items-center   justify-start ">
                         <label className=" mr-3 text-yellow-600 lg:text-lg text-base">
                           Email:
@@ -391,7 +407,7 @@ const validate = (message) => {
                           defaultValue={information.email}
                         />
                       </div>
-                    </div>
+                    </div> */}
                     <div className="flex mb-6 sm:py-1 flex-col  ">
                       <div className="flex items-center   justify-start ">
                         <label className=" mr-3 text-yellow-600 lg:text-lg text-base">

@@ -8,6 +8,7 @@ import axios from "axios";
 import { MainContext } from "../context/MainContext";
 import { END_POINT } from "../utils/constant";
 function NotificationDropdown() {
+  const [page,setPage] = useState()
   const {accessToken } = useContext(MainContext);
   const [isSettingVisible, setIsSettingVisible] = useState(false);
   const [dataReceive,setDataReceive] = useState([])
@@ -46,7 +47,7 @@ function NotificationDropdown() {
                 <span>Đánh dấu tất cả đã đọc</span>
               </div>
               <Link
-                to="thong-bao"
+                to="/khach-hang/thong-bao/don-hang"
                 className="flex justify-start items-center gap-x-4 py-2 px-4 rounded-md hover:bg-neutral-300"
               >
                 <AiOutlineFundProjectionScreen className="w-6 h-6 font-semibold" />

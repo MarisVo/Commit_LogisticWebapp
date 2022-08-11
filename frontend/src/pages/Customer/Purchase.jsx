@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import { FaTruckMoving } from "react-icons/fa";
+import { IoLocationOutline } from "react-icons/io5";
 import {
   AiOutlineGift,
   AiOutlineUser,
@@ -110,7 +111,14 @@ const Purchase = () => {
   
   return (
     <div className="">
-      <div className="bg-gray-100 relative ">          
+      <div className="bg-gray-100 relative ">
+          {/*  <div className="w-20 h-20">
+        <img
+          src="http://localhost:8000/api/public/logo/z3189151135845_feecf773f56257376d4f14e1116d90df.jpg"
+          alt="#"
+          className="w-[100%] h-[100%] object-contain"
+        />
+      </div> */}          
           <div
             className="custom-tab  container w-[100%] px-auto  text-xl bg-white  "
             style={{ width: "100%" }}
@@ -170,16 +178,16 @@ const Purchase = () => {
               <div className="flex items-center py-2 border-gray-300 border-b-[1px]">
                 <div className="ml-3 flex flex-col ">
                   <div className="ml-2 flex items-center py-1">
-                    <AiOutlineGift className="mr-1 w-5 h-5  md:w-7 md:h-7 " />
-                    <div className="text-base font-semibold md:text-lg mr-1">Đơn hàng:</div>
-                    <div className="text-base font-semibold md:text-lg">Điện thoại Oppo</div>
+                    <IoLocationOutline className="mr-1 w-5 h-5  md:w-7 md:h-7 " />
+                    <div className="text-base font-semibold md:text-lg mr-1">Điểm bắt đầu:</div>
+                    <div className="text-base font-semibold md:text-lg">{orderItem.origin}</div>
                   </div>
                   <div className="ml-2 flex items-center py-1">
-                    <AiOutlineUser className="mr-1 w-5 h-5  md:w-7 md:h-7 " />
+                    <IoLocationOutline className="mr-1 w-5 h-5  md:w-7 md:h-7 " />
                     <div className="text-base font-semibold md:text-lg mr-1">
-                      Tên người nhận:
+                      Điểm đến:
                     </div>
-                    <div className="text-base font-semibold md:text-lg">Nguyễn Văn Trí</div>
+                    <div className="text-base font-semibold md:text-lg">{orderItem.destination}</div>
                   </div>
                   <div className="ml-2 flex items-center py-1">
                     <AiTwotoneCalendar className="mr-1 w-5 h-5  md:w-7 md:h-7 " />

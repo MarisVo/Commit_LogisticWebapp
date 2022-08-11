@@ -90,7 +90,7 @@ function CustomerRoute() {
               </div>
 
        
-           <div className=" relative md:mx-5 lg:mx-36 py-4 bg-gray-white mx-2  grid grid-cols-9 pt-[78px]">
+           <div className=" relative md:mx-5 lg:mx-36 py-4 bg-gray-white mx-2  grid grid-cols-9 pt-[78px] mb-2">
              <div className="hidden sm:block sm:col-span-2">
                <div
                   style={{
