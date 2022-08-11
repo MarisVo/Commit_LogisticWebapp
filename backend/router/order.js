@@ -1,7 +1,7 @@
 import express from "express"
-import opencage from "opencage-api-client"
 import { sendError, sendServerError, sendSuccess } from "../helper/client.js"
 import { createOrderValidate } from "../validation/order.js"
+import { locateAddress } from "../service/location.js"
 import { verifyToken, verifyCustomer, verifyCustomerOrAdmin} from '../middleware/index.js'
 import { genarateOrderID } from "../service/order.js"
 import DeliveryService from '../model/DeliveryService.js'
@@ -10,7 +10,6 @@ import Product from "../model/Product.js"
 import Receiver from "../model/Receiver.js"
 import Customer from "../model/Customer.js"
 import User from "../model/User.js"
-const OPENCAGE_API_KEY='7f8d6f65dfd846748331d3c5e0a52070'
 
 const orderRoute = express.Router()
 
@@ -48,18 +47,12 @@ orderRoute.post('/create',
             
             const service = await DeliveryService.findOne({name: serviceName })
             if (!service) return sendError(res, 'the service is not exist.')
-            var data = await opencage.geocode({q: `${origin}`, key: OPENCAGE_API_KEY})            
-            if (data.status.code == 200 && data.results.length > 0) {
-                if (! data.results[0].geometry) {
-                    return sendError(res, "origin is not found")
-                }                       
-            }
-            data = await opencage.geocode({q: `${destination}`, key: OPENCAGE_API_KEY})            
-            if (data.status.code == 200 && data.results.length > 0) {
-                if (! data.results[0].geometry) {
-                    return sendError(res, "destination is not found")
-                }                       
-            }
+            var data = await locateAddress(origin)                
+            if (! data) return sendError(res, 'origin is not exist.')
+            
+            data = await locateAddress(destination)                
+            if (! data) return sendError(res, 'destination is not exist.')
+            
             const orderId = await genarateOrderID()
             var _receiver = null
             _receiver = await Receiver.findOne({identity : identity})
@@ -154,31 +147,22 @@ orderRoute.put('/:orderId',
                 return sendError(res, "Order can't be modified.")
             }
             const {origin, destination, serviceName} = req.body
-            const service = serviceName
+            var service = serviceName
             if (service) {
                 service = await DeliveryService.findOne({name: serviceName })
                 if (!service) return sendError(res, 'the service is not exist.')
             }
-            var data = null
             if(origin) {
-                data = await opencage.geocode({q: `${origin}`, key: OPENCAGE_API_KEY})            
-                if (data.status.code == 200 && data.results.length > 0) {
-                    if (! data.results[0].geometry) {
-                        return sendError(res, "origin is not found")
-                    }                       
-                }
+                const data = await locateAddress(origin)                
+                if (! data) return sendError(res, 'origin is not exist.')
             }
             if(destination){
-                data = await opencage.geocode({q: `${destination}`, key: OPENCAGE_API_KEY})            
-                if (data.status.code == 200 && data.results.length > 0) {
-                    if (! data.results[0].geometry) {
-                        return sendError(res, "destination is not found")
-                    }                       
-                }
+                const data = await locateAddress(destination)                
+                if (! data) return sendError(res, 'destination is not exist.')
             }
             const updatedOrder = await Order.findOneAndUpdate({orderId: orderId}, {origin, destination, service})
             if (updatedOrder)
-                return sendSuccess(res, 'get order successfully', updatedOrder)
+                return sendSuccess(res, 'update order successfully', updatedOrder)
             return sendError(res, 'no information')
         } catch (error) {
             console.log(error)

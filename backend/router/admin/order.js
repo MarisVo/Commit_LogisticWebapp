@@ -3,8 +3,6 @@ import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
 import { createOrderValidate } from "../../validation/order.js"
 import { verifyToken } from '../../middleware/index.js'
 import { genarateOrderID } from "../../service/order.js"
-import opencage from "opencage-api-client"
-const OPENCAGE_API_KEY='7f8d6f65dfd846748331d3c5e0a52070'
 import DeliveryService from '../../model/DeliveryService.js'
 import Order from "../../model/Order.js"
 import User from "../../model/User.js"
@@ -77,7 +75,7 @@ orderAdminRoute.put('/:orderId', async (req, res) => {
  * @description admin delete order by orderId
  * @access private
  */
- orderAdminRoute.delete('/:orderId', async (req, res) => {
+orderAdminRoute.delete('/:orderId', async (req, res) => {
     try {
         const {orderId} = req.params
         const order = await Order.findOneAndRemove({orderId})
