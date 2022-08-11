@@ -1,17 +1,19 @@
 import logoJT from "../assets/icons/logo-J&T.svg";
 import { FaChevronDown, FaBars } from "react-icons/fa";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu } from "antd";
 import "antd/dist/antd.css";
 import { useContext } from "react";
 import { MainContext } from "../context/MainContext";
 import Notification from './Notification';
+import axios from "axios";
 
 
 
 const Header = () => {
   const { user, logoutHandle } = useContext(MainContext);
+  const [services,setServices]= useState([])
   function getItem(label, key, children) {
     return {
       key,
@@ -106,7 +108,16 @@ const Header = () => {
   const Logout = () => {
     logoutHandle();
   };
-
+  useEffect(()=>{
+    const getservices = async()=>{
+      const res = await axios.get("http://localhost:8000/api/service")
+      console.log(res)
+      const {data} =res.data
+     
+      setServices(data.service)
+    }
+    getservices()
+  },[])
   return (
     <div className='fixed bg-white inset-x-0 h-[65px] z-20'>
       <div className=" lg:static flex justify-around items-center h-full px-4 lg:px-0 container mx-auto text-sm ">
@@ -216,42 +227,21 @@ const Header = () => {
               <FaChevronDown className="h-4 w-4 pl-[6px]" />
             </Link>
             <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg animate-up">
-              <li>
-                <Link
-                  to="chuyen-phat-tieu-chuan"
-                  className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100"
-                >
-                  <span>Dịch vụ chuyển phát tiêu chuẩn</span>
-                  <i className="text-[#f0b90c] font-bold">J&T Epress</i>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="chuyen-phat-nhanh"
-                  className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100"
-                >
-                  <span>Dịch vụ nhanh</span>
-                  <i className="text-[#f0b90c] font-bold">J&T Fast</i>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="sieu-dich-vu-chuyen-phat"
-                  className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100"
-                >
-                  <span>Dịch vụ siêu giao hàng</span>
-                  <i className="text-[#f0b90c] font-bold">J&T Super</i>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="chuyen-phat-do-tuoi-song"
-                  className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100"
-                >
-                  <span>Dịch vụ Tươi sống</span>
-                  <i className="text-[#f0b90c] font-bold">J&T Fresh</i>
-                </Link>
-              </li>
+              {
+                services.map(service=>(
+
+                  <li>
+                    <Link
+                      to="chuyen-phat-tieu-chuan"
+                      className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100"
+                    >
+                      <span>{service.name}</span>
+                      <i className="text-[#f0b90c] font-bold">{service.sub_detail}</i>
+                    </Link>
+                  </li>
+                ))
+              }
+                
             </ul>
           </div>
         {/*   <div className="group hover:bg-yellow-200 rounded-md">

@@ -13,8 +13,8 @@ function AdminCareer() {
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 4,
-    total: 20,
+    pageSize: 5,
+    total: 15,
   });
   const [isAddVisible, setIsAddVisible] = useState(false);
   const [isEditVisible, setIsEditVisible] = useState(false);
@@ -153,12 +153,13 @@ function AdminCareer() {
       const { data: response } = await axios.get(`${END_POINT}/career`, {
         params: params,
       });
-      setData(response.data);
+      setData(response.data.career);
       setLoading(false);
+      console.log(response)
       setPagination({
-        total: params?.total,
-        pageSize: params?.pageSize,
-        current: params?.page + 1,
+        pageSize: params.pageSize,
+        current: params.page + 1,
+        total: response.data.length,
       });
     } catch (error) {
       console.error(error.message);
@@ -194,11 +195,9 @@ function AdminCareer() {
   };
   const handleClickEdit = (record) => {
     setIsEditVisible(true);
-    // const [dataEdit] = data.filter((ele) => ele.name === record.name);
     setDataForEdit(record);
   };
   const searchByKeyword = (value) => {
-    // fetchData({ ...pagination, page: pagination.current - 1, keyword: value });
     setParams({
       ...params,
       page: 0,
@@ -208,7 +207,7 @@ function AdminCareer() {
   return (
     <>
       <div className="flex justify-between mb-4">
-        <span className="text-3xl font-bold uppercase">Career</span>
+        <span className="text-3xl font-bold uppercase">Việc làm</span>
 
         <Input.Search
           className="w-1/3 lg:w-[400px]"

@@ -78,7 +78,7 @@ function Inventory() {
       const { data: response } = await axios.get(`${END_POINT}/warehouse`, {
         params: params,
       });
-      const dataModify = response.data.map((record) => ({
+      const dataModify = response.data.warehouses.map((record) => ({
         ...record,
         // quantity: record?.inventory_product_shipments?.length,
         quantity:11

@@ -8,6 +8,7 @@ const Login = ({navigation}) => {
     const [password,setPassword] = useState("")
     const [passHidden,setPassHidden] = useState("")
     return (
+<<<<<<< HEAD
         <View style={{flex:1}}>
            <StatusBar barStyle="default" />
             <View style={{width:"100%",height:"25%"}}>
@@ -79,6 +80,19 @@ const Login = ({navigation}) => {
                   <TouchableOpacity>
                    <Text className={{position:"absolute",color:"white"}}>Bạn chưa có tài khoản? Đăng ký</Text>
                   </TouchableOpacity>
+=======
+        <ImageBackground style={{height:"100%",width:"100%"}} source={require("../images/login.jpg")} resizeMode="stretch">
+            <StatusBar barStyle='light-content'/>
+            <Text>Logiqwen</Text>
+            <SafeAreaView style={{flex:1}}>
+                <View style={{height:"100%",width:"100%",justifyContent:"center",alignItems:"center"}}>
+                    <TouchableOpacity style={{height:"15%",width:"60%" , marginTop:windowheight*0.3 , borderColor:"black",borderWidth:2} }
+                     onPress={()=>{
+                        navigation.navigate("HomeTabs")
+                    }}>
+                        <Text style={{color:"red",textAlign:"center",fontSize:40}}>Login</Text>
+                    </TouchableOpacity>           
+>>>>>>> f3f7483cca9a854a12d4e559bee2f95d058291e7
                 </View>
             </View>
        </View>

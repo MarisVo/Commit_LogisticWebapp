@@ -140,23 +140,23 @@ const App = () => {
                   <Route path="dang-nhap-nhan-vien" element={<StaffLogin />} />
                 </Route>
                 <Route path="dang-ki-nhan-vien" element={<StaffRegister />} />
-                <Route path="storekeeper" element={<LayerStorekeeper />}>
+                <Route path="thu-kho" element={<LayerStorekeeper />}>
                   <Route index element={<Bills />} />
-                  <Route path="bills" element={<Bills />} />
-                  <Route path="inventory" element={<Inventory />} />
-                  <Route path="inventory/:id" element={<InventoryDetail />} />
+                  <Route path="van-don" element={<Bills />} />
+                  <Route path="hang-ton-kho" element={<Inventory />} />
+                  <Route path="hang-ton-kho/:id" element={<InventoryDetail />} />
                   <Route path="thong-bao" element={<NotiStorekeeper />} />
                 </Route>
-                <Route path="admin" element={<AdminPage />}>
+                <Route path="quan-tri" element={<AdminPage />}>
                   <Route path="about" element={<AdminAbout />}></Route>
                   <Route path="contact-us" element={<AdminContactUs />}></Route>
                   <Route path="commitment" element={<AdminCommitment />}></Route>
                   <Route path="message" element={<AdminContactMessage />}></Route>
                   <Route path="service" element={<AdminDeliveryService />}></Route>
                   <Route path="partner" element={<AdminPartner />}></Route>
-                  <Route path="career" element={<AdminCareer />}></Route>
-                  <Route path="applicant" element={<AdminApplicant />}></Route>
-                  <Route path="department" element={<AdminDepartment />}></Route>
+                  <Route path="viec-lam" element={<AdminCareer />}></Route>
+                  <Route path="ung-vien" element={<AdminApplicant />}></Route>
+                  <Route path="phong-ban" element={<AdminDepartment />}></Route>
                   <Route path="warehouse" element={<AdminWarehouse />}></Route>
                   <Route path="car" element={<AdminCar />}></Route>
                   <Route path="road" element={<AdminRoad />}></Route>
@@ -164,7 +164,7 @@ const App = () => {
                   <Route path="customer" element={<AdminCustomer />}></Route>
                   <Route path="order" element={<AdminOrder />}></Route>
                   <Route path="staff_regis" element={<StaffRegister />}></Route>
-                  <Route path="maintenance" element={<AdminMaintenance />}>
+                  <Route path="phi-bao-tri" element={<AdminMaintenance />}>
                   </Route>
                 </Route>
               </Route>

@@ -72,7 +72,7 @@ const PurchaseDetail = () => {
     }
    getCustomer()
    getService()
-    
+
   },[]);
   const order = {
     formProvince: "Ho Chi Minh",
