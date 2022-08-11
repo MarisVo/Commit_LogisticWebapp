@@ -80,6 +80,15 @@ function isValidEmail(email) {
 const { Title } = Typography;
 
 function StaffLogin() {
+  const { setMetadata } = useContext(MainContext);
+  useEffect(() => {
+    setMetadata((prev) => {
+      return {
+        ...prev,
+        title: "Đăng nhập | TKTL",
+      };
+    });
+  }, []);
    const { loginHandle, user,accestoken } = useContext(MainContext);
   const [form] = Form.useForm();
  const navigate = useNavigate();
@@ -175,7 +184,7 @@ function StaffLogin() {
               } }
             >
                 <Title level={2} className="text-center">
-                    Đăng nhập staff
+                    Đăng nhập nhân viên
                 </Title>
 
                 <Form.Item

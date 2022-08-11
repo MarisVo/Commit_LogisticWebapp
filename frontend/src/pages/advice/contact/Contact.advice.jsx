@@ -2,9 +2,20 @@ import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPhone, faEnvelope, faLocationDot, faWheelchair } from '@fortawesome/free-solid-svg-icons'
 import * as axios from 'axios'
-
+import { useContext } from "react";
+import { MainContext } from "../../../context/MainContext";
 
 export default function ContactAdvice() {
+  const { setMetadata } = useContext(MainContext);
+  useEffect(() => {
+    setMetadata((prev) => {
+      return {
+        ...prev,
+        title: "Liên hệ | TKTL",
+      };
+    });
+  }, []);
+
   const [fullName, setFullName] = useState(null);
   const [phone, setPhone] = useState(null);
   const [email, setEmail] = useState(null)
@@ -18,6 +29,7 @@ export default function ContactAdvice() {
   const [contactInsta, setContactInsta] = useState(null);
   const [contactTiktok, setContactTiktok] = useState(null);
   const [contactYoutube, setContactYoutube] = useState(null);
+  const [hrMail, setHrMail] = useState(null);
   const getAboutUsInfo = async() =>{
     try{ 
       const info = await axios({
@@ -32,6 +44,7 @@ export default function ContactAdvice() {
       setContactInsta(info?.data?.data?.instagram);
       setContactTiktok(info?.data?.data?.tiktok);
       setContactYoutube(info?.data?.data?.youtube);
+      setHrMail(info?.data?.data?.hr_mailbox);
     } catch(error) {
       console.log(error);
     }
@@ -150,6 +163,17 @@ export default function ContactAdvice() {
                 </span>
                 <span className="font-bold">
                   {contactEmail}
+                </span>
+              </div>
+            </div>
+            <div className="flex items-start mt-[20px]">
+              <FontAwesomeIcon icon={faEnvelope} className="mt-2" />
+              <div className="flex flex-col border-b pb-[20px] ml-3 mr-10 border-[#5D6A7A] flex-1" >
+                <span className="block mb-2 text-base">
+                  HR email
+                </span>
+                <span className="font-bold">
+                  {hrMail}
                 </span>
               </div>
             </div>
