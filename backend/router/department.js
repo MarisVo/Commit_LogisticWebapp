@@ -4,7 +4,6 @@ import Department from "../model/Department.js";
 
 const departmentRoute = express.Router();
 
-
 /**
  * @route GET /api/department/:id
  * @description get a single department information
@@ -25,7 +24,6 @@ departmentRoute.get("/:id", async (req, res) => {
       );
     return sendError(res, "department information is not found.");
   } catch (error) {
-    console.log(error);
     return sendServerError(res);
   }
 });
@@ -40,29 +38,28 @@ departmentRoute.get("/", async (req, res) => {
   try {
     const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0;
     const page = req.query.page ? parseInt(req.query.page) : 0;
-    const { keyword } = req.query;
+    const { keyword, sortBy } = req.query;
     var keywordCondition = keyword
       ? {
           $or: [
             { name: { $regex: keyword, $options: "i" } },
             { description: { $regex: keyword, $options: "i" } },
             { location: { $regex: keyword, $options: "i" } },
-            { director: { $regex: keyword, $options: "i" } },
           ],
         }
       : {};
+    const length = await Department.count();
     const department = await Department.find(keywordCondition)
       .limit(pageSize)
-      .skip(pageSize * page);
+      .skip(pageSize * page)
+      .sort(`${sortBy}`);
     if (department)
-      return sendSuccess(
-        res,
-        "Get department information successfully.",
-        department
-      );
+      return sendSuccess(res, "Get department information successfully.", {
+        length,
+        department,
+      });
     return sendError(res, "Department information is not found.");
   } catch (error) {
-    console.log(error);
     return sendServerError(res);
   }
 });

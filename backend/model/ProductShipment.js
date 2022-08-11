@@ -7,6 +7,10 @@ const ProductShipmentSchema = new Schema(
             type: Number,
             required: true
         },
+        value: {
+            type: Number,
+            required: true
+        }
     },
     { timestamps: true }
 )

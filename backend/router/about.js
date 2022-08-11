@@ -24,3 +24,4 @@ aboutRoute.get('/',
 
 
 export default aboutRoute
+

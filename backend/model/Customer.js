@@ -38,11 +38,6 @@ const CustomerSchema = new Schema(
         companyTaxcode_business: {
             type: String,
             default: null
-        },
-        accepted_business:{
-            type: Boolean,
-            default: false,
-            required: true
         }
     },
     { timestamps: true }

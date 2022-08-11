@@ -13,6 +13,14 @@ const StaffSchema = new Schema(
             enum: Object.values(STAFF),
             required: true,
             default: STAFF.STAFF
+        },
+        department: {
+            type: Schema.Types.ObjectId,
+            ref: 'department'
+        },
+        car_fleet: {
+            type: Schema.Types.ObjectId,
+            ref: 'car_fleets'
         }
     },
     { timestamps: true }

@@ -1,10 +1,12 @@
-import { useContext } from "react"
-import MainContext from "../context/MainContext"
+import { useContext } from "react";
 
-export default function useAuthConfig() {
-    const { accessToken } = useContext(MainContext)
+import { MainContext } from "./../context/MainContext";
+import { axios } from "axios";
+const { accessToken } = useContext(MainContext);
+/* export default function useAuthConfig() {
 
-    return {
-        Authorization: `Bearer ${accessToken}`
-    }
-}
+  return {
+    authorization: `Bearer ${accessToken}`,
+  };
+} */
+
