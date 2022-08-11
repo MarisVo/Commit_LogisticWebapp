@@ -1,13 +1,21 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { END_POINT } from "../../utils/constant"
+import { MainContext } from "../../context/MainContext";
 
 function Commit() {
+    const {setMetadata} = useContext(MainContext)
     const [data, setData] = useState([])
     useEffect(() => {
+        setMetadata((prev) => {
+            return {
+              ...prev,
+              title: "Cam kết | TKTL",
+            };
+          });
         const fetchApi = async () => {
             try {
-                const res = await axios.get(`${END_POINT}/commitment`)
+                const res = await axios.get(`${END_POINT}/commitment?limit=6`)
                 res.status===200 && setData(res.data.data.commits)
                 console.log(res)
             }

@@ -207,7 +207,7 @@ function AdminCareer() {
   return (
     <>
       <div className="flex justify-between mb-4">
-        <span className="text-3xl font-bold uppercase">Career</span>
+        <span className="text-3xl font-bold uppercase">Việc làm</span>
 
         <Input.Search
           className="w-1/3 lg:w-[400px]"

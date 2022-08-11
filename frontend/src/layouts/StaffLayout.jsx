@@ -16,10 +16,10 @@ function  StaffRoute ()  {
   }, [user])
    useEffect(()=>{
      if(user?.role.staff_type==="admin"){
-       navigate("/admin", { replace: true });
+       navigate("/quan-tri", { replace: true });
     }
     else if(user?.role.staff_type==="storekeeper") {
-       navigate("/storekeeper", { replace: true });
+       navigate("/thu-kho", { replace: true });
     }
     else if(user?.role.staff_type==="driver"){
         navigate("/tai-xe/dat-hang", { replace: true });

@@ -137,19 +137,19 @@ const Footer = () => {
       </div>
       <div className="h-[2px] bg-slate-400 w-3/5 mt-7 mb-7 mx-auto"></div>
       <div className="flex justify-center pb-4">
-        <a href={information.facebook}>
+        <a href={information.facebook} target="_blank">
           <FaFacebook className="mx-2 w-6 h-6" />
         </a>
-        <a href={information.instagram}>
+        <a href={information.instagram} target="_blank">
           <FaInstagram className="mx-2 w-6 h-6" />
         </a>
-        <a href={information.tiktok}>
+        <a href={information.tiktok} target="_blank">
           <FaTiktok className="mx-2 w-6 h-6" />
         </a>
-        <a href={information.youtube}>
+        <a href={information.youtube} target="_blank">
           <FaYoutubeSquare className="mx-2 w-6 h-6" />
         </a>
-        <a href="https://oa.zalo.me/1837464433417511317">
+        <a href="https://oa.zalo.me/1837464433417511317" target="_blank">
           <img src={zaloIcon} className="mx-2 w-6 " alt="zalo-icon"></img>
         </a>
       </div>

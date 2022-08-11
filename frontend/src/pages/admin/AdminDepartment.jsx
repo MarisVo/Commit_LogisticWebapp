@@ -105,7 +105,7 @@ function AdminDepartment() {
       const { data: response } = await axios.get(`${END_POINT}/department`, {
         params: params,
       });
-      setData(response.data);
+      setData(response.data.department);
       setLoading(false);
       setPagination({
         total: params?.total,
@@ -158,7 +158,7 @@ function AdminDepartment() {
   return (
     <div>
       <div className="flex justify-between mb-4">
-        <span className="text-3xl font-bold uppercase">Department</span>
+        <span className="text-3xl font-bold uppercase">Phòng ban</span>
         <Input.Search
           className="w-1/3 lg:w-[400px]"
           placeholder="Nhập từ khóa"

@@ -593,7 +593,7 @@ const Home = () => {
                   <div
                     className="flex flex-col items-center text-center"
                     key={quote._id}
-                    onClick={() => showPerson(quote.id)}
+                    onClick={() => showPerson(quote._id)}
                   >
                     <div className="w-[100px] h-[100px] sm:w-[134px] sm:h-[134px]">
                       <img
@@ -634,6 +634,7 @@ const Home = () => {
               src={partner.logo}
               alt="partner"
               className="w-[186px] h-[100px] object-scale-down"
+              key={partner.name}
             />
           ))}
         </Carousel>
