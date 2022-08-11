@@ -59,7 +59,7 @@ export default function AdminContactUs() {
     alert("Thông tin được update");
     setContactState(values);
     postApi(values);
-    callContactData()
+    setTimeout(callContactData(),1000)
   };
 
   const onFinishFailed = (errorInfo) => {

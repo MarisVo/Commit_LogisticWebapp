@@ -36,7 +36,7 @@ export default function AdminProhibitProduct() {
   const getDataFromApi = async () => {
     try {
       const res = await axios.get(api)
-      setData(res.data.data);
+      setData(res.data.data.listCar);
     }
     catch (e) {
       console.log(e);

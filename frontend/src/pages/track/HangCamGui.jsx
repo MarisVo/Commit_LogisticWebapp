@@ -7,7 +7,7 @@ export default function HangCamGui() {
     const getDataFromApi = async () => {
         try {
           const res = await axios.get("http://localhost:8000/api/prohibited-product")
-          setData(res.data.data);
+          setData(res.data.data.listCar);
         }
         catch (e) {
           console.log(e);

@@ -57,7 +57,7 @@ const CareerOpportunities = () => {
                 method: "get",
             })
             if (res.status === 200) {
-                setData(res.data.data)
+                setData(res.data.data.career)
                 console.log(data);
             }
         }
