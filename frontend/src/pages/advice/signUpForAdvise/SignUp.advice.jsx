@@ -15,8 +15,20 @@ import {
   getWardsByDistrictCode,
   getDistrictsByProvinceCode,
 } from "sub-vn";
+import { useContext } from "react";
+import { MainContext } from "../../../context/MainContext";
 
 export default function SignUpForAdvice() {
+  const { setMetadata } = useContext(MainContext);
+  useEffect(() => {
+    setMetadata((prev) => {
+      return {
+        ...prev,
+        title: "Tư vấn | TKTL",
+      };
+    });
+  }, []);
+
   const [provincesTo, setProvincesTo] = useState([]);
   const [districtsTo, setDistrictsTo] = useState([]);
   const [wardsTo, setWardsTo] = useState([]);

@@ -8,8 +8,8 @@ import {
   MdConnectWithoutContact,
   MdOutlineDeliveryDining,
 } from "react-icons/md";
-import { FaHandshake } from "react-icons/fa";
-import { AiOutlineMessage, AiOutlinePartition } from "react-icons/ai";
+import { FaHandshake, FaWarehouse, FaTruckMoving, FaRoad } from "react-icons/fa";
+import { AiOutlineMessage, AiOutlinePartition, AiOutlineUserAdd } from "react-icons/ai";
 import { BsFillPersonFill, BsPaperclip } from "react-icons/bs";
 import {ImProfile} from "react-icons/im"
 import { Layout, Menu } from "antd";
@@ -103,38 +103,31 @@ export default function AdminPage() {
     ),
     getItem(
       <div>
-
         <Link to="warehouse">Kho bãi</Link>
-
-
       </div>,
       "10",
-      <DesktopOutlined> </DesktopOutlined>
+      <FaWarehouse />
     ),
     getItem(
       <div>
-
         <Link to="car">Phương tiện</Link>
-
       </div>,
       "11",
-      <DesktopOutlined> </DesktopOutlined>
+      <FaTruckMoving />
     ),
     getItem(
       <div>
-
         <Link to="road">Hành trình</Link>
-
       </div>,
       "12",
-      <DesktopOutlined> </DesktopOutlined>
+      <FaRoad />
     ),
     getItem(
       <div>
         <Link to="staff_regis">Thêm nhân viên mới</Link>
       </div>,
       "13",
-      <DesktopOutlined> </DesktopOutlined>
+      <AiOutlineUserAdd />
     ),
     getItem(
       <div>

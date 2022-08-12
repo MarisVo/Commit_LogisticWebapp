@@ -38,7 +38,7 @@ const CareerOpportunities = () => {
             title: "Tìm kiếm | TKTL",
           };
         });
-    })
+    },[])
 
 
     const onChangeKey = (e) => {

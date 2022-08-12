@@ -10,7 +10,7 @@ export default function Service() {
     setMetadata((prev) => {
       return {
         ...prev,
-        title: "Chuyển phát nhanh | TKTL",
+        title: "Dịch vụ | TKTL",
       };
     });
     

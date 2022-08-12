@@ -18,7 +18,7 @@ export default function Track({ number }) {
             title: "Tra cứu | TKTL",
           };
         });
-    })
+    },[])
 
 
     const onChange = (key) => {

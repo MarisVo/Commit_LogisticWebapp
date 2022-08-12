@@ -22,6 +22,8 @@ const MainProvider = ({ children }) => {
     }
   })
 
+  const [order,setOrder] = useState(null)
+
   const checkAuthenticated = async () => {
     let token = null, refresh = null
     if(!refreshToken)
@@ -103,7 +105,9 @@ const MainProvider = ({ children }) => {
         metadata,
         setMetadata,
         dataWarehouse,
-        setDataWarehouse
+        setDataWarehouse,
+        setOrder,
+        order,
       }}
     >
       {children}
