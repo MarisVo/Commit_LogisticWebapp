@@ -26,7 +26,8 @@ export default function FreshService() {
   const [services,setServices] = useState({})
   const [features,setFeatures] = useState([])
   const [participants,setParticipants] = useState([])
-   const id = "62f37e4497d0e082b75d7dc3"
+   
+    const [id,SetId]=useState("")
    useEffect(() => {
     setMetadata((prev) => {
       return {
@@ -38,43 +39,58 @@ export default function FreshService() {
   }, []);
   useEffect(()=>{
      try{
-        const getservice = async()=>{
-           const res = await axios.get(`http://localhost:8000/api/service/${id}`)
-           console.log(res)
-           const {data} =res.data
-           console.log(data)
-           setServices(data)
+       const getId = async()=>{
+          const res = await axios.get("http://localhost:8000/api/service")
+          console.log(res)
+          const {data} =res.data
+          data.service.map(service=>{
+            if(service.sub_detail==="J&T Fresh"){
+              console.log("servicea",service._id) 
+              SetId(service._id)
+            }
+          })
         }
-        getservice()
-        const getquote = async()=>{
-           const res = await axios.get(`http://localhost:8000/api/quote/service/${id}`)
+        getId()
+        if(id){
+
+          const getservice = async()=>{
+             const res = await axios.get(`http://localhost:8000/api/service/${id}`)
+             console.log(res)
+             const {data} =res.data
+             console.log(data)
+             setServices(data)
+          }
+          getservice()
+          const getquote = async()=>{
+             const res = await axios.get(`http://localhost:8000/api/quote/service/${id}`)
+        
+             const {data} =res.data
+             console.log(data)
+             setQuotes(data)
+          }
+          getquote()
+          const getfeature = async()=>{
+             const res = await axios.get(`http://localhost:8000/api/feature/service/${id}`)
+         
+             const {data} =res.data
+             console.log(data.feature)
+             setFeatures(data.feature)
+          }
+          getfeature()
+          const getparticipant = async()=>{ 
+             const res = await axios.get(`http://localhost:8000/api/participant/service/${id}`)
       
-           const {data} =res.data
-           console.log(data)
-           setQuotes(data)
+             const {data} =res.data
+             console.log(data)
+             setParticipants(data)
+          }
+          getparticipant()
         }
-        getquote()
-        const getfeature = async()=>{
-           const res = await axios.get(`http://localhost:8000/api/feature/service/${id}`)
-       
-           const {data} =res.data
-           console.log(data.feature)
-           setFeatures(data.feature)
-        }
-        getfeature()
-        const getparticipant = async()=>{ 
-           const res = await axios.get(`http://localhost:8000/api/participant/service/${id}`)
-    
-           const {data} =res.data
-           console.log(data)
-           setParticipants(data)
-        }
-        getparticipant()
      }
      catch(err){
       console.log(err)
      }
-  },[])
+  },[id])
   return (
     <section id="layout-content">
       <div className="h-full lg:h-[610px] w-full relative pt-12">

@@ -79,6 +79,16 @@ function isValidEmail(email) {
 const { Title } = Typography;
 
 function Login() {
+  const { setMetadata } = useContext(MainContext);
+  useEffect(() => {
+    setMetadata((prev) => {
+      return {
+        ...prev,
+        title: "Đăng nhập | TKTL",
+      };
+    });
+  }, []);
+
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const { loginHandle } = useContext(MainContext);
