@@ -4,6 +4,8 @@ import { sendError, sendServerError, sendSuccess } from "../helper/client.js"
 import ProductShipment from "../model/ProductShipment.js"
 import { verifyToken, verifyStorekeeper } from "../middleware/index.js"
 import { STAFF } from "../constant.js"
+import opencage from "opencage-api-client"
+const OPENCAGE_API_KEY='7f8d6f65dfd846748331d3c5e0a52070'
 const warehouseRoute = express.Router()
 
 /**
@@ -14,7 +16,7 @@ const warehouseRoute = express.Router()
 warehouseRoute.get('/', verifyToken,
     async(req, res) => {
         const role = req.user.role.staff_type || req.user.role.customer_type
-        if (role === STAFF.ADMIN || role === STAFF.STOREKEEPER) {
+        if (role === STAFF.ADMIN) {
             try {
                 const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0
                 const page = req.query.page ? parseInt(req.query.page) : 0
@@ -43,19 +45,21 @@ warehouseRoute.get('/', verifyToken,
 warehouseRoute.get('/:id', verifyToken,
     async(req, res) => {
         const role = req.user.role.staff_type || req.user.role.customer_type
-        if (role === STAFF.ADMIN || role === STAFF.STOREKEEPER) {
-            try {
-                const {id} = req.params
-                const warehouse = await Warehouse.findById(id)
-                if (warehouse) return sendSuccess(res, "get warehouse successful.", warehouse)
-                return sendError(res, "not information found.")
-            } catch(error){
-                return sendServerError(res)
+        try {
+            const {id} = req.params
+            const warehouse = await Warehouse.findById(id)
+            if (!warehouse) {return sendError(res, "not information found.")}
+            if (role === STAFF.ADMIN || (role === STAFF.STOREKEEPER && req.user.role._id == warehouse.storekeeper)) {
+                sendSuccess(res, "get warehouse successful.", warehouse)
             }
+            else {
+                sendError(res, "Access denied.")
+            }
+        } catch(error){
+            return sendServerError(res)
         }
-        else {
-            sendError(res, "Access denied.")
-        }
+        
+        
     }
 )
 
