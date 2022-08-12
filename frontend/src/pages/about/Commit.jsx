@@ -29,7 +29,7 @@ function Commit() {
     return (
         <div className="pt-[80px] mb-10 container mx-auto">
             <a href="">
-                <img src="https://jtexpress.vn/storage/app/uploads/public/626/a18/09b/626a1809b458c559757775.png" alt="banner" className='w-full h-auto object-cover' />
+                <img src="https://tomochain.com/wp-content/uploads/2020/02/Consensus-1200x628-1.png" alt="banner" className='w-full h-auto object-cover' />
             </a>
             <div className="flex flex-col lg:flex-row mx-4 lg:mx-0 gap-x-4 my-10">
                 <div className='flex-1'>

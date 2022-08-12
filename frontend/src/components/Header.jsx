@@ -1,4 +1,4 @@
-import logoJT from "../assets/icons/logo-J&T.svg";
+import logoJT from "../assets/icons/vietnam-post.png";
 import { FaChevronDown, FaBars } from "react-icons/fa";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -126,7 +126,7 @@ const Header = () => {
         </div>
         <div className="hidden sm:block">
           <Link to="/">
-            <img src={logoJT} className="" alt="logo-JnT"/>
+            <img src={logoJT} className="h-[80px]" alt="logo-JnT"/>
           </Link>
         </div>
         <ul className="hidden lg:flex h-full justify-center items-center m-0">

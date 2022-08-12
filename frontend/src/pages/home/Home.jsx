@@ -295,11 +295,11 @@ const Home = () => {
     });
   };
   const showPerson = (id) => {
-    const numberId = quotes.find((coop) => coop.id === id).id;
+    const numberId = quotes.find((quote) => quote._id === id)._id;
     setPerson(numberId);
   };
   return (
-    <div className="">
+    <div className="pt-[65px]">
       <Carousel autoplay autoplaySpeed={2000} effect="fade">
         {/* {banners.map((banner,key) => (
           <div key={key}>
@@ -315,7 +315,7 @@ const Home = () => {
         <div>
           <a href="/">
             <img
-              src="https://jtexpress.vn/storage/app/uploads/public/629/6bd/ca2/6296bdca297c7512128382.jpg"
+              src="https://i.ytimg.com/vi/h7QedpfpWQ0/maxresdefault.jpg"
               className="w-full h-[200px] md:h-[300px] lg:h-[550px] object-cover"
               alt="banner"
             />
@@ -324,7 +324,8 @@ const Home = () => {
         <div>
           <a href="/">
             <img
-              src="https://jtexpress.vn/storage/app/uploads/public/629/6ce/a24/6296cea2443e2392069160.jpg"
+              // src="https://jtexpress.vn/storage/app/uploads/public/629/6ce/a24/6296cea2443e2392069160.jpg"
+              src="https://ntlogistics.vn/tin-tuc/wp-content/uploads/2020/05/7e054b1d577caa22f36d-scaled.jpg"
               className="w-full h-[200px] md:h-[300px] lg:h-[550px] object-cover"
               alt="banner"
             />
@@ -333,7 +334,7 @@ const Home = () => {
         <div>
           <a href="/">
             <img
-              src="https://jtexpress.vn/storage/app/uploads/public/629/5ed/e5b/6295ede5b2956262118810.jpg"
+              src="https://ntlogistics.vn/tin-tuc/wp-content/uploads/2021/08/SGK-re.jpg"
               className="w-full h-[200px] md:h-[300px] lg:h-[550px] object-cover"
               alt="banner"
             />
@@ -491,7 +492,7 @@ const Home = () => {
       </Fade>
 
       <div className="flex flex-col lg:flex-row ">
-        <div className="flex flex-col items-center justify-center text-justify gap-y-7 w-full lg:max-w-[500px] py-6 px-3 bg-[#F0B90B] rounded-r-xl">
+        <div className="flex flex-col items-center justify-center text-justify gap-y-7 w-full lg:max-w-[500px] py-6 px-3 bg-[#F0B90B] lg:rounded-r-xl">
           <Fade left duration={1500}>
             <span className="text-4xl font-black container text-white">VỀ CHÚNG TÔI</span>
             <span className=" text-base container tracking-wide px-4 lg:px-6 w-full">
@@ -502,7 +503,7 @@ const Home = () => {
             </span>
           </Fade>
         </div>
-        <div className="grid grid-cols-2 mx-auto gap-y-2 px-6 bg-yellow-100 rounded-l-2xl w-full">
+        <div className="grid grid-cols-2 mx-auto gap-y-2 px-6 bg-yellow-100 lg:rounded-l-2xl w-full">
           <Fade right duration={2000}>
             <div className="flex flex-col items-center text-center py-4">
               <img
