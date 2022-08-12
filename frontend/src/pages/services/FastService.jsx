@@ -26,7 +26,8 @@ export default function FastService() {
   const [services,setServices] = useState({})
   const [features,setFeatures] = useState([])
   const [participants,setParticipants] = useState([])
-  const id = "62e65fbc5d837fd33a08a1d4"
+ 
+   const [id,SetId]=useState("")
    useEffect(() => {
     setMetadata((prev) => {
       return {
@@ -38,14 +39,19 @@ export default function FastService() {
   }, []);
   useEffect(()=>{
      try{
-        const getservice = async()=>{
-           const res = await axios.get(`http://localhost:8000/api/service/${id}`)
-           console.log(res)
-           const {data} =res.data
-           console.log(data)
-           setServices(data)
+      const getId = async()=>{
+          const res = await axios.get("http://localhost:8000/api/service")
+          console.log(res)
+          const {data} =res.data
+          data.service.map(service=>{
+            if(service.sub_detail==="J&T Fast"){
+              console.log("servicea",service._id) 
+              SetId(service._id)
+            }
+          })
         }
-        getservice()
+        getId()
+        if(id){
         const getquote = async()=>{
            const res = await axios.get(`http://localhost:8000/api/quote/service/${id}`)
       
@@ -70,11 +76,12 @@ export default function FastService() {
            setParticipants(data)
         }
         getparticipant()
+      }
      }
      catch(err){
       console.log(err)
      }
-  },[])
+  },[id])
   return (
     <section id="layout-content ">
       <div className="h-full lg:h-[610px] w-full relative pt-12 ">

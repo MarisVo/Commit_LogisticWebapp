@@ -26,7 +26,7 @@ export default function SuperService() {
   const [services,setServices] = useState({})
   const [features,setFeatures] = useState([])
   const [participants,setParticipants] = useState([])
-   const id = "62f37db297d0e082b75d7dc2"
+    const [id,SetId]=useState("")
    useEffect(() => {
     setMetadata((prev) => {
       return {
@@ -38,14 +38,19 @@ export default function SuperService() {
   }, []);
   useEffect(()=>{
      try{
-        const getservice = async()=>{
-           const res = await axios.get(`http://localhost:8000/api/service/${id}`)
-           console.log(res)
-           const {data} =res.data
-           console.log(data)
-           setServices(data)
+        const getId = async()=>{
+          const res = await axios.get("http://localhost:8000/api/service")
+          console.log(res)
+          const {data} =res.data
+          data.service.map(service=>{
+            if(service.sub_detail==="J&T Supper"){
+              console.log("servicea",service._id) 
+              SetId(service._id)
+            }
+          })
         }
-        getservice()
+        getId()
+        if(id){
         const getquote = async()=>{
            const res = await axios.get(`http://localhost:8000/api/quote/service/${id}`)
       
@@ -70,11 +75,12 @@ export default function SuperService() {
            setParticipants(data)
         }
         getparticipant()
+      }
      }
      catch(err){
       console.log(err)
      }
-  },[])
+  },[id])
   return (
     <section id="layout-content">
       <div className="h-full lg:h-[610px] w-full relative pt-12">
