@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { IoShieldCheckmarkOutline } from "react-icons/io5";
 
 import { AiOutlineCheckCircle } from "react-icons/ai";
+import { MainContext } from "../../context/MainContext";
 export default function Service() {
+  const { setMetadata } = useContext(MainContext);
+   useEffect(() => {
+    setMetadata((prev) => {
+      return {
+        ...prev,
+        title: "Dịch vụ | TKTL",
+      };
+    });
+    
+  }, []);
   return (
     <div className="overflow-hidden">
       <section>

@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Carousel, Tabs, Select } from "antd";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import appStore from "../../assets/images/appStore.png";
 import ggPlay from "../../assets/images/ggPlay.png";
 import { getDistrictsByProvinceCode, getProvinces } from "sub-vn";
-import { Fade, Zoom} from "react-reveal";
-import { useContext } from "react";
+import { Fade, Zoom } from "react-reveal";
 import { MainContext } from "../../context/MainContext";
 import { data } from "autoprefixer";
+import { END_POINT } from "../../utils/constant";
+import axios from "axios";
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -59,10 +60,11 @@ const flags = [
     url: "https://jtexpress.vn/themes/jtexpress/assets/images/uae.png",
   },
 ];
-const services = [
+const DeliveryServices = [
   {
+    _id: 1,
     type: "j&T Epress",
-    content: "Chuyển phát tiêu chuẩn",
+    name: "Chuyển phát tiêu chuẩn",
     path: "chuyen-phat-tieu-chuan",
     images: {
       front:
@@ -71,8 +73,9 @@ const services = [
     },
   },
   {
+    _id: 2,
     type: "j&T Fast",
-    content: "Chuyển phát nhanh",
+    name: "Chuyển phát nhanh",
     path: "chuyen-phat-nhanh",
     images: {
       front:
@@ -81,9 +84,10 @@ const services = [
     },
   },
   {
+    _id: 3,
     type: "j&T Super",
-    content: "Siêu dịch vụ giao hàng",
-    path: "sieu-sich-vu-chuyen-phat",
+    name: "Siêu dịch vụ giao hàng",
+    path: "sieu-dich-vu-chuyen-phat",
     images: {
       front:
         "https://jtexpress.vn/storage/app/uploads/public/618/4e6/872/6184e6872c887801133904.png",
@@ -91,9 +95,10 @@ const services = [
     },
   },
   {
+    _id: 4,
     type: "j&T Fresh",
-    content: "Giao hàng tươi sống",
-    path: "chuyen-phat-hang-tuoi-song",
+    name: "Giao hàng tươi sống",
+    path: "chuyen-phat-do-tuoi-song",
     images: {
       front:
         "https://jtexpress.vn/storage/app/uploads/public/618/4e8/077/6184e8077e894431352453.png",
@@ -103,53 +108,106 @@ const services = [
 ];
 const coops = [
   {
-    id: 1,
+    _id: 1,
     name: "Đỗ Thị Vân",
-    job: "Chủ cửa hàng đồ gốm tại TP. Hà Nội",
-    image: "https://jtexpress.vn/storage/app/uploads/public/628/374/58a/62837458a31d2598134718.jpg",
-    comment:
+    description: "Chủ cửa hàng đồ gốm tại TP. Hà Nội",
+    avatar:
+      "https://jtexpress.vn/storage/app/uploads/public/628/374/58a/62837458a31d2598134718.jpg",
+    quote:
       "Nhờ dịch vụ J&T International gửi đi hàng mẫu thành công, nhanh chóng mà vừa rồi tôi đã có được hợp đồng cung cấp sản phẩm cho một công ty ở Mỹ.",
   },
   {
-    id: 2,
+    _id: 2,
     name: "Dương Hoàng Minh",
-    job: "Giám đốc công ty dệt may tại Bắc Ninh",
-    image: "https://jtexpress.vn/storage/app/uploads/public/628/599/24b/62859924bde0b670971722.jpg",
-    comment:
+    description: "Giám đốc công ty dệt may tại Bắc Ninh",
+    avatar:
+      "https://jtexpress.vn/storage/app/uploads/public/628/599/24b/62859924bde0b670971722.jpg",
+    quote:
       "J&T International là một trợ thủ đắc lực trong quá trình xuất khẩu thành phẩm sang các nước Đông Nam Á của công ty tôi, đặc biệt là gửi hàng trễ chuyến",
   },
   {
-    id: 3,
+    _id: 3,
     name: "Trần Minh Trí",
-    job: "Giám đốc công ty cà phê tại Buôn Ma Thuột",
-    image: "https://jtexpress.vn/storage/app/uploads/public/628/374/c8b/628374c8ba994977079446.jpg",
-    comment:
+    description: "Giám đốc công ty cà phê tại Buôn Ma Thuột",
+    avatar:
+      "https://jtexpress.vn/storage/app/uploads/public/628/374/c8b/628374c8ba994977079446.jpg",
+    quote:
       "Gửi hàng mẫu cà phê đi nước ngoài không phải là chuyện dễ để cân đối thu chi, tối ưu chi phí cho công ty. May là công ty chúng tôi tìm được J&T International. Dịch vụ vượt mong đợi với giá cả phải chăng, lại còn hay có ưu đãi.",
   },
   {
-    id: 4,
+    _id: 4,
     name: "Vũ An Phương",
-    job: "Chủ cửa hàng thiết bị gia dụng tại Hà Nội",
-    image: "https://jtexpress.vn/storage/app/uploads/public/628/5b6/c28/6285b6c28930f965243715.jpg",
-    comment:
+    description: "Chủ cửa hàng thiết bị gia dụng tại Hà Nội",
+    avatar:
+      "https://jtexpress.vn/storage/app/uploads/public/628/5b6/c28/6285b6c28930f965243715.jpg",
+    quote:
       "Nhờ J&T Express mà shop của tôi được nhiều khách hàng đánh giá tốt về thời gian ship hàng. Giá thành tiết kiệm, đội ngũ shipper chuyên nghiệp hỗ trợ rất nhiều cho công việc kinh doanh của tôi.",
   },
   {
-    id: 5,
+    _id: 5,
     name: "Võ Ngọc Trâm",
-    job: "Chủ shop quần áo tại Tp.HCM",
-    image: "https://jtexpress.vn/storage/app/uploads/public/628/5ba/16a/6285ba16a1c9c707213911.jpg",
-    comment:
+    description: "Chủ shop quần áo tại Tp.HCM",
+    avatar:
+      "https://jtexpress.vn/storage/app/uploads/public/628/5ba/16a/6285ba16a1c9c707213911.jpg",
+    quote:
       "Tôi đã từng hợp tác với nhiều đơn vị chuyển phát nhưng cuối cùng quyết định đồng hành cùng J&T Express. Phải nói rằng, hệ thống bưu cục đồng nhất về chất lượng khắp 63 tỉnh thành là điểm làm tôi hài lòng nhất.",
   },
 ];
-
+const partnersFake = [
+  {
+    _id: 1,
+    name: "Thế giới di động",
+    logo: "https://jtexpress.vn/storage/app/uploads/public/629/9c2/482/6299c2482b64c523421235.png",
+  },
+  {
+    _id: 2,
+    name: "uops",
+    logo: "https://jtexpress.vn/storage/app/uploads/public/629/9c6/0a6/6299c60a6662d497515747.png",
+  },
+  {
+    _id: 3,
+    name: "vivo",
+    logo: "https://jtexpress.vn/storage/app/uploads/public/627/1fb/b53/6271fbb5318e6298080325.png",
+  },
+  {
+    _id: 4,
+    name: "tiktok",
+    logo: "https://jtexpress.vn/storage/app/uploads/public/629/9e4/4a9/6299e44a9aae4450398133.png",
+  },
+  {
+    _id: 5,
+    name: "tiki",
+    logo: "https://jtexpress.vn/storage/app/uploads/public/629/9c1/536/6299c1536126c561166062.png",
+  },
+  {
+    _id: 6,
+    name: "harvan",
+    logo: "https://jtexpress.vn/storage/app/uploads/public/627/1fb/d18/6271fbd18abfc963904367.png",
+  },
+];
+// const banner = {
+//     _id: 1,
+//     description: "",
+//     vision: "",
+//     logo: "",
+//     value: "",
+//     banners: [
+//       "https://jtexpress.vn/storage/app/uploads/public/629/6bd/ca2/6296bdca297c7512128382.jpg",
+//       "https://jtexpress.vn/storage/app/uploads/public/629/6ce/a24/6296cea2443e2392069160.jpg",
+//       "https://jtexpress.vn/storage/app/uploads/public/629/5ed/e5b/6295ede5b2956262118810.jpg"
+//     ],
+//   }
 const Home = () => {
   const [listProvinces, setListProvince] = useState([]);
   const [listDistricts, setListDistricts] = useState([]);
+  const [quotes, setQuotes] = useState(coops);
+  const [services, setServices] = useState(DeliveryServices);
+  // const [banners, setBanners] = useState(banner.banners);
+  const [partners, setPartner] = useState(partnersFake);
   const [person, setPerson] = useState(1);
-  const { setMetadata, dataWarehouse, setDataWarehouse } = useContext(MainContext);
-  console.log(dataWarehouse);
+  const [keyOrder, setKeyOrder] = useState('');
+  const { setMetadata, dataWarehouse, setDataWarehouse, order, setOrder } = useContext(MainContext);
+
   // const searchWarehouse = (e) => {
   //   e.preventDefault()
   //   if (currentDistrict && currentProvince) {
@@ -173,6 +231,7 @@ const Home = () => {
   //   }
   // };
 
+
   useEffect(() => {
     setMetadata((prev) => {
       return {
@@ -187,6 +246,37 @@ const Home = () => {
     )?.code;
     const dataDistricts = getDistrictsByProvinceCode(provinceCode);
     setListDistricts(dataDistricts);
+    const fetchQuotes = async () => {
+      try {
+        const res = await axios.get(`${END_POINT}/quote?limit=10`);
+        console.log(res);
+        // if (res.status === 200) return setQuotes(res.data.data); //thật
+        // if (res.data.data.length > 0) return setQuotes(res.data.data); // thử
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    const fetchParner = async () => {
+      try {
+        const res = await axios.get(`${END_POINT}/partner`)
+        // if(status===200) return setPartner(res.data.data.partners)
+        if (res.data.data.length > 0) return setPartner(res.data.data.partners)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchQuotes();
+    fetchParner()
+    // const fetchDeliveryService = (async () => {
+    //   try {
+    //     const res = await axios.get(`${END_POINT}/service`);
+    //     // if (res.status === 200) return setServices(res.data.data.service);
+    //     if (res.data.data.length > 0) return setServices(res.data.data.service);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // })()
+    // Không biết cần không?
   }, []);
   const handleSelectProvince = (provinceSelected) => {
     const provinceCode = listProvinces.find((province) => province.name === provinceSelected)?.code;
@@ -205,36 +295,48 @@ const Home = () => {
     });
   };
   const showPerson = (id) => {
-    const numberId = coops.find((coop) => coop.id === id).id;
+    const numberId = quotes.find((quote) => quote._id === id)._id;
     setPerson(numberId);
   };
   return (
-    <div className="">
+    <div className="pt-[65px]">
       <Carousel autoplay autoplaySpeed={2000} effect="fade">
+        {/* {banners.map((banner,key) => (
+          <div key={key}>
+            <a href="/">
+              <img
+                src={banner[key]}
+                className="w-full h-[200px] md:h-[300px] lg:h-[550px] object-cover"
+                alt="banner"
+              />
+            </a>
+          </div>
+        ))} */}
         <div>
           <a href="/">
             <img
-              src="https://jtexpress.vn/storage/app/uploads/public/629/6bd/ca2/6296bdca297c7512128382.jpg"
+              src="https://i.ytimg.com/vi/h7QedpfpWQ0/maxresdefault.jpg"
               className="w-full h-[200px] md:h-[300px] lg:h-[550px] object-cover"
-              alt="pic"
+              alt="banner"
             />
           </a>
         </div>
         <div>
           <a href="/">
             <img
-              src="https://jtexpress.vn/storage/app/uploads/public/629/6ce/a24/6296cea2443e2392069160.jpg"
+              // src="https://jtexpress.vn/storage/app/uploads/public/629/6ce/a24/6296cea2443e2392069160.jpg"
+              src="https://ntlogistics.vn/tin-tuc/wp-content/uploads/2020/05/7e054b1d577caa22f36d-scaled.jpg"
               className="w-full h-[200px] md:h-[300px] lg:h-[550px] object-cover"
-              alt="pic"
+              alt="banner"
             />
           </a>
         </div>
         <div>
           <a href="/">
             <img
-              src="https://jtexpress.vn/storage/app/uploads/public/629/5ed/e5b/6295ede5b2956262118810.jpg"
+              src="https://ntlogistics.vn/tin-tuc/wp-content/uploads/2021/08/SGK-re.jpg"
               className="w-full h-[200px] md:h-[300px] lg:h-[550px] object-cover"
-              alt="pic"
+              alt="banner"
             />
           </a>
         </div>
@@ -249,15 +351,27 @@ const Home = () => {
             <div>
               <form className="flex flex-col lg:flex-row ">
                 <input
+                  value={keyOrder}
+                  onChange={e => setKeyOrder(e.target.value)}
                   className="border border-gray-300 text-[#F0B90B] text-sm rounded focus:ring-yellow-500 focus:border-yellow-500 block w-full p-3 mb-2 lg:mb-0   "
                   placeholder="Nhập mã vận đơn của bạn (cách nhau bới dấu phẩy), tối đa 10 vận đơn"
                 ></input>
-                <button
-                  type="submit"
+                <Link
+                  to="tra-cuu/van-don"
                   className="text-white bg-yellow-500 hover:bg-yellow-400 focus:ring-4  focus:ring-red-500 font-medium rounded-lg text-lg w-full lg:w-44 lg:ml-2 px-5 py-2.5 text-center "
+                  onClick={(e) => {
+                    if(keyOrder!==""&&keyOrder!==null){
+                      setOrder(keyOrder)
+                    }
+                    else{
+                      e.preventDefault();
+                      alert("Vui lòng điền đầy đủ thông tin")
+                    }
+                      
+                    }}
                 >
-                  Tìm kiếm
-                </button>
+                    Tìm kiếm
+                </Link>
               </form>
             </div>
           </TabPane>
@@ -317,7 +431,7 @@ const Home = () => {
           </TabPane>
           <TabPane
             tab={
-              <Link to="tra-cuu/cuoc-van-chuyen" className="text-lg h-[30px] text-[#fcd535]">
+              <Link to="tra-cuu/bang-gia" className="text-lg h-[30px] text-[#fcd535]">
                 Bảng giá
               </Link>
             }
@@ -378,7 +492,7 @@ const Home = () => {
       </Fade>
 
       <div className="flex flex-col lg:flex-row ">
-        <div className="flex flex-col items-center justify-center text-justify gap-y-7 w-full lg:max-w-[500px] py-6 px-3 bg-[#F0B90B] rounded-r-xl">
+        <div className="flex flex-col items-center justify-center text-justify gap-y-7 w-full lg:max-w-[500px] py-6 px-3 bg-[#F0B90B] lg:rounded-r-xl">
           <Fade left duration={1500}>
             <span className="text-4xl font-black container text-white">VỀ CHÚNG TÔI</span>
             <span className=" text-base container tracking-wide px-4 lg:px-6 w-full">
@@ -389,7 +503,7 @@ const Home = () => {
             </span>
           </Fade>
         </div>
-        <div className="grid grid-cols-2 mx-auto gap-y-2 px-6 bg-yellow-100 rounded-l-2xl w-full">
+        <div className="grid grid-cols-2 mx-auto gap-y-2 px-6 bg-yellow-100 lg:rounded-l-2xl w-full">
           <Fade right duration={2000}>
             <div className="flex flex-col items-center text-center py-4">
               <img
@@ -443,7 +557,7 @@ const Home = () => {
             </div>
             <div className="pt-4 flex flex-col">
               <span className="text-xl font-bold uppercase">{service.type} </span>
-              <span className="text-base">{service.content}</span>
+              <span className="text-base">{service.name}</span>
             </div>
           </Link>
         ))}
@@ -514,21 +628,21 @@ const Home = () => {
                 responsive={[]}
                 className=" overflow-hidden"
               >
-                {coops.map((coop) => (
+                {quotes.map((quote) => (
                   <div
                     className="flex flex-col items-center text-center"
-                    key={coop.id}
-                    onClick={() => showPerson(coop.id)}
+                    key={quote._id}
+                    onClick={() => showPerson(quote._id)}
                   >
                     <div className="w-[100px] h-[100px] sm:w-[134px] sm:h-[134px]">
                       <img
-                        src={coop.image}
+                        src={quote.avatar}
                         className="h-full w-full rounded-full object-cover"
                         alt=""
                       />
                     </div>
-                    <span className="font-bold">{coop.name}</span>
-                    <span className="px-2 ">{coop.job}</span>
+                    <span className="font-bold">{quote.name}</span>
+                    <span className="px-2 ">{quote.description}</span>
                   </div>
                 ))}
               </Carousel>
@@ -538,15 +652,15 @@ const Home = () => {
             <div className="flex flex-col items-center px-4 py-8">
               <div className="w-[134px] h-[134px]">
                 <img
-                  src={coops[person - 1].image}
+                  src={quotes[person - 1].avatar}
                   className=" h-full w-full rounded-full object-cover"
                   alt=""
                 />
               </div>
-              <span className="text-xl font-bold pt-4">{coops[person - 1].name}</span>
-              <span>{coops[person - 1].job}</span>
+              <span className="text-xl font-bold pt-4">{quotes[person - 1].name}</span>
+              <span>{quotes[person - 1].description}</span>
               <div className="mx-3 sm:mx-10 lg:mx-0">
-                <span className="py-6 line-clamp-6 text-justify">{coops[person - 1].comment}</span>
+                <span className="py-6 line-clamp-6 text-justify">{quotes[person - 1].quote}</span>
               </div>
             </div>
           </div>
@@ -554,36 +668,14 @@ const Home = () => {
       </div>
       <div className="container m-auto">
         <Carousel autoplay autoplaySpeed={2000} draggable slidesToShow={5} className="w-full">
-          <img
-            src="https://jtexpress.vn/storage/app/uploads/public/629/9c2/482/6299c2482b64c523421235.png"
-            alt=""
-            className="w-[186px] h-[100px] object-scale-down"
-          />
-          <img
-            src="https://jtexpress.vn/storage/app/uploads/public/629/9c6/0a6/6299c60a6662d497515747.png"
-            alt=""
-            className="w-[186px] h-[100px] object-scale-down"
-          />
-          <img
-            src="https://jtexpress.vn/storage/app/uploads/public/629/9e4/4a9/6299e44a9aae4450398133.png"
-            alt=""
-            className="w-[186px] h-[100px] object-scale-down"
-          />
-          <img
-            src="https://jtexpress.vn/storage/app/uploads/public/627/1fb/b53/6271fbb5318e6298080325.png"
-            alt=""
-            className="w-[186px] h-[100px] object-scale-down"
-          />
-          <img
-            src="https://jtexpress.vn/storage/app/uploads/public/629/9c1/536/6299c1536126c561166062.png"
-            alt=""
-            className="w-[186px] h-[100px] object-scale-down"
-          />
-          <img
-            src="https://jtexpress.vn/storage/app/uploads/public/627/1fb/d18/6271fbd18abfc963904367.png"
-            alt=""
-            className="w-[186px] h-[100px] object-scale-down"
-          />
+          {partners.map((partner) => (
+            <img
+              src={partner.logo}
+              alt="partner"
+              className="w-[186px] h-[100px] object-scale-down"
+              key={partner.name}
+            />
+          ))}
         </Carousel>
       </div>
     </div>

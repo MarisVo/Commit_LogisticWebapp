@@ -210,7 +210,7 @@ function AdminApplicant() {
   return (
     <div>
       <div className="flex justify-between mb-4">
-        <span className="text-3xl font-bold uppercase">Applicant</span>
+        <span className="text-3xl font-bold uppercase">Ứng viên</span>
 
         <Input.Search className="w-1/3 lg:w-[400px]" placeholder="Search" />
         <div className="w-[200px]"></div>

@@ -41,14 +41,14 @@ export default function CuocVanChuyen() {
 	}, []);
 
 	// get all districts by province code
-	useEffect(() => {
-		setDistrictsFrom(getDistrictsByProvinceCode(provinceCodeFrom));
-	}, [provinceCodeFrom]);
+	// useEffect(() => {
+	// 	setDistrictsFrom(getDistrictsByProvinceCode(provinceCodeFrom));
+	// }, [provinceCodeFrom]);
 
 	// get all wards by district code
-	useEffect(() => {
-		setWardsFrom(getWardsByDistrictCode(districtCodeFrom));
-	}, [districtCodeFrom]);
+	// useEffect(() => {
+	// 	setWardsFrom(getWardsByDistrictCode(districtCodeFrom));
+	// }, [districtCodeFrom]);
 
 	// =================== TO EFFECT =======================//
 	// get all provinces
@@ -57,24 +57,24 @@ export default function CuocVanChuyen() {
 	}, []);
 
 	// get all districts by province code
-	useEffect(() => {
-		setDistrictsTo(getDistrictsByProvinceCode(provinceCodeTo));
-	}, [provinceCodeTo]);
+	// useEffect(() => {
+	// 	setDistrictsTo(getDistrictsByProvinceCode(provinceCodeTo));
+	// }, [provinceCodeTo]);
 
 	// get all wards by district code
-	useEffect(() => {
-		setWardsTo(getWardsByDistrictCode(districtCodeTo));
-	}, [districtCodeTo]);
+	// useEffect(() => {
+	// 	setWardsTo(getWardsByDistrictCode(districtCodeTo));
+	// }, [districtCodeTo]);
 
 	const handleSubmit = async () => {
 		// check empty field
 		if (
 			!provinceCodeFrom ||
 			!provinceCodeTo ||
-			!districtCodeFrom ||
-			!districtCodeTo ||
-			!wardCodeFrom ||
-			!wardCodeTo ||
+			// !districtCodeFrom ||
+			// !districtCodeTo ||
+			// !wardCodeFrom ||
+			// !wardCodeTo ||
 			!weight
 		) {
 			setIsValid(false);
@@ -84,29 +84,30 @@ export default function CuocVanChuyen() {
 
 		const provinceFrom = provincesFrom.find(prov => prov.code === provinceCodeFrom);
 		const provinceTo = provincesTo.find(prov => prov.code === provinceCodeTo);
-		const districtFrom = districtsFrom.find(prov => prov.code === districtCodeFrom);
-		const districtTo = districtsTo.find(prov => prov.code === districtCodeTo);
-		const wardFrom = wardsFrom.find(prov => prov.code === wardCodeFrom);
-		const wardTo = wardsTo.find(prov => prov.code === wardCodeTo);
+		console.log(provinceFrom);
+		// const districtFrom = districtsFrom.find(prov => prov.code === districtCodeFrom);
+		// const districtTo = districtsTo.find(prov => prov.code === districtCodeTo);
+		// const wardFrom = wardsFrom.find(prov => prov.code === wardCodeFrom);
+		// const wardTo = wardsTo.find(prov => prov.code === wardCodeTo);
 
 
 
 		try {
 
-			const {data} = await axios.post("http://localhost:8000/api/tracking/postage", {
+			const data = await axios.post("http://localhost:8000/api/tracking/postage", {
 				fromProvince: provinceFrom.name,
-				fromDistrict: districtFrom.name,
-				fromWard: wardFrom.district_name,
+				// fromDistrict: districtFrom.name,
+				// fromWard: wardFrom.district_name,
 				toProvince: provinceTo.name,
-				toDistrict: districtTo.name,
-				toWard: wardTo.district_name,
+				// toDistrict: districtTo.name,
+				// toWard: wardTo.district_name,
 				unit,
 				quantity: weight,
-				serviceId: "62a991c45b1e73890c891df7",
-				serviceName: "create price for a service",
+				serviceName: "express",
 			})
 
 			setPrice(data.data.result);
+			console.log(price);
 
 			console.log(data);
 
@@ -123,66 +124,70 @@ export default function CuocVanChuyen() {
 	};
 
 	return (
-		<div className="p-7 shadow shadow-zinc-200" style={{ 
+		<div className="p-7 shadow shadow-zinc-200" style={{
 			maxWidth: "1200px",
-			margin:"auto"
-		 }}>
-			<span className="mb-4 inline-block font-bold text-xl text-[#F0B90B]">
-				Gửi từ: <span className="text-red-500"> * </span>
-			</span>
-			<p />
-			<div className="flex flex-col md:flex-row gap-[24px] items-between mb-[48px] ">
-				<div className="w-full md:w-1/3 flex flex-col ">
-					<div className="w-full  h-[43px] ">
-						<select
-							className=" w-full h-full  "
-							tabIndex={-1}
-							aria-hidden="true"
-							onChange={(e) => setProvinceCodeFrom(e.target.value)}
-						>
-							<option data-select2-id="select2-data-81-rsyi" value="">
-								Tỉnh/ Thành phố
-							</option>
+			margin: "auto"
+		}}>
+			<div className='lg:flex' style={{ justifyContent: "space-between", alignItems: "baseline" }}>
 
-							{provincesFrom?.length > 0 &&
-								provincesFrom.map((province) => (
-									<option
-										className="text-[#161D25]"
-										value={province.code}
-										key={province.code}
-									>
-										{province.name}
-									</option>
-								))}
-						</select>
-						<span style={{ width: '345.337px' }}>
-							<span className="selection">
-								<span
-									className="select2-selection select2-selection--single"
-									tabIndex={0}
-									aria-disabled="false"
+				<div className="w-full  h-[43px] ">
+					<span className="mb-4 inline-block font-bold text-xl text-[#F0B90B]">
+						Gửi từ: <span className="text-red-500"> * </span>
+					</span>
+					<p />
+					<div className="flex flex-col md:flex-row gap-[24px] items-between mb-[48px] ">
+						<div className="w-full md:w-1/3 flex flex-col ">
+							<div className="w-full  h-[43px] ">
+								<select
+									className=" w-full h-full  "
+									tabIndex={-1}
+									aria-hidden="true"
+									onChange={(e) => setProvinceCodeFrom(e.target.value)}
 								>
-									<span
-										className="select2- ml-1"
-										id="select2-dropdown-from-prov-tariff-container"
-										title="Tỉnh/ Thành phố"
-									>
+									<option data-select2-id="select2-data-81-rsyi" value="">
 										Tỉnh/ Thành phố
+									</option>
+
+									{provincesFrom?.length > 0 &&
+										provincesFrom.map((province) => (
+											<option
+												className="text-[#161D25]"
+												value={province.code}
+												key={province.code}
+											>
+												{province.name}
+											</option>
+										))}
+								</select>
+								<span style={{ width: '345.337px' }}>
+									<span className="selection">
+										<span
+											className="select2-selection select2-selection--single"
+											tabIndex={0}
+											aria-disabled="false"
+										>
+											<span
+												className="select2- ml-1"
+												id="select2-dropdown-from-prov-tariff-container"
+												title="Tỉnh/ Thành phố"
+											>
+												{/* Tỉnh/ Thành phố */}
+											</span>
+											<span
+												className="select2-selection__arrow"
+												role="presentation"
+											>
+												<b role="presentation" />
+											</span>
+										</span>
 									</span>
-									<span
-										className="select2-selection__arrow"
-										role="presentation"
-									>
-										<b role="presentation" />
-									</span>
+									<span className="dropdown-wrapper" aria-hidden="true" />
 								</span>
-							</span>
-							<span className="dropdown-wrapper" aria-hidden="true" />
-						</span>
-					</div>
-					<div className="text-red-500 select_val" />
-				</div>
-				<div className="w-full md:w-1/3 flex flex-col">
+							</div>
+							<div className="text-red-500 select_val" />
+						</div>
+
+						{/* <div className="w-full md:w-1/3 flex flex-col">
 					<div className="w-full h-[43px]">
 						<select
 							className=" w-full h-full "
@@ -248,63 +253,62 @@ export default function CuocVanChuyen() {
 						</span>
 					</div>
 					<div className="text-red-500 select_val" />
-				</div>
-			</div>
-			<div>
-				<div className="tabs_inside_title flex items-center mb-[30px]">
-					<div className="tabs_inside_title__active border-[#fcd535] border-b-4 text-lg">
-						Gửi hàng trong Việt Nam
+				</div> */}
+
 					</div>
 				</div>
-				<div className>
-					<div>
-						<span className="mb-[16px] inline-block  font-bold text-xl text-[#F0B90B]">
-							Gửi đến:
-							<span className="text-red-500">*</span>
-						</span>
-						<div className="flex flex-col md:flex-row gap-[24px] items-between">
-							<div className="w-full md:w-1/3 flex flex-col">
-								<div className="w-full select2-stupid item-tariff h-[43px]">
-									<select
-										name="to_province"
-										className="name_select search-select w-full h-full select2-hidden-accessible"
-										tabIndex={-1}
-										aria-hidden="true"
-										data-select2-id="select2-data-dropdown-to-prov-tariff"
-										onChange={(e) => setProvinceCodeTo(e.target.value)}
-									>
-										<option data-select2-id="select2-data-81-rsyi" value="">
-											Tỉnh/ Thành phố
-										</option>
 
-										{provincesTo?.length > 0 &&
-											provincesTo.map((province) => (
-												<option
-													className="text-[#161D25]"
-													value={province.code}
-													key={province.code}
-												>
-													{province.name}
-												</option>
-											))}
-									</select>
-									<span style={{ width: '345.337px' }}>
-										<span className="selection">
-											<span tabIndex={0}>
-												<span className=" ml-1" title="Tỉnh/ Thành phố">
-													Tỉnh/ Thành phố
-												</span>
-												<span className="select2-selection__arrow">
-													<b />
+				<div div className="w-full  h-[43px] ">
+					<div className>
+						<div>
+							<span className="mb-[16px] inline-block  font-bold text-xl text-[#F0B90B]">
+								Gửi đến:
+								<span className="text-red-500">*</span>
+							</span>
+							<div className="flex flex-col md:flex-row gap-[24px] items-between">
+								<div className="w-full md:w-1/3 flex flex-col">
+									<div className="w-full select2-stupid item-tariff h-[43px]">
+										<select
+											name="to_province"
+											className="name_select search-select w-full h-full select2-hidden-accessible"
+											tabIndex={-1}
+											aria-hidden="true"
+											data-select2-id="select2-data-dropdown-to-prov-tariff"
+											onChange={(e) => setProvinceCodeTo(e.target.value)}
+										>
+											<option data-select2-id="select2-data-81-rsyi" value="">
+												Tỉnh/ Thành phố
+											</option>
+
+											{provincesTo?.length > 0 &&
+												provincesTo.map((province) => (
+													<option
+														className="text-[#161D25]"
+														value={province.code}
+														key={province.code}
+													>
+														{province.name}
+													</option>
+												))}
+										</select>
+										<span style={{ width: '345.337px' }}>
+											<span className="selection">
+												<span tabIndex={0}>
+													<span className=" ml-1" title="Tỉnh/ Thành phố">
+														{/* Tỉnh/ Thành phố */}
+													</span>
+													<span className="select2-selection__arrow">
+														<b />
+													</span>
 												</span>
 											</span>
+											<span />
 										</span>
-										<span />
-									</span>
+									</div>
+									<div className="text-red-500 select_val" />
 								</div>
-								<div className="text-red-500 select_val" />
-							</div>
-							<div className="w-full md:w-1/3 flex flex-col">
+
+								{/* <div className="w-full md:w-1/3 flex flex-col">
 								<div className="w-full select2-stupid item-tariff h-[43px]">
 									<select
 										name="to_district"
@@ -425,40 +429,44 @@ export default function CuocVanChuyen() {
 									</span>
 								</div>
 								<div className="text-red-500 select_val" />
-							</div>
-						</div>
-						<div className="grid grid-cols-1 lg:grid-cols-3 gap-[24px] mt-[48px]">
-							<div>
-								<span className="block mb-[8px] text-[#F0B90B] font-bold text-xl mt-5 ">
-									Weight
-									<span className="text-red-500">*</span>
-								</span>
-								<div className="w-full item-tariff">
-									<input
-										value={weight}
-										min={0}
-										onChange={(e) => setWeight(e.target.value)}
-										type="number"
-										id="weight"
-										name="weight"
-										className="name_input border border-[#ced4da] rounded-[2px] pl-2  py-3  focus:outline-none h-[43px] w-full"
-									/>
-								</div>
-								<div>
-									<select className="w-full h-full" defaultValue="kg" onChange={(e) => setUnit(e.target.value)}>
-										<option value="" disabled>
-											Chọn đơn vị
-										</option>
-										<option value="kg">Kg</option>
-										<option value="m3">M³</option>
-										<option value="ton">Ton(Tấn)</option>
-									</select>
-								</div>
+							</div> */}
+
 							</div>
 						</div>
 					</div>
 				</div>
+
+				<div className="grid grid-cols-1 lg:grid-cols-3 gap-[24px] mt-[48px]">
+					<div>
+						<span className="block mb-[8px] text-[#F0B90B] font-bold text-xl mt-5 ">
+							Weight
+							<span className="text-red-500">*</span>
+						</span>
+						<div className="w-full item-tariff">
+							<input
+								value={weight}
+								min={0}
+								onChange={(e) => setWeight(e.target.value)}
+								type="number"
+								id="weight"
+								name="weight"
+								className="name_input border border-[#ced4da] rounded-[2px] pl-2  py-3  focus:outline-none h-[43px] w-full"
+							/>
+						</div>
+						<div>
+							<select className="w-full h-full" defaultValue="kg" onChange={(e) => setUnit(e.target.value)}>
+								<option value="" disabled>
+									Chọn đơn vị
+								</option>
+								<option value="kg">Kg</option>
+								<option value="m3">M³</option>
+								<option value="ton">Ton(Tấn)</option>
+							</select>
+						</div>
+					</div>
+				</div>
 			</div>
+
 			<div className="text-center mt-[56px]">
 				<button
 					className="text-black tracking-wide bg-[#e5a663] rounded-[2px] min-h-[55px] w-full text-lg "

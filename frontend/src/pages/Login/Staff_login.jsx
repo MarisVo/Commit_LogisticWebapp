@@ -80,6 +80,15 @@ function isValidEmail(email) {
 const { Title } = Typography;
 
 function StaffLogin() {
+  const { setMetadata } = useContext(MainContext);
+  useEffect(() => {
+    setMetadata((prev) => {
+      return {
+        ...prev,
+        title: "Đăng nhập | TKTL",
+      };
+    });
+  }, []);
    const { loginHandle, user,accestoken } = useContext(MainContext);
   const [form] = Form.useForm();
  const navigate = useNavigate();
@@ -143,10 +152,10 @@ function StaffLogin() {
       console.log(data)
       loginHandle(data.accessToken, data.refreshToken, data.user);
         if(data.user.role.staff_type==="admin"){
-       navigate("/admin", { replace: true });
+       navigate("/quan-tri", { replace: true });
         }
         else if(data.user.role.staff_type==="storekeeper") {
-          navigate("/storekeeper", { replace: true });
+          navigate("/thu-kho", { replace: true });
         }
         else if(data.user.role.staff_type==="driver") {
           navigate("/tai-xe/dat-hang", { replace: true });
@@ -175,7 +184,7 @@ function StaffLogin() {
               } }
             >
                 <Title level={2} className="text-center">
-                    Đăng nhập staff
+                    Đăng nhập nhân viên
                 </Title>
 
                 <Form.Item

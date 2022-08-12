@@ -19,18 +19,9 @@ function PurchaseStage() {
     setStage(stage + 1);
   };
   return (
-    <div className="pt-[72px]">
+    <div className="">
       <div className="bg-gray-100 relative">
-        <SideBar className="" handleOpen={handleOpen} open={open} />
-        <div>
-          <span className="w-6 h-6 absolute top-[10%] left-[0%] z-3  lg:top-[15%]  ">
-            <IoArrowForwardCircleOutline
-              className="w-6 h-6 z-50   "
-              onClick={() => handleOpen()}
-            />
-          </span>
-        </div>
-        <div className=" sm:mx-6 lg:mx-32 pb-4 pt-2 mx-2 ">
+      
           <div className=" bg-gray-white  bg-white  rounded-sm shadow-xl pb-2">
             <div className="flex items-center justify-between cursor-pointer ml-2 mr-3 ">
               <Link
@@ -47,12 +38,10 @@ function PurchaseStage() {
                   ID ĐƠN HÀNG. 2202092MBR2HBG
                 </div>
                 <div className=" sm:border-l-[1px]  sm:pl-1 sm:ml-2 sm:text-sm  border-gray-200 flex items-center text-yellow-500">
-                  Đơn hàng đã giao{" "}
+                  Đơn hàng đã giao
                 </div>
               </div>
             </div>
-
-          
             <div className="grid grid-cols-3  mx-2  my-3 ">
               <div className="col-span-3 sm:col-span-1 justify-self-center mb-2 ml-4 md:ml-6 ">
                 <div className="text-xl font-semibold text-[#00003B] ">
@@ -211,7 +200,6 @@ function PurchaseStage() {
             </div>
           </div>
         </div>
-      </div>
     </div>
   );
 }

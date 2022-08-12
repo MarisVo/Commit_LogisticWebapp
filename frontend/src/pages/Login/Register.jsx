@@ -3,7 +3,6 @@ import 'antd/dist/antd.css'
 import { Form, Button, Input, Select, Typography, message, Modal } from "antd";
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
 import { useContext } from 'react';
 import { MainContext } from '../../context/MainContext';
 import axios from 'axios'
@@ -75,8 +74,17 @@ function isValidEmail(email) {
 const { Title } = Typography;
 
 function Register() {
-  const [form] = Form.useForm();
+  const { setMetadata } = useContext(MainContext);
+  useEffect(() => {
+    setMetadata((prev) => {
+      return {
+        ...prev,
+        title: "Đăng kí | TKTL",
+      };
+    });
+  }, []);
 
+  const [form] = Form.useForm();
   const emailphone = Form.useWatch('email/phone', form);
   let email;
   let phone;
@@ -203,6 +211,15 @@ function Register() {
       },
     });
   };
+  const business_success = () => {
+    message.success({
+      content: 'Xin vui lòng đợi quản trị viên kích hoạt tài khoản của bạn',
+      className: 'custom-class',
+      style: {
+        marginTop: '20vh',
+      },
+    });
+  }
   const existed = () => {
     message.error({
       content: 'Email hoặc số điện thoại đã tồn tại',
@@ -248,8 +265,14 @@ function Register() {
           verify_op: verify_op
         }
       });
-      success();
-      handleShowModal();
+      if(customer_type != "business") {
+        success();
+        handleShowModal();
+      }
+      else {
+        business_success();
+        setTimeout(() => {  navigate("/"); }, 4000);
+      }
     } catch(error){
       if(error.response.data.message == "user is exist"){
         existed();
@@ -330,7 +353,7 @@ function Register() {
                   } }
               >
                   <Title level={2} className="text-center">
-                      Đăng ký
+                      Đăng kí
                   </Title>
 
                   <Form.Item
@@ -435,9 +458,9 @@ function Register() {
                     hasFeedback
                   >
                     <Select placeholder="Chọn loại khách hàng">
-                      <Select.Option value="intermediary">intermediary</Select.Option>
-                      <Select.Option value="business">business</Select.Option>
-                      <Select.Option value="passers">passers</Select.Option>
+                      <Select.Option value="intermediary">Trung gian</Select.Option>
+                      <Select.Option value="business">Doanh nghiệp</Select.Option>
+                      <Select.Option value="passers">Khách vãng lai</Select.Option>
                     </Select>
                   </Form.Item>
 

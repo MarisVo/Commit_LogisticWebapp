@@ -1,13 +1,21 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { END_POINT } from "../../utils/constant"
+import { MainContext } from "../../context/MainContext";
 
 function Commit() {
+    const {setMetadata} = useContext(MainContext)
     const [data, setData] = useState([])
     useEffect(() => {
+        setMetadata((prev) => {
+            return {
+              ...prev,
+              title: "Cam kết | TKTL",
+            };
+          });
         const fetchApi = async () => {
             try {
-                const res = await axios.get(`${END_POINT}/commitment`)
+                const res = await axios.get(`${END_POINT}/commitment?limit=6`)
                 res.status===200 && setData(res.data.data.commits)
                 console.log(res)
             }
@@ -21,7 +29,7 @@ function Commit() {
     return (
         <div className="pt-[80px] mb-10 container mx-auto">
             <a href="">
-                <img src="https://jtexpress.vn/storage/app/uploads/public/626/a18/09b/626a1809b458c559757775.png" alt="banner" className='w-full h-auto object-cover' />
+                <img src="https://tomochain.com/wp-content/uploads/2020/02/Consensus-1200x628-1.png" alt="banner" className='w-full h-auto object-cover' />
             </a>
             <div className="flex flex-col lg:flex-row mx-4 lg:mx-0 gap-x-4 my-10">
                 <div className='flex-1'>

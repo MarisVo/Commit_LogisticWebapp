@@ -16,10 +16,6 @@ const RegisForm = styled.div`
     @media (max-height: 628px) {
       flex-direction: column;
     }
-    justify-content: center;
-    align-items: center;
-    padding-top: 100px;
-    padding-bottom: 50px;
 }
 .Regis-header{
     max-width: 500px;
@@ -145,7 +141,7 @@ function Staff_Register() {
                 } }
             >
                 <Title level={2} className="text-center">
-                    Đăng ký staff
+                    Thêm nhân viên mới
                 </Title>
 
                 <Form.Item

@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
 import SideBar from "../../components/SideBarCustomer";
 import { IoLocationOutline } from "react-icons/io5";
-
 import { AiOutlineGift, AiOutlineUser, AiOutlineInbox } from "react-icons/ai";
 import { TbSteeringWheel } from "react-icons/tb";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
@@ -21,7 +20,7 @@ const PurchaseDetail = () => {
   const location = useLocation();
   const params = useParams()
   const handleOpen = () => {
-    setOpen(!open);
+    setOpen(!open);     
     console.log(open);
   };
    const {accessToken} = useContext(MainContext)
@@ -73,7 +72,7 @@ const PurchaseDetail = () => {
     }
    getCustomer()
    getService()
-    
+
   },[]);
   const order = {
     formProvince: "Ho Chi Minh",
@@ -87,20 +86,13 @@ const PurchaseDetail = () => {
     serviceId: "string",
     serviceName: "string",
   };
+  
 
   return (
-    <div className="pt-[68px]">
+    <div className="">
       <div className="bg-gray-100 relative ">
-        <SideBar className="" handleOpen={handleOpen} open={open} />
-        <div>
-          <span className="w-6 h-6 absolute top-[4%] left-[0%] z-3  md:top-[15%]  ">
-            <IoArrowForwardCircleOutline
-              className="w-6 h-6 z-25   "
-              onClick={() => handleOpen()}
-            />
-          </span>
-        </div>
-        <div className=" sm:mx-20 lg:mx-52 py-4 bg-gray-white mx-2 mb-2 ">
+      
+       {/*  <div className=" sm:mx-20 lg:mx-52 py-4 bg-gray-white mx-2 mb-2 "> */}
           <div className="flex flex-col mt-2 bg-white rounded-sm shadow-lg mb-3 ">
             <div className="  overflow-auto mb-3">
               <div className="flex justify-between items-center border-gray-300 border-b-[1px] py-2  bg-yellow-400 ">
@@ -236,7 +228,6 @@ const PurchaseDetail = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

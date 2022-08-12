@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState,useEffect } from 'react';
 import { Tabs } from 'antd';
 import CuocVanChuyen from './CuocVanChuyen';
 import HangCamGui from './HangCamGui';
@@ -6,9 +6,21 @@ import VanDon from './VanDon';
 import BuuCuc from './BuuCuc';
 import BangGia from './BangGia';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { MainContext } from '../../context/MainContext';
 const { TabPane } = Tabs;
 
 export default function Track({ number }) {
+    const {setMetadata} = useContext(MainContext);
+    useEffect(() => {
+        setMetadata((prev) => {
+          return {
+            ...prev,
+            title: "Tra cứu | TKTL",
+          };
+        });
+    },[])
+
+
     const onChange = (key) => {
         console.log(key);
     };
@@ -18,6 +30,9 @@ export default function Track({ number }) {
         setDefaultService(dichVu);
         navigate(`/tra-cuu/${dichVu}`)   
     }
+
+   
+
     return (
         <>
             <div className='carousel' style={{paddingTop:"50px"}}>

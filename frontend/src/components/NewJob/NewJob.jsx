@@ -80,7 +80,7 @@ const NewJob = ({setDetail}) => {
             })
             
             if(res.status===200){
-                let item = res.data.data;
+                let item =  res.data.data.career;
                 let items =[]
                 for(let i=item.length-1; i>=item.length-5;i--){
                     items.push(item[i]);
