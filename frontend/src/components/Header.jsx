@@ -305,7 +305,7 @@ const Header = () => {
               <Notification/>
             </span>
             <Link to="/khach-hang/trang-ca-nhan">
-              <div className="px-3 py-2 bg-[#fff800] border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
+              <div className="px-3 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer">
                 <span className="font-semibold ">
                 Thông tin
 
@@ -315,7 +315,7 @@ const Header = () => {
             <div>
               <div
                 onClick={Logout}
-                className="px-3 ml-3 py-2 bg-[#fff800] border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer"
+                className="px-3 ml-3 py-2 bg-primary border-2 border-button_color hover:bg-opacity-70 rounded-md text-sm cursor-pointer"
               >
                 <span href="#" className="font-semibold ">
                   Đăng xuất
