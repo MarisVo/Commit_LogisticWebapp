@@ -23,7 +23,7 @@ export default function AdminBill() {
   const [loading, setLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(false)
   const [open, setOpen] = useState(false);
-  const api = "http://localhost:8000/api/prohibited-product"
+  const api = "http://localhost:8000/api/admin/bill"
   const [data, setData] = useState([
     {
       service:"123456bna2",
@@ -49,7 +49,11 @@ export default function AdminBill() {
 
   const getDataFromApi = async () => {
     try {
-      const res = await axios.get(api)
+      const res = await axios({
+        url:api,
+        method:"get",
+        headers: { authorization: `Bearer ${accessToken}` },
+      })
       setData(res.data.data);
     }
     catch (e) {
@@ -60,7 +64,7 @@ export default function AdminBill() {
   const postData = async (data) => {
     try {
       const res = await axios({
-        url: 'http://localhost:8000/api/admin/prohibited-product/create',
+        url: `${api}/create`,
         method: "post",
         data: data,
         headers: { authorization: `Bearer ${accessToken}` },
@@ -74,7 +78,7 @@ export default function AdminBill() {
   const editData = async (data, id) => {
     try {
       const res = await axios({
-        url: `http://localhost:8000/api/admin/prohibited-product/${id}`,
+        url: `api/${id}`,
         method: "put",
         headers: { authorization: `Bearer ${accessToken}` },
         data: data,
@@ -88,7 +92,7 @@ export default function AdminBill() {
   const delData = async (id) => {
     try {
       const res = await axios({
-        url: `http://localhost:8000/api/admin/prohibited-product/${id}`,
+        url: `api/${id}`,
         method: "delete",
         headers: { authorization: `Bearer ${accessToken}` },
       })

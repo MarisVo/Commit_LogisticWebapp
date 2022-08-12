@@ -149,11 +149,6 @@ export default function AdminOrder() {
         })
         console.log(items);
         const oldData = {
-            // receiver: tableData[0].innerHTML,
-            // total_price: tableData[1].innerHTML,
-            // destination: tableData[2].innerHTML,
-            // service: tableData[3].innerHTML,
-            // origin: tableData[4].innerHTML,
             status: items[0].status,
             // product: items[0].product
         }
@@ -305,26 +300,6 @@ export default function AdminOrder() {
             dataIndex: 'status',
             key: "status",
             width: "12%",
-            // filters: [
-            //     {
-            //         text: 'Xác nhận',
-            //         value: 'Xác nhận',
-            //     },
-            //     {
-            //         text: 'Từ chối',
-            //         value: 'Từ chối',
-            //     },
-            // ],
-            // onFilter: (value, record) => record.status === value,
-            // render: (status) => (
-            //     <>
-            //         {status === "Xác nhận" ?
-            //             <div className="text-green-600 font-bold bg-green-200 text-center rounded-lg py-1">Xác nhận</div>
-            //             :
-            //             <div className='text-red-600 font-bold bg-red-300 text-center rounded-lg py-1'>Từ chối</div>
-            //         }
-            //     </>
-            // )
         },
         {
             title: '',
@@ -391,9 +366,9 @@ export default function AdminOrder() {
     const acceptDelete = async () => {
         setLoading(true)
         setIsDisable(true)
+        delDataToApi(id)
         try {
             await setTimeout(() => {
-                delDataToApi(id)
                 setChange(change+1)
                 setLoading(false)
                 setOpenDel(false)
@@ -413,11 +388,10 @@ export default function AdminOrder() {
         const items = {
             status:tableData[0].value,
         }
-
+        editDataToApi(items,id)
         try {
             await setTimeout(() => {
                 setChange('edit')
-                editDataToApi(items,id)
                 setLoading(false)
                 setOpenEdit(false)
                 setIsDisable(false)
