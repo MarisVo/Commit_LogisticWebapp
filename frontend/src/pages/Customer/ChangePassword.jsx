@@ -126,11 +126,11 @@ const ChangePassword = () => {
   }, [formErrors, cPassword, isSubmit]);
 
     return (
-         <div className="  top-[20%] w-[70%] h-[60vh]  mx-auto flex justify-center items-center  ">
+         <div className="  top-[20%] w-[70%] h-[65vh]  mx-auto flex justify-center items-center  ">
             <div className="relative bg-white rounded-lg shadow  h-[100%] w-[100%] lg:w-[80%] py-2 mx-1 border-[1px]">
               <div className="pb-6 pt-[6px] px-6 ">
                 <h3 className="mb-3 text-2xl font-bold text-black ">
-                  Thay đổi
+                  Thay đổi mật khẩu của bạn
                 </h3>
                 <form className="space-y-4" action="#" onSubmit={handleSubmit}>
                   <div>
