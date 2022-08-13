@@ -1718,12 +1718,10 @@ paths:
         - in: formData
           name: name
           type: string
-          required: true
           description: name of prohibited product
         - in: formData
           name: detail
           type: string
-          required: true
           description: detail of prohibited product
         - in: formData
           name: image
