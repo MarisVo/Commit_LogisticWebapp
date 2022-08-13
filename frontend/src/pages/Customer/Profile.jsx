@@ -9,6 +9,7 @@ import {
 import { useContext } from "react";
 import { MainContext } from "../../context/MainContext";
 import axios from "axios";
+import { END_POINT } from "../../utils/constant";
 
 export default function Profile() {
   const oldPwRef = useRef(null);
@@ -104,7 +105,7 @@ export default function Profile() {
  /*    setFormErrors(validate); */
     try {
       const res = await axios.put(
-        "http://localhost:8000/api/auth/change-pw" ,
+        `${END_POINT}/auth/change-pw` ,
         
           cPassword
         ,

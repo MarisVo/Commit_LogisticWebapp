@@ -12,11 +12,14 @@ import { useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import { MainContext } from "../../context/MainContext";
+import { END_POINT } from "../../utils/constant";
 const PurchaseDetail = () => {
   const [open, setOpen] = useState(false);
   const [customer, setCustomer] = useState(null);
   const [receiver, setReceiver] = useState(null);
   const [service, setService] = useState(null);
+  const [product, setProduct] = useState(null);
+  const [orders,setOrders] = useState(null);
   const location = useLocation();
   const params = useParams()
   const handleOpen = () => {
@@ -28,15 +31,17 @@ const PurchaseDetail = () => {
     console.log(params.id)
     const getDetailOrder = async()=>{
       try{
-      const res = await axios.get(`http://localhost:8000/api/order/${params.id}`,{
+      const res = await axios.get(`${END_POINT}/order/${params.id}`,{
           headers: { authorization: `Bearer ${accessToken}` }
       })
       const  {data} =res.data
       console.log(data)   
-      const {customer,receiver,service} =data[0]
+      setOrders(data[0])
+      const {customer,receiver,service,orderId,total_price} =data[0]
       if(data){   
         getCustomer(customer)
-         getService(service)
+        getService(service)
+        getProduct(orderId)
       }
     }
     catch(err){
@@ -46,7 +51,7 @@ const PurchaseDetail = () => {
     getDetailOrder()
     const getCustomer = async(customer)=>{
       try{
-      const rescustomer = await axios.get(`http://localhost:8000/api/customer?id=${customer}`,{
+      const rescustomer = await axios.get(`${END_POINT}/customer?id=${customer}`,{
           headers: { authorization: `Bearer ${accessToken}` }
       })
        const {data} =rescustomer.data
@@ -59,7 +64,7 @@ const PurchaseDetail = () => {
     }
     const getService = async(service)=>{
       try{  
-        const resservice = await axios.get(`http://localhost:8000/api/service/${service}`,{
+        const resservice = await axios.get(`${END_POINT}/service/${service}`,{
           headers: { authorization: `Bearer ${accessToken}` }
         })
        const {data} =resservice.data
@@ -70,9 +75,23 @@ const PurchaseDetail = () => {
         console.log(err)
       }
     }
+    const getProduct = async(orderId)=>{
+       try{  
+         const resproduct = await axios.get(`${END_POINT}/product/${orderId}`,{
+           headers: { authorization: `Bearer ${accessToken}` }
+         })
+        const {data} =resproduct.data
+        console.log(resproduct)
+        console.log("prod",data[0])
+        setProduct(data[0])
+        
+       }catch(err){
+         console.log(err)
+       }
+     }
    getCustomer()
    getService()
-
+   getProduct()
   },[]);
   const order = {
     formProvince: "Ho Chi Minh",
@@ -167,6 +186,10 @@ const PurchaseDetail = () => {
               </div>
             </div>
           </div>
+        {/*   {
+            product?.map(product=>(
+
+            )) }*/}
           <div className="flex flex-col mt-2 bg-white rounded-sm shadow-lg mb-3">
             <div className="  overflow-auto mb-3">
               <div className="flex justify-between items-center border-gray-300 border-b-[1px] py-2 bg-yellow-400">
@@ -184,23 +207,23 @@ const PurchaseDetail = () => {
                     <div className="text-base md:text-lg mr-1">
                       Nội dung hàng hóa:
                     </div>
-                    <div className="text-base md:text-lg ">Điện thoại oppo</div>
+                    <div className="text-base md:text-lg ">{product?.name}</div>
                   </div>
-                  <div className="ml-2 flex items-center py-1">
+                 {/*  <div className="ml-2 flex items-center py-1">
                     <AiOutlineInbox className="mr-1 w-5 h-5  md:w-7 md:h-7 " />
                     <div className="text-base md:text-lg mr-1">
                       Loại hàng hóa:
                     </div>
                     <div className="text-base md:text-lg">Hàng hóa</div>
-                  </div>
+                  </div> */}
                   <div className="ml-2 flex items-center py-1">
                     <div>
                       <GiWeight className="mr-1 w-5 h-5 md:w-7 md:h-7" />
                     </div>
                     <div className="text-base md:text-lg mr-1">Khối lượng:</div>
-                    <div className="text-base md:text-lg">1kg</div>
+                    <div className="text-base md:text-lg">{product?.quantity}{product?.unit}</div>
                   </div>
-                  <div className="ml-2 flex items-center py-1">
+                 {/*  <div className="ml-2 flex items-center py-1">
                     <div>
                       <BsCoin className="mr-1 w-5 h-5 md:w-7 md:h-7" />
                     </div>
@@ -208,14 +231,14 @@ const PurchaseDetail = () => {
                       Giá trị hàng hóa:
                     </div>
                     <div className="text-base md:text-lg">1.000.000 đ</div>
-                  </div>
+                  </div> */}
 
                   <div className="ml-2 flex items-center py-1">
                     <div>
                       <FaRegMoneyBillAlt className="mr-1 w-5 h-5 md:w-7 md:h-7" />
                     </div>
-                    <div className="text-base md:text-lg mr-1">Vận phí:</div>
-                    <div className="text-base md:text-lg">25.000 đ</div>
+                    <div className="text-base md:text-lg mr-1">Tổng tiền:</div>
+                    <div className="text-base md:text-lg">{orders?.total_price} đ</div>
                   </div>
                   <div className="ml-2 flex items-center py-1">
                     <TbSteeringWheel className="mr-1 w-5 h-5  md:w-7 md:h-7 " />
@@ -227,6 +250,7 @@ const PurchaseDetail = () => {
             </div>
           </div>
         </div>
+          
       </div>
   );
 };
