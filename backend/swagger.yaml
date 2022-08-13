@@ -3231,6 +3231,18 @@ paths:
           name: sortBy
           type: string
           description: sort by field name, -updatedAt
+        - in: query
+          name: customerName
+          type: string
+          description: customer's name
+        - in: query
+          name: customerPhone
+          type: string
+          description: customer's phone
+        - in: query
+          name: customerEmail
+          type: string
+          description: customer's email
       responses:
         200:
           description: get order successfully.

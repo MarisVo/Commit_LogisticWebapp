@@ -87,7 +87,7 @@ orderRoute.get('/',
             var filterCondition = status ? {status: status} : {}       
             const customerId = req.user.role._id
             const order = await Order.find({ $and: [{customer: customerId}, filterCondition]}).skip(pageSize*page).limit(pageSize).sort(sortBy)
-            const length = await Order.count({customer: customerId})
+            const length = await Order.find({ $and: [{customer: customerId}, filterCondition]}).count()
             return sendSuccess(res, 'get order successfully', {length, order})
         } catch (error) {
             console.log(error)
