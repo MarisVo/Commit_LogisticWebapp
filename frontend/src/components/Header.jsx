@@ -67,7 +67,11 @@ const Header = () => {
     getItem(<Link to="tuyen-dung">Tuển dụng </Link>, "sub5", [
       getItem(<Link to="tuyen-dung">Cơ hội nghề nghiệp</Link>, "13"),
       getItem(<Link to="cuoc-song">Cuộc sống J&T Epress</Link>, "14"),
+<<<<<<< HEAD
     ]), 
+=======
+    ]),
+>>>>>>> 3b224e8a5553b565374cd03b2a1c559bbbf65845
     getItem(<Link to="tu-van/lien-he">Tư vấn</Link>, "sub6", [
       getItem(<Link to="tu-van/lien-he">Liên hệ</Link>, "15"),
       getItem(<Link to="tu-van/dang-ki-tu-van">Đăng kí tư vấn</Link>, "16"),
@@ -108,16 +112,21 @@ const Header = () => {
   const Logout = () => {
     logoutHandle();
   };
-  useEffect(()=>{
+ /*  useEffect(()=>{
     const getservices = async()=>{
       const res = await axios.get("http://localhost:8000/api/service")
       console.log(res)
       const {data} =res.data
-     
+      data.service.map(service=>{
+        if(service.sub_detail==="J&T Express"){
+
+          console.log(service) 
+        }
+      })
       setServices(data.service)
     }
     getservices()
-  },[])
+  },[]) */
   return (
     <div className='fixed bg-white inset-x-0 h-[65px] z-20'>
       <div className=" lg:static flex justify-around items-center h-full px-4 lg:px-0 container mx-auto text-sm ">

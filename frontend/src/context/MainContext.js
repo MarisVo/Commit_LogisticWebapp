@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
-import { END_POINT } from "../utils/constant";
+
+import { END_POINT } from './../utils/constant';
 
 export const MainContext = createContext();
 const MainProvider = ({ children }) => {
@@ -71,7 +72,7 @@ const MainProvider = ({ children }) => {
     );
     try {
       await axios.post(
-        "http://localhost:8000/api/auth/logout",
+        `${END_POINT}/auth/logout`,
         {
           refreshToken,
         },

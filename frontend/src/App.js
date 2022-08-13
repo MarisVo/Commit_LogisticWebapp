@@ -103,6 +103,7 @@ const App = () => {
                     path="chi-tiet-viec-lam-moi"
                     element={<RecruitmentDetails />}
                   />
+
                 </Route>
                 <Route path="cuoc-song" element={<Life />} />
                 {/* ------------------------Dịch vụ---------------------- */}
