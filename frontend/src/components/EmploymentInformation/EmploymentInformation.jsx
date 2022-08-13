@@ -2,9 +2,10 @@ import { faCity, faChartLine, faArrowRight } from '@fortawesome/free-solid-svg-i
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { END_POINT } from "../../utils/constant";
 
 const EmploymentInformation = () => {
-    const api = "http://localhost:8000/api/career?";
+    const api = `${END_POINT}/career?`;
     const [job,setJob] = useState([])
 
     const getDataFromApi = async ()=>{

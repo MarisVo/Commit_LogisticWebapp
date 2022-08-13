@@ -4,9 +4,10 @@ import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { END_POINT } from "../../utils/constant";
 
 const HotJob = ({setDetail}) => {
-    const api = "http://localhost:8000/api/career?sortBy=applicants.ref";
+    const api = `${END_POINT}/career`;
     const [hotJob,setJob] = useState([]);
 
 

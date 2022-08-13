@@ -64,10 +64,10 @@ const Header = () => {
         "12"
       ),
     ]),
-  /*   getItem(<Link to="tuyen-dung">Tuển dụng </Link>, "sub5", [
+    getItem(<Link to="tuyen-dung">Tuển dụng </Link>, "sub5", [
       getItem(<Link to="tuyen-dung">Cơ hội nghề nghiệp</Link>, "13"),
       getItem(<Link to="cuoc-song">Cuộc sống J&T Epress</Link>, "14"),
-    ]), */
+    ]), 
     getItem(<Link to="tu-van/lien-he">Tư vấn</Link>, "sub6", [
       getItem(<Link to="tu-van/lien-he">Liên hệ</Link>, "15"),
       getItem(<Link to="tu-van/dang-ki-tu-van">Đăng kí tư vấn</Link>, "16"),
@@ -280,7 +280,7 @@ const Header = () => {
                 
             </ul>
           </div>
-        {/*   <div className="group hover:bg-yellow-200 rounded-md">
+          <div className="group hover:bg-yellow-200 rounded-md">
             <Link
               to="tuyen-dung"
               className={`inline-flex items-center px-4 py-2 ${comparePath("/tuyen-dung") || comparePath("/cuoc-song")}`}
@@ -306,7 +306,7 @@ const Header = () => {
                 </Link>
               </li>
             </ul>
-          </div> */}
+          </div>
           <div className="group hover:bg-yellow-200 rounded-md">
             <Link
               to="tu-van/lien-he"

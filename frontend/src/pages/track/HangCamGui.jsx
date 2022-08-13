@@ -1,12 +1,13 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import { END_POINT } from "../../utils/constant";
 
 export default function HangCamGui() {
     const [data,setData] = useState([]);
 
     const getDataFromApi = async () => {
         try {
-          const res = await axios.get("http://localhost:8000/api/prohibited-product")
+          const res = await axios.get(`${END_POINT}/prohibited-product`)
           setData(res.data.data.listCar);
         }
         catch (e) {

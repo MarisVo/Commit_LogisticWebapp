@@ -8,6 +8,7 @@ import AddNewOrder from '../../components/Admin/Order/AddNewOrder'
 import ConfirmModal from '../../components/ConfirmModal';
 import EditOrder from '../../components/Admin/Order/EditOrder';
 import axios from 'axios';
+import { END_POINT } from "../../utils/constant";
 import SplitProduct from '../../components/Admin/Order/SplitProduct';
 import { TOKEN } from "./adminToken";
 
@@ -15,7 +16,7 @@ import { TOKEN } from "./adminToken";
 export default function AdminOrder() {
     const { accessToken } = useContext(MainContext)
     // console.log(accessToken)
-    const api = "http://localhost:8000/api/admin/order";
+    const api = `${END_POINT}/admin/order`;
     // const apiListOrder = "http://localhost:8000/api/order/tracking/"
     const [id, setId] = useState()
     const [dataEdit, setDataEdit] = useState()
@@ -71,7 +72,7 @@ export default function AdminOrder() {
     const postDataToApi = async (items) => {
         try {
             const res = await axios({
-                url: "http://localhost:8000/api/admin/order/create",
+                url: `${END_POINT}/admin/order/create`,
                 method: "post",
                 headers: { authorization: `Bearer ${accessToken}` },
                 data: items
