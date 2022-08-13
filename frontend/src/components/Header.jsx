@@ -108,16 +108,21 @@ const Header = () => {
   const Logout = () => {
     logoutHandle();
   };
-  useEffect(()=>{
+ /*  useEffect(()=>{
     const getservices = async()=>{
       const res = await axios.get("http://localhost:8000/api/service")
       console.log(res)
       const {data} =res.data
-     
+      data.service.map(service=>{
+        if(service.sub_detail==="J&T Express"){
+
+          console.log(service) 
+        }
+      })
       setServices(data.service)
     }
     getservices()
-  },[])
+  },[]) */
   return (
     <div className='fixed bg-white inset-x-0 h-[65px] z-20'>
       <div className=" lg:static flex justify-around items-center h-full px-4 lg:px-0 container mx-auto text-sm ">

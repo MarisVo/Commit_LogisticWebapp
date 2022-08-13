@@ -16,6 +16,7 @@ import  axios  from "axios";
 import { useContext } from "react";
 import { MainContext } from "../../context/MainContext";
 import useNavigateHook from './../../hooks/useNavigateHook';
+import { END_POINT } from "../../utils/constant";
 const { TabPane } = Tabs;
 const Purchase = () => {
   const [open, setOpen] = useState(false);
@@ -50,7 +51,7 @@ const Purchase = () => {
    const fetchapi = async(params={})=>{
       try {
         const res = await axios.get(
-          `http://localhost:8000/api/order`,{
+          `${END_POINT}/order`,{
              params: params,
             headers: { authorization: `Bearer ${accessToken}` },
           }, 
@@ -114,7 +115,7 @@ const Purchase = () => {
       <div className="bg-gray-100 relative ">
           {/*  <div className="w-20 h-20">
         <img
-          src="http://localhost:8000/api/public/logo/z3189151135845_feecf773f56257376d4f14e1116d90df.jpg"
+          src="${END_POINT}/public/logo/z3189151135845_feecf773f56257376d4f14e1116d90df.jpg"
           alt="#"
           className="w-[100%] h-[100%] object-contain"
         />
