@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { MainContext } from "../../context/MainContext";
 import axios from "axios";
+import { END_POINT } from "../../utils/constant";
 
 const LoginForm = styled.div`
   .Login {
@@ -128,7 +129,7 @@ function Login() {
   const onFinish = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/auth/login",
+        `${END_POINT}/auth/login`,
         {
           email: email,
           phone: phone,

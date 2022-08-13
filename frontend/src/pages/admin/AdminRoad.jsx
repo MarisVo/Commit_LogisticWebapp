@@ -3,10 +3,10 @@ import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
 import { END_POINT } from "../../utils/constant";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
-import AddDepartment from "../../components/Admin/Department/AddDepartment";
-import EditDepartment from "../../components/Admin/Department/EditDepartment";
 import ConfirmModal from "../../components/ConfirmModal";
 import { MainContext } from "../../context/MainContext";
+import AddNewRoad from "../../components/Admin/Road/AddRoad";
+import EditRoad from "../../components/Admin/Road/EditRoad";
 
 function AdminRoad() {
   const columns = [
@@ -154,13 +154,13 @@ function AdminRoad() {
         onChange={handleTableChange}
       />
       {isAddVisible && (
-        <AddDepartment
+        <AddNewRoad
           onClose={() => setIsAddVisible(false)}
           refetchData={()=>fetchData(params)}
         />
       )}
       {isEditVisible && (
-        <EditDepartment
+        <EditRoad
           onClose={() => setIsEditVisible(false)}
           data={dataForEdit}
           refetchData={()=>fetchData(params)}
