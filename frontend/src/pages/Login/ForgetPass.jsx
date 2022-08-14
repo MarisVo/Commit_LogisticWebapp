@@ -3,6 +3,7 @@ import 'antd/dist/antd.css'
 import { Form, Button, Input, Typography, message} from "antd";
 import styled from 'styled-components';
 import * as axios from 'axios'
+import { END_POINT } from "../../utils/constant";
 
 const ForgetForm = styled.div`
 .Forget{
@@ -113,7 +114,7 @@ function ForgetPass() {
     try{ 
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:8000/api/auth/forgot-pw',
+        url: `${END_POINT}/auth/forgot-pw`,
         data: {
           email: email,
           phone: phone

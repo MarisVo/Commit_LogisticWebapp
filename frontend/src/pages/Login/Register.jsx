@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { useContext } from 'react';
 import { MainContext } from '../../context/MainContext';
 import axios from 'axios'
+import { END_POINT } from "../../utils/constant";
 
 const RegisForm = styled.div`
 .Regis{
@@ -133,7 +134,7 @@ function Register() {
       const response = await axios({
           method: 'post',
           withCredentials: true,
-          url: 'http://localhost:8000/api/auth/verify-otp',
+          url: `${END_POINT}/auth/verify-otp`,
           data: {
               otp: otp
           }  
@@ -182,7 +183,7 @@ function Register() {
       const response = await axios({
           method: 'get',
           withCredentials: true,
-          url: 'http://localhost:8000/api/auth/update-otp',
+          url: `${END_POINT}/auth/update-otp`,
           param: {
               verify_op: verify_op
           }  
@@ -252,7 +253,7 @@ function Register() {
       const response = await axios({
         method: 'post',
         withCredentials: true,
-        url: 'http://localhost:8000/api/auth/register',
+        url: `${END_POINT}/auth/register`,
         data: {
           name: name,
           email: email,

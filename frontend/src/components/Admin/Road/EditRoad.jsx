@@ -57,6 +57,7 @@ function EditRoad({ onClose, data, refetchData }) {
           >         
             <Item label="Khoảng cách">
               <Input
+                type="number"
                 value={dataEdit.distance}
                 onChange={(e) =>
                   setDataEdit({
