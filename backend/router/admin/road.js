@@ -146,13 +146,8 @@ roadAdminRoute.delete('/:id', async (req, res) => {
         if (!isExit)
             return sendError(res, "Road not exists")
 
-        await Road.findByIdAndRemove(id)
-            .then(() => {
-                return sendSuccess(res, "Delete road successfully.")
-            })
-            .catch((err) => {
-                return sendError(res, err)
-            })
+        const data = await Road.findByIdAndRemove(id)
+        return sendSuccess(res, "Delete road successfully.", data)
     }
     catch (error) {
         console.log(error)

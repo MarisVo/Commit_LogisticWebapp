@@ -19,7 +19,7 @@ warehouseRoute.get('/',
             if (province && district) 
                 addressCondition = {province: province, district: district}
             const warehouses = await Warehouse.find(addressCondition).limit(pageSize).skip(pageSize*page).sort(`${sortBy}`)
-            const length = await Warehouse.count()
+            const length = await Warehouse.find(addressCondition).count()
             if (warehouses) return sendSuccess(res, "Get warehouse successful.", {length, warehouses})
             return sendError(res, "Not information found.")
         } catch(error){
