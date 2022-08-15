@@ -1,29 +1,133 @@
 import express from "express"
 import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
 import Road from "../../model/Road.js"
+import Warehouse from "../../model/Warehouse.js"
 import { createRoadValidate } from "../../validation/road.js"
 
 const roadAdminRoute = express.Router()
+
+
+/**
+ * @route GET /api/admin/road
+ * @description get about information
+ * @access private
+ */
+roadAdminRoute.get("/", async (req, res) => {
+    try {
+        const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0;
+        const page = req.query.page ? parseInt(req.query.page) : 0;
+        const { keyword, sortBy, origin, destination, distance } = req.query;
+        console.log(keyword, sortBy, origin, destination, distance)
+        var query = {};
+        var keywordList = keyword
+            ? {
+                $or: [
+                    { origin: { $regex: keyword, $options: "i" } },
+                    { destination: { $regex: keyword, $options: "i" } },
+                    { distance: { $regex: keyword, $options: "i" } },
+                ],
+            }
+            : {};
+
+        if (origin) {
+            query.origin = origin;
+        }
+        if (destination) {
+            query.destination = destination;
+        }
+        if (distance) {
+            query.distance = distance;
+        }
+        
+        const length = await Road.count()
+        const road = await Road.find({ $and: [query, keywordList] })
+            .skip(pageSize * page)
+            .limit(pageSize)
+            .sort(`${sortBy}`);
+
+        if (road)
+            return sendSuccess(res, "Get road information successfully.", {length, road});
+        return sendError(res, "Road information is not found.");
+    } catch (error) {
+        console.log(error);
+        return sendServerError(res);
+    }
+});
+
+
+/**
+ * @route GET /api/admin/road/:id
+ * @description get about information by id
+ * @access private
+ */
+roadAdminRoute.get('/:id',
+    async (req, res) => {
+        try {
+            const { id } = req.params
+            const roads = await Road.findById(id)
+            if (roads) return sendSuccess(res, "Get road successful.", roads)
+            return sendError(res, "Road not found.")
+        } catch (error) {
+            console.log(error)
+            return sendServerError(res)
+        }
+    })
 
 /**
  * @route POST /api/admin/create/road
  * @description create information of road
  * @access private
  */
- roadAdminRoute.post('/create', async(req, res) => {
+roadAdminRoute.post('/create', async (req, res) => {
     const errors = createRoadValidate(req.body)
     if (errors)
         return sendError(res, errors)
-    
     try {
-        const { car, destination, driver, origin, distance, bill } = req.body
-        const isExist = await Road.exists({ driver })
-        if (isExist) 
-            return sendError(res, 'Driver is during working hours.')
-        else await Road.create({ car, destination, driver, origin, distance, bill })
-            return sendSuccess(res, 'Set road information successfully.')
+        const { distance, origin, destination } = req.body
+
+        const isExistOrigin = await Warehouse.exists({ origin })
+        const isExistDestination = await Warehouse.exists({ destination })
+
+        if (!isExistOrigin)
+            return sendError(res, 'Origin does not exist.')
+        if (!isExistDestination)
+            return sendError(res, 'Destination does not exist.')
+
+        await Road.create({ distance, origin, destination })
+        return sendSuccess(res, 'Set road information successfully.')
     }
-    catch (error){
+    catch (error) {
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
+/**
+ * @route PUT /api/admin/road/:id
+ * @description update information of road
+ * @access private
+ */
+roadAdminRoute.put('/:id', async (req, res) => {
+    try {
+        const { id } = req.params
+        const { distance, origin, destination } = req.body
+
+        const errors = createRoadValidate(req.body)
+        if (errors)
+            return sendError(res, errors)
+        
+        const isExistId = await Road.exists({ _id: id })
+        if (!isExistId)
+            return sendError(res, "This road is not existed.")
+        
+        const isExist = await Road.exists({ distance: distance, origin: origin, destination: destination })
+        if (isExist)
+            return sendError(res, "This road is existed.")
+
+        await Road.findByIdAndUpdate(id, { origin: origin, destination: destination, distance: distance })
+        return sendSuccess(res, "Update road successfully", { origin, destination, distance })
+
+    } catch (error) {
         console.log(error)
         return sendServerError(res)
     }
@@ -35,57 +139,20 @@ const roadAdminRoute = express.Router()
  * @description delete a road existing 
  * @access private
  */
- roadAdminRoute.delete('/:id', async(req, res) => {
-    const {id} = req.params;
+roadAdminRoute.delete('/:id', async (req, res) => {
+    const { id } = req.params;
     try {
-        const isExit = await Road.exists({_id: id})
-        if(!isExit)
+        const isExit = await Road.exists({ _id: id })
+        if (!isExit)
             return sendError(res, "Road not exists")
-        
-        await Road.findByIdAndRemove(id)
-            .then(() => {
-                return sendSuccess(res, "Delete road successfully.")
-            })
-            .catch((err) => {
-                return sendError(res, err)
-            })
-    }
-    catch(error) {
-        console.log(error)
-        return sendError(res)
-    }
-})
 
-/**
- * @route PUT /api/admin/road/:id
- * @description update information of road
- * @access private
- */
- roadAdminRoute.put('/:id', async (req, res) => {
-    try{
-        const {id} = req.params
-        const {origin} = req.body
-        const {destination} = req.body   
-        const {distance} = req.body 
-        const {car} = req.body   
-        const {driver} = req.body   
-        const {bill} = req.body            
-        
-        if (!destination) return sendError(res, "Destination is required")
-        if (!driver) return sendError(res, "Driver is required")
-        
-        const isExist = await Road.exists({destination: destination})
-        if (!isExist) 
-           return sendError(res, "This road is not existed.")
-        await Road.findByIdAndUpdate(id, {origin: origin, destination: destination,
-                                        distance: distance, car: car,
-                                        driver: driver, bill: bill})
-        return sendSuccess(res, "Update information account successfully", {origin, destination, driver})
-        
-    } catch (error) {
+        const data = await Road.findByIdAndRemove(id)
+        return sendSuccess(res, "Delete road successfully.", data)
+    }
+    catch (error) {
         console.log(error)
         return sendServerError(res)
-    }             
+    }
 })
 
 export default roadAdminRoute

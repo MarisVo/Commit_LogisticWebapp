@@ -30,8 +30,16 @@ contactMsgAdminRoute.get('/', async (req, res) => {
                 ]
             }
         ).skip(page*pageSize).limit(pageSize).sort(`${sortBy}`)
+        const length = await Message.find(
+            {
+                $and: [            
+                    filterCondition,
+                    keywordCondition                
+                ]
+            }
+        ).count()
         if (messages)
-            return sendSuccess(res, 'get message information successfully.', messages)
+            return sendSuccess(res, 'get message information successfully.', {length, messages})
         return sendError(res, 'message information is not found.')
     } catch (error) {
         console.log(error)
@@ -93,7 +101,7 @@ contactMsgAdminRoute.delete('/:id',
             return sendSuccess(res, "Delete message successfully.") 
         } catch (error) {
             console.log(error)
-            return sendError(res)
+            return sendServerError(res)
         }
     }
 )

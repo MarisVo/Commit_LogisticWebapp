@@ -26,8 +26,15 @@ const BillSchema = new Schema(
         },
         product_shipments: [
             {
-                type: Schema.Types.ObjectId,
-                ref: 'product_shipments'
+                shipment: {
+                    type: Schema.Types.ObjectId,
+                    ref: 'product_shipments',
+                    required: true
+                },
+                turnover: {
+                    type: Number,
+                    required: true
+                }
             }
         ],
         status: {
@@ -35,6 +42,12 @@ const BillSchema = new Schema(
             enum: Object.values(BILL_STATUS),
             default: BILL_STATUS.waiting,
             required: true
+        },
+        actual_fuel: {
+            type: Number
+        },
+        theoretical_fuel: {
+            type: Number
         }
     },
     { timestamps: true }

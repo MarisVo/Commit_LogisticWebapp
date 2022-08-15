@@ -3,7 +3,7 @@ import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
 import ProhibitedProduct from "../../model/ProhibitedProduct.js"
 import { handleFilePath, uploadResources } from '../../constant.js'
 import { createImageDir, createLogoDir, createUploadDir } from "../../middleware/index.js"
-
+import {addProhibitedProductValidate} from "../../validation/prohibitedProduct.js"
 
 const prohibitedProductAdminRoute = express.Router()
 
@@ -16,7 +16,9 @@ const prohibitedProductAdminRoute = express.Router()
     uploadResources.single('image'),   
     async (req, res) => {    
 
-        try {            
+        try {      
+            const error = addProhibitedProductValidate(req.body)
+            if (error) return sendError(res, error)      
             const images = handleFilePath(req.file) 
             const {name, detail} = req.body;
             const isExist = await ProhibitedProduct.exists({name})
@@ -53,14 +55,14 @@ const prohibitedProductAdminRoute = express.Router()
                 if (isExistName) 
                     return sendError(res, "Name is existed.")
                 
-                await ProhibitedProduct.findByIdAndUpdate(id, {name: name, image:image, detail: detail})
+                await ProhibitedProduct.findByIdAndUpdate(id, {name: name, images:image, detail: detail})
                 return sendSuccess(res, "Update prohibited product successfully.", {name: name, image:image, detail: detail})
             }        
             return sendError(res, "Prohibited product not exists.")
 
         } catch (error) {
             console.log(error)
-            if (req.logo) unlinkSync(req.image.path)
+            if (req.image) unlinkSync(req.image.path)
             return sendServerError(res, error)
         }
     }
@@ -79,12 +81,11 @@ const prohibitedProductAdminRoute = express.Router()
             if (!isExist) 
                 return sendError(res, "Prohibited product not exists.")
             
-            await ProhibitedProduct.findByIdAndRemove(id)
-                .then(()=> { return sendSuccess(res, "Delete prohibited product successfully.")})  
-                .catch((err) => { return sendError(res, err)})  
+            const data = await ProhibitedProduct.findByIdAndRemove(id)
+            return sendSuccess(res, "Delete prohibited product successfully.", data)
         } catch (error) {
             console.log(error)
-            return sendError(res)
+            return sendServerError(res)
         }
     })
 

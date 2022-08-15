@@ -6,6 +6,10 @@ export const handleDisconnect = (socket) => {
     SOCKET_SESSIONS.splice(delInx, 1)
 }
 
+export const addSocketSession = (socket, userId) => {
+    SOCKET_SESSIONS.push({ socketId: socket.id, userId })
+}
+
 export const sendNotify = (io, userId, data) => {
     SOCKET_SESSIONS.forEach(val => {
         if (val.userId == userId) {

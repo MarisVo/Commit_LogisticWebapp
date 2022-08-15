@@ -47,7 +47,6 @@ careerAdminRoute.post("/:departmentId", async (req, res) => {
       return sendSuccess(res, "Added career in department file successfully");
     }
   } catch (error) {
-    console.log(error)
     return sendServerError(res);
   }
   return sendSuccess(res, "career registered successfully.");
@@ -87,8 +86,7 @@ careerAdminRoute.put("/:id", async (req, res) => {
     }
     return sendError(res, "Career does not exist.");
   } catch (error) {
-    console.log(error);
-    return sendError(res);
+    return sendServerError(res);
   }
 });
 
@@ -103,16 +101,11 @@ careerAdminRoute.delete("/:id", async (req, res) => {
     const isExist = await Career.exists({ _id: id });
     if (!isExist) return sendError(res, "Career does not exist.");
     await Department.updateOne({}, { $pull: { careers: id } });
-    await Career.findByIdAndRemove(id)
-      .then(() => {
-        return sendSuccess(res, "Delete career successfully.");
-      })
-      .catch((err) => {
-        return sendError(res, err);
-      });
+    const career = await Career.findByIdAndRemove(id)
+    return sendSuccess(res, "Delete career successfully.", career);
   } catch (error) {
     console.log(error);
-    return sendError(res);
+    return sendServerError(res);
   }
 });
 

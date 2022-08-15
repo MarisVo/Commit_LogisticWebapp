@@ -33,18 +33,7 @@ export const customerRegisterValidate = data => {
 export const userVerifyOTP = data => {
     const error = new Error()
 
-    error.isRequired(data.userId, 'userId')
-    .isRequired(data.otp, 'otp')
-
-    return error.get()
-}
-
-export const userUpdateOTP = data => {
-    const error = new Error()
-
-    error.isRequired(data.userId, 'userId')
-    .isRequired(data.verify_op, 'verify_op')
-    .isInRange(data.verify_op, VERIFY_OP)
+    error.isRequired(data.otp, 'otp')
 
     return error.get()
 }

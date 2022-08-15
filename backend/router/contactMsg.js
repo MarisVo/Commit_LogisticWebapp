@@ -26,9 +26,11 @@ contactMsgRoute.post('/',
                 <p>Nội dung: ${message}</p>`
             }
             await Message.create({name, email, phone, message})
-            await sendAutoMail(optionsToCS)
-            .then(() => {sendSuccess(res,'Send email successfully.')})
-            .catch((error) => {return sendError(res, error)})
+            const data = await sendAutoMail(optionsToCS)
+            if(data) {
+                return sendSuccess(res, "Send email successfully.")
+            }
+            return sendError(res, "Send email failed.")
         } catch (error) {
             console.log(error)
             return sendServerError(res)

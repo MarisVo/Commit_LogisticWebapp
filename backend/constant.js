@@ -35,31 +35,12 @@ export const handleFilePath = req_file => {
         return req_file ? req_file.path.split("/").slice(1).join("/") : null
 }
 
-export const calculateShipmentFee = (distance, quantity, price) => {
-    let totalPrice = 0
-    const priceIdx = Object.keys(RETURN_ZONE).indexOf(distance.zonecode)
-
-    let idx = 0
-    let value = price[idx]
-    while (quantity > 0 && idx < price.length) {
-        if (value.next) {
-            totalPrice += value.prices[priceIdx]
-            quantity -= value.sidestep
-        }
-        else {
-            totalPrice += value.prices[priceIdx]
-            quantity -= value.sidestep
-            idx += 1
-            value = price[idx]
-        }
-    }
-    return totalPrice
-}
-
 export const OTP_EXPIRED = 60000 // unit: milisecond
 
 export const JWT_EXPIRED = '7d'
 export const JWT_REFRESH_EXPIRED = '30d'
+
+export const SESSION_AGE = 600000 // unit: milisecond
 
 export const UTYPE = {
     STAFF: 'staff',
@@ -109,9 +90,11 @@ export const VERIFY_OP = {
 export const ORDER_STATUS = {
     waiting: 'waiting',
     accepted: 'accepted',
+    probablyProceed: 'probably proceed',
     processing: 'processing',
     completed: 'completed',
-    refused: 'refused'
+    refused: 'refused',
+    cancel: 'cancel'
 }
 
 
@@ -159,4 +142,26 @@ export const NOTIFY_EVENT = {
     send: 'send',
     receive: 'receive',
     disconnect: 'disconnect'
+}
+
+// This constant may be updated late
+export const TURNOVER = {
+    complete_order: 'complete order',
+    fuel: 'fuel',
+    repair: 'repair',
+    maintenance: 'maintenance',
+    incurred: 'incurred'
+}
+
+export const SHIPMENT_MANAGER = {
+    import: 'import',
+    export: 'export'
+}
+
+export const PAYMENT_METHOD = {
+    CASH: 'cash',
+    MOMO_WALLET: 'momo wallet',
+    ZALO_PAY: 'zalo pay',
+    PAYPAL: 'paypal',
+    BANKING: 'banking'
 }

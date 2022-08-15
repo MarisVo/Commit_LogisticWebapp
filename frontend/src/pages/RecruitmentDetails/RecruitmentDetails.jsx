@@ -15,18 +15,19 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const RecruitmentDetails = () => {
+const RecruitmentDetails = ({data}) => {
+  console.log(data);
   return (
     <>
       {/* Banner */}
-      <div className="relative">
+      {/* <div className="relative" style={{ top: "35px" }}>
         <img src={Images.TOP_BANNER} alt="banner" />
         <InputDesktop />
-      </div>
-
-      <div className="m-auto max-w-[1140px]  px-[16px] lg:px-[0px]  mt-[32px] lg:mt-[180px]">
+      </div> */}
+      
+      <div className="m-auto max-w-[1140px]  px-[16px] lg:px-[0px]  mt-[50px] lg:mt-[180px]">
         <h2 className="text-[24px] lg:text-[32px] font-bold mb-6">
-          [HCM _ Q2] _ INTERNAL CONTROL SPECIALIST
+          {data.name}
         </h2>
         <div className="gap-4 lg:grid lg:grid-cols-2 bg-[#f2f2f2]">
           <div className="p-4">
@@ -34,7 +35,7 @@ const RecruitmentDetails = () => {
               <FontAwesomeIcon className="mr-2" icon={faCalendar} />
               Hạn nộp
             </h4>
-            <p className="py-2 ml-5">30/06/2022</p>
+            <p className="py-2 ml-5">{data.deadline.toString()}</p>
             <hr />
           </div>
           <div className="p-4">
@@ -42,7 +43,7 @@ const RecruitmentDetails = () => {
               <FontAwesomeIcon className="mr-2" icon={faCoins} />
               Mức lương
             </h4>
-            <p className="py-2 ml-5">Competitive</p>
+            <p className="py-2 ml-5">{data.bonus}</p>
             <hr />
           </div>
           <div className="p-4">
@@ -62,7 +63,7 @@ const RecruitmentDetails = () => {
               Địa điểm làm việc
             </h4>
             <p className="py-2 ml-5">
-              9F, Sofic Tower, 10 Mai Chi Tho, Thu Thiem Ward, District 2, HCMC.
+              {data.location}
             </p>
             <hr />
           </div>

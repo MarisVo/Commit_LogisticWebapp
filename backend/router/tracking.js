@@ -1,10 +1,11 @@
 import express from "express"
-import { calculateShipmentFee, PRODUCT_UNIT } from "../constant.js"
+import { PRODUCT_UNIT } from "../constant.js"
 import { sendError, sendServerError, sendSuccess } from "../helper/client.js"
 import { lookupPostageValidate } from "../validation/tracking.js"
 import DeliveryService from '../model/DeliveryService.js'
 import Distance from '../model/Distance.js'
 import Order from "../model/Order.js"
+import { calculateShipmentFee } from "../service/order.js"
 
 const trackingRoute = express.Router()
 

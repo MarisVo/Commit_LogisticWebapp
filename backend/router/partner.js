@@ -3,19 +3,7 @@ import Partner from "../model/Partner.js"
 import { sendError, sendServerError, sendSuccess } from "../helper/client.js"
 
 const partnerRoute = express.Router()
-/**
- * 
- *      
-        var filterCondition = status ? {status: status} : {}
-        const messages = await Message.find(
-            {
-                $and: [            
-                    filterCondition,
-                    keywordCondition                
-                ]
-            }
-        ).skip(page*pageSize).limit(pageSize).sort(`${sortBy}`)
- */
+
 /**
  * @route GET /api/partner/
  * @description get all logo partner or limit
@@ -33,7 +21,8 @@ partnerRoute.get('/',
             const partners = await Partner.find(                
                 keywordCondition              
             ).skip(page*pageSize).limit(pageSize).sort(`${sortBy}`)
-            if (partners) return sendSuccess(res, "Get partner successful.", partners)
+            const length = await Partner.find( keywordCondition ).count()
+            if (partners) return sendSuccess(res, "Get partner successful.", {length,partners})
             return sendError(res, "Not information found.")
         } catch(error){
             console.log(error)
