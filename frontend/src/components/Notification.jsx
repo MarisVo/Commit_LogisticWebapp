@@ -4,7 +4,7 @@ import { MdNotificationsNone } from "react-icons/md";
 import NotificationDropdown from "./NotificationDropdown";
 import { useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
-
+import { SOCKET_URL } from "../utils/constant";
 import {notification} from "antd"
 import { MainContext } from "../context/MainContext";
 function Notification() {
@@ -25,7 +25,7 @@ function Notification() {
     setIsNotiVisible(false);
   }, [pathname]);
   useEffect(() => {
-    const socket = io("http://localhost:5000" , { reconnection: true });
+    const socket = io(SOCKET_URL, { reconnection: true });
     console.log(`Connecting socket...`);
     socket.emit("add-session", user.id)
     socket.on("receive", ({ message, title, link }) => {
