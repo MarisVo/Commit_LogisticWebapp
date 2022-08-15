@@ -203,8 +203,8 @@ const Home = () => {
   const [quotes, setQuotes] = useState(coops);
   const [services, setServices] = useState(DeliveryServices);
   // const [banners, setBanners] = useState(banner.banners);
-  const [partners, setPartner] = useState(partnersFake);
-  const [person, setPerson] = useState(1);
+  const [partners, setPartners] = useState(partnersFake);
+  const [person, setPerson] = useState([]);
   const [keyOrder, setKeyOrder] = useState('');
   const { setMetadata, dataWarehouse, setDataWarehouse, order, setOrder } = useContext(MainContext);
 
@@ -231,7 +231,28 @@ const Home = () => {
   //   }
   // };
 
-
+  const fetchQuotes = async () => {
+    try {
+      const res = await axios.get(`${END_POINT}/quote?limit=10`);
+      if (res.status === 200) {
+        setQuotes(res.data.data)
+        setPerson(res.data.data[0])
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const fetchPartner = async () => {
+    try {
+      const res = await axios.get(`${END_POINT}/partner`)
+      console.log("partner",res)
+      if(res.status===200) {
+        setPartners(res.data.data.partners)
+      } 
+    } catch (error) {
+      console.log(error)
+    }
+  }
   useEffect(() => {
     setMetadata((prev) => {
       return {
@@ -246,27 +267,9 @@ const Home = () => {
     )?.code;
     const dataDistricts = getDistrictsByProvinceCode(provinceCode);
     setListDistricts(dataDistricts);
-    const fetchQuotes = async () => {
-      try {
-        const res = await axios.get(`${END_POINT}/quote?limit=10`);
-        console.log(res);
-        // if (res.status === 200) return setQuotes(res.data.data); //thật
-        // if (res.data.data.length > 0) return setQuotes(res.data.data); // thử
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    const fetchParner = async () => {
-      try {
-        const res = await axios.get(`${END_POINT}/partner`)
-        // if(status===200) return setPartner(res.data.data.partners)
-        if (res.data.data.length > 0) return setPartner(res.data.data.partners)
-      } catch (error) {
-        console.log(error)
-      }
-    }
+
     fetchQuotes();
-    fetchParner()
+    fetchPartner()
     // const fetchDeliveryService = (async () => {
     //   try {
     //     const res = await axios.get(`${END_POINT}/service`);
@@ -295,8 +298,8 @@ const Home = () => {
     });
   };
   const showPerson = (id) => {
-    const numberId = quotes.find((quote) => quote._id === id)._id;
-    setPerson(numberId);
+    const person = quotes.find((quote) => quote._id === id);
+    setPerson(person);
   };
   return (
     <div className="pt-[65px]">
@@ -636,9 +639,9 @@ const Home = () => {
                   >
                     <div className="w-[100px] h-[100px] sm:w-[134px] sm:h-[134px]">
                       <img
-                        src={quote.avatar}
+                        src={`${END_POINT}/public/${quote.avatar}`}
                         className="h-full w-full rounded-full object-cover"
-                        alt=""
+                        alt={quote.name}
                       />
                     </div>
                     <span className="font-bold">{quote.name}</span>
@@ -652,28 +655,28 @@ const Home = () => {
             <div className="flex flex-col items-center px-4 py-8">
               <div className="w-[134px] h-[134px]">
                 <img
-                  src={quotes[person - 1].avatar}
+                  src={`${END_POINT}/public/${person.avatar}`}
                   className=" h-full w-full rounded-full object-cover"
                   alt=""
                 />
               </div>
-              <span className="text-xl font-bold pt-4">{quotes[person - 1].name}</span>
-              <span>{quotes[person - 1].description}</span>
+              <span className="text-xl font-bold pt-4">{person.name}</span>
+              <span>{person.description}</span>
               <div className="mx-3 sm:mx-10 lg:mx-0">
-                <span className="py-6 line-clamp-6 text-justify">{quotes[person - 1].quote}</span>
+                <span className="py-6 line-clamp-6 text-justify">{person.quote}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div className="container m-auto">
-        <Carousel autoplay autoplaySpeed={2000} draggable slidesToShow={5} className="w-full">
+        <Carousel autoplay autoplaySpeed={2000} draggable slidesToShow={5} dots={false} className="w-full">
           {partners.map((partner) => (
             <img
-              src={partner.logo}
-              alt="partner"
+              src={`${END_POINT}/public/${partner.logo}`}
+              alt={partner.name}
               className="w-[186px] h-[100px] object-scale-down"
-              key={partner.name}
+              key={partner._id}
             />
           ))}
         </Carousel>
