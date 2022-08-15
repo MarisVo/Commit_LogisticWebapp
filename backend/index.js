@@ -8,7 +8,6 @@ import bodyParser from 'body-parser'
 
 
 import session from "express-session"
-import bodyParser from "body-parser"
 import path from "path"
 const __dirname = path.resolve(path.dirname(''))
 
@@ -127,6 +126,7 @@ app.get('/*', async (req, res) => {
         res.sendStatus(500)
     }
 })
+
 
 io.on(NOTIFY_EVENT.connection, socket => {
     // console.log('Connected to a user successfully.')
