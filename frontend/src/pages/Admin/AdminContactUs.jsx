@@ -5,6 +5,7 @@ import axios from "axios";
 import { TOKEN } from "./adminToken";
 import { useEffect } from "react";
 import { MainContext } from "../../context/MainContext";
+import { END_POINT } from "../../utils/constant";
 export default function AdminContactUs() {
   const {accessToken} = useContext(MainContext);
   const [contactState, setContactState] = useState({
@@ -19,7 +20,7 @@ export default function AdminContactUs() {
   const callContactData = async () => {
     try {
       const result = await axios({
-        url: "http://localhost:8000/api/contactUs",
+        url: `${END_POINT}/contactUs`,
         method: "get",
         headers: { authorization: `Bearer ${accessToken}` },
       });
@@ -35,7 +36,7 @@ export default function AdminContactUs() {
   const postApi =  async (values,id) =>{
     try {
       const result = await axios({
-        url: `http://localhost:8000/api/admin/contactUs/`,
+        url: `${END_POINT}/admin/contactUs/`,
         method: "post",
         headers: { authorization: `Bearer ${accessToken}` },
         data:values,

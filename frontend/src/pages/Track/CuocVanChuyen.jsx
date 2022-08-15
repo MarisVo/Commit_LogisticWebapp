@@ -94,7 +94,7 @@ export default function CuocVanChuyen() {
 
 		try {
 
-			const data = await axios.post("http://localhost:8000/api/tracking/postage", {
+			const data = await axios.post(`${END_POINT}/tracking/postage`, {
 				fromProvince: provinceFrom.name,
 				// fromDistrict: districtFrom.name,
 				// fromWard: wardFrom.district_name,

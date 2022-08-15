@@ -15,10 +15,11 @@ import axios from 'axios';
 import { RecruitmentDetails } from '../pageExport';
 import { div } from 'react-router-dom';
 import { MainContext } from '../../context/MainContext';
+import { END_POINT } from "../../utils/constant";
 
 const CareerOpportunities = () => {
     const { pathname } = useLocation()
-    const [api, setApi] = useState("http://localhost:8000/api/career?");
+    const [api, setApi] = useState(`${END_POINT}/career?`);
     const [data, setData] = useState([])
     const [showSearch, setShowSearch] = useState(false)
     const [key, setKey] = useState("")
@@ -85,7 +86,7 @@ const CareerOpportunities = () => {
             setShowDeatail(false)
         }
         else {
-            let newApi = "http://localhost:8000/api/career?";
+            let newApi = `${END_POINT}/career?`;
             if (key !== "") {
                 newApi = `${newApi}&keyword=${key}`
                 console.log(key);
@@ -113,7 +114,7 @@ const CareerOpportunities = () => {
     }
 
     const onSearchMB = ()=>{
-        let newApi = "http://localhost:8000/api/career?";
+        let newApi = `${END_POINT}/career?`;
         if(key!==''){
             newApi = `${newApi}&keyword=${key}`
             getDataFromApi(newApi)

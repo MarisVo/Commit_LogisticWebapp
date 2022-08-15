@@ -4,9 +4,10 @@ import { RightOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { END_POINT } from "../../utils/constant";
 
 const NewJob = ({setDetail}) => {
-    const api = "http://localhost:8000/api/career?sortBy=deadline";
+    const api = `${END_POINT}/career?sortBy=deadline`;
     const [newJob,setJob] = useState([])
     const job = [
         {

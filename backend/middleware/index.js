@@ -79,3 +79,9 @@ export const verifyCustomer = async (req, res, next) => {
         return sendError(res, 'Forbidden.',403)
     next()    
 }
+
+export const verifyCustomerOrAdmin = async (req, res, next) => {
+    if (req.user.role.staff_type !== 'admin' && (!req.user.role.hasOwnProperty('customer_type'))) 
+        return sendError(res, 'Forbidden.', 403)
+    next()
+}
