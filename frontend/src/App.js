@@ -134,7 +134,7 @@ const App = () => {
                 <Route path="tu-van/dang-ki-tu-van" element={<SignUpAdvice />} />
                 <Route path="*" element={<PageNotFound />} />
               </Route>
-
+                {/* -----------------------Nhân viên----------------------- */}
               <Route element={<StaffRoute />}>
                 <Route path="/" element={<DefaultLayout />}>
                   <Route element={<DriverRoute />}>
@@ -173,29 +173,6 @@ const App = () => {
                   <Route path="phi-bao-tri" element={<AdminMaintenance />}></Route>
                   <Route path="hang_cam_gui" element={<AdminProhibitProduct />}> </Route>
                 </Route>
-              </Route>
-
-              <Route path="admin" element={<AdminPage />}>
-                <Route path="about" element={<AdminAbout />}></Route>
-                <Route path="contact-us" element={<AdminContactUs />}></Route>
-                <Route path="commitment" element={<AdminCommitment />}></Route>
-                <Route path="message" element={<AdminContactMessage />}></Route>
-                <Route path="service" element={<AdminDeliveryService />}></Route>
-                <Route path="partner" element={<AdminPartner />}></Route>
-                <Route path="career" element={<AdminCareer />}></Route>
-                <Route path="applicant" element={<AdminApplicant />}></Route>
-                <Route path="department" element={<AdminDepartment />}></Route>
-                <Route path="warehouse" element={<AdminWarehouse />}></Route>
-                <Route path="car" element={<AdminCar />}></Route>
-                <Route path="road" element={<AdminRoad />}></Route>
-                <Route path="staff" element={<AdminStaff />}></Route>
-                <Route path="customer" element={<AdminCustomer />}></Route>
-                <Route path="order" element={<AdminOrder />}></Route>
-                <Route path="staff_regis" element={<StaffRegister />}></Route>
-                <Route path="maintenance" element={<AdminMaintenance />}> </Route>
-                <Route path="hang_cam_gui" element={<AdminProhibitProduct />}> </Route>
-                <Route path="don_hang" element={<AdminBill />}> </Route>
-                <Route path="doanh_so" element={<AdminTurnover />}> </Route>
               </Route>
             </Routes>
           </div>
