@@ -4,7 +4,7 @@ import { faPhone, faEnvelope, faLocationDot, faWheelchair } from '@fortawesome/f
 import * as axios from 'axios'
 import { useContext } from "react";
 import { MainContext } from "../../../context/MainContext";
-import { END_POINT } from "../../utils/constant";
+import { END_POINT } from "../../../utils/constant";
 
 export default function ContactAdvice() {
   const { setMetadata } = useContext(MainContext);

@@ -1,5 +1,5 @@
 export const END_POINT = process.env.REACT_APP_API_BASE_URL
-
+export const SOCKET_URL = process.env.REACT_APP_SOCKET_URL
 export const MIEN_NAM = [
 	{
 		url: 'https://jtexpress.vn/storage/app/uploads/public/628/600/6f1/6286006f19306154492646.pdf',
