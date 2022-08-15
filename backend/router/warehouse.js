@@ -62,7 +62,11 @@ warehouseRoute.get('/:id', verifyToken,
         
     }
 )
-
+/**
+ * @route PUT /api/warehouse/:id
+ * @description update a warehouse by a storekeeper
+ * @access private
+ */
 warehouseRoute.put('/:id', verifyToken, verifyStorekeeper,
     async(req, res) => {
             try{
