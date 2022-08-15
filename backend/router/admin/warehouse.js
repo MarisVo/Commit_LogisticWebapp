@@ -4,6 +4,7 @@ import { sendError, sendRequest, sendServerError, sendSuccess } from "../../help
 import ProductShipment from "../../model/ProductShipment.js"
 import {createWarehouseValidate} from "../../validation/warehouse.js"
 import opencage from "opencage-api-client"
+import {SHIPMENT_MANAGER} from "../../constant.js"
 const OPENCAGE_API_KEY='7f8d6f65dfd846748331d3c5e0a52070'
 const warehouseAdminRoute = express.Router()
 
@@ -86,18 +87,23 @@ warehouseAdminRoute.put('/:id',
         }             
     }
 )
-warehouseAdminRoute.put('/add_product_shipment/:warehouseId/:productShipmentId', async (req, res) => {
+warehouseAdminRoute.put('/shipment/:warehouseId/', async (req, res) => {
     try {
-        const warehouseId = req.params.warehouseId
-        const productShipmentId = req.params.productShipmentId
+        let warehouseId = req.params.warehouseId
+        let {productShipmentId, turnover, status} = req.body
+        if (status != SHIPMENT_MANAGER.import && status != SHIPMENT_MANAGER.export) {
+            return sendError(res, 'status must be import or export')
+        }
         const productShipment = await ProductShipment.findById(productShipmentId)
-        const warehouse = await Warehouse.findById(id)
+        const warehouse = await Warehouse.findById(warehouseId)
         if (!productShipment || !warehouse) return sendError(res, "No information")
-        let inventory_product_shipments = [...warehouse.inventory_product_shipments, {productShipment}]
+        let add = {shipment: productShipment, turnover: turnover, status: status}
+        let inventory_product_shipments = [...warehouse.inventory_product_shipments, add]
         await Warehouse.findByIdAndUpdate(warehouseId, {inventory_product_shipments})
         return sendSuccess(res, "Add product shipment successfully")
     }
     catch (error) {
+        console.log(error);
         return sendServerError(res)
     }
 })
