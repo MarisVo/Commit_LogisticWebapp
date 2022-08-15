@@ -230,7 +230,7 @@ export default function AdminProhibitProduct() {
       key: "images",
       width: "10%",
       render: (e) => (
-       <img src={`http://localhost:8000/api/public/${e}`} />
+       <img src={`${END_POINT}/public/${e}`} />
       )
     },
     {
