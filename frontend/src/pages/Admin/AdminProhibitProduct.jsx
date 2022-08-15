@@ -38,6 +38,7 @@ export default function AdminProhibitProduct() {
     try {
       const res = await axios.get(api)
       setData(res.data.data.listCar);
+      console.log(data);
     }
     catch (e) {
       console.log(e);
@@ -117,9 +118,9 @@ export default function AdminProhibitProduct() {
 
   const changeFile = (e) => {
     const img = e.target.files[0];
-    // img.preview = URL.createObjectURL(img)
+    img.preview = URL.createObjectURL(img)
     setImgFile(img);
-    console.log(imgFile);
+    // console.log(imgFile);
   }
 
 
@@ -229,7 +230,7 @@ export default function AdminProhibitProduct() {
       key: "images",
       width: "10%",
       render: (e) => (
-        <img src={e} />
+       <img src={`http://localhost:8000/api/public/${e}`} />
       )
     },
     {
@@ -291,14 +292,17 @@ export default function AdminProhibitProduct() {
   const acceptAddNewProhibit = async (e) => {
     setLoading(true)
     setIsDisable(true)
+
     let image = new FormData();
     image.append("image", imgFile);
+
+    // console.log(image);
     // setImgFile(images)
     const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('input');
     const newData = {
       name: tableData[0].value,
       detail: tableData[1].value,
-      image,
+      image:image,
     }
     console.log(newData);
     postData(newData)
@@ -324,7 +328,7 @@ export default function AdminProhibitProduct() {
     const newData = {
       name: tableData[0].value,
       detail: tableData[1].value,
-      image,
+      image:image,
     }
 
     console.log(newData);
