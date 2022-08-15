@@ -17,7 +17,7 @@ import {
 } from "sub-vn";
 import { useContext } from "react";
 import { MainContext } from "../../../context/MainContext";
-import { END_POINT } from "../../utils/constant";
+import { END_POINT } from "../../../utils/constant";
 
 export default function SignUpForAdvice() {
   const { setMetadata } = useContext(MainContext);
