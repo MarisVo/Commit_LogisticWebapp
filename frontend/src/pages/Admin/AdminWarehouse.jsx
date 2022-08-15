@@ -7,6 +7,12 @@ import AddNewWarehouse from "../../components/Admin/Warehouse/AddWarehouse";
 import EditWarehouse from "../../components/Admin/Warehouse/EditWarehouse";
 import ConfirmModal from "../../components/ConfirmModal";
 import { MainContext } from "../../context/MainContext";
+import {
+    getProvincesWithDetail,
+    getProvinces,
+    getWardsByDistrictCode,
+    getDistrictsByProvinceCode,
+  } from "sub-vn";
 
 function AdminWarehouse() {
     const columns = [
@@ -93,8 +99,6 @@ function AdminWarehouse() {
     const [IdCompare, setValueCompare] = useState("");
     const [nameCompare, setNameCompare] = useState("");
     const [dataForEdit, setDataForEdit] = useState({});
-    const [province, setProvince] = useState("");
-    const [district, setDistrict] = useState("");
 
     const fetchData = async (params = {}) => {
         setLoading(true);
@@ -159,23 +163,93 @@ function AdminWarehouse() {
         page: newPagination.current - 1,
         });
     };
+
+    const [provincesTo, setProvincesTo] = useState([]);
+    const [districtsTo, setDistrictsTo] = useState([]);
+    const [wardsTo, setWardsTo] = useState([]);
+  
+    const [provinceCodeTo, setProvinceCodeTo] = useState(null);
+    const [districtCodeTo, setDistrictCodeTo] = useState(null);
+    const [wardCodeTo, setWardCodeTo] = useState(null);
+  
+    const [province, setProvince] = useState(null);
+    const [district, setDistrict] = useState(null);
+    const [ward, setWard] = useState(null);
+
+      // get all provinces
+    useEffect(() => {
+        setProvincesTo(getProvinces());
+    }, []);
+
+    // get all districts by province code
+    useEffect(() => {
+        setDistrictsTo(getDistrictsByProvinceCode(provinceCodeTo));
+    }, [provinceCodeTo]);
+
+    // get all wards by district code
+    useEffect(() => {
+        setWardsTo(getWardsByDistrictCode(districtCodeTo));
+    }, [districtCodeTo]);
+
+    //get province, district, ward name
+    useEffect(() => {
+        for(let i = 0; i < provincesTo?.length; i++)
+        if(provinceCodeTo == provincesTo[i].code)
+            setProvince(provincesTo[i].name)     
+    })
+    useEffect(() => {
+        for(let i = 0; i < districtsTo?.length; i++)
+        if(districtCodeTo == districtsTo[i].code)
+            setDistrict(districtsTo[i].name)     
+    })
+    useEffect(() => {
+        for(let i = 0; i < wardsTo?.length; i++)
+        if(wardCodeTo == wardsTo[i].code)
+            setWard(wardsTo[i].name)     
+    })
+
     return (
         <div>
         <div className="flex justify-between mb-4">
             <span className="text-3xl font-bold uppercase">Kho bãi</span>
-            
-                <Input
-                    className="w-1/4 lg:w-[300px]"
-                    placeholder="Nhập quận, huyện"
-                    value={district}
-                    onChange={(e) => setDistrict(e.target.value)}
-                />
-                <Input
-                    className="w-1/4 lg:w-[300px]"
-                    placeholder="Nhập tỉnh thành"    
-                    value={province}
-                    onChange={(e) => setProvince(e.target.value)}             
-                />
+                <div className="w-1/3 lg:w-[400px]">
+                <select
+                    name="province_id"
+                    id="dropdown-province"
+                    className="h-1/2 w-full "
+                    onChange={(e) => setProvinceCodeTo(e.target.value)}
+                >
+                    <option data-select2-id="select2-data-81-rsyi" value="">
+                        Tỉnh/ Thành phố
+                    </option>
+
+                    {provincesTo?.length > 0 && provincesTo.map((province) => (
+                        <option
+                            className="text-[#161D25]"
+                            value={province.code}
+                            key={province.code}
+                        >
+                            {province.name}                             
+                        </option>
+                    ))}
+                </select>
+                <select
+                    className=" h-1/2 w-full "
+                    onChange={(e) => setDistrictCodeTo(e.target.value)}
+                >
+                    <option value="">Quận/ Huyện</option>
+
+                    {districtsTo?.length > 0 && districtsTo.map((district) => (
+                        <option
+                            className="text-[#161D25]"
+                            value={district.code}
+                            key={district.code}
+                        >
+                            {district.name}
+                        </option>
+                    ))}
+                </select>
+                </div>
                 <button>
                     <AiOutlineSearch  className="w-1/24 lg:w-[100px] hover:text-blue-600 text-4xl" onClick={searchByKeyword}/>
                 </button>

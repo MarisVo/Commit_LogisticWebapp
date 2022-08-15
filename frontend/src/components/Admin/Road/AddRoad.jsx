@@ -19,7 +19,7 @@ function AddNewRoad({ onClose, refetchData }) {
     setLoading(true);
     // setIsDisable(true);
     try {
-      await axios.post(`${END_POINT}/admin/road`, data, {
+      await axios.post(`${END_POINT}/admin/road/create`, data, {
         headers: { authorization: `Bearer ${accessToken}` },
       });
       setLoading(false);
@@ -69,6 +69,7 @@ function AddNewRoad({ onClose, refetchData }) {
               ]}
             >
               <Input
+                type="number"
                 value={data.distance}
                 onChange={(e) =>
                   setData({

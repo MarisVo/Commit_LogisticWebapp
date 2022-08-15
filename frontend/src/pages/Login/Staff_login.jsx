@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import * as axios from 'axios'
 import { MainContext } from '../../context/MainContext';
 import { useEffect } from 'react';
+import { END_POINT } from "../../utils/constant";
 
 const LoginForm = styled.div`
   .Login {
@@ -139,7 +140,7 @@ function StaffLogin() {
     try{ 
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:8000/api/auth/staff-login',
+        url: `${END_POINT}/auth/staff-login`,
         data: {
           email: email,
           phone: phone,

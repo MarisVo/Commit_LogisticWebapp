@@ -4,6 +4,7 @@ import { faPhone, faEnvelope, faLocationDot, faWheelchair } from '@fortawesome/f
 import * as axios from 'axios'
 import { useContext } from "react";
 import { MainContext } from "../../../context/MainContext";
+import { END_POINT } from "../../../utils/constant";
 
 export default function ContactAdvice() {
   const { setMetadata } = useContext(MainContext);
@@ -34,7 +35,7 @@ export default function ContactAdvice() {
     try{ 
       const info = await axios({
         method: 'get',
-        url: 'http://localhost:8000/api/contactUs',
+        url: `${END_POINT}/contactUs`,
       })   
       console.log(info);
       setContactPhone(info?.data?.data?.phone);
@@ -69,7 +70,7 @@ export default function ContactAdvice() {
       try{ 
         const response = await axios({
           method: 'post',
-          url: 'http://localhost:8000/api/message',
+          url: `${END_POINT}/message`,
           data: {
               name: fullName,
               email: email,

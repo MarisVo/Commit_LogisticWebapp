@@ -17,6 +17,7 @@ import {
 } from "sub-vn";
 import { useContext } from "react";
 import { MainContext } from "../../../context/MainContext";
+import { END_POINT } from "../../../utils/constant";
 
 export default function SignUpForAdvice() {
   const { setMetadata } = useContext(MainContext);
@@ -117,7 +118,7 @@ export default function SignUpForAdvice() {
     try{
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:8000/api/consultancy',
+        url: `${END_POINT}/consultancy`,
         data: {
           service: service,
           name: fullName,
