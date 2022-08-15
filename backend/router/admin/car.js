@@ -32,7 +32,7 @@ carAdminRoute.get('/',
                 query.plate = plate;
             }
 
-            const length = await Car.count()
+            const length = await Car.find({ $and: [query, keywordList] }).count()
             const listCar = await Car.find({ $and: [query, listKeyword] })
                 .limit(pageSize)
                 .skip(pageSize * page)

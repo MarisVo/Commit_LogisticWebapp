@@ -56,7 +56,7 @@ billAdminRoute.get("/", async (req, res) => {
             query.status = status;
         }
         
-        const length = await Bill.count()
+        const length = await Bill.find({ $and: [query, keywordList] }).count()
         const bills = await Bill.find({ $and: [query, keywordList] })
             .skip(pageSize * page)
             .limit(pageSize)
@@ -99,25 +99,37 @@ billAdminRoute.post('/create', async (req, res) => {
     if (errors)
         return sendError(res, errors)
     try {
-        const { service, road, car, driver, product_shipments, status } = req.body
+        const { service, road, car, driver, shipment, turnover, status, actual_fuel, theoretical_fuel } = req.body
 
         const isExistService = await DeliveryService.exists({ _id: service })
         const isExistRoad = await Road.exists({ _id: road })
         const isExistCar = await Car.exists({ _id: car })
         const isExistDriver = await Staff.exists({ _id: driver })
-        const isExistProductShipment = await ProductShipment.exists({ _id: product_shipments })
+        const isExistShipment = await ProductShipment.exists({ _id: shipment })
+        // const product_shipments = [shipment, turnover]
 
-        if (!isExistService)
-            return sendError(res, 'Service does not exist.')
-        if (!isExistRoad)
-            return sendError(res, 'Road does not exist.')
-        if (!isExistCar)
-            return sendError(res, 'Car does not exist.')
-        if (!isExistDriver)
-            return sendError(res, 'Driver does not exist.')
-        if (!isExistProductShipment)
-            return sendError(res, 'Product shipment does not exist.')
-        await Bill.create({ service, road, car, driver, product_shipments, status })
+        // if (!isExistService)
+        //     return sendError(res, 'Service does not exist.')
+        // if (!isExistRoad)
+        //     return sendError(res, 'Road does not exist.')
+        // if (!isExistCar)
+        //     return sendError(res, 'Car does not exist.')
+        // if (!isExistDriver)
+        //     return sendError(res, 'Driver does not exist.')
+        // if (!isExistProductShipment)
+        //     return sendError(res, 'Product shipment does not exist.')
+        // await Bill.create({ service, road, car, driver, shipment, turnover, status, actual_fuel, theoretical_fuel})
+        const existBill = Bill.exists({service, road, car, driver, status, actual_fuel, theoretical_fuel})
+        const billID = existBill._id
+        console.log(billID)
+        // if(existBill)
+        // {
+        //     await Bill.updateOne(
+        //         {
+
+        //         }
+        //     )
+        // }
         return sendSuccess(res, 'Set bill information successfully.')
     }
     catch (error) {
