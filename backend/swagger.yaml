@@ -2637,6 +2637,38 @@ paths:
           description: Delete warehouse failed.
       security:
         - bearerAuth: []
+  /admin/warehouse/inventory/{warehouseId}:
+    put:
+      tags:
+        - "warehouse"
+      summary: add inventory product shipment to warehouse
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: warehouseId
+          type: string
+          required: true
+          description: Id of a warehouse
+        - in: body
+          name: warehouse
+          description: inventory product shipment.
+          schema:
+            type: object
+            properties:
+              productShipmentId:
+                type: string
+              turnover:
+                type: number
+              status:
+                type: string
+      responses:
+        200:
+          description: Add inventory product shipment successfully.
+        400:
+          description: Add inventory product shipment failed.
+      security:
+        - bearerAuth: []
   /warehouse:
     get:
       tags:

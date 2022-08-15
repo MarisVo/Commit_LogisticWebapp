@@ -87,7 +87,12 @@ warehouseAdminRoute.put('/:id',
         }             
     }
 )
-warehouseAdminRoute.put('/shipment/:warehouseId/', async (req, res) => {
+/**
+* @route PUT /api/admin/inventory/:warehouseId
+* @description update information of a warehouse
+* @access private
+*/
+warehouseAdminRoute.put('/inventory/:warehouseId/', async (req, res) => {
     try {
         let warehouseId = req.params.warehouseId
         let {productShipmentId, turnover, status} = req.body
