@@ -31,7 +31,7 @@ export default function VanDon() {
 		const { data } = await axios({
 			method:"get",
 			headers: { authorization: `Bearer ${accessToken}` },
-			url:`http://localhost:8000/api/order/tracking/${billCode}`,
+			url:`${END_POINT}/order/tracking/${billCode}`,
 		});
 
 		if (data.data.success) {

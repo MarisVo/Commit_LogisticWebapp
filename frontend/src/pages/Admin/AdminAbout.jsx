@@ -7,6 +7,7 @@ import axios from "axios";
 import { TOKEN } from "./adminToken";
 import { useEffect } from "react";
 import { useRef } from "react";
+import { END_POINT } from "../../utils/constant";
 
 
 export default function AdminAbout() {
@@ -32,7 +33,7 @@ export default function AdminAbout() {
   const callAboutData = async () => {
     try {
       const result = await axios({
-        url: "http://localhost:8000/api/about",
+        url: `${END_POINT}/about`,
         method: "get",
         headers: { authorization: `Bearer ${accessToken}` },
       });
@@ -53,7 +54,7 @@ export default function AdminAbout() {
   const postApi = async (data) => {
     try {
       const result = await axios({
-        url: "http://localhost:8000/api/admin/about",
+        url: `${END_POINT}/admin/about`,
         method: "post",
         headers: { authorization: `Bearer ${accessToken}` },
         data: data,
@@ -69,7 +70,7 @@ export default function AdminAbout() {
   const postApiLogo = async (data) => {
     try {
       const result = await axios({
-        url: "http://localhost:8000/api/admin/about/logo",
+        url: `${END_POINT}/admin/about/logo`,
         method: "post",
         headers: { authorization: `Bearer ${accessToken}` },
         data: data,
@@ -85,7 +86,7 @@ export default function AdminAbout() {
   const postApiBanner = async (data) => {
     try {
       const result = await axios({
-        url: "http://localhost:8000/api/admin/about/banners",
+        url: `${END_POINT}/admin/about/banners`,
         method: "post",
         headers: { authorization: `Bearer ${accessToken}` },
         data: data,

@@ -4,6 +4,7 @@ import { FormGroup, Input, Label } from 'reactstrap';
 import isEmpty from 'validator/lib/isEmpty';
 import isEmail from 'validator/lib/isEmail';
 import axios from 'axios';
+import { END_POINT } from "../../utils/constant";
 
 const RecruitForm = ({ id }) => {
 
@@ -56,7 +57,7 @@ const RecruitForm = ({ id }) => {
     const postData = async (data, id) => {
         try {
             const res = await axios({
-                url:`http://localhost:8000/api/applicant/${id}`,
+                url:`${END_POINT}/applicant/${id}`,
                 method: "post",
                 data: data,
                 // headers: { authorization: `Bearer ${accessToken}` },
@@ -99,7 +100,7 @@ const RecruitForm = ({ id }) => {
         <Formik>
             {() => {
                 return (
-                    <div className="bg-[#fff] p-4 sm:p-7 lg:p-14 w-[90%] lg:w-auto rounded-lg absolute top-[50%] left-[50%]  translate-y-[-50%]  translate-x-[-50%]">
+                    <div className="bg-[#fff] p-4 sm:p-7 lg:p-14 w-[90%] lg:w-auto rounded-lg absolute top-[50%] left-[50%]  translate-y-[-50%]  translate-x-[-50%] mt-[50px]">
                         <h3 className="mb-2 text-3xl font-bold lg:mb-5">Đăng ký ứng tuyển</h3>
                         <Form onSubmit={handleSubmit} className="gap-4 lg:grid lg:grid-cols-2">
                             <FormGroup className="flex flex-col mb-0 lg:mb-3">

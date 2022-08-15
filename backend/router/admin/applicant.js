@@ -208,13 +208,8 @@ applicantAdminRoute.delete("/:id", async (req, res) => {
     const isExist = await Applicant.exists({ _id: id });
     if (!isExist) return sendError(res, "Applicant does not exist.");
     await Career.updateOne({}, { $pull: { applicants: id } });
-    await Applicant.findByIdAndRemove(id)
-      .then(() => {
-        return sendSuccess(res, "Delete applicant successfully.");
-      })
-      .catch((err) => {
-        return sendError(res, err);
-      });
+    const applicant = await Applicant.findByIdAndRemove(id)
+    return sendSuccess(res, "Delete applicant successfully.", applicant);
   } catch (error) {
     console.log(error);
     return sendServerError(res);
