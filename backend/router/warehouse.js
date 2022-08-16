@@ -107,6 +107,74 @@ warehouseRoute.put('/:id', verifyToken, verifyStorekeeper,
             }
     }    
 )
-
+/**
+* @route PUT /api/admin/inventory/:warehouseId
+* @description add productshipment to a warehouse
+* @access private
+*/
+warehouseRoute.put('/add_inventory/:warehouseId/', verifyToken, verifyStorekeeper,
+    async (req, res) => {
+        const warehouseId = req.params.warehouseId
+        const warehouse = await Warehouse.findById(warehouseId)
+        if (!warehouse) {return sendError(res, "warehouse not found.")}
+        if (warehouse.storekeeper == req.user.role._id) {
+            try {
+                let {productShipmentId, turnover} = req.body
+                const productShipment = await ProductShipment.findById(productShipmentId)
+                const warehouse = await Warehouse.findById(warehouseId)
+                if (!productShipment || !warehouse) return sendError(res, "No information")
+                let add = {shipment: productShipment, turnover: turnover}
+                let inventory_product_shipments = [...warehouse.inventory_product_shipments, add]
+                await Warehouse.findByIdAndUpdate(warehouseId, {inventory_product_shipments})
+                return sendSuccess(res, "Add product shipment successfully")
+            }
+            catch (error) {
+                console.log(error);
+                return sendServerError(res)
+            }
+        } else {
+            return sendError(res, "Access denied")
+        }
+})
+/**
+* @route PUT /api/admin/export/:warehouseId
+* @description export or import productshipment to a warehouse
+* @access private
+*/
+warehouseRoute.put('/update_inventory/:warehouseId', verifyToken, verifyStorekeeper,
+    async (req, res) => {
+    const warehouseId = req.params.warehouseId
+    const warehouse = await Warehouse.findById(warehouseId)
+    if (!warehouse) {return sendError(res, "warehouse not found.")}
+    if (warehouse.storekeeper == req.user.role._id) {
+        try {
+            const {productShipmentId, status} = req.body
+            if (status != 'import' && status != 'export') return sendError(res, "Status must be 'import' or 'export'")
+            const warehouse = await Warehouse.findById(warehouseId)
+            const productShipment = await ProductShipment.findById(productShipmentId)
+            if (!productShipment || !warehouse) return sendError(res, "No information")
+            for (let i = 0; i < warehouse.inventory_product_shipments.length; i++) {
+                if (warehouse.inventory_product_shipments[i].shipment == productShipmentId) {
+                    warehouse.inventory_product_shipments[i].status = status
+                    await Warehouse.findByIdAndUpdate(warehouseId, {inventory_product_shipments: warehouse.inventory_product_shipments})
+                    return sendSuccess(res, `${status} successfully`)
+                }
+            };
+            return sendError(res,"This product shipment can not be found in this warehouse")    
+    
+        }
+        catch (error) {
+            return sendServerError(res)
+        }
+    } else {
+        sendError(res, "Access denied.")
+    }
+    
+})
+/**
+* @route DELETE /api/admin/warehouse/:id
+* @description delete a existing warehouse
+* @access private
+*/
 
 export default warehouseRoute

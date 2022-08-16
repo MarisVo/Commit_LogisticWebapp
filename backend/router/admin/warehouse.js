@@ -5,6 +5,7 @@ import ProductShipment from "../../model/ProductShipment.js"
 import {createWarehouseValidate} from "../../validation/warehouse.js"
 import opencage from "opencage-api-client"
 import {SHIPMENT_MANAGER} from "../../constant.js"
+import { calculateWarehouseTurnover } from "../../service/turnoverWarehouse.js"
 const OPENCAGE_API_KEY='7f8d6f65dfd846748331d3c5e0a52070'
 const warehouseAdminRoute = express.Router()
 
@@ -89,26 +90,50 @@ warehouseAdminRoute.put('/:id',
 )
 /**
 * @route PUT /api/admin/inventory/:warehouseId
-* @description update information of a warehouse
+* @description add productshipment to a warehouse
 * @access private
 */
-warehouseAdminRoute.put('/inventory/:warehouseId/', async (req, res) => {
+warehouseAdminRoute.put('/add_inventory/:warehouseId/', async (req, res) => {
     try {
         let warehouseId = req.params.warehouseId
-        let {productShipmentId, turnover, status} = req.body
-        if (status != SHIPMENT_MANAGER.import && status != SHIPMENT_MANAGER.export) {
-            return sendError(res, 'status must be import or export')
-        }
+        let {productShipmentId, turnover} = req.body
         const productShipment = await ProductShipment.findById(productShipmentId)
         const warehouse = await Warehouse.findById(warehouseId)
         if (!productShipment || !warehouse) return sendError(res, "No information")
-        let add = {shipment: productShipment, turnover: turnover, status: status}
+        let add = {shipment: productShipment, turnover: turnover}
         let inventory_product_shipments = [...warehouse.inventory_product_shipments, add]
         await Warehouse.findByIdAndUpdate(warehouseId, {inventory_product_shipments})
         return sendSuccess(res, "Add product shipment successfully")
     }
     catch (error) {
         console.log(error);
+        return sendServerError(res)
+    }
+})
+/**
+* @route PUT /api/admin/export/:warehouseId
+* @description export or import productshipment to a warehouse
+* @access private
+*/
+warehouseAdminRoute.put('/update_inventory/:warehouseId', async (req, res) => {
+    try {
+        const warehouseId = req.params.warehouseId
+        const {productShipmentId, status} = req.body
+        if (status != 'import' && status != 'export') return sendError(res, "Status must be 'import' or 'export'")
+        const warehouse = await Warehouse.findById(warehouseId)
+        const productShipment = await ProductShipment.findById(productShipmentId)
+        if (!productShipment || !warehouse) return sendError(res, "No information")
+        for (let i = 0; i < warehouse.inventory_product_shipments.length; i++) {
+            if (warehouse.inventory_product_shipments[i].shipment == productShipmentId) {
+                warehouse.inventory_product_shipments[i].status = status
+                await Warehouse.findByIdAndUpdate(warehouseId, {inventory_product_shipments: warehouse.inventory_product_shipments})
+                return sendSuccess(res, `${status} successfully`)
+            }
+        };
+        return sendError(res,"This product shipment can not be found in this warehouse")    
+
+    }
+    catch (error) {
         return sendServerError(res)
     }
 })
@@ -132,5 +157,4 @@ warehouseAdminRoute.delete('/:id',
         }
     }
 )
-
 export default warehouseAdminRoute

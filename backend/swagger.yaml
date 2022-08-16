@@ -2637,7 +2637,7 @@ paths:
           description: Delete warehouse failed.
       security:
         - bearerAuth: []
-  /admin/warehouse/inventory/{warehouseId}:
+  /admin/warehouse/add_inventory/{warehouseId}:
     put:
       tags:
         - "warehouse"
@@ -2660,13 +2660,41 @@ paths:
                 type: string
               turnover:
                 type: number
-              status:
-                type: string
       responses:
         200:
           description: Add inventory product shipment successfully.
         400:
           description: Add inventory product shipment failed.
+      security:
+        - bearerAuth: []
+  /admin/warehouse/update_inventory/{warehouseId}:
+    put:
+      tags:
+        - "warehouse"
+      summary: change inventory status of warehouse
+      produces:
+        application/json
+      parameters:
+        - in: path
+          name: warehouseId
+          type: string
+          required: true
+          description: Id of a warehouse
+        - in: body
+          name: warehouse
+          description: inventory product shipment and status.
+          schema:
+            type: object
+            properties:
+              productShipmentId:
+                type: string
+              status:
+                type: string
+      responses:
+        200:
+          description: Update inventory status successfully.
+        400:
+          description: Update inventory status failed.
       security:
         - bearerAuth: []
   /warehouse:
@@ -2782,6 +2810,66 @@ paths:
                 type: string
               lat: 
                 type: string
+      security:
+        - bearerAuth: []
+  /warehouse/add_inventory/{warehouseId}:
+    put:
+      tags:
+        - "warehouse"
+      summary: add inventory product shipment to warehouse for storekeeper
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: warehouseId
+          type: string
+          required: true
+          description: Id of a warehouse
+        - in: body
+          name: warehouse
+          description: inventory product shipment.
+          schema:
+            type: object
+            properties:
+              productShipmentId:
+                type: string
+              turnover:
+                type: number
+      responses:
+        200:
+          description: Add inventory product shipment successfully.
+        400:
+          description: Add inventory product shipment failed.
+      security:
+        - bearerAuth: []
+  /warehouse/update_inventory/{warehouseId}:
+    put:
+      tags:
+        - "warehouse"
+      summary: change inventory status of warehouse for storekeeper
+      produces:
+        application/json
+      parameters:
+        - in: path
+          name: warehouseId
+          type: string
+          required: true
+          description: Id of a warehouse
+        - in: body
+          name: warehouse
+          description: inventory product shipment and status.
+          schema:
+            type: object
+            properties:
+              productShipmentId:
+                type: string
+              status:
+                type: string
+      responses:
+        200:
+          description: Update inventory successfully.
+        400:
+          description: Update inventory failed.
       security:
         - bearerAuth: []
   /participant:
