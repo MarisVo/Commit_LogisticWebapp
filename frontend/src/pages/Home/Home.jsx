@@ -465,14 +465,18 @@ const Home = () => {
 
       <div className="flex flex-col justify-center items-center py-4 mt-6">
         <span className="uppercase text-xl font-black">
-          mạng lưới phủ sóng các nước
+          mạng lưới phủ sóng hầu hết các tỉnh thành Việt Nam
         </span>
         <span className="text-sm">
-          J&T Express tự hào đã & đang mở rộng mạng lưới quốc tế để mang đến
-          trải nghiệm tốt nhất
+          Tien Kim Thanh express tự hào đã & đang mở rộng mạng lưới trên khắp
+          đất nước, mang trong mình sứ mệnh vươn ra tầm cỡ thế giới
         </span>
       </div>
-      <Fade bottom duration={1500}>
+      <div className="flex flex-col justify-center items-center m-6 text-red-500">
+        <img src="" alt="Hình chụp bưu cục tại 3 chí nhánh HCM HN Đà Nẵng! Không có thì bỏ" />
+      </div>
+
+      {/* <Fade bottom duration={1500}>
         <div className="grid grid-cols-3 text-white text-center gap-y-12 mb-9">
           {flags.map((flag, key) => (
             <div
@@ -490,7 +494,7 @@ const Home = () => {
             </div>
           ))}
         </div>
-      </Fade>
+      </Fade> */}
 
       <div className="flex flex-col lg:flex-row ">
         <div className="flex flex-col items-center justify-center text-justify gap-y-7 w-full lg:max-w-[500px] py-6 px-3 bg-[#F0B90B] lg:rounded-r-xl">
@@ -613,20 +617,20 @@ const Home = () => {
         </div>
       </div>
       {quotes.length > 0 && (
-      <div className="container mx-auto px-2 lg:px-0  my-10">
-        <span className="block text-2xl sm:text-4xl lg:text-4xl font-black my-6 lg:my-0">
-          ĐỐI TÁC NÓI VỀ CHÚNG TÔI
-        </span>
-        <div className="grid grid-cols-1 lg:grid-cols-[60%_35%] gap-x-10 ">
-          <div className="flex flex-col justify-center items-center  ">
-            <span>
-              Từ khi đặt chân vào Việt Nam năm 2018, J&T Express luôn nỗ lực hết
-              mình, hoàn thành nghĩa vụ của một đối tác vận chuyển lớn trong khu
-              vực, mang lại dịch vụ tốt nhất cho tất cả khách hàng, nhận về
-              nhiều lời khen và nhận xét tích cực. Đây là sự tự hào và động lực
-              để J&T Express tiếp tục giữ vững thành tích, phát huy dịch vụ,
-              nâng cao hơn nữa trải nghiệm khách hàng.
-            </span>
+        <div className="container mx-auto px-2 lg:px-0  my-10">
+          <span className="block text-2xl sm:text-4xl lg:text-4xl font-black my-6 lg:my-0">
+            ĐỐI TÁC NÓI VỀ CHÚNG TÔI
+          </span>
+          <div className="grid grid-cols-1 lg:grid-cols-[60%_35%] gap-x-10 ">
+            <div className="flex flex-col justify-center items-center  ">
+              <span>
+                Từ khi đặt chân vào Việt Nam năm 2018, J&T Express luôn nỗ lực
+                hết mình, hoàn thành nghĩa vụ của một đối tác vận chuyển lớn
+                trong khu vực, mang lại dịch vụ tốt nhất cho tất cả khách hàng,
+                nhận về nhiều lời khen và nhận xét tích cực. Đây là sự tự hào và
+                động lực để J&T Express tiếp tục giữ vững thành tích, phát huy
+                dịch vụ, nâng cao hơn nữa trải nghiệm khách hàng.
+              </span>
 
               <div className="w-full py-4">
                 <Carousel
@@ -658,30 +662,30 @@ const Home = () => {
                   ))}
                 </Carousel>
               </div>
-
-          </div>
-          <div className="bg-[#F0B90B] rounded-xl shadow-2xl lg:min-h-[450px] overflow-hidden  ">
-            <div className="flex flex-col items-center px-4 py-8">
-              <div className="w-[134px] h-[134px]">
-                {person.avatar !== undefined && (
-                  <img
-                    src={`${END_POINT}/public/${person.avatar}`}
-                    className=" h-full w-full rounded-full object-cover"
-                    alt=""
-                  />
-                )}
-              </div>
-              <span className="text-xl font-bold pt-4">{person.name}</span>
-              <span>{person.description}</span>
-              <div className="mx-3 sm:mx-10 lg:mx-0">
-                <span className="py-6 line-clamp-6 text-justify">
-                  {person.quote}
-                </span>
+            </div>
+            <div className="bg-[#F0B90B] rounded-xl shadow-2xl lg:min-h-[450px] overflow-hidden  ">
+              <div className="flex flex-col items-center px-4 py-8">
+                <div className="w-[134px] h-[134px]">
+                  {person.avatar !== undefined && (
+                    <img
+                      src={`${END_POINT}/public/${person.avatar}`}
+                      className=" h-full w-full rounded-full object-cover"
+                      alt=""
+                    />
+                  )}
+                </div>
+                <span className="text-xl font-bold pt-4">{person.name}</span>
+                <span>{person.description}</span>
+                <div className="mx-3 sm:mx-10 lg:mx-0">
+                  <span className="py-6 line-clamp-6 text-justify">
+                    {person.quote}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>)}
+      )}
       <div className="container m-auto">
         <Carousel
           autoplay

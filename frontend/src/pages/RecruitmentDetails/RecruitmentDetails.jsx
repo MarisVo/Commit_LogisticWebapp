@@ -25,7 +25,7 @@ const RecruitmentDetails = ({data}) => {
         <InputDesktop />
       </div> */}
       
-      <div className="m-auto max-w-[1140px]  px-[16px] lg:px-[0px]  mt-[50px] lg:mt-[180px]">
+      <div className="m-auto max-w-[1140px] px-[16px] lg:px-[0px]  mt-[90px] lg:mt-[180px]">
         <h2 className="text-[24px] lg:text-[32px] font-bold mb-6">
           {data.name}
         </h2>
@@ -102,7 +102,7 @@ const RecruitmentDetails = ({data}) => {
           </p>
         </article>
       </div>
-      <div className="relative">
+      <div className="relative mb-[165px]">
         <img
           src={Images.BOTTOM_BANNER}
           alt="IMG"
