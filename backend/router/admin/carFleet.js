@@ -136,7 +136,6 @@ carFleetAdminRoute.get("/car/:carFleetId", async (req, res) => {
  * @description get all cars in fleet turnover information
  * @access public
  */
-//paging
 carFleetAdminRoute.get("/:carFleetId", async (req, res) => {
   const { carFleetId } = req.params;
   try {
@@ -160,7 +159,6 @@ carFleetAdminRoute.get("/:carFleetId", async (req, res) => {
         res,
         "get cars turnover information successfully.",
         turnover,
-        cars
       );
     return sendError(res, "cars turnover information is not found.");
   } catch (error) {
@@ -170,16 +168,13 @@ carFleetAdminRoute.get("/:carFleetId", async (req, res) => {
 });
 
 /**
- * @route PUT /api/admin/admin/carFleet/car/:carFleetid
+ * @route PUT /api/admin/admin/carFleet/car/:id
  * @description update turnover of an existing car in carFleet
  * @access private
  */
-carFleetAdminRoute.put("/car/:carFleetId", async (req, res) => {
+carFleetAdminRoute.put("/car/:id", async (req, res) => {
   const { id } = req.params;
-  //const { carFLeetId } = req.params;
   const { plate } = req.query;
-  // const errors = carFleetTurnoverValidate(req.body);
-  // if (errors) return sendError(res, errors);
   let { turnover } = req.body;
   try {
     const carFleet = await CarFleet.find({ _id: id });
@@ -188,7 +183,6 @@ carFleetAdminRoute.put("/car/:carFleetId", async (req, res) => {
     if (!car) return sendError(res, "car does not exist.");
     const bill = await Bill.find({ car: car });
     if (!bill) return sendError(res, "Bill does not exist.");
-    //const carFleet = await carFleet.findById(id);
     if (carFleet) {
       await Bill.findByIdAndUpdate(bill._id, {
         "product_shipments.turnover": turnover,
