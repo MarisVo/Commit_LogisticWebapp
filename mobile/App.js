@@ -16,7 +16,6 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-
 import {
   Colors,
   DebugInstructions,
@@ -24,6 +23,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import { NativeBaseProvider, Box } from "native-base";
 import RootComponent from './src/views';
 
 const Section = ({children, title}) => {
@@ -60,7 +60,10 @@ const App = () => {
   };
 
   return (
-    <RootComponent/>
+<NativeBaseProvider>
+  <RootComponent/>
+</NativeBaseProvider>
+
 
   )
 };

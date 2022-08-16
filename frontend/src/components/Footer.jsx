@@ -3,8 +3,17 @@ import logoJT from "../assets/icons/vietnam-post.png";
 import appStore from "../assets/images/appStore.png";
 import ggPlay from "../assets/images/ggPlay.png";
 import zaloIcon from "../assets/icons/icons-zalo.svg";
-import { FaFacebook, FaInstagram, FaTiktok, FaYoutubeSquare } from "react-icons/fa";
-import { IoMailOutline, IoCallOutline, IoLocationOutline } from "react-icons/io5";
+import {
+  FaFacebook,
+  FaInstagram,
+  FaTiktok,
+  FaYoutubeSquare,
+} from "react-icons/fa";
+import {
+  IoMailOutline,
+  IoCallOutline,
+  IoLocationOutline,
+} from "react-icons/io5";
 import axios from "axios";
 import { END_POINT } from "../utils/constant";
 import { data } from "autoprefixer";
@@ -24,7 +33,9 @@ const Footer = () => {
     const getInfor = async () => {
       try {
         const res = await axios.get(`${END_POINT}/contactUs`);
-        if (res.status === 200) return setInformation(res.data.data);
+        if (res.status === 200) {
+          setInformation(res.data.data);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -35,16 +46,19 @@ const Footer = () => {
     <footer className="bg-[#e0e3e7]">
       <div className=" grid grid-cols-1 gap-x-[70px] lg:grid-cols-3 pt-[35px] mx-auto px-4 lg:px-0 container ">
         <div className="leading-6 ">
-        <img src={logoJT} className="h-[80px]" alt="logo-JnT"/>
+          <img src={logoJT} className="h-[80px]" alt="logo-JnT" />
           <h5 className="mb-4 font-extrabold">
             CÔNG TY TNHH MỘT THÀNH VIÊN CHUYỂN PHÁT NHANH THUẬN PHONG
           </h5>
           <div className="text-[12px] mb-1 ">
             <p>
-              Giấy CNĐKKD: 0313617136 - Ngày cấp: 13/01/2016, đăng ký thay đổi lần 06 ngày
-              25/09/2018
+              Giấy CNĐKKD: 0313617136 - Ngày cấp: 13/01/2016, đăng ký thay đổi
+              lần 06 ngày 25/09/2018
             </p>
-            <p>Cơ Quan Cấp: Phòng Đăng ký kinh doanh - Sở kế hoạch và đầu tư TP Hồ Chí Minh</p>
+            <p>
+              Cơ Quan Cấp: Phòng Đăng ký kinh doanh - Sở kế hoạch và đầu tư TP
+              Hồ Chí Minh
+            </p>
           </div>
           <img src="https://jtexpress.vn/themes/jtexpress/assets/images/icon-bct.png" />
         </div>
@@ -55,7 +69,9 @@ const Footer = () => {
           </div>
           <div className="flex  text-[12px]">
             <div className="flex-1">
-              <p className="mb-[10px] font-bold">Trung tâm chăm sóc khách hàng</p>
+              <p className="mb-[10px] font-bold">
+                Trung tâm chăm sóc khách hàng
+              </p>
               <a href="/" className="block mb-4">
                 Liên hệ với chung tôi
               </a>
@@ -157,7 +173,9 @@ const Footer = () => {
           <span>Chính sách bảo mật</span>
         </a>
         <span className="hidden mx-1 lg:block ">|</span>
-        <span className="">Copyright © 2022 J&T Express. All rights reserved</span>
+        <span className="">
+          Copyright © 2022 J&T Express. All rights reserved
+        </span>
       </div>
     </footer>
   );

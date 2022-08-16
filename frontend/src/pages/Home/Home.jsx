@@ -209,35 +209,12 @@ const Home = () => {
   const { setMetadata, dataWarehouse, setDataWarehouse, order, setOrder } =
     useContext(MainContext);
 
-  // const searchWarehouse = (e) => {
-  //   e.preventDefault()
-  //   if (currentDistrict && currentProvince) {
-  //     const find = async () => {
-  //       try {
-  //         const { data: response } = await axios.get(
-  //           `${END_POINT}/warehouse`,
-  //           {
-  //             params: {
-  //               province: currentProvince,
-  //               district: currentDistrict,
-  //             },
-  //           }
-  //         );
-  //         setWarehouse(response.data);
-  //       } catch (error) {}
-  //     };
-  //     find();
-  //   } else {
-  //     alert("Mời chọn đủ thông tin tra cứu");
-  //   }
-  // };
-
   const fetchQuotes = async () => {
     try {
       const res = await axios.get(`${END_POINT}/quote?limit=10`);
       if (res.status === 200) {
         setQuotes(res.data.data);
-        setPerson(res.data.data[0]);
+        res.data.data.length > 0 && setPerson(res.data.data[0]);
       }
     } catch (error) {
       console.log(error);
@@ -246,7 +223,6 @@ const Home = () => {
   const fetchPartner = async () => {
     try {
       const res = await axios.get(`${END_POINT}/partner`);
-      console.log("partner", res);
       if (res.status === 200) {
         setPartners(res.data.data.partners);
       }
@@ -305,7 +281,7 @@ const Home = () => {
     setPerson(person);
   };
   return (
-    <div className="pt-[65px]">
+    <div className="pt-[65px] pb-4">
       <Carousel autoplay autoplaySpeed={2000} effect="fade">
         {/* {banners.map((banner,key) => (
           <div key={key}>
@@ -595,7 +571,7 @@ const Home = () => {
         ))}
       </div>
 
-      <div className="flex items-center justify-center my-6 container mx-auto">
+      {/* <div className="flex items-center justify-center my-6 container mx-auto">
         <Zoom duration={1000}>
           <iframe
             width="731"
@@ -607,7 +583,7 @@ const Home = () => {
             allowFullScreen
           ></iframe>
         </Zoom>
-      </div>
+      </div> */}
       <div className="relative h-[670px] lg:h-[462px]">
         <img
           src="https://jtexpress.vn/themes/jtexpress/assets/images/bg-download-appnew.png"
@@ -636,6 +612,7 @@ const Home = () => {
           </div>
         </div>
       </div>
+      {quotes.length > 0 && (
       <div className="container mx-auto px-2 lg:px-0  my-10">
         <span className="block text-2xl sm:text-4xl lg:text-4xl font-black my-6 lg:my-0">
           ĐỐI TÁC NÓI VỀ CHÚNG TÔI
@@ -650,36 +627,38 @@ const Home = () => {
               để J&T Express tiếp tục giữ vững thành tích, phát huy dịch vụ,
               nâng cao hơn nữa trải nghiệm khách hàng.
             </span>
-            <div className="w-full py-4">
-              <Carousel
-                autoplay
-                autoplaySpeed={2000}
-                focusOnSelect
-                draggable
-                slidesToShow={3}
-                arrows
-                responsive={[]}
-                className=" overflow-hidden"
-              >
-                {quotes.length>0 && quotes.map((quote) => (
-                  <div
-                    className="flex flex-col items-center text-center"
-                    key={quote._id}
-                    onClick={() => showPerson(quote._id)}
-                  >
-                    <div className="w-[100px] h-[100px] sm:w-[134px] sm:h-[134px]">
-                      <img
-                        src={`${END_POINT}/public/${quote.avatar}`}
-                        className="h-full w-full rounded-full object-cover"
-                        alt={quote.name}
-                      />
+
+              <div className="w-full py-4">
+                <Carousel
+                  autoplay
+                  autoplaySpeed={2000}
+                  focusOnSelect
+                  draggable
+                  slidesToShow={3}
+                  arrows
+                  // responsive={[]}
+                  className=" overflow-hidden"
+                >
+                  {quotes.map((quote) => (
+                    <div
+                      className="flex flex-col items-center text-center"
+                      key={quote._id}
+                      onClick={() => showPerson(quote._id)}
+                    >
+                      <div className="w-[100px] h-[100px] sm:w-[134px] sm:h-[134px]">
+                        <img
+                          src={`${END_POINT}/public/${quote.avatar}`}
+                          className="h-full w-full rounded-full object-cover"
+                          alt={quote.name}
+                        />
+                      </div>
+                      <span className="font-bold">{quote.name}</span>
+                      <span className="px-2 ">{quote.description}</span>
                     </div>
-                    <span className="font-bold">{quote.name}</span>
-                    <span className="px-2 ">{quote.description}</span>
-                  </div>
-                ))}
-              </Carousel>
-            </div>
+                  ))}
+                </Carousel>
+              </div>
+
           </div>
           <div className="bg-[#F0B90B] rounded-xl shadow-2xl lg:min-h-[450px] overflow-hidden  ">
             <div className="flex flex-col items-center px-4 py-8">
@@ -702,7 +681,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div>)}
       <div className="container m-auto">
         <Carousel
           autoplay
@@ -712,14 +691,15 @@ const Home = () => {
           dots={false}
           className="w-full"
         >
-          {partners.length>0 && partners.map((partner) => (
-            <img
-              src={`${END_POINT}/public/${partner.logo}`}
-              alt={partner.name}
-              className="w-[186px] h-[100px] object-scale-down"
-              key={partner._id}
-            />
-          ))}
+          {partners.length > 0 &&
+            partners.map((partner) => (
+              <img
+                src={`${END_POINT}/public/${partner.logo}`}
+                alt={partner.name}
+                className="w-[186px] h-[100px] object-scale-down"
+                key={partner._id}
+              />
+            ))}
         </Carousel>
       </div>
     </div>
