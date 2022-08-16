@@ -20,11 +20,11 @@ receiverAdminRoute.get('/', async (req, res) => {
     }
     else if (keyword) {
         query = { $or: [{
-            name: {$regex: keyword, $options: '$i'}
+            name: {$regex: keyword}
         },{
-            phone: {$regex: keyword, $options:'$i'}
+            phone: {$regex: keyword}
         },{
-            identity: {$regex: keyword, $options: '$i'}
+            identity: {$regex: keyword}
         }]}
     }
     try {

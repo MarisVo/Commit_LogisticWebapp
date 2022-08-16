@@ -25,10 +25,10 @@ receiverRoute.put('/:id',
                 return sendSuccess(res,"Receiver updated successfully");
             }
             catch (err) {
-                sendServerError(res);
+                return sendServerError(res);
             }
         } else {
-            sendError(res, "Cannot update receiver while order is completed");
+            return sendError(res, "Cannot update receiver while order is completed");
         }
     })
 export default receiverRoute;
