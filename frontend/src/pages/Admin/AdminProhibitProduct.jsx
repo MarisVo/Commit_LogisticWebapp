@@ -272,7 +272,7 @@ export default function AdminProhibitProduct() {
   const getSearch = async (key) => {
     try {
       const res = await axios.get(`${api}?keyword=${key}`);
-      setData(res.data.data);
+      setData(res.data.data.listCar);
     }
     catch (e) {
       console.log(e);
@@ -293,19 +293,22 @@ export default function AdminProhibitProduct() {
     setLoading(true)
     setIsDisable(true)
 
-    let image = new FormData();
-    image.append("image", imgFile);
-
-    // console.log(image);
-    // setImgFile(images)
     const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('input');
-    const newData = {
-      name: tableData[0].value,
-      detail: tableData[1].value,
-      image:image,
-    }
-    console.log(newData);
-    postData(newData)
+    // console.log(imgFile);
+
+    let image = new FormData();
+    
+    image.append("image", imgFile);
+    image.append("name",tableData[0].value);
+    image.append("detail",tableData[1].value);
+
+    // const newData = {
+    //   name: ,
+    //   detail: ,
+    //   image:image,
+    // }
+    // console.log(newData);
+    postData(image)
     try {
       await setTimeout(() => {
         setLoading(false)
@@ -323,16 +326,13 @@ export default function AdminProhibitProduct() {
     setLoading(true)
     setIsDisable(true)
     let image = new FormData();
-    image.append("image", imgFile);
     const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('input');
-    const newData = {
-      name: tableData[0].value,
-      detail: tableData[1].value,
-      image:image,
-    }
+    image.append("image", imgFile);
+    image.append("name",tableData[0].value);
+    image.append("detail",tableData[1].value);
 
-    console.log(newData);
-    editData(newData,idItem);
+    // console.log(newData);
+    editData(image,idItem);
     try {
       await setTimeout(() => {
         setLoading(false)
