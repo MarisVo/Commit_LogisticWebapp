@@ -28,11 +28,8 @@ priceListRoute.get("/", async (req, res) => {
         }
       }
     }
-    var length = 0;
-    const hasPriceList = await DeliveryService.find({}, {price_files: true});
-    console.log(hasPriceList)
-    hasPriceList.forEach(_id => length += _id.price_files.length);
-    if (files.length) {
+    var length = files.length;
+    if (length) {
       return sendSuccess(res, "get pricelist information successfully.", {
         length,
         files,

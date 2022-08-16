@@ -27,6 +27,7 @@ import distanceAdminRoute from "./distance.js"
 import priceAdminRoute from "./price.js"
 import pricelistAdminRoute from "./pricelist.js"
 import customerAdminRoute from "./customer.js"
+import carFleetAdminRoute from "./carFleet.js"
 const adminRoute = express.Router()
 
 adminRoute.use('/auth', authAdminRoute)
@@ -57,5 +58,6 @@ adminRoute.use('/auth', authAdminRoute)
     .use('/price', priceAdminRoute)
     .use('/pricelist', pricelistAdminRoute)
     .use("/customer", customerAdminRoute)
+    .use("/carfleet", carFleetAdminRoute)
     
 export default adminRoute

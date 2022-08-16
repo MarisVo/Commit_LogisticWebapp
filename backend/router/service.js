@@ -31,7 +31,6 @@ serviceRoute.get("/", async (req, res) => {
     if (tip) {
       query.location = tip;
     }
-    const length = await DeliveryService.count();
     const service = await DeliveryService.find({ $and: [query, keywordCondition] })
       .limit(pageSize)
       .skip(pageSize * page)
@@ -39,6 +38,7 @@ serviceRoute.get("/", async (req, res) => {
       .populate("quotes")
       .populate("features")
       .populate("participants");
+    var length = await DeliveryService.find({ $and: [query, keywordCondition] }).count();
     if (service)
       return sendSuccess(res, "get service information successfully.", {length, service});
     return sendError(res, "Service information is not found.");
