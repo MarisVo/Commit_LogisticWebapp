@@ -21,7 +21,7 @@ partnerRoute.get('/',
             const partners = await Partner.find(                
                 keywordCondition              
             ).skip(page*pageSize).limit(pageSize).sort(`${sortBy}`)
-            const length = await Partner.count()
+            const length = await Partner.find( keywordCondition ).count()
             if (partners) return sendSuccess(res, "Get partner successful.", {length,partners})
             return sendError(res, "Not information found.")
         } catch(error){

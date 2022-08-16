@@ -4,8 +4,6 @@ import { Carousel } from "antd";
 import styled from "styled-components";
 import { MainContext } from "../../context/MainContext";
 import axios from "axios";
-import { END_POINT } from "../../utils/constant";
-
 const CarouselWrapper = styled(Carousel)`
   > ul {
     margin-bottom: 30px;
@@ -28,7 +26,7 @@ export default function FastService() {
   const [services,setServices] = useState({})
   const [features,setFeatures] = useState([])
   const [participants,setParticipants] = useState([])
-  
+ 
    const [id,SetId]=useState("")
    useEffect(() => {
     setMetadata((prev) => {
@@ -42,7 +40,7 @@ export default function FastService() {
   useEffect(()=>{
      try{
       const getId = async()=>{
-          const res = await axios.get(`${END_POINT}/service`)
+          const res = await axios.get("http://localhost:8000/api/service")
           console.log(res)
           const {data} =res.data
           data.service.map(service=>{
@@ -54,16 +52,8 @@ export default function FastService() {
         }
         getId()
         if(id){
-          const getservice = async()=>{
-             const res = await axios.get(`${END_POINT}/service/${id}`)
-             console.log(res)
-             const {data} =res.data
-             console.log(data)
-             setServices(data)
-          }
-          getservice() 
         const getquote = async()=>{
-           const res = await axios.get(`${END_POINT}/quote/service/${id}`)
+           const res = await axios.get(`http://localhost:8000/api/quote/service/${id}`)
       
            const {data} =res.data
            console.log(data)
@@ -71,7 +61,7 @@ export default function FastService() {
         }
         getquote()
         const getfeature = async()=>{
-           const res = await axios.get(`${END_POINT}/feature/service/${id}`)
+           const res = await axios.get(`http://localhost:8000/api/feature/service/${id}`)
        
            const {data} =res.data
            console.log(data.feature)
@@ -79,7 +69,7 @@ export default function FastService() {
         }
         getfeature()
         const getparticipant = async()=>{
-           const res = await axios.get(`${END_POINT}/participant/service/${id}`)
+           const res = await axios.get(`http://localhost:8000/api/participant/service/${id}`)
     
            const {data} =res.data
            console.log(data)
@@ -139,7 +129,7 @@ export default function FastService() {
             <div className="flex item-start" key={feature._id}>
               <img
                 className="w-[48px] h-[48px] object-cover"
-                src={`${END_POINT}/public/${feature?.logo}`}
+                src={`http://localhost:8000/api/public/${feature?.logo}`}
                 alt=""
               />
 
@@ -191,7 +181,7 @@ export default function FastService() {
            participants.map(participant=>( 
            <div class="h-[350px] lg:h-[375px] relative rounded-[10px] overflow-hidden col-span-3 md:col-span-1">
               <img
-                src={`${END_POINT}/public/${participant?.banner}`}
+                src={`http://localhost:8000/api/public/${participant?.banner}`}
                 class="w-full h-full object-cover"
                 alt=""
               />
@@ -279,7 +269,7 @@ export default function FastService() {
               <div className="absolute top-0 bottom-0 left-0 right-0">
                 <div className="flex items-center justify-center flex-col  mt-[60px] md:mt-[100px] ">
                   <img
-                    src={`${END_POINT}/public/${quote?.avatar}`}
+                    src={`http://localhost:8000/api/public/${quote?.avatar}`}
                     alt=""
                     className="rounded-[50%]  w-[68px] h-[68px] preventselect"
                   ></img>
