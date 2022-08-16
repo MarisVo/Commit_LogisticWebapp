@@ -5686,14 +5686,14 @@ paths:
         - in: body
           name: update content
           schema:
-          type: object
-          properties:
-            name: receiverId
-              type: string
-            phone:
-              type: string
-            identity:
-              type: string
+            type: object
+            properties:
+              name:
+                type: string
+              phone:
+                type: string
+              identity:
+                type: string
       responses:
         200:
            description: Update receiver successfully. 
@@ -5714,7 +5714,35 @@ paths:
         200:
           description: delete receiver successfully.
       security:
-        - bearerAuth: []  
+        - bearerAuth: []
+  /receiver/{receiverId}:
+    put:
+      tags:
+        - receiver
+      summary: Update receiver by customer if order is waiting
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: receiverId
+          type: string
+          description: id of receiver 
+        - in: body
+          name: update content
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              phone:
+                type: string
+              identity:
+                type: string
+      responses:
+        200:
+           description: Update receiver successfully. 
+      security:
+        - bearerAuth: []
 securityDefinitions:
   bearerAuth:
     type: "apiKey"
