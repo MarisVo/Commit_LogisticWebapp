@@ -2571,7 +2571,9 @@ paths:
               district: 
                 type: string
               province:
-                type: string 
+                type: string
+              storekeeper:
+                type: string
       responses:
         200:
           description: Create new warehouse successfully.
@@ -2610,6 +2612,8 @@ paths:
               district: 
                 type: string
               province:
+                type: string
+              storekeeper:
                 type: string               
       responses:
         200:
@@ -2738,7 +2742,9 @@ paths:
               "district": "string",
               "province": "string",
               "lon": "string",
-              "lat": "string",       
+              "lat": "string",
+              "storekeeper": "string",
+              "turnover": "double",       
             }
         400:
           description: warehouse is not found.
@@ -2770,7 +2776,9 @@ paths:
               "district": "string",
               "province": "string",
               "lon": "string",
-              "lat": "string",       
+              "lat": "string",
+              "storekeeper": "string",
+              "turnover": "double",      
             }          
         400:
           description: warehouse is not found.   
@@ -2809,6 +2817,8 @@ paths:
               lon: 
                 type: string
               lat: 
+                type: string
+              storekeeper:
                 type: string
       security:
         - bearerAuth: []
