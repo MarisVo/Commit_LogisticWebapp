@@ -42,6 +42,7 @@ const WarehouseSchema = new Schema(
         },
         turnover: {
             type: Number,
+            default: 0,
         },
         inventory_product_shipments: [
             {
