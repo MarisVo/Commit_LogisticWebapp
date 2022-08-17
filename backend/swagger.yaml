@@ -2323,6 +2323,43 @@ paths:
           description: Create bill failed. 
       security:
         - bearerAuth: []
+  
+  /admin/bill/product_shipments/{billId}:
+    post:
+      tags:
+        - "bill"
+      summary: "Update a turnover, shipment of bill"
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: billId
+          type: string
+          required: true
+          description: Id of an bill 
+        - in: body
+          name: bill
+          description: a new bill.
+          schema:
+            type: object
+            properties:
+              shipment:
+                type: string 
+              turnover:
+                type: number
+      responses:
+        200:
+          description: Update bill successfully.
+          schema:
+            type: object
+            example: {
+              "shipment": "string",
+              "turnover": "number",
+            }
+        400:
+          description: Update bill failed. 
+      security:
+        - bearerAuth: []
 
   /admin/consultancy:
     get:

@@ -32,7 +32,7 @@ carAdminRoute.get('/',
                 query.plate = plate;
             }
 
-            const length = await Car.find({ $and: [query, keywordList] }).count()
+            const length = await Car.find({ $and: [query, listKeyword] }).count()
             const listCar = await Car.find({ $and: [query, listKeyword] })
                 .limit(pageSize)
                 .skip(pageSize * page)
@@ -74,16 +74,42 @@ carAdminRoute.post('/create', async (req, res) => {
         return sendError(res, errors)
 
     try {
-        const { plate, car_type, volumn, tonnage } = req.body
+        const { plate, car_type, volumn, tonnage, car_fleet, seri, expired } = req.body
         const isExist = await Car.exists({ plate })
         if (isExist)
             return sendError(res, "This car plate is already existed.")
-        else await Car.create({ plate, car_type, volumn, tonnage })
+        else await Car.create({ plate, car_type, volumn, tonnage, car_fleet, expired: "cars.insurance.expired", seri: "cars.insurance.expired"})
+        
         return sendSuccess(res, 'set car information successfully.')
     }
     catch (error) {
-        console.log(error)
+        console.log(error)  
         return sendServerError(res)
+    }
+})
+
+carAdminRoute.post("/insurance/:carId", async (req, res) => {
+    const { seri, expired } = req.body;
+
+    try {
+        const isExist = await Car.exists({
+            _id: req.params.carId,
+        })
+        console.log(req.params.carId)
+        await Car.updateOne(
+            {
+                _id: req.params.carId,
+            },
+            {
+                $push: { insurance: { seri, expired } },
+            }
+        );
+        console.log(shipment, turnover)
+        return sendSuccess(res, "upload car successfully");
+
+    return sendError(res, "Upload car failed");
+    } catch (error) {
+        return sendServerError(res, "lỗi");
     }
 })
 

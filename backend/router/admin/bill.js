@@ -36,7 +36,7 @@ billAdminRoute.get("/", async (req, res) => {
                 ],
             }
             : {};
-        
+
         if (service) {
             query.service = service;
         }
@@ -55,7 +55,7 @@ billAdminRoute.get("/", async (req, res) => {
         if (status) {
             query.status = status;
         }
-        
+
         const length = await Bill.find({ $and: [query, keywordList] }).count()
         const bills = await Bill.find({ $and: [query, keywordList] })
             .skip(pageSize * page)
@@ -63,7 +63,7 @@ billAdminRoute.get("/", async (req, res) => {
             .sort(`${sortBy}`);
 
         if (bills)
-            return sendSuccess(res, "Get bill information successfully.", {length, bills});
+            return sendSuccess(res, "Get bill information successfully.", { length, bills });
         return sendError(res, "Bill information is not found.");
     } catch (error) {
         console.log(error);
@@ -118,23 +118,64 @@ billAdminRoute.post('/create', async (req, res) => {
         //     return sendError(res, 'Driver does not exist.')
         // if (!isExistProductShipment)
         //     return sendError(res, 'Product shipment does not exist.')
-        // await Bill.create({ service, road, car, driver, shipment, turnover, status, actual_fuel, theoretical_fuel})
-        const existBill = Bill.exists({service, road, car, driver, status, actual_fuel, theoretical_fuel})
+        await Bill.create({ service, road, car, driver, status, actual_fuel, theoretical_fuel })
+        const existBill = Bill.exists({ service, road, car, driver, status, actual_fuel, theoretical_fuel })
         const billID = existBill._id
         console.log(billID)
-        // if(existBill)
-        // {
-        //     await Bill.updateOne(
-        //         {
-
-        //         }
-        //     )
-        // }
         return sendSuccess(res, 'Set bill information successfully.')
     }
     catch (error) {
         console.log(error)
         return sendServerError(res)
+    }
+});
+
+
+/**
+ * @route POST /api/admin/bill/
+ * @description create information of bill
+ * @access private
+ */
+billAdminRoute.post("/product_shipments/:billId", async (req, res) => {
+    const { shipment, turnover } = req.body;
+
+    try {
+        const isExist = await Bill.exists({
+            _id: req.params.billId,
+        })
+
+        if (!isExist) {
+                 return sendError(res, 'bill not exists')
+        }
+        const shipmentExist = await Bill.exists({
+            _id: req.params.billId,
+            "product_shipments.shipment": shipment
+        })
+        if (shipmentExist) {
+            return sendError(res, 'the bill shipment is already used.')
+        }
+
+        const turnoverExist = await Bill.exists({
+            _id: req.params.billId,
+            "product_shipments.turnover": turnover
+        })
+        if (turnoverExist) {
+            return sendError(res, 'the bill turnover is already used.')
+        }
+
+        await Bill.updateOne(
+            {
+                _id: req.params.billId,
+            },
+            {
+                $push: { product_shipments: { shipment, turnover } },
+            }
+        );
+        return sendSuccess(res, "upload bill successfully");
+
+    } catch (error) {
+        return sendServerError(res);
+        
     }
 })
 
@@ -178,13 +219,17 @@ billAdminRoute.put('/:id', async (req, res) => {
         if (errors)
             return sendError(res, errors)
 
-        const isExist = await Bill.exists({ service: service, road: road, car: car,
-                                            driver: driver, product_shipments: product_shipments, status: status})
+        const isExist = await Bill.exists({
+            service: service, road: road, car: car,
+            driver: driver, product_shipments: product_shipments, status: status
+        })
         if (isExist)
             return sendError(res, "This bill is existed.")
-        
-        await Bill.findByIdAndUpdate(id, { service: service, road: road, car: car,
-                                            driver: driver, product_shipments: product_shipments, status: status})
+
+        await Bill.findByIdAndUpdate(id, {
+            service: service, road: road, car: car,
+            driver: driver, product_shipments: product_shipments, status: status
+        })
         return sendSuccess(res, "Update bill successfully", { service, road, car, driver, product_shipments, status })
 
     } catch (error) {
