@@ -1,22 +1,36 @@
-import { useContext, useState } from "react";
-import { Form, Input, Button } from "antd";
+import { useContext, useState, useEffect } from "react";
+import { Form, Input, Button, Select } from "antd";
 import { END_POINT } from "../../../utils/constant";
 import axios from "axios";
 import { MainContext } from "../../../context/MainContext";
 
+const { Option } = Select;
 const { Item } = Form;
 function AddNewDepartment({ onClose, refetchData }) {
   const { accessToken } = useContext(MainContext);
   const [data, setData] = useState({
     name: "",
-    // director: "",
+    director: "",
     description: "",
     location: "",
     scale: "",
   });
-  console.log(data);
+  const [staffList, setStaffList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
+  const getStaffList = async () => {
+    try {
+      const res = await axios.get(`${END_POINT}/admin/staff`, {
+        headers: { authorization: `Bearer ${accessToken}` },
+      });
+      setStaffList(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getStaffList();
+  }, []);
   const acceptAddNewDepartment = async () => {
     setLoading(true);
     // setIsDisable(true);
@@ -37,12 +51,15 @@ function AddNewDepartment({ onClose, refetchData }) {
       <div className="fixed inset-0  bg-slate-600 bg-opacity-50 z-20 flex justify-center items-center">
         <div className="relative w-[700px] flex flex-col bg-white p-6 gap-y-3 animate-modal_in mx-4 rounded-xl overflow-auto">
           <div className="flex justify-between items-center gap-y-3">
-            <span className="text-xl uppercase font-bold h-fit">Thêm phòng ban mới</span>
+            <span className="text-xl uppercase font-bold h-fit">
+              Thêm phòng ban mới
+            </span>
             <Button
               size="large"
               disabled={isDisable}
               className={
-                !isDisable && "hover:bg-red-500 hover:border-red-700 hover:text-white border-none"
+                !isDisable &&
+                "hover:bg-red-500 hover:border-red-700 hover:text-white border-none"
               }
               onClick={onClose}
             >
@@ -81,26 +98,39 @@ function AddNewDepartment({ onClose, refetchData }) {
               />
             </Item>
             <Item
-              label="Tên trưởng ban"
-              name="director"
+              name="direcotr"
+              label="Trưởng ban"
               rules={[
                 {
                   required: true,
-                  message: "Vui lòng nhập tên trưởng ban",
+                  message: "Vui lòng chọn thông tin",
                 },
               ]}
             >
-              <Input
-                value={data.director}
-                onChange={(e) =>
-                  setData({
-                    ...data,
-                    director: e.target.value,
-                  })
+              <Select
+                allowClear
+                showSearch
+                onChange={(_, option) =>
+                  setData({ ...data, director: option?.value })
                 }
-              />
+              >
+                {staffList.map((staff) => (
+                  <Option value={staff._id} key={staff._id}>
+                    {staff.name}
+                  </Option>
+                ))}
+              </Select>
             </Item>
-            <Item label="Mô tả" name="description">
+            <Item
+              label="Mô tả"
+              name="description"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng không bỏ trống",
+                },
+              ]}
+            >
               <Input
                 value={data.description}
                 onChange={(e) =>
@@ -132,24 +162,25 @@ function AddNewDepartment({ onClose, refetchData }) {
               />
             </Item>
             <Item
-              label="Scale"
+              label="Số nhân viên"
               name="scale"
               rules={[
                 {
-                  // type:"number",
                   required: true,
                   message: "Vui lòng nhập số",
+                },
+                {
+                  pattern: new RegExp(/^[0-9]+$/),
+                  message: "Vui lòng chỉ nhập số",
                 },
               ]}
             >
               <Input
-                type="number"
                 value={data.scale}
                 onChange={(e) => {
-                  console.log(e);
                   setData({
                     ...data,
-                    scale: +e.target.value,
+                    scale: e.target.value,
                   });
                 }}
               />
@@ -159,7 +190,8 @@ function AddNewDepartment({ onClose, refetchData }) {
                 size="large"
                 disabled={isDisable}
                 className={
-                  !isDisable && "hover:bg-red-500 hover:border-red-700 hover:text-white rounded-lg"
+                  !isDisable &&
+                  "hover:bg-red-500 hover:border-red-700 hover:text-white rounded-lg"
                 }
                 onClick={onClose}
               >
