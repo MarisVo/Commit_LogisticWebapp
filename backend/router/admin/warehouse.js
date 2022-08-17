@@ -103,6 +103,8 @@ warehouseAdminRoute.put('/add_inventory/:warehouseId/', async (req, res) => {
         let add = {shipment: productShipment, turnover: turnover}
         let inventory_product_shipments = [...warehouse.inventory_product_shipments, add]
         await Warehouse.findByIdAndUpdate(warehouseId, {inventory_product_shipments})
+        const totalTurnover = await calculateWarehouseTurnover(warehouseId)
+        await Warehouse.findByIdAndUpdate(warehouseId, {turnover: totalTurnover})
         return sendSuccess(res, "Add product shipment successfully")
     }
     catch (error) {
@@ -127,6 +129,8 @@ warehouseAdminRoute.put('/update_inventory/:warehouseId', async (req, res) => {
             if (warehouse.inventory_product_shipments[i].shipment == productShipmentId) {
                 warehouse.inventory_product_shipments[i].status = status
                 await Warehouse.findByIdAndUpdate(warehouseId, {inventory_product_shipments: warehouse.inventory_product_shipments})
+                const totalTurnover = await calculateWarehouseTurnover(warehouseId)
+                await Warehouse.findByIdAndUpdate(warehouseId, {turnover: totalTurnover})
                 return sendSuccess(res, `${status} successfully`)
             }
         };

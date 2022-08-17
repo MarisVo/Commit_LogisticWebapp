@@ -40,6 +40,9 @@ const WarehouseSchema = new Schema(
             ref: 'staffs',
             required: true
         },
+        turnover: {
+            type: Number,
+        },
         inventory_product_shipments: [
             {
                 shipment: {

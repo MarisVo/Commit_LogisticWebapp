@@ -5,6 +5,7 @@ import ProductShipment from "../model/ProductShipment.js"
 import { verifyToken, verifyStorekeeper } from "../middleware/index.js"
 import { STAFF } from "../constant.js"
 import opencage from "opencage-api-client"
+import { calculateWarehouseTurnover } from "../service/turnoverWarehouse.js"
 const OPENCAGE_API_KEY='7f8d6f65dfd846748331d3c5e0a52070'
 const warehouseRoute = express.Router()
 
@@ -126,6 +127,8 @@ warehouseRoute.put('/add_inventory/:warehouseId/', verifyToken, verifyStorekeepe
                 let add = {shipment: productShipment, turnover: turnover}
                 let inventory_product_shipments = [...warehouse.inventory_product_shipments, add]
                 await Warehouse.findByIdAndUpdate(warehouseId, {inventory_product_shipments})
+                const totalTurnover = await calculateWarehouseTurnover(warehouseId)
+                await Warehouse.findByIdAndUpdate(warehouseId, {turnover: totalTurnover})
                 return sendSuccess(res, "Add product shipment successfully")
             }
             catch (error) {
@@ -157,6 +160,8 @@ warehouseRoute.put('/update_inventory/:warehouseId', verifyToken, verifyStorekee
                 if (warehouse.inventory_product_shipments[i].shipment == productShipmentId) {
                     warehouse.inventory_product_shipments[i].status = status
                     await Warehouse.findByIdAndUpdate(warehouseId, {inventory_product_shipments: warehouse.inventory_product_shipments})
+                    const totalTurnover = await calculateWarehouseTurnover(warehouseId)
+                    await Warehouse.findByIdAndUpdate(warehouseId, {turnover: totalTurnover})
                     return sendSuccess(res, `${status} successfully`)
                 }
             };
