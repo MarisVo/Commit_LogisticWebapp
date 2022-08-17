@@ -8,6 +8,7 @@ import AddNewOrder from '../../components/Admin/Order/AddNewOrder'
 import ConfirmModal from '../../components/ConfirmModal';
 import EditOrder from '../../components/Admin/Order/EditOrder';
 import axios from 'axios';
+import { END_POINT } from "../../utils/constant";
 import SplitProduct from '../../components/Admin/Order/SplitProduct';
 import { TOKEN } from "./adminToken";
 
@@ -15,7 +16,7 @@ import { TOKEN } from "./adminToken";
 export default function AdminOrder() {
     const { accessToken } = useContext(MainContext)
     // console.log(accessToken)
-    const api = "http://localhost:8000/api/admin/order";
+    const api = `${END_POINT}/admin/order`;
     // const apiListOrder = "http://localhost:8000/api/order/tracking/"
     const [id, setId] = useState()
     const [dataEdit, setDataEdit] = useState()
@@ -71,7 +72,7 @@ export default function AdminOrder() {
     const postDataToApi = async (items) => {
         try {
             const res = await axios({
-                url: "http://localhost:8000/api/admin/order/create",
+                url: `${END_POINT}/admin/order/create`,
                 method: "post",
                 headers: { authorization: `Bearer ${accessToken}` },
                 data: items
@@ -149,11 +150,6 @@ export default function AdminOrder() {
         })
         console.log(items);
         const oldData = {
-            // receiver: tableData[0].innerHTML,
-            // total_price: tableData[1].innerHTML,
-            // destination: tableData[2].innerHTML,
-            // service: tableData[3].innerHTML,
-            // origin: tableData[4].innerHTML,
             status: items[0].status,
             // product: items[0].product
         }
@@ -305,26 +301,6 @@ export default function AdminOrder() {
             dataIndex: 'status',
             key: "status",
             width: "12%",
-            // filters: [
-            //     {
-            //         text: 'Xác nhận',
-            //         value: 'Xác nhận',
-            //     },
-            //     {
-            //         text: 'Từ chối',
-            //         value: 'Từ chối',
-            //     },
-            // ],
-            // onFilter: (value, record) => record.status === value,
-            // render: (status) => (
-            //     <>
-            //         {status === "Xác nhận" ?
-            //             <div className="text-green-600 font-bold bg-green-200 text-center rounded-lg py-1">Xác nhận</div>
-            //             :
-            //             <div className='text-red-600 font-bold bg-red-300 text-center rounded-lg py-1'>Từ chối</div>
-            //         }
-            //     </>
-            // )
         },
         {
             title: '',
@@ -391,9 +367,9 @@ export default function AdminOrder() {
     const acceptDelete = async () => {
         setLoading(true)
         setIsDisable(true)
+        delDataToApi(id)
         try {
             await setTimeout(() => {
-                delDataToApi(id)
                 setChange(change+1)
                 setLoading(false)
                 setOpenDel(false)
@@ -413,11 +389,10 @@ export default function AdminOrder() {
         const items = {
             status:tableData[0].value,
         }
-
+        editDataToApi(items,id)
         try {
             await setTimeout(() => {
                 setChange('edit')
-                editDataToApi(items,id)
                 setLoading(false)
                 setOpenEdit(false)
                 setIsDisable(false)

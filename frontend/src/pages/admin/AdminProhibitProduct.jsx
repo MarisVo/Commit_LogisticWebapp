@@ -8,6 +8,7 @@ import ConfirmModal from '../../components/ConfirmModal';
 import EditProhibit from '../../components/Admin/ProhibitProduct/EditProhibit';
 import { AiFillEdit, AiOutlineDelete } from 'react-icons/ai'
 import { MainContext } from '../../context/MainContext';
+import { END_POINT } from "../../utils/constant";
 import { TOKEN } from "./adminToken";
 import axios from 'axios';
 
@@ -23,7 +24,7 @@ export default function AdminProhibitProduct() {
   const [loading, setLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(false)
   const [open, setOpen] = useState(false);
-  const api = "http://localhost:8000/api/prohibited-product"
+  const api = `${END_POINT}/prohibited-product`
   const [data, setData] = useState([])
 
   const [imgFile, setImgFile] = useState()
@@ -37,6 +38,7 @@ export default function AdminProhibitProduct() {
     try {
       const res = await axios.get(api)
       setData(res.data.data.listCar);
+      console.log(data);
     }
     catch (e) {
       console.log(e);
@@ -46,7 +48,7 @@ export default function AdminProhibitProduct() {
   const postData = async (data) => {
     try {
       const res = await axios({
-        url: 'http://localhost:8000/api/admin/prohibited-product/create',
+        url: `${END_POINT}/admin/prohibited-product/create`,
         method: "post",
         data: data,
         headers: { authorization: `Bearer ${accessToken}` },
@@ -60,7 +62,7 @@ export default function AdminProhibitProduct() {
   const editData = async (data, id) => {
     try {
       const res = await axios({
-        url: `http://localhost:8000/api/admin/prohibited-product/${id}`,
+        url: `${END_POINT}/admin/prohibited-product/${id}`,
         method: "put",
         headers: { authorization: `Bearer ${accessToken}` },
         data: data,
@@ -74,7 +76,7 @@ export default function AdminProhibitProduct() {
   const delData = async (id) => {
     try {
       const res = await axios({
-        url: `http://localhost:8000/api/admin/prohibited-product/${id}`,
+        url: `${END_POINT}/admin/prohibited-product/${id}`,
         method: "delete",
         headers: { authorization: `Bearer ${accessToken}` },
       })
@@ -116,9 +118,9 @@ export default function AdminProhibitProduct() {
 
   const changeFile = (e) => {
     const img = e.target.files[0];
-    // img.preview = URL.createObjectURL(img)
+    img.preview = URL.createObjectURL(img)
     setImgFile(img);
-    console.log(imgFile);
+    // console.log(imgFile);
   }
 
 
@@ -228,7 +230,7 @@ export default function AdminProhibitProduct() {
       key: "images",
       width: "10%",
       render: (e) => (
-        <img src={e} />
+       <img src={`${END_POINT}/public/${e}`} />
       )
     },
     {
@@ -270,7 +272,7 @@ export default function AdminProhibitProduct() {
   const getSearch = async (key) => {
     try {
       const res = await axios.get(`${api}?keyword=${key}`);
-      setData(res.data.data);
+      setData(res.data.data.listCar);
     }
     catch (e) {
       console.log(e);
@@ -290,17 +292,23 @@ export default function AdminProhibitProduct() {
   const acceptAddNewProhibit = async (e) => {
     setLoading(true)
     setIsDisable(true)
-    let images = new FormData();
-    images.append("images", imgFile);
-    // setImgFile(images)
+
     const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('input');
-    const newData = {
-      name: tableData[0].value,
-      detail: tableData[1].value,
-      images,
-    }
-    console.log(newData);
-    postData(newData)
+    // console.log(imgFile);
+
+    let image = new FormData();
+    
+    image.append("image", imgFile);
+    image.append("name",tableData[0].value);
+    image.append("detail",tableData[1].value);
+
+    // const newData = {
+    //   name: ,
+    //   detail: ,
+    //   image:image,
+    // }
+    // console.log(newData);
+    postData(image)
     try {
       await setTimeout(() => {
         setLoading(false)
@@ -317,17 +325,14 @@ export default function AdminProhibitProduct() {
   const acceptEditNewProhibit = async (e) => {
     setLoading(true)
     setIsDisable(true)
-    let images = new FormData();
-    images.append("images", imgFile);
+    let image = new FormData();
     const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('input');
-    const newData = {
-      name: tableData[0].value,
-      detail: tableData[1].value,
-      images,
-    }
+    image.append("image", imgFile);
+    image.append("name",tableData[0].value);
+    image.append("detail",tableData[1].value);
 
-    console.log(newData);
-    editData(newData,idItem);
+    // console.log(newData);
+    editData(image,idItem);
     try {
       await setTimeout(() => {
         setLoading(false)

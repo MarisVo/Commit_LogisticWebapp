@@ -4,6 +4,7 @@ import { Carousel } from "antd";
 import styled from "styled-components";
 import { MainContext } from "../../context/MainContext";
 import axios from "axios";
+import { END_POINT } from "../../utils/constant";
 const CarouselWrapper = styled(Carousel)`
   > ul {
     margin-bottom: 30px;
@@ -37,28 +38,24 @@ export default function StandardService() {
     });
     
   }, []);
-  /*  useEffect(()=>{
-   
-  },[]) */
   useEffect(()=>{
      try{
           const getId = async()=>{
-          const res = await axios.get("http://localhost:8000/api/service")
+          const res = await axios.get(`${END_POINT}/service`)
           console.log(res)
           const {data} =res.data
           data.service.map(service=>{
-            if(service.sub_detail==="J&T Express"){
+            if(service.name==="J&T Express"){
               console.log("servicea",service._id) 
               SetId(service._id)
             }
           })
-        /*  setServices(data.service) */
         }
         getId()
         if(id){
 
           const getservice = async()=>{
-             const res = await axios.get(`http://localhost:8000/api/service/${id}`)
+             const res = await axios.get(`${END_POINT}/service/${id}`)
              console.log(res)
              const {data} =res.data
              console.log(data)
@@ -66,7 +63,7 @@ export default function StandardService() {
           }
           getservice()
           const getquote = async()=>{
-             const res = await axios.get(`http://localhost:8000/api/quote/service/${id}`)
+             const res = await axios.get(`${END_POINT}/quote/service/${id}`)
         
              const {data} =res.data
              console.log(data)
@@ -74,7 +71,7 @@ export default function StandardService() {
           }
           getquote()
           const getfeature = async()=>{
-             const res = await axios.get(`http://localhost:8000/api/feature/service/${id}`)
+             const res = await axios.get(`${END_POINT}/feature/service/${id}`)
          
              const {data} =res.data
              console.log(data.feature)
@@ -82,7 +79,7 @@ export default function StandardService() {
           }
           getfeature()
           const getparticipant = async()=>{
-             const res = await axios.get(`http://localhost:8000/api/participant/service/${id}`)
+             const res = await axios.get(`${END_POINT}/participant/service/${id}`)
       
              const {data} =res.data
              console.log(data)
@@ -100,8 +97,8 @@ export default function StandardService() {
       <div className="h-full lg:h-[610px] w-full relative pt-12">
         <img
           className="lg:absolute lg:right-[0] lg:top-0 w-full h-full lg:w-auto object-cover right-negative-margin"
-          src="https://jtexpress.vn/themes/jtexpress/assets/images/dich-vu-detail.jpg"
-          alt="https://jtexpress.vn/themes/jtexpress/assets/images/dich-vu-detail.png"
+           src={`${END_POINT}/public/${services?.banner}`}
+          alt="#"
         />
         <div className="container mx-auto h-full flex items-center">
           <div className="w-full h-auto lg:w-[540px] relative">
@@ -115,10 +112,10 @@ export default function StandardService() {
                 className="mt-6 lg:mt-0 text-[#f5c736] font-bold text-[24px] lg:text-[32px] aos-init"
                 data-aos="fade-right"
               >
-               {/*  Dịch vụ chuyển phát tiêu chuẩn  */} {services?.name}
+             {services?.sub_detail}
               </h5>
               <span className="block my-6 lg:my-4 text-justify lg:text-left">
-                    {services?.tip}
+                    {services?.target}
               </span>
               <Link to="/tu-van/dang-ki-tu-van">
                 <button className="flex lg:inline-flex justify-center items-center bg-[#e5a663] rounded-[2px] text-white w-full lg:w-[215px]  h-[56px] mt-8 lg:mt-4">
@@ -139,10 +136,10 @@ export default function StandardService() {
         {
           features.map(feature=>
               (
-            <div className="flex item-start" key={feature._id}>
+            <div className="flex item-start" key={feature?._id}>
               <img
                 className="w-[48px] h-[48px] object-cover"
-                src={`http://localhost:8000/api/public/${feature?.logo}`}
+                src={`${END_POINT}/public/${feature?.logo}`}
                 alt=""
               />
 
@@ -151,10 +148,7 @@ export default function StandardService() {
                   {feature?.name} 
                 </h5>
                 <span className="text-justify aos-init">
-                 {/*  Giá thành của J&amp;T Express được điều chỉnh hợp lý và tiết
-                  kiệm nhất cho khách hàng. Các chủ shop, cá nhân buôn bán, mua
-                  sắm online có cơ hội tối đa hóa lợi nhuận trong hoạt động kinh
-                  doanh của mình. */} {feature?.detail}
+                {feature?.detail}
                 </span>
               </div>
             </div>
@@ -164,7 +158,7 @@ export default function StandardService() {
             <div>
               <img
                 className="w-auto h-auto object-cover hidden lg:block"
-                src="https://jtexpress.vn/themes/jtexpress/assets/images/service_detail_logo.png"
+                src={`${END_POINT}/public/${services?.logo}`}
                 alt=""
               />
             </div>
@@ -188,7 +182,7 @@ export default function StandardService() {
             className="block text-center mt-5 mb-4 w-full lg:w-[578px]  mx-auto aos-init text-base"
             data-aos="zoom-in"
           >
-           {services.target}
+           {services.tip}
           </span>
           <div className="w-[27px] h-[3px] bg-[#f5c736] mx-auto mb-8"></div>
           <div className="wrapper_objects_service grid  grid-cols-2 gap-[20px]  ">
@@ -197,14 +191,14 @@ export default function StandardService() {
 
             <div className="h-[315px] lg:h-[244px]  relative rounded-[10px] overflow-hidden col-span-2 md:col-span-1" key={participant._id}>
               <img
-                src={`http://localhost:8000/api/public/${participant?.banner}`}
+                src={`${END_POINT}/public/${participant?.banner}`}
                 className="w-full h-full object-cover"
                 alt=""
               />
 
               <div className="object-service-detail absolute top-[60%] translate-y-[-60%] left-[10%] text-white w-[170px] lg:w-[320px]">
                 <span className="block font-bold mb-3 text-[20px]">
-                  {participant.name}
+                  {participant?.name}
                 </span>
 
                 <span
@@ -212,7 +206,7 @@ export default function StandardService() {
                   data-aos-duration={1000}
                   className="aos-init"
                 >
-                 {participant.description}
+                 {participant?.description}
                 </span>
               </div>
             </div>
@@ -277,7 +271,7 @@ export default function StandardService() {
           {
             quotes.map(quote=>(
 
-            <div className="relative" key={quote._id}>
+            <div className="relative" key={quote?._id}>
               <img
                 src="https://jtexpress.vn/themes/jtexpress/assets/images/slider-tuyen-dung.png"
                 className="w-full h-[380px] md:h-[500px] object-cover"
@@ -286,7 +280,7 @@ export default function StandardService() {
               <div className="absolute top-0 bottom-0 left-0 right-0">
                 <div className="flex items-center justify-center flex-col  mt-[60px] md:mt-[100px] ">
                   <img
-                    src={`http://localhost:8000/api/public/${quote?.avatar}`}
+                    src={`${END_POINT}/public/${quote?.avatar}`}
                     alt=""
                     className="rounded-[50%]  w-[68px] h-[68px] preventselect"
                   ></img>

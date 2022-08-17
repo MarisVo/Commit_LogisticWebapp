@@ -4,6 +4,7 @@ import { FormGroup, Input, Label } from 'reactstrap';
 import isEmpty from 'validator/lib/isEmpty';
 import isEmail from 'validator/lib/isEmail';
 import axios from 'axios';
+import { END_POINT } from "../../utils/constant";
 
 const RecruitForm = ({ id }) => {
 
@@ -13,8 +14,9 @@ const RecruitForm = ({ id }) => {
     const [phone, setPhone] = useState('');
     const [message, setmessage] = useState('');
     const [validationMsg, setValidationMsg] = useState({});
-    const [file, setFile] = useState();
+    const [file, setFile] = useState(null);
     const [option, setOption] = useState('');
+    const [inform,setInform]= useState("")
 
     const validateAll = () => {
         const msg = {};
@@ -40,9 +42,9 @@ const RecruitForm = ({ id }) => {
             msg.message = 'Vui lòng nhập tin nhắn của bạn ';
         }
 
-        // if (isEmpty(file)) {
-        //     msg.file = 'Vui lòng gửi file CV của bạn ';
-        // }
+        if (file === null) {
+            msg.file = 'Vui lòng gửi file CV của bạn ';
+        }
 
         if (isEmpty(option)) {
             msg.option = 'Vui lòng điền nguồn của bạn ';
@@ -56,11 +58,14 @@ const RecruitForm = ({ id }) => {
     const postData = async (data, id) => {
         try {
             const res = await axios({
-                url:`http://localhost:8000/api/applicant/${id}`,
+                url: `${END_POINT}/applicant/${id}`,
                 method: "post",
                 data: data,
                 // headers: { authorization: `Bearer ${accessToken}` },
             })
+            if(res.status===200){
+                setInform("Nộp đơn ứng tuyển thành công")
+            }
         }
         catch (e) {
             console.log(e);
@@ -69,43 +74,45 @@ const RecruitForm = ({ id }) => {
 
     useEffect(() => {
         console.log(id);
-    })
+    }, [])
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const isValid = validateAll();
         if (!isValid) return;
 
-        const items = {
-            firstName: ho,
-            lastName: name,
-            phoneNumber: phone ,
-            email: email,
-            source: option,
-            message: message,
-            status: "pending",
-        }
-        postData(items,id);
+        const formData = new FormData();
+        formData.append("firstName", ho);
+        formData.append("lastName", name);
+        formData.append("phoneNumber", phone);
+        formData.append("email", email);
+        formData.append("source", option);
+        formData.append("message", message);
+        formData.append("status", "pending");
+        formData.append("file", file);
+        postData(formData, id);
 
-        setName('');
-        setEmail('');
-        setPhone('');
-        setmessage('');
-        setHo('');
-        setOption('');
+        await setTimeout(() => {
+            setName('');
+            setEmail('');
+            setPhone('');
+            setmessage('');
+            setHo('');
+            setOption('');
+        }, 2000)
     };
 
     return (
-        <Formik>
+        <Formik className="p-[10px]">
             {() => {
                 return (
-                    <div className="bg-[#fff] p-4 sm:p-7 lg:p-14 w-[90%] lg:w-auto rounded-lg absolute top-[50%] left-[50%]  translate-y-[-50%]  translate-x-[-50%]">
+                    <div className="bg-[#fff] p-3 sm:p-7 lg:p-14 w-[90%] lg:w-auto rounded-lg absolute top-[50%] left-[50%]  translate-y-[-50%]  translate-x-[-50%] mt-[90px]">
                         <h3 className="mb-2 text-3xl font-bold lg:mb-5">Đăng ký ứng tuyển</h3>
                         <Form onSubmit={handleSubmit} className="gap-4 lg:grid lg:grid-cols-2">
                             <FormGroup className="flex flex-col mb-0 lg:mb-3">
                                 <Label for="name">Họ</Label>
                                 <Input
-                                    className="py-2 border placeholder:pl-2 xl:w-[260px] lg:w-[200px]"
+                                    className="py-2 border placeholder:pl-2 xl:w-[210px] lg:w-[185px]"
                                     id="name"
                                     type="text"
                                     name=""
@@ -119,7 +126,7 @@ const RecruitForm = ({ id }) => {
                             <FormGroup className="flex flex-col mb-0 lg:mb-3">
                                 <Label for="name">Tên</Label>
                                 <Input
-                                    className="py-2 border placeholder:pl-2 xl:w-[260px] lg:w-[200px]"
+                                    className="py-2 border placeholder:pl-2 xl:w-[210px] lg:w-[185px]"
                                     id="name"
                                     type="text"
                                     name=""
@@ -133,7 +140,7 @@ const RecruitForm = ({ id }) => {
                             <FormGroup className="flex flex-col mb-0 lg:mb-3">
                                 <Label for="email">Email *</Label>
                                 <Input
-                                    className="py-2 border placeholder:pl-2 xl:w-[260px] lg:w-[200px]"
+                                    className="py-2 border placeholder:pl-2 xl:w-[210px] lg:w-[185px]"
                                     type="email *"
                                     name="email"
                                     id="email"
@@ -147,7 +154,7 @@ const RecruitForm = ({ id }) => {
                             <FormGroup className="flex flex-col mb-0 lg:mb-3">
                                 <Label for="phone">Số điện thoại *</Label>
                                 <Input
-                                    className="py-2 border placeholder:pl-2 xl:w-[260px] lg:w-[200px]"
+                                    className="py-2 border placeholder:pl-2 xl:w-[210px] lg:w-[185px]"
                                     type="number"
                                     name="phone"
                                     id="phone"
@@ -177,7 +184,7 @@ const RecruitForm = ({ id }) => {
                             <FormGroup className="flex flex-col mb-0 lg:mb-3">
                                 <Label for="message">Thông điệp</Label>
                                 <Input
-                                    className="py-2 border placeholder:pl-2 xl:w-[260px] lg:w-[200px]"
+                                    className="py-2 border placeholder:pl-2 xl:w-[210px] lg:w-[185px]"
                                     type="text"
                                     value={message}
                                     placeholder="Thông điệp"
@@ -189,20 +196,21 @@ const RecruitForm = ({ id }) => {
                             <FormGroup className="flex flex-col mb-0 lg:mb-3">
                                 <Label for="phone">CV *</Label>
                                 <Input
-                                    className="py-2 border placeholder:pl-2 xl:w-[260px] lg:w-[200px]"
+                                    className="py-2 border placeholder:pl-2 xl:w-[210px] lg:w-[185px]"
                                     type="file"
                                     name="file"
                                     id="file"
                                     placeholder="Số điện thoại"
                                     onChange={(e) => setFile(e.target.files[0])}
                                 />
-                                {/* <p className="mt-2 text-sm text-red-400 ">{validationMsg.file}</p> */}
+                                <p className="mt-2 text-sm text-red-400 ">{validationMsg.file}</p>
                             </FormGroup>
 
                             <FormGroup className=" col-span-full">
                                 <button type="submit" className="w-[100%] bg-[#e5a663] py-2 sm:mt-5 rounded-lg">
                                     Gửi đăng ký ứng tuyển
                                 </button>
+                                <p className="mt-2 text-xl text-green-400 text-center p-[3px]">{inform}</p>
                             </FormGroup>
                         </Form>
                     </div>

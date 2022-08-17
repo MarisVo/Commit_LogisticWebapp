@@ -24,7 +24,6 @@ const Footer = () => {
     const getInfor = async () => {
       try {
         const res = await axios.get(`${END_POINT}/contactUs`);
-        console.log(res);
         if (res.status === 200) return setInformation(res.data.data);
       } catch (error) {
         console.log(error);
