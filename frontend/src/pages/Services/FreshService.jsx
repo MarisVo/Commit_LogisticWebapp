@@ -45,7 +45,7 @@ export default function FreshService() {
           console.log(res)
           const {data} =res.data
           data.service.map(service=>{
-            if(service.sub_detail==="J&T Fresh"){
+            if(service.name==="TKT Fresh"){
               console.log("servicea",service._id) 
               SetId(service._id)
             }
@@ -97,7 +97,7 @@ export default function FreshService() {
       <div className="h-full lg:h-[610px] w-full relative pt-12">
         <img
           className="lg:absolute lg:right-[0px] lg:top-10 w-full h-full lg:w-auto object-cover right-negative-margin"
-          src="https://jtexpress.vn/themes/jtexpress/assets/images/fresh_service.png"
+          src={`${END_POINT}/public/${services?.banner}`}
           alt=""
         />
         <div className="container mx-auto h-full flex items-center">
@@ -112,10 +112,10 @@ export default function FreshService() {
                 className="mt-6 lg:mt-0 text-[#f5c736] font-bold text-[24px] lg:text-[32px] aos-init"
                 data-aos="fade-right"
               >
-                {services?.name}
+                {services?.sub_detail}
               </h5>
-              <span className="block my-6 lg:my-4 text-justify lg:text-left ">
-                {services?.tip}
+              <span className="block my-6 lg:my-4 text-justify lg:text-left">
+                {services?.target}
               </span>
               <Link to="/tu-van/dang-ki-tu-van">
                 <button className="flex lg:inline-flex justify-center items-center bg-[#e5a663] rounded-[2px] text-white w-full lg:w-[215px]  h-[56px] mt-8 lg:mt-4">
@@ -155,6 +155,13 @@ export default function FreshService() {
               )
           )
         }   
+         <div>
+              <img
+                className="w-auto h-auto object-cover hidden lg:block"
+                src={`${END_POINT}/public/${services?.logo}`}
+                alt=""
+              />
+            </div>
           </div>
           <img
             src="https://jtexpress.vn/themes/jtexpress/assets/images/car-service-detail.png"
@@ -175,7 +182,7 @@ export default function FreshService() {
             className="block text-center mt-5 mb-4 w-full lg:w-[578px] mx-auto aos-init text-base"
             data-aos="zoom-in"
           >
-            {services.target}
+            {services?.tip}
           </span>
           <div className="w-[27px] h-[3px] bg-[#f5c736] mx-auto mb-8"></div>
           <div className="wrapper_objects_service grid  grid-cols-2 gap-[20px]  ">
@@ -190,14 +197,14 @@ export default function FreshService() {
                 />
                 <div class="object-service-detail absolute top-[60%] translate-y-[-60%] left-[10%] text-white w-[170px] lg:w-[320px]">
                   <span class="block Montserrat-Bold mb-3 text-[20px]">
-                      {participant.name}
+                      {participant?.name}
                   </span>
                   <span
                     data-aos="fade-up"
                     data-aos-duration="1000"
                     class="aos-init"
                   >
-                   {participant.description}
+                   {participant?.description}
                   </span>
                 </div>
               </div>
@@ -262,7 +269,7 @@ export default function FreshService() {
             {
             quotes.map(quote=>(
 
-            <div className="relative" key={quote._id}>
+            <div className="relative" key={quote?._id}>
               <img
                 src="https://jtexpress.vn/themes/jtexpress/assets/images/slider-tuyen-dung.png"
                 className="w-full h-[380px] md:h-[500px] object-cover"

@@ -46,7 +46,7 @@ function About() {
                     <div className="flex flex-col items-center text-center px-3 gap-y-3 ">
                         <img src='https://jtexpress.vn/themes/jtexpress/assets/images/1000xe.png' alt="vehicle-pic" className='shadow-xl rounded-full' />
                         <span className="text-3xl text-primary">850+</span>
-                        <span x-data="{ show: false }" x-show="show" x-init="setTimeout(() => show = true, 3000)"></span>
+                        {/* <span x-data="{ show: false }" x-show="show" x-init="setTimeout(() => show = true, 3000)"></span> */}
                         <span className="text-xl uppercase">phương tiện</span>
                     </div>
                     <div className="flex flex-col items-center text-center px-3 gap-y-3">

@@ -4,7 +4,7 @@ import Entypo from "react-native-vector-icons/Entypo"
 import Icon from "react-native-vector-icons/FontAwesome";
 const windowwidth = Dimensions.get("window").width
 const windowheight = Dimensions.get("window").height
-const Login = ({navigation}) => {
+const ForgetPassword = ({navigation}) => {
     const [email,setEmail] = useState("")
     const [password,setPassword] = useState("")
     const [passHidden,setPassHidden] = useState("")
@@ -18,7 +18,7 @@ const Login = ({navigation}) => {
                     <Text style={{width:"5%",height:"5%",borderRadius:50,backgroundColor:"#ffd124"}}>.</Text>
             </View>
             <View style={{width:"100%",height:"6%",backgroundColor:"#f6f8f6",borderTopRightRadius:45,borderTopLeftRadius:45}}>
-                <Text style={{fontSize:25,textAlign:"center",fontWeight:"900",color:"#3a3c3f",marginBottom:-8}}>Đăng ký tài khoản</Text>
+                <Text style={{fontSize:25,textAlign:"center",fontWeight:"900",color:"#3a3c3f",marginBottom:-8}}>Quên tài khoản</Text>
             </View>
             <View style={{width:"100%",height:"100%",backgroundColor:"#ffd124",borderTopRightRadius:45,borderTopLeftRadius:45}}>
                 <View style={{width:"100%",height:50,alignItems:"center",justifyContent:"center",marginTop:20}}>
@@ -29,6 +29,27 @@ const Login = ({navigation}) => {
                          placeholder="Email/SĐT"
                         autoCapitalize={false}
                      />
+                </View>
+                <View style={{width:windowwidth-70,marginLeft:35,height:45,alignItems:"center",justifyContent:"space-between",marginTop:10,flexDirection:"row"}}>
+                  <View style={{flexDirection:'row'}}>
+                        <TextInput style={{width:100,borderBottomWidth:1,height:"100%",fontSize:20,textAlign:"left"}}
+                            placeholder="Nhập OTP"
+                            autoCapitalize={false}
+                            secureTextEntry={passHidden?true:false}
+                        />
+                        <TouchableOpacity style={{marginLeft:8,paddingHorizontal:30,paddingVertical:4,backgroundColor:"white",borderRadius:8,alignItems:"center",justifyContent:"center"}} >
+                    <Text className={{color:"white"}}>Gửi</Text>
+                    </TouchableOpacity>
+
+                  </View>
+                  <View style={{flexDirection:'row'}}>
+                        <TextInput style={{width:110,borderBottomWidth:1,height:"100%",fontSize:20,textAlign:"left"}}
+                            placeholder="Mã số thuế"
+                            autoCapitalize={false}
+                            secureTextEntry={passHidden?true:false}
+                        />
+                  </View>
+                
                 </View>
                 <View style={{width:windowwidth-70,marginLeft:35,height:45,borderBottomWidth:1,alignItems:"center",justifyContent:"center",marginTop:10,flexDirection:"row"}}>
                      <TextInput style={{flex:1,height:"100%",fontSize:20}}
@@ -45,36 +66,39 @@ const Login = ({navigation}) => {
                     }
                      </TouchableOpacity>
                 </View>
-                <View style={{width:windowwidth-70,marginLeft:35,height:"5%",alignItems:"center",justifyContent:"flex-end",marginTop:10,flexDirection:"row"}}>
-                  <TouchableOpacity   onPress={()=>{
-                        navigation.navigate("ForgetPassword")
-                    }}>
-                   <Text className={{right:0,position:"absolute",color:"black"}}>Quên mật khẩu?</Text>
-                  </TouchableOpacity>
+                <View style={{width:windowwidth-70,marginLeft:35,height:45,borderBottomWidth:1,alignItems:"center",justifyContent:"center",marginTop:10,flexDirection:"row"}}>
+                     <TextInput style={{flex:1,height:"100%",fontSize:20}}
+                         placeholder="Xác nhận mật Khẩu"
+                        autoCapitalize={false}
+                        secureTextEntry={passHidden?true:false}
+                     />
+                     <TouchableOpacity  style={{height:"100%",aspectRatio:1,alignItems:"center",justifyContent:"center"}}
+                           onPress={()=>setPassHidden(!passHidden)}
+                     >
+                        {passHidden ? 
+                          <Icon name="eye"  style={{width:20,height:15,fontSize:20}}  />
+                        :    <Icon name="eye-slash"  style={{width:20,height:15,fontSize:20}}  />
+                    }
+                     </TouchableOpacity>
                 </View>
             
-                  <TouchableOpacity style={{backgroundColor:"white",borderRadius:80 ,width:windowwidth-70,marginLeft:35,height:48,alignItems:"center",justifyContent:"center",marginTop:10}}>
-                      <Text className={{position:"absolute",color:"black",fontWeight:"900"}}>Login</Text>
+                  <TouchableOpacity style={{backgroundColor:"white",marginTop:8,borderRadius:80 ,width:windowwidth-70,marginLeft:35,height:48,alignItems:"center",justifyContent:"center",marginTop:10}}>
+                      <Text className={{position:"absolute",color:"black",fontWeight:"900"}}>Xác nhận</Text>
                   </TouchableOpacity>
                 <View style={{width:windowwidth-70,marginLeft:35,height:"5%",alignItems:"center",justifyContent:"center",marginTop:10}}>
                 
                    <Text className={{position:"absolute",color:"black",fontWeight:"700"}}>Hoặc</Text>
                 
                 </View>
-                <View style={{width:windowwidth-70,marginLeft:35,height:"5%",alignItems:"center",justifyContent:"center",marginTop:20,flexDirection:"row"}}>
-                
-                 <Image source={require("../images/google.png")} style={{width:35,height:35,borderRadius:50,marginRight:10}} />
-                 <Image source={require("../images/face.png")} style={{width:35,height:35,borderRadius:50}} />
-                
-                </View>
+             
                  <View style={{width:windowwidth-70,marginLeft:35,height:"5%",alignItems:"center",justifyContent:"center",marginTop:20,flexDirection:"row"}}>
-                   <Text className={{position:"absolute",color:"white"}}>Bạn chưa có tài khoản?</Text>
-                  <TouchableOpacity style={{marginLeft:4}} 
+                   <Text className={{position:"absolute",color:"white"}}>Bạn đã có tài khoản?</Text>
+                  <TouchableOpacity style={{marginLeft:4,color:"white"}} 
                       onPress={()=>{
-                        navigation.navigate("Register")
+                        navigation.navigate("Login")
                     }}
                   >
-                   <Text className={{position:"absolute",color:"white"}}>Đăng ký</Text>
+                   <Text className={{position:"absolute",color:"white"}}>Đăng nhập</Text>
                   </TouchableOpacity>
                 </View>
             </View>
@@ -82,4 +106,4 @@ const Login = ({navigation}) => {
     );
 };
 
-export default Login;
+export default ForgetPassword;
