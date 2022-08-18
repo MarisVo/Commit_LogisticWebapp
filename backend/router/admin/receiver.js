@@ -72,30 +72,11 @@ receiverAdminRoute.put('/:id', async (req, res) => {
     }
     catch (err) {
         if (err.codeName == "DuplicateKey") {
-            sendServerError(res, (err.keyValue.identity + " identity value is existed") )
+            return sendError(res, (err.keyValue.identity + " identity value is existed") )
         } else {
-            sendServerError(res, err.message)
+            return sendServerError(res)
         }
     }
 });
-
-// //! Create receiver
-// receiverAdminRoute.post('/create/:name/:phone/:identity', async (req, res) => {
-//     let {name, phone, identity} = req.params;
-//     let receiver = new Receiver({
-//         name: name,
-//         phone: phone,
-//         identity: identity
-//     })
-//     receiver.save()
-//     .then((result) => {
-//         res.send("receiver created successfully")
-//     })
-//     .catch((err) => {
-//         res.send(err.keyValue.identity);
-//     })
-// })
-
-
 
 export default receiverAdminRoute;
