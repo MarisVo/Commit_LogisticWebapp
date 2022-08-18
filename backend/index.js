@@ -6,8 +6,8 @@ import YAML from 'yamljs'
 import { Server } from 'socket.io'
 import session from "express-session"
 import bodyParser from "body-parser"
-import path from "path"
-const __dirname = path.resolve(path.dirname(''))
+// import path from "path"
+// const __dirname = path.resolve(path.dirname(''))
 import authRoute from "./router/auth.js"
 import adminRoute from "./router/admin/index.js"
 import trackingRoute from "./router/tracking.js"
@@ -110,16 +110,20 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/service', serviceRoute)
     .use('/api/customer', customerRoute)
 
-app.use(express.static(path.join(__dirname, process.env.BUILD_DIST)));
-
-app.get('/*', async (req, res) => {
-    try {
-        res.sendFile(path.join(__dirname, process.env.BUILD_DIST + 'index.html'))
-    } catch (error) {
-        console.log(error.message)
-        res.sendStatus(500)
-    }
+app.use('/*', async (req, res) => {
+    res.status(501).send("Don't implement.")
 })
+
+// app.use(express.static(path.join(__dirname, process.env.BUILD_DIST)));
+
+// app.get('/*', async (req, res) => {
+//     try {
+//         res.sendFile(path.join(__dirname, process.env.BUILD_DIST + 'index.html'))
+//     } catch (error) {
+//         console.log(error.message)
+//         res.sendStatus(500)
+//     }
+// })
 
 io.on(NOTIFY_EVENT.connection, socket => {
     // console.log('Connected to a user successfully.')
