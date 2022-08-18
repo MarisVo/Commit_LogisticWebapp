@@ -230,7 +230,11 @@ export default function AdminProhibitProduct() {
       key: "images",
       width: "10%",
       render: (e) => (
-       <img src={`http://localhost:8000/api/public/${e}`} />
+        <>
+          {e && (
+            <img src={`http://localhost:8000/api/public/${e}`} />
+          )}
+        </>
       )
     },
     {
@@ -297,10 +301,10 @@ export default function AdminProhibitProduct() {
     // console.log(imgFile);
 
     let image = new FormData();
-    
+
     image.append("image", imgFile);
-    image.append("name",tableData[0].value);
-    image.append("detail",tableData[1].value);
+    image.append("name", tableData[0].value);
+    image.append("detail", tableData[1].value);
 
     // const newData = {
     //   name: ,
@@ -328,11 +332,11 @@ export default function AdminProhibitProduct() {
     let image = new FormData();
     const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('input');
     image.append("image", imgFile);
-    image.append("name",tableData[0].value);
-    image.append("detail",tableData[1].value);
+    image.append("name", tableData[0].value);
+    image.append("detail", tableData[1].value);
 
     // console.log(newData);
-    editData(image,idItem);
+    editData(image, idItem);
     try {
       await setTimeout(() => {
         setLoading(false)
