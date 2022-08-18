@@ -184,10 +184,12 @@ applicantAdminRoute.get("/", async (req, res) => {
       .limit(pageSize)
       .skip(pageSize * page)
       .sort(`${sortBy}`);
+    var length = await Applicant.find({ $and: [query, keywordCondition] }).count();
     if (applicant)
       return sendSuccess(
         res,
         "Get applicant information successfully.",
+        length,
         applicant
       );
     return sendError(res, "Applicant information is not found.");

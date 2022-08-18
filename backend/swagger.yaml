@@ -79,6 +79,8 @@ tags:
   description: "Endpoint PriceList"
 - name: "customer"
   description: "Endpoint Customer"
+- name: "carFleet"
+  description: "Endpoint Carfleet"
 paths:
   /auth/verify-token:
     post:
@@ -5625,6 +5627,190 @@ paths:
           description: Update staff information failed.
       security:
         - bearerAuth: []
+  /admin/carFleet/{carId}:
+    post:
+      tags:
+        - "carFleet"
+      summary: "Create a new carFleet"
+      parameters:
+        - in: body
+          name: carFleet
+          description: a new carFleet.
+          schema:
+            type: object
+            required: true
+            properties:
+              name:
+                type: string
+                required: true
+              director:
+                type: object
+      responses:
+        200:
+          description: Create carFleet successfully.
+          schema:
+            type: object
+            example: {
+            "name": "string",
+            "director": "object",
+            }
+        400:
+          description: Create carFleet failed.  
+      security:
+        - bearerAuth: [] 
+  /admin/carFleet/{carFleetId}:
+    put:
+      tags:
+        - "carFleet"
+      summary: update carFleet
+      produces:
+        - application/json        
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: carFleetId
+          type: string
+          required: true
+          description: Id of a carFleet
+        - in: body
+          name: carFleet
+          description: an updated carFleet.
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                required: true
+              director:
+                type: object
+      responses:
+        200:
+          description: update carFleet successfully.
+          schema:
+            type: object
+            example: {
+            "name": "string",
+            "director": "object",
+            }
+        400:
+          description: carFleet cannot be found. 
+      security:
+        - bearerAuth: []                         
+    delete:
+      tags:
+        - "carFleet"
+      summary: "Delete an existing carFleet"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: carFleetId
+          type: string
+          required: true
+          description: Id of a carFleet 
+      responses:
+        200:
+          description: Delete carFleet successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+        400:
+          description: Delete carFleet failed.      
+      security:
+        - bearerAuth: [] 
+
+  /api/admin/carFleet/car/{carFleetId}:
+    get:
+      tags:
+        - "carFleet"
+      summary: get a single car turnover information
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: carFleetId
+          type: string
+          required: true
+          description: Id of a carFleet
+      responses:
+        200:
+          description: get carFleet information successfully.
+          schema:
+            type: object
+            example: {
+            "turnover": "number",
+            "director": "object",
+            }
+        400:
+          description: car turnover information is not found.
+  /api/admin/carFleet/{carFleetId}:
+    get:
+      tags:
+        - "carFleet"
+      summary: get car fleet turnover information
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: carFleetId
+          type: string
+          required: true
+          description: Id of carFleet
+      responses:
+        200:
+          description: get carFleet information successfully.
+          schema:
+            type: object
+            example: {
+            "turnover": "number",
+            "director": "object",
+            }
+        400:
+          description: cars turnover information is not found.
+  /admin/carFleet/car/{id}:
+    put:
+      tags:
+        - "carFleet"
+      summary: update carFleet
+      produces:
+        - application/json        
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: Id of a carFleet
+        - in: query
+          name: plate
+          type: string
+          required: true
+          description: Plate of a car
+        - in: body
+          name: turnover
+          description: an updated carFleet turnover.
+          type: number
+      responses:
+        200:
+          description: update carFleet successfully.
+          schema:
+            type: object
+            example: {
+            "car": "object",
+            "turnover": "number",
+            }
+        400:
+          description: carFleet cannot be found. 
+      security:
+        - bearerAuth: []         
+
 
 
 securityDefinitions:
