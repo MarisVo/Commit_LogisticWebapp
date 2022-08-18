@@ -172,35 +172,37 @@ productShipmentAdminRoute.post('/create/:product_id', async (req, res) => {
                 return sendServerError(res, "City names do not match")
         }
         //count by calculateShipmentFee function and retunr value 
-        //let value = calculateShipmentFee(distance = distance, quantity = productQuantity, price = price, unit = productUnit, tax = [], surcharge = [])
-        console.log(distance,"==", productQuantity,"==", price,"==", productUnit)
+        //distance = distance, quantity = productQuantity, price = price, unit = productUnit
+        let value = calculateShipmentFee(distance, productQuantity, price, productUnit)
 
         //get all productshipment in product
         const productShipment = await Product.findById({ _id: product_id })
         const productShipmentQuantity = productShipment.product_shipments
         // console.log(productShipmentQuantity)
         //get all product by productID in productshipment
+        
         let temp = 0
         for (let i = 0; i < productShipmentQuantity.length; i++) {
-            const quantityProductShipment = await ProductShipment.findById({ _id: (productShipmentQuantity[i].toString()) }, { quantity: true })
+            const quantityProductShipment = await ProductShipment.findById({ _id: (productShipmentQuantity[i]) })
+            // console.log(quantityProductShipment.quantity)
             temp += quantityProductShipment.quantity
         }
         let quantityPresent = Number(quantity) + temp
+        
         //compare
         if (productQuantity >= quantityPresent) {
-            // const ps = await ProductShipment.create({ quantity })
-            // //update product
-            // const updateProduct = await Product.findOneAndUpdate(
-            //     { _id: product_id },
-            //     { $push: { product_shipments: ps } }
-            //   );
-            // if (!updateProduct)
-            //     return sendServerError(res, "Update failed")
+            const ps = await ProductShipment.create({ quantity, value })
+            //update product
+            const updateProduct = await Product.findOneAndUpdate(
+                { _id: product_id },
+                { $push: { product_shipments: ps } }
+              );
+            if (!updateProduct)
+                return sendServerError(res, "Update failed")
             return sendSuccess(res, 'Set product shipment information successfully')
         }
         else
-            // return sendError(res, "Product_shipment quantity over load current product quantity. Current product quantity: " + productQuantity)
-            return sendError(res, "Product_shipment quantity over load current product quantity. Current product quantity: ", price)
+            return sendError(res, "Product_shipment quantity over load current product quantity. Current product quantity: " + productQuantity)
 
     }
     catch (error) {
@@ -226,12 +228,50 @@ productShipmentAdminRoute.put('/:id', async (req, res) => {
         //get quantity of product
         const productid = await Product.findById({ _id: productId })
         const productQuantity = productid.quantity
-        //console.log(productQuantity)
+        const productUnit = productid.unit
+        const productOrder = productid.order.toString()
+
+        //get object order from product
+        const orderID = await Order.findById({ _id: productOrder })
+        const orderService = orderID.service.toString()
+
+        //get price, distance from DeliveryService
+        const delivery = await DeliveryService.findById({ _id: orderService })
+
+        const deliveryPriceID = delivery.price.toString()
+        const deliveryDistanceID = delivery.distances
+
+        const price = await Price.findById({ _id: deliveryPriceID })
+
+        //get origin, destination from Order collection
+        const orderIDOrigin = orderID.origin
+        const orderIDDestination = orderID.destination
+
+        //compare distance(fromProvince, toProvince) with order (origin, destination)
+        let distance
+        for (let i = 0; i < deliveryDistanceID.length; i++) {
+            const fromProvince = await Distance.findById({ _id: deliveryDistanceID[i].toString() })
+            const toProvince = await Distance.findById({ _id: deliveryDistanceID[i].toString() })
+            //console.log(fromProvince.fromProvince, toProvince.toProvince)
+            if (fromProvince.fromProvince == orderIDOrigin
+                && toProvince.toProvince == orderIDDestination) {
+                const temp = await Distance.findById({ _id: deliveryDistanceID[i].toString() })
+                distance = temp
+            }
+            else
+                return sendServerError(res, "City names do not match")
+        }
+
+        //count by calculateShipmentFee function and retunr value 
+        //distance = distance, quantity = productQuantity, price = price, unit = productUnit
+        let value = calculateShipmentFee(distance, productQuantity, price, productUnit)
 
         //get all productshipment in product
         const productShipment = await Product.findById({ _id: productId })
         const productShipmentQuantity = productShipment.product_shipments
         //console.log(productShipmentQuantity)
+
+        //get all product by productID in productshipment
         let temp = 0
         for (let i = 0; i < productShipmentQuantity.length; i++) {
             if (productShipmentQuantity[i].toString() != id) {
@@ -240,12 +280,11 @@ productShipmentAdminRoute.put('/:id', async (req, res) => {
                 temp += quantityProductShipment.quantity
             }
         }
-        console.log(temp)
         let quantityPresent = Number(quantity) + temp
         //console.log(quantityPresent)
         //Compare
         if (productQuantity >= quantityPresent) {
-            await ProductShipment.findByIdAndUpdate(id, { quantity: quantity })
+            await ProductShipment.findByIdAndUpdate(id, { quantity, value })
             return sendSuccess(res, 'Update product shipment information successfully')
         }
         else

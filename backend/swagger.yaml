@@ -1465,17 +1465,29 @@ paths:
           schema:
             type: object
             required:
+              - plate
+              - car_type 
               - volumn
-              - tonnage 
-              - car_type
+              - tonnage
+              - car_fleet
+              - seri
+              - expired
             properties:
+              plate: 
+                  type: string
+              car_type:
+                type: string
+                enum: ['8_ton', '20_ton']
               volumn: 
                   type: number
               tonnage:
                   type: number
-              car_type:
-                type: string
-                enum: ['8_ton', '20_ton']
+              car_fleet:
+                  type: string
+              seri:
+                  type: string
+              expired:
+                  type: string
         - in: formData
       responses:
         200:
@@ -1529,20 +1541,35 @@ paths:
         - application/json
       parameters:
         - in: body
-          name: car
+          name: road
           description: a new car.
           schema:
             type: object
+            required:
+              - plate
+              - car_type 
+              - volumn
+              - tonnage
+              - car_fleet
+              - seri
+              - expired
             properties:
-              plate:
-                type: string 
+              plate: 
+                  type: string
               car_type:
                 type: string
                 enum: ['8_ton', '20_ton']
-              volumn:
-                type: number 
+              volumn: 
+                  type: number
               tonnage:
-                type: number 
+                  type: number
+              car_fleet:
+                  type: string
+              seri:
+                  type: string
+              expired:
+                  type: string
+        - in: formData
       responses:
         200:
           description: Create car successfully.
@@ -2077,7 +2104,7 @@ paths:
       security:
           - bearerAuth: []
 
-  /admin/product-shipment/create:
+  /admin/product-shipment/create/{product_id}:
     post:
       tags:
         - "product-shipment"
@@ -2085,6 +2112,11 @@ paths:
       consumes:
         - application/json
       parameters:
+        - in: path
+          name: product_id
+          type: string
+          required: true
+          description: Id of an product
         - in: body
           name: product-shipment
           description: a new product-shipment.
@@ -2093,8 +2125,6 @@ paths:
             properties:
               quantity:
                 type: number 
-              product_id:
-                type: string
       responses:
         200:
           description: Create product shipment successfully.
@@ -2102,7 +2132,6 @@ paths:
             type: object
             example: {
               "quantity": "string",
-              "product_id": "string",
             }
         400:
           description: Create product shipment failed. 
@@ -2279,7 +2308,7 @@ paths:
       security:
           - bearerAuth: []
 
-  /admin/bill/create:
+  /admin/bill/create/{carfleet_id}:
     post:
       tags:
         - "bill"
@@ -2287,6 +2316,11 @@ paths:
       consumes:
         - application/json
       parameters:
+        - in: path
+          name: carfleet_id
+          type: string
+          required: true
+          description: Id of an car fleet 
         - in: body
           name: bill
           description: a new bill.
@@ -2301,8 +2335,10 @@ paths:
                 type: string 
               driver:
                 type: string 
-              product_shipment:
-                type: string 
+              actual_fuel:
+                type: number 
+              theoretical_fuel: 
+                type: number 
               status:
                 type: string
                 enum: ['waiting', 'accepted', 'processing', 'completed', 'refused']
@@ -2316,7 +2352,8 @@ paths:
               "road": "string",
               "car": "string",
               "driver": "string",
-              "product_shipment": "string",
+              "actual_fuel": "number",
+              "theoretical_fuel": "number",
               "status": "string",
             }
         400:

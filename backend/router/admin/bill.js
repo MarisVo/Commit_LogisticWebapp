@@ -4,6 +4,7 @@ import Bill from "../../model/Bill.js"
 import DeliveryService from "../../model/DeliveryService.js"
 import Road from "../../model/Road.js"
 import Car from "../../model/Car.js"
+import CarFleet from "../../model/CarFleet.js"
 import Staff from "../../model/Staff.js"
 import ProductShipment from "../../model/ProductShipment.js"
 import { createBillValidate } from "../../validation/bill.js"
@@ -94,34 +95,37 @@ billAdminRoute.get('/:id',
  * @description create information of bill
  * @access private
  */
-billAdminRoute.post('/create', async (req, res) => {
+billAdminRoute.post('/create/:carfleet_id', async (req, res) => {
     const errors = createBillValidate(req.body)
     if (errors)
         return sendError(res, errors)
     try {
-        const { service, road, car, driver, shipment, turnover, status, actual_fuel, theoretical_fuel } = req.body
+        const { carfleet_id } = req.params
+        const { service, road, car, driver, status, actual_fuel, theoretical_fuel } = req.body
 
         const isExistService = await DeliveryService.exists({ _id: service })
         const isExistRoad = await Road.exists({ _id: road })
         const isExistCar = await Car.exists({ _id: car })
         const isExistDriver = await Staff.exists({ _id: driver })
-        const isExistShipment = await ProductShipment.exists({ _id: shipment })
-        // const product_shipments = [shipment, turnover]
+        
+        if (!isExistService)
+            return sendError(res, 'Service does not exist.')
+        if (!isExistRoad)
+            return sendError(res, 'Road does not exist.')
+        if (!isExistCar)
+            return sendError(res, 'Car does not exist.')
+        if (!isExistDriver)
+            return sendError(res, 'Driver does not exist.')
+        
+        const bill = await Bill.create({ service, road, car, driver, status, actual_fuel, theoretical_fuel })
 
-        // if (!isExistService)
-        //     return sendError(res, 'Service does not exist.')
-        // if (!isExistRoad)
-        //     return sendError(res, 'Road does not exist.')
-        // if (!isExistCar)
-        //     return sendError(res, 'Car does not exist.')
-        // if (!isExistDriver)
-        //     return sendError(res, 'Driver does not exist.')
-        // if (!isExistProductShipment)
-        //     return sendError(res, 'Product shipment does not exist.')
-        await Bill.create({ service, road, car, driver, status, actual_fuel, theoretical_fuel })
-        const existBill = Bill.exists({ service, road, car, driver, status, actual_fuel, theoretical_fuel })
-        const billID = existBill._id
-        console.log(billID)
+        const updateCarFleet = await CarFleet.findOneAndUpdate(
+            { _id: carfleet_id },
+            { $push: { bills: bill } }
+        );
+        if (!updateCarFleet)
+            return sendServerError(res, "Update failed")
+
         return sendSuccess(res, 'Set bill information successfully.')
     }
     catch (error) {
@@ -145,22 +149,13 @@ billAdminRoute.post("/product_shipments/:billId", async (req, res) => {
         })
 
         if (!isExist) {
-                 return sendError(res, 'bill not exists')
+            return sendError(res, 'bill not exists')
         }
-        const shipmentExist = await Bill.exists({
-            _id: req.params.billId,
-            "product_shipments.shipment": shipment
+        const shipmentExist = await ProductShipment.exists({
+            _id: shipment
         })
-        if (shipmentExist) {
-            return sendError(res, 'the bill shipment is already used.')
-        }
-
-        const turnoverExist = await Bill.exists({
-            _id: req.params.billId,
-            "product_shipments.turnover": turnover
-        })
-        if (turnoverExist) {
-            return sendError(res, 'the bill turnover is already used.')
+        if (!shipmentExist) {
+            return sendError(res, 'the shipment is not exists.')
         }
 
         await Bill.updateOne(
@@ -175,7 +170,7 @@ billAdminRoute.post("/product_shipments/:billId", async (req, res) => {
 
     } catch (error) {
         return sendServerError(res);
-        
+
     }
 })
 
@@ -191,13 +186,10 @@ billAdminRoute.delete('/:id', async (req, res) => {
         if (!isExit)
             return sendError(res, "Bill not exists")
 
-        await Bill.findByIdAndRemove(id)
-            .then(() => {
-                return sendSuccess(res, "Delete bill successfully.")
-            })
-            .catch((err) => {
-                return sendError(res, err)
-            })
+        await CarFleet.updateMany({}, { $pull: { bills: id } });
+
+        const data = await Bill.findByIdAndRemove(id)
+        return sendSuccess(res, "Delete product shipment successfully.", data)
     }
     catch (error) {
         console.log(error)
@@ -213,7 +205,7 @@ billAdminRoute.delete('/:id', async (req, res) => {
 billAdminRoute.put('/:id', async (req, res) => {
     try {
         const { id } = req.params
-        const { service, road, car, driver, product_shipments, status } = req.body
+        const { service, road, car, driver, status, actual_fuel, theoretical_fuel } = req.body
 
         const errors = createBillValidate(req.body)
         if (errors)
@@ -221,16 +213,16 @@ billAdminRoute.put('/:id', async (req, res) => {
 
         const isExist = await Bill.exists({
             service: service, road: road, car: car,
-            driver: driver, product_shipments: product_shipments, status: status
+            driver: driver, status: status, actual_fuel: actual_fuel, theoretical_fuel: theoretical_fuel
         })
         if (isExist)
             return sendError(res, "This bill is existed.")
 
         await Bill.findByIdAndUpdate(id, {
             service: service, road: road, car: car,
-            driver: driver, product_shipments: product_shipments, status: status
+            driver: driver, status: status, actual_fuel: actual_fuel, theoretical_fuel: theoretical_fuel
         })
-        return sendSuccess(res, "Update bill successfully", { service, road, car, driver, product_shipments, status })
+        return sendSuccess(res, "Update bill successfully", { service, road, car, driver, status, actual_fuel, theoretical_fuel })
 
     } catch (error) {
         console.log(error)
