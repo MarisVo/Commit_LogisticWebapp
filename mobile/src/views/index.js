@@ -9,7 +9,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Products from './product';
 import Profile from './profile';
-
+import Warehouses from "./settingPage/Warehouses"
 import Icon from 'react-native-vector-icons/FontAwesome';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -63,6 +63,7 @@ const RootComponent = () => {
         <Stack.Screen name="HomeTabs" component={MyTabs} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Tracking" component={Tracking} />
+        <Stack.Screen name="Warehouses" component={Warehouses} />
       </Stack.Navigator>
     </NavigationContainer>
   );

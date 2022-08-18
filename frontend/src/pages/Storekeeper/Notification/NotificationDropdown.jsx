@@ -25,7 +25,7 @@ function NotificationDropdown() {
   };
   useEffect(() => {
     getNoti();
-  }, []);
+  }, [dataReceive]);
   return (
     <div>
       <div className="absolute w-96 top-16 right-5 border border-black bg-white z-20 p-2">

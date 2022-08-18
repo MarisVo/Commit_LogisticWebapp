@@ -14,7 +14,7 @@ import {getDistrictsByProvinceCode, getProvinces} from "sub-vn";
 import Icon from "react-native-vector-icons/FontAwesome";
 import {Select, CheckIcon} from "native-base";
 
-function Tracking({navigation}) {
+function Warehouse({navigation}) {
   const [warehouse, setWarehouse] = useState({});
   const [provinces, setProvinces] = useState([]);
   const [dataForSearch, setDataForSearch] = useState({
@@ -50,7 +50,7 @@ function Tracking({navigation}) {
           </TouchableOpacity>
         </View>
         <Text style={{fontSize: 20, fontWeight: "bold"}}>
-          Tra cứu phí vận chuyển
+          Danh sách bưu cục
         </Text>
       </View>
       <View
@@ -66,14 +66,18 @@ function Tracking({navigation}) {
             backgroundColor: "red",
             marginHorizontal: 24,
           }}>
-            <View style={{flex:1,flexDirection: "row", alignContent:"space-between"}}>
           <View
-            style={{flex: 1,  justifyContent:"space-around",backgroundColor: "blue"}}>
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              backgroundColor: "blue",
+            }}>
             <Select
               selectedValue={dataForSearch.province}
-              minWidth="40%"
+              minWidth="45%"
               height="56px"
-              borderRadius={16}
+              borderRadius={5}
               backgroundColor="#FFD124"
               placeholderTextColor="black"
               accessibilityLabel="Choose Service"
@@ -97,9 +101,9 @@ function Tracking({navigation}) {
             </Select>
             <Select
               selectedValue={dataForSearch.province}
-              minWidth="40%"
+              minWidth="45%"
               height="56px"
-              borderRadius={16}
+              borderRadius={5}
               backgroundColor="#FFD124"
               placeholderTextColor="black"
               accessibilityLabel="Choose Service"
@@ -121,73 +125,47 @@ function Tracking({navigation}) {
                 />
               ))}
             </Select>
-          </View>
-          <View
-            style={{flex: 1,  justifyContent:"space-around",backgroundColor: "blue"}}>
-            <Select
-              selectedValue={dataForSearch.province}
-              minWidth="40%"
-              height="56px"
-              borderRadius={16}
-              backgroundColor="#FFD124"
-              placeholderTextColor="black"
-              accessibilityLabel="Choose Service"
-              fontSize="14px"
-              placeholder="Tỉnh/Thành phố"
-              _selectedItem={{
-                bg: "teal.600",
-                endIcon: <CheckIcon size="5" />,
-              }}
-              mt={1}
-              onValueChange={itemValue =>
-                setDataForSearch({province: itemValue, district: null})
-              }>
-              {provinces.map(province => (
-                <Select.Item
-                  label={province.name}
-                  value={province.name}
-                  key={province.name}
-                />
-              ))}
-            </Select>
-            <Select
-              selectedValue={dataForSearch.province}
-              minWidth="40%"
-              height="56px"
-              borderRadius={16}
-              backgroundColor="#FFD124"
-              placeholderTextColor="black"
-              accessibilityLabel="Choose Service"
-              fontSize="14px"
-              placeholder="Quận/huyện"
-              _selectedItem={{
-                bg: "teal.600",
-                endIcon: <CheckIcon size="5" />,
-              }}
-              mt={1}
-              onValueChange={itemValue =>
-                setDataForSearch({province: itemValue, district: null})
-              }>
-              {provinces.map(province => (
-                <Select.Item
-                  label={province.name}
-                  value={province.name}
-                  key={province.name}
-                />
-              ))}
-            </Select>
-          </View>
           </View>
           <View
             style={{
-              flex: 3,
+              flex: 7,
               flexDirection: "row",
               backgroundColor: "green",
-            }}></View>
+            }}>
+            <View
+              style={{
+                height: 146,
+                width: "100%",
+                flexDirection: "row",
+                backgroundColor: "orange",
+              }}>
+              <View
+                style={{
+                  height: "100%",
+                  width: "5%",
+                  backgroundColor: "yellow",
+                }}></View>
+              <View style={{width: "95%", backgroundColor: "red"}}>
+                <View
+                  style={{
+                    justifyContent: "flex-end",
+                    alignContent: "center",
+                    flexDirection: "row",
+                    marginRight: 24,
+                    backgroundColor: "white",
+                  }}>
+                  <View style={{justifyContent: "center"}}>
+                    <Icon name="circle" style={{color:"green",backgroundColor: "violet"}} />
+                  </View>
+                  <Text style={{textAlign: "right"}}>Đang mở cửa</Text>
+                </View>
+              </View>
+            </View>
+          </View>
         </View>
       </View>
     </View>
   );
 }
 
-export default Tracking;
+export default Warehouse;
