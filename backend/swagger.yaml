@@ -5724,7 +5724,7 @@ paths:
         - application/json
       parameters:
         - in: path
-          name: receiverId
+          name: orderId
           type: string
           description: id of order to check 
         - in: body
