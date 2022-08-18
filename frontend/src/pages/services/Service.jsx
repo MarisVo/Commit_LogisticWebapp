@@ -119,7 +119,7 @@ export default function Service() {
               <span className=" text-[#D60009] ml-2 text-left">
                 <span className="text-lg ">Đảm bảo</span>
                 <span className="text-black text-lg ml-1   ">
-                  Đặt giao hàng dễ dàng trên nhiều nền tảng (hotline, app,
+                  ặt giao hàng dễ dàng trên nhiều nền tảng (hotline, app,
                   website,...)
                 </span>
                 &nbsp;
@@ -329,7 +329,7 @@ export default function Service() {
       </section>
 
       <section className="mt-5">
-       {/*  <div className="relative overflow-hidden w-full h-[414px]">
+        <div className="relative overflow-hidden w-full h-[414px]">
           <img
             className="  w-full h-full object-cover "
             src="https://jtexpress.vn/themes/jtexpress/assets/images/sec7inservice.png"
@@ -340,7 +340,7 @@ export default function Service() {
             src="https://jtexpress.vn/themes/jtexpress/assets/images/insec7service.png"
             alt=""
           />
-        </div> */}
+        </div>
         <div className="md:mx-44 sm:mx-36 mx-12 mt-2">
           <div className="text-center ">
             <h1 className="text-[28px] mb-[8px] font-bold text-[#f0b90c]">

@@ -16,6 +16,7 @@ import Login from './login';
 import ForgetPassword from './forgetPassword';
 import CreateOrder from './createOrder';
 import WatchListOrder from './watchListOrder';
+import Statistic from './statistic';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -56,10 +57,10 @@ const MyTabs = () => {
         }}
       />
       <Tab.Screen
-        name="CreateOrder"
-        component={CreateOrder}
+        name="Statistic"
+        component={Statistic}
         options={{
-          tabBarLabel: "CreateOrder",
+          tabBarLabel: "Statistic",
           tabBarIcon: ({ color, size }) => (
             <Icon name="gear" color={color} size={size} />
           ),
