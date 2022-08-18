@@ -5715,7 +5715,7 @@ paths:
           description: delete receiver successfully.
       security:
         - bearerAuth: []
-  /receiver/{receiverId}:
+  /receiver/{orderId}:
     put:
       tags:
         - receiver
