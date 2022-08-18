@@ -5726,7 +5726,7 @@ paths:
         - in: path
           name: receiverId
           type: string
-          description: id of receiver 
+          description: id of order to check 
         - in: body
           name: update content
           schema:
