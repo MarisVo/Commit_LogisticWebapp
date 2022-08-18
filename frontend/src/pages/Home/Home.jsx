@@ -63,7 +63,7 @@ const flags = [
 const DeliveryServices = [
   {
     _id: 1,
-    type: "j&T Epress",
+    type: "TKTL Epress",
     name: "Chuyển phát tiêu chuẩn",
     path: "chuyen-phat-tieu-chuan",
     images: {
@@ -74,7 +74,7 @@ const DeliveryServices = [
   },
   {
     _id: 2,
-    type: "j&T Fast",
+    type: "TKTL Fast",
     name: "Chuyển phát nhanh",
     path: "chuyen-phat-nhanh",
     images: {
@@ -85,7 +85,7 @@ const DeliveryServices = [
   },
   {
     _id: 3,
-    type: "j&T Super",
+    type: "TKTL Super",
     name: "Siêu dịch vụ giao hàng",
     path: "sieu-dich-vu-chuyen-phat",
     images: {
@@ -96,7 +96,7 @@ const DeliveryServices = [
   },
   {
     _id: 4,
-    type: "j&T Fresh",
+    type: "TKTL Fresh",
     name: "Giao hàng tươi sống",
     path: "chuyen-phat-do-tuoi-song",
     images: {

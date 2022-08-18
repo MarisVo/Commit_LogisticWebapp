@@ -60,6 +60,7 @@ function CustomerRoute() {
   const handleOpen = () => {
     setOpen(!open);
   };
+  console.log(user)
   
   useEffect(()=>{
     const getWidth = ()=>{
@@ -73,7 +74,11 @@ function CustomerRoute() {
        window.removeEventListener("resize",getWidth)
      }
   },[width])
-  
+  useEffect(()=>{
+    const res = ()=>{
+
+    }
+  },[])
 
   if (user && user.role.customer_type) {
     return <>
@@ -101,7 +106,7 @@ function CustomerRoute() {
                 >
                     <div className=" mb-2 border-b-[1px] border-gray-500 ">
                         <div className="text-center">Chào mừng</div>
-                        <div className="md:text-xl sm:text-lg  text-center font-semibold text-[#00003B]">Nguyễn văn thật</div>
+                        <div className="md:text-xl sm:text-lg  text-center font-semibold text-[#00003B]">{user.role.name}</div>
                     </div>
                     <Menu  theme="" mode="inline" defaultSelectedKeys={[""]} items={items} />
                 </div>

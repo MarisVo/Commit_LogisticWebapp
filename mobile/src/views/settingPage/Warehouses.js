@@ -9,14 +9,111 @@ import {
   Image,
   StyleSheet,
   TextInput,
+  ScrollView,
+  FlatList,
+  Platform
 } from "react-native";
 import {getDistrictsByProvinceCode, getProvinces} from "sub-vn";
-import Icon from "react-native-vector-icons/FontAwesome";
-import {Select, CheckIcon} from "native-base";
-
+import IconAwesome from "react-native-vector-icons/FontAwesome";
+import IonIcon from "react-native-vector-icons/Ionicons";
+import {Select, CheckIcon, Icon} from "native-base";
+const data = [
+  {
+    _id: "62ea8067623fd0ded0e0b7bb",
+    name: "(HNI)Vĩnh Phúc",
+    province: "Hà Nội",
+    district: "Quận Ba Đình",
+    phone: "0123456789",
+    street:
+      "Số 1 ngõ 254 đường Bưởi, phường Cống Vị, quận Ba Đình, thành phố Hà Nội",
+    inventory:
+      '[{"shipment":{"$oid":"62e662ac5d837fd33a08a1e4"},"status":"import"},{"shipment":"62e88fbfa5dd7e226cacef53","status":"export"}]',
+    inventory_product_shipments: [],
+  },
+  {
+    _id: "62ea8067623fd0ded0e0b7bc",
+    name: "(HNI)Tân Ấp",
+    province: "Hà Nội",
+    district: "Quận Ba Đình",
+    phone: "0123456789",
+    street: "26  Tân Ấp,phúc xá,Ba Đình,Hà Nội",
+    inventory:
+      '[{"shipment":{"$oid":"62e662ac5d837fd33a08a1e4"},"status":"import"},{"shipment":"62e88fbfa5dd7e226cacef53","status":"export"}]',
+    inventory_product_shipments: [],
+  },
+  {
+    _id: "62ea8067623fd0ded0e0ba72",
+    name: "(HNI) Giang Văn Minh",
+    province: "Hà Nội",
+    district: "Quận Ba Đình",
+    phone: "0123456789",
+    street: "Số 3 ngõ 34 Giang Văn Minh, phường Kim Mã, Ba Đình, Hà Nội",
+    inventory:
+      '[{"shipment":{"$oid":"62e662ac5d837fd33a08a1e4"},"status":"import"},{"shipment":"62e88fbfa5dd7e226cacef53","status":"export"}]',
+    inventory_product_shipments: [],
+  },
+  {
+    _id: "62ea8067623fd0ded0e0baee",
+    name: "(HNI) Nguyễn Chí Thanh",
+    province: "Hà Nội",
+    district: "Quận Ba Đình",
+    phone: "0123456789",
+    street:
+      "Số 110B2 đường Nguyễn Chí Thanh, phường Ngọc Khánh, quận Ba Đình, thành phố Hà Nội",
+    inventory:
+      '[{"shipment":{"$oid":"62e662ac5d837fd33a08a1e4"},"status":"import"},{"shipment":"62e88fbfa5dd7e226cacef53","status":"export"}]',
+    inventory_product_shipments: [],
+  },
+  {
+    _id: "62ea8068623fd0ded0e0bbd2",
+    name: "(HNI) Đốc Ngữ",
+    province: "Hà Nội",
+    district: "Quận Ba Đình",
+    phone: "0123456789",
+    street: "Số 80 phố Đốc Ngữ, phường Vĩnh Phúc, quận Ba Đình, Hà Nội",
+    inventory:
+      '[{"shipment":{"$oid":"62e662ac5d837fd33a08a1e4"},"status":"import"},{"shipment":"62e88fbfa5dd7e226cacef53","status":"export"}]',
+    inventory_product_shipments: [],
+  },
+  {
+    _id: "62ea8068623fd0ded0e0bc64",
+    name: "(HNI) Thành Công",
+    province: "Hà Nội",
+    district: "Quận Ba Đình",
+    phone: "0123456789",
+    street: "Số 629 đường La Thành, phường Thành Công, quận Ba Đình, Hà Nội",
+    inventory:
+      '[{"shipment":{"$oid":"62e662ac5d837fd33a08a1e4"},"status":"import"},{"shipment":"62e88fbfa5dd7e226cacef53","status":"export"}]',
+    inventory_product_shipments: [],
+  },
+  {
+    _id: "62ea8068623fd0ded0e0bca8",
+    name: "(HNI) Đội Cấn",
+    province: "Hà Nội",
+    district: "Quận Ba Đình",
+    phone: "0123456789",
+    street: "Số 93 Đội Cấn, phường Đội Cấn, quận Ba Đình, thành phố Hà Nội",
+    inventory:
+      '[{"shipment":{"$oid":"62e662ac5d837fd33a08a1e4"},"status":"import"},{"shipment":"62e88fbfa5dd7e226cacef53","status":"export"}]',
+    inventory_product_shipments: [],
+  },
+  {
+    _id: "62ea8068623fd0ded0e0bd02",
+    name: "(HNI) Ngọc Hà",
+    province: "Hà Nội",
+    district: "Quận Ba Đình",
+    phone: "0123456789",
+    street:
+      "Số 31 đường Hoàng Hoa Thám, phường Ngọc Hà, quận Ba Đình, thành phố Hà Nội",
+    inventory:
+      '[{"shipment":{"$oid":"62e662ac5d837fd33a08a1e4"},"status":"import"},{"shipment":"62e88fbfa5dd7e226cacef53","status":"export"}]',
+    inventory_product_shipments: [],
+  },
+];
 function Warehouse({navigation}) {
-  const [warehouse, setWarehouse] = useState({});
+  const [districts, setDistricts] = useState([]);
   const [provinces, setProvinces] = useState([]);
+  const [warehouses, setWarehouses] = useState([]);
   const [dataForSearch, setDataForSearch] = useState({
     province: null,
     district: null,
@@ -24,7 +121,26 @@ function Warehouse({navigation}) {
   useEffect(() => {
     const dataProvinces = getProvinces();
     setProvinces(dataProvinces);
+    setWarehouses(data);
   }, []);
+  const handleSelectProvince = provinceSelected => {
+    const provinceCode = provinces.find(
+      province => province.name === provinceSelected,
+    )?.code;
+    const dataDistricts = getDistrictsByProvinceCode(provinceCode);
+    setDataForSearch({
+      province: provinceSelected,
+      district: null,
+    });
+    setDistricts(dataDistricts);
+  };
+  const handleSelectDistrict = districtSelected => {
+    // setCurrentDistrict(districtSelected);
+    setDataForSearch({
+      ...dataForSearch,
+      district: districtSelected,
+    });
+  };
   return (
     <View style={{backgroundColor: "#FFD124", height: "100%"}}>
       <View
@@ -46,7 +162,7 @@ function Warehouse({navigation}) {
             onPress={() => {
               navigation.goBack();
             }}>
-            <Icon name="arrow-left" size={26} />
+            <IconAwesome name="arrow-left" size={26} />
           </TouchableOpacity>
         </View>
         <Text style={{fontSize: 20, fontWeight: "bold"}}>
@@ -63,7 +179,6 @@ function Warehouse({navigation}) {
         <View
           style={{
             height: "100%",
-            backgroundColor: "red",
             marginHorizontal: 24,
           }}>
           <View
@@ -71,7 +186,7 @@ function Warehouse({navigation}) {
               flex: 1,
               flexDirection: "row",
               justifyContent: "space-between",
-              backgroundColor: "blue",
+              alignItems: "center",
             }}>
             <Select
               selectedValue={dataForSearch.province}
@@ -88,9 +203,7 @@ function Warehouse({navigation}) {
                 endIcon: <CheckIcon size="5" />,
               }}
               mt={1}
-              onValueChange={itemValue =>
-                setDataForSearch({province: itemValue, district: null})
-              }>
+              onValueChange={value => handleSelectProvince(value)}>
               {provinces.map(province => (
                 <Select.Item
                   label={province.name}
@@ -100,7 +213,7 @@ function Warehouse({navigation}) {
               ))}
             </Select>
             <Select
-              selectedValue={dataForSearch.province}
+              selectedValue={dataForSearch.district}
               minWidth="45%"
               height="56px"
               borderRadius={5}
@@ -114,53 +227,117 @@ function Warehouse({navigation}) {
                 endIcon: <CheckIcon size="5" />,
               }}
               mt={1}
-              onValueChange={itemValue =>
-                setDataForSearch({province: itemValue, district: null})
-              }>
-              {provinces.map(province => (
+              onValueChange={value => handleSelectDistrict(value)}>
+              {districts.map(district => (
                 <Select.Item
-                  label={province.name}
-                  value={province.name}
-                  key={province.name}
+                  label={district.name}
+                  value={district.name}
+                  key={district.name}
                 />
               ))}
             </Select>
           </View>
+
           <View
             style={{
               flex: 7,
-              flexDirection: "row",
-              backgroundColor: "green",
+              alignItems:"center"
             }}>
-            <View
-              style={{
-                height: 146,
-                width: "100%",
-                flexDirection: "row",
-                backgroundColor: "orange",
-              }}>
-              <View
-                style={{
-                  height: "100%",
-                  width: "5%",
-                  backgroundColor: "yellow",
-                }}></View>
-              <View style={{width: "95%", backgroundColor: "red"}}>
+            <FlatList
+              keyExtractor={item => item._id}
+              data={warehouses}
+              showsVerticalScrollIndicator={false}
+              renderItem={({item}) => (
                 <View
                   style={{
-                    justifyContent: "flex-end",
-                    alignContent: "center",
+                    height: 146,
+                    width: "100%",
                     flexDirection: "row",
-                    marginRight: 24,
-                    backgroundColor: "white",
+                    marginVertical: 12,
+                    // marginHorizontal:10,
+                    borderRadius: 5,
+                    backgroundColor:"white",
+                    shadowColor: '#000000',
+                    shadowOffset: {
+                      width: 3,
+                      height: 3
+                    },
+                    shadowRadius: 5,
+                    shadowOpacity: 1.0,
+                    elevation:5
                   }}>
-                  <View style={{justifyContent: "center"}}>
-                    <Icon name="circle" style={{color:"green",backgroundColor: "violet"}} />
+                  <View
+                    style={{
+                      height: "100%",
+                      width: "4%",
+                      backgroundColor: "#FFD124",
+                      borderTopLeftRadius:5,
+                      borderBottomLeftRadius:5,
+                    }}></View>
+                  <View style={{width: "95%"}}>
+                    <View
+                      style={{
+                        flex: 1,
+                        justifyContent: "flex-end",
+                        alignContent: "center",
+                        flexDirection: "row",
+                        marginRight: 24,
+                        backgroundColor:"white"
+                      }}>
+                      <View style={{justifyContent: "center"}}>
+                        <IconAwesome name="circle" color="#00FF57" />
+                      </View>
+                      <Text
+                        style={{
+                          textAlignVertical: "center",
+                          fontSize: 12,
+                          marginLeft: 6,
+                        }}>
+                        Đang mở cửa
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flex: 6,
+                        alignItems: "center",
+                      }}>
+                      <View
+                        style={{
+                          flex: 1,
+                          width: "90%",
+                          flexDirection: "row",
+                          paddingVertical: 10,
+                        }}>
+                        <View style={{marginRight: 5,minWidth:20}}>
+                          <IonIcon name="location-sharp" size={20} />
+                        </View>
+                        <Text style={{width: "85%", fontSize: 16} }>
+                          {item.street}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          flex: 1,
+                          width: "90%",
+                          flexDirection: "row",
+                          paddingVertical: 10,
+                        }}>
+                        <View style={{marginRight: 5, minWidth:20,alignItems:"center"}}>
+                          <IconAwesome name="phone" size={20} />
+                        </View>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            width:"80%",
+                          }}>
+                          {item.phone}
+                        </Text>
+                      </View>
+                    </View>
                   </View>
-                  <Text style={{textAlign: "right"}}>Đang mở cửa</Text>
                 </View>
-              </View>
-            </View>
+              )}
+            />
           </View>
         </View>
       </View>
