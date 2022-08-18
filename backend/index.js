@@ -4,10 +4,13 @@ import mongoose from "mongoose"
 import cors from "cors"
 import YAML from 'yamljs'
 import { Server } from 'socket.io'
+import bodyParser from 'body-parser'
+
+
 import session from "express-session"
-import bodyParser from "body-parser"
 import path from "path"
 const __dirname = path.resolve(path.dirname(''))
+
 import authRoute from "./router/auth.js"
 import adminRoute from "./router/admin/index.js"
 import trackingRoute from "./router/tracking.js"
@@ -25,6 +28,7 @@ import applicantRoute from "./router/applicant.js"
 import careerRoute from "./router/career.js"
 import departmentRoute from "./router/department.js"
 import participantRoute from "./router/participant.js"
+import receiverRoute from "./router/receiver.js"
 import productRoute from "./router/product.js"
 import featureRoute from "./router/feature.js"
 import distanceRoute from "./router/distance.js"
@@ -32,6 +36,7 @@ import priceRoute from "./router/price.js"
 import priceListRoute from "./router/pricelist.js"
 import serviceRoute from "./router/service.js"
 import customerRoute from "./router/customer.js"
+
 
 // swagger setup
 import swaggerUi from 'swagger-ui-express'
@@ -103,6 +108,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/participant', participantRoute)
     .use('/api/feature', featureRoute)
     .use('/api/notification', verifyToken, notificationRoute)
+    .use('/api/receiver', receiverRoute)
     .use('/api/product', productRoute)
     .use('/api/distance', distanceRoute)
     .use('/api/price', priceRoute)
@@ -120,6 +126,7 @@ app.get('/*', async (req, res) => {
         res.sendStatus(500)
     }
 })
+
 
 io.on(NOTIFY_EVENT.connection, socket => {
     // console.log('Connected to a user successfully.')

@@ -79,6 +79,8 @@ tags:
   description: "Endpoint PriceList"
 - name: "customer"
   description: "Endpoint Customer"
+- name: "receiver"
+  description: "Endpoint Receiver"
 paths:
   /auth/verify-token:
     post:
@@ -5635,8 +5637,112 @@ paths:
           description: Update staff information failed.
       security:
         - bearerAuth: []
-
-
+  /admin/receiver:
+    get:
+      tags: 
+        - receiver
+      summary: get list of receivers
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: id
+          type: string
+          description: id of receiver 
+        - in: query
+          name: keyword
+          type: string
+          description: keyword for searching receiver 
+        - in: query
+          name: sort
+          type: number
+          description: sort receiver by order
+      responses:
+        200:
+          description: get receiver successfully.
+          schema:
+            type: object
+              example: {
+                "name": "string",
+                "phone": "string",
+                "identity": "string",
+              }
+        400:
+          description: Receiver not found.
+      security:
+        - bearerAuth: []
+  /admin/receiver/{receiverId}:
+    put:
+      tags:
+        - receiver
+      summary: Update receiver by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: receiverId
+          type: string
+          description: id of receiver 
+        - in: body
+          name: update content
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              phone:
+                type: string
+              identity:
+                type: string
+      responses:
+        200:
+           description: Update receiver successfully. 
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - receiver
+      summary: Delete receiver by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: receiverId
+          type: string
+          description: id of receiver  
+      responses:
+        200:
+          description: delete receiver successfully.
+      security:
+        - bearerAuth: []
+  /receiver/{orderId}:
+    put:
+      tags:
+        - receiver
+      summary: Update receiver by customer if order is waiting
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: orderId
+          type: string
+          description: id of order to check 
+        - in: body
+          name: update content
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              phone:
+                type: string
+              identity:
+                type: string
+      responses:
+        200:
+           description: Update receiver successfully. 
+      security:
+        - bearerAuth: []
 securityDefinitions:
   bearerAuth:
     type: "apiKey"

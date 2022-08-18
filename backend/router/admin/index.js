@@ -20,6 +20,9 @@ import orderAdminRoute from "./order.js"
 import applicantAdminRoute from "./applicant.js"
 import careerAdminRoute from "./career.js"
 import departmentAdminRoute from "./department.js"
+import receiverAdminRoute from "./receiver.js"
+
+
 import staffAdminRoute from "./staff.js"
 import productAdminRoute from "./product.js"
 import featureAdminRoute from "./feature.js"
@@ -51,6 +54,7 @@ adminRoute.use('/auth', authAdminRoute)
     .use("/applicant", applicantAdminRoute)
     .use("/career", careerAdminRoute)
     .use("/department", departmentAdminRoute)
+    .use("/receiver", receiverAdminRoute)
     .use("/staff", staffAdminRoute)
     .use("/product", productAdminRoute)
     .use("/feature", featureAdminRoute)
