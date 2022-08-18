@@ -232,7 +232,7 @@ export default function AdminProhibitProduct() {
       render: (e) => (
         <>
           {e && (
-            <img src={`http://localhost:8000/api/public/${e}`} />
+            <img src={`${END_POINT}/public/${e}`} />
           )}
         </>
       )
