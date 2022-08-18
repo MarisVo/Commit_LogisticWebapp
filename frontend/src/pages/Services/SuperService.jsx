@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { MainContext } from "../../context/MainContext";
 import axios from "axios";
 import { END_POINT } from "../../utils/constant";
-
 const CarouselWrapper = styled(Carousel)`
   > ul {
     margin-bottom: 30px;
@@ -22,31 +21,30 @@ const CarouselWrapper = styled(Carousel)`
     background: #fc8080;
   }
 `;
-export default function FastService() {
+export default function SuperService() {
   const { setMetadata } = useContext(MainContext);
     const [quotes,setQuotes] = useState([])
   const [services,setServices] = useState({})
   const [features,setFeatures] = useState([])
   const [participants,setParticipants] = useState([])
-  
-   const [id,SetId]=useState("")
+    const [id,SetId]=useState("")
    useEffect(() => {
     setMetadata((prev) => {
       return {
         ...prev,
-        title: "Dịch vụ nhanh | TKTL",
+        title: "Siêu dịch vụ | TKTL",
       };
     });
     
   }, []);
   useEffect(()=>{
      try{
-      const getId = async()=>{
+        const getId = async()=>{
           const res = await axios.get(`${END_POINT}/service`)
           console.log(res)
           const {data} =res.data
           data.service.map(service=>{
-            if(service.sub_detail==="J&T Fast"){
+            if(service.name==="TKT Supper"){
               console.log("servicea",service._id) 
               SetId(service._id)
             }
@@ -54,14 +52,14 @@ export default function FastService() {
         }
         getId()
         if(id){
-          const getservice = async()=>{
+           const getservice = async()=>{
              const res = await axios.get(`${END_POINT}/service/${id}`)
              console.log(res)
              const {data} =res.data
              console.log(data)
              setServices(data)
           }
-          getservice() 
+          getservice()
         const getquote = async()=>{
            const res = await axios.get(`${END_POINT}/quote/service/${id}`)
       
@@ -93,12 +91,12 @@ export default function FastService() {
      }
   },[id])
   return (
-    <section id="layout-content ">
-      <div className="h-full lg:h-[610px] w-full relative pt-12 ">
+    <section id="layout-content">
+      <div className="h-full lg:h-[610px] w-full relative pt-12">
         <img
-          className="lg:absolute lg:right-0 lg:top-10 w-full h-full lg:w-auto object-cover right-negative-margin"
-          src="https://jtexpress.vn/themes/jtexpress/assets/images/PIC-IN-SEC-3.png"
-          alt="https://jtexpress.vn/themes/jtexpress/assets/images/dich-vu-detail.png"
+          className="lg:absolute lg:right-[-150px] lg:top-10 w-full h-full lg:w-auto object-cover right-negative-margin"
+         src={`${END_POINT}/public/${services?.banner}`}
+          alt=""
         />
         <div className="container mx-auto h-full flex items-center">
           <div className="w-full h-auto lg:w-[540px] relative">
@@ -112,10 +110,10 @@ export default function FastService() {
                 className="mt-6 lg:mt-0 text-[#f5c736] font-bold text-[24px] lg:text-[32px] aos-init"
                 data-aos="fade-right"
               >
-                {services?.name}
+                {services?.sub_detail}
               </h5>
               <span className="block my-6 lg:my-4 text-justify lg:text-left">
-                {services?.tip}
+                {services?.target}
               </span>
               <Link to="/tu-van/dang-ki-tu-van">
                 <button className="flex lg:inline-flex justify-center items-center bg-[#e5a663] rounded-[2px] text-white w-full lg:w-[215px]  h-[56px] mt-8 lg:mt-4">
@@ -133,10 +131,10 @@ export default function FastService() {
       <div className="container mx-auto lg:pt-[80px] lg:pb-[58px]">
         <div className="wrapper_description_service px-4 grid lg:px-0 md:grid-cols-1 sm:grid-cols-1  lg:grid-cols-[700px_minmax(400px,_1fr)_200px] gap-[100px]  ">
           <div className="wrapper_description_service_detail mt-16 lg:mt-0 grid lg:grid-cols-2 gap-[30px] md:grid-cols-1 sm:grid-cols-1">
-               {
+            {
           features.map(feature=>
               (
-            <div className="flex item-start" key={feature._id}>
+            <div className="flex item-start" key={feature?._id}>
               <img
                 className="w-[48px] h-[48px] object-cover"
                 src={`${END_POINT}/public/${feature?.logo}`}
@@ -155,11 +153,10 @@ export default function FastService() {
               )
           )
         }   
-         
-            <div>
+         <div>
               <img
                 className="w-auto h-auto object-cover hidden lg:block"
-                src="https://jtexpress.vn/themes/jtexpress/assets/images/FAST-LOGO.png"
+                src={`${END_POINT}/public/${services?.logo}`}
                 alt=""
               />
             </div>
@@ -171,50 +168,48 @@ export default function FastService() {
           />
         </div>
       </div>
-      <div className="lg:bg-[#F4F4F4] lg:pt-[38px] lg:pb-[58px]">
+      <div className="lg:bg-[#F4F4F4] lg:pt-[63px] lg:pb-[58px]">
         <div className="container mx-auto mt-10 lg:mt-0 px-4 lg:px-0 mb-10 lg:mb-0 ">
           <h5
-            className=" font-extrabold text-3xl md:text-4xl text-[#161D25] text-center aos-init" /*  */
+            className="font-extrabold text-3xl md:text-4xl text-[#161D25]  text-center aos-init"
             data-aos="fade-right"
           >
             Đối tượng phù hợp
           </h5>
           <span
-            className="block text-center mt-5 mb-4 w-full lg:w-[578px] text-base mx-auto aos-init" /*  */
+            className="block text-center mt-5 mb-4 w-full lg:w-[578px] mx-auto aos-init text-base"
             data-aos="zoom-in"
           >
-             {services.target}
+             {services.tip}
           </span>
           <div className="w-[27px] h-[3px] bg-[#f5c736] mx-auto mb-8"></div>
           <div className="wrapper_objects_service grid grid-cols-3 gap-[20px]">
-             { 
-           participants.map(participant=>( 
-           <div class="h-[350px] lg:h-[375px] relative rounded-[10px] overflow-hidden col-span-3 md:col-span-1">
+         {  
+          participants.map(participant=>(
+         <div class="h-[315px] lg:h-[323px] relative rounded-[10px] overflow-hidden col-span-3 md:col-span-1"  key={participant._id} >
               <img
-                src={`${END_POINT}/public/${participant?.banner}`}
+               src={`${END_POINT}/public/${participant?.banner}`}
                 class="w-full h-full object-cover"
                 alt=""
               />
-              <div class="object-service-detail absolute top-[60%] translate-y-[-60%] left-[10%] text-white w-[222px] lg:w-[320px]">
+              <div class="object-service-detail absolute top-[60%] translate-y-[-60%] left-[10%] text-white w-[220px] lg:w-[320px]">
                 <span class="block Montserrat-Bold mb-3 text-[20px]">
-                 {participant.name}
+                 {participant?.name}
                 </span>
                 <span
                   data-aos="fade-up"
                   data-aos-duration="1000"
                   class="aos-init"
                 >
-                 {participant.description}
+                 {participant?.description}
                 </span>
               </div>
             </div>
-           )
-           )
-    }
+           
+      ))}
           </div>
-
           <div className="flex flex-col lg:flex-row items-center justify-center mt-7 gap-x-[24px] gap-y-[12px]">
-            <div className="block w-full lg:w-[215px] md:w-[735px] h-[56px] border border-[#fbd535]">
+            <span className="block w-full lg:w-[215px] h-[56px] border border-[#fbd535]">
               <Link to="/tra-cuu/bang-gia">
                 <button className="flex items-center text-[#f5c736] font-bold justify-center h-full w-full">
                   <ion-icon
@@ -226,7 +221,7 @@ export default function FastService() {
                   <span className="ml-2  font-bold text-lg">Bảng giá</span>
                 </button>
               </Link>
-            </div>
+            </span>
             <span className="block w-full lg:w-[215px] md:w-[735px] sm:w-[610px] h-[56px] border border-[#fbd535]">
               <Link to="/tu-van/dang-ki-tu-van">
                 <button className="flex items-center text-[#f5c736] font-bold justify-center h-full w-full">
@@ -242,7 +237,7 @@ export default function FastService() {
                 </button>
               </Link>
             </span>
-            <span className="block w-full lg:w-[215px] md:w-[735px] h-[56px] border border-[#f5c736]">
+            <span className="block w-full lg:w-[215px] h-[56px] border border-[#f5c736]">
               <Link to="/tra-cuu/buu-cuc">
                 <button className="flex items-center text-[#f5c736] font-bold justify-center h-full w-full">
                   <ion-icon
@@ -270,7 +265,7 @@ export default function FastService() {
             {
             quotes.map(quote=>(
 
-            <div className="relative" key={quote._id}>
+            <div className="relative" key={quote?._id}>
               <img
                 src="https://jtexpress.vn/themes/jtexpress/assets/images/slider-tuyen-dung.png"
                 className="w-full h-[380px] md:h-[500px] object-cover"
