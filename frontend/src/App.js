@@ -64,6 +64,7 @@ import {
   AdminBill,
   ChangePassword,
   AdminTurnover,
+  ServiceAll,
 
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -108,6 +109,7 @@ const App = () => {
                 <Route path="cuoc-song" element={<Life />} />
                 {/* ------------------------Dịch vụ---------------------- */}
                 <Route path="dich-vu" element={<Service />} />
+                <Route path="dich-vu/:id" element={<ServiceAll />} />
                 <Route path="chuyen-phat-tieu-chuan" element={<StandardService />} />
                 <Route path="chuyen-phat-nhanh" element={<FastService />} />
                 <Route path="sieu-dich-vu-chuyen-phat" element={<SuperService />} />

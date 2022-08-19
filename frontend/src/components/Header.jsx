@@ -8,6 +8,7 @@ import { useContext } from "react";
 import { MainContext } from "../context/MainContext";
 import Notification from './Notification';
 import axios from "axios";
+import { END_POINT } from "../utils/constant";
 
 
 
@@ -82,7 +83,17 @@ const Header = () => {
   //   setDefaultService(dichVu);
   //   navigate(`/track?type=${dichVu}`);
   // }
-
+   useEffect(() => {
+       const getService = async()=>{
+          const res = await axios.get(`${END_POINT}/service`)
+          console.log(res)
+          const {data} =res.data
+          console.log(data.service)
+          setServices(data.service)
+        }
+      getService()
+    
+  }, []);
 
 
   // xử lý thêm màu menu
@@ -219,12 +230,11 @@ const Header = () => {
               <FaChevronDown className="h-4 w-4 pl-[6px]" />
             </Link>
             <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg animate-up">
-             {/*  {
+              {
                 services.map(service=>(
-
                   <li>
                     <Link
-                      to="chuyen-phat-tieu-chuan"
+                      to={`dich-vu/${service._id}`}
                       className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100"
                     >
                       <span>{service.name}</span>
@@ -232,8 +242,8 @@ const Header = () => {
                     </Link>
                   </li>
                 ))
-              } */}
-                  <li>
+              }
+                {/*   <li>
                     <Link
                       to="chuyen-phat-tieu-chuan"
                       className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100"
@@ -268,7 +278,7 @@ const Header = () => {
                       <span>Dịch vụ tươi sống</span>
                       <i className="text-[#f0b90c] font-bold">TKT Fresh</i>
                     </Link>
-                  </li>
+                  </li> */}
                 
             </ul>
           </div>
