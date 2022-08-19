@@ -127,7 +127,7 @@ const Footer = () => {
             <span className="ml-2 text-[12px]">{information.phone}</span>
           </div>
           <div className="flex mb-5">
-            <IoLocationOutline className="w-5 h-5" />
+            <IoLocationOutline />
             <span className="ml-2 text-[12px]">{information.address}</span>
           </div>
           <h5 className="font-extrabold mb-1 ">TẢI ỨNG DỤNG</h5>
