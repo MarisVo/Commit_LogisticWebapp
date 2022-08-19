@@ -1,42 +1,32 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import { BsThreeDots, BsCheck2 } from "react-icons/bs";
 import { AiOutlineFundProjectionScreen } from "react-icons/ai";
 import { MdNotificationImportant } from "react-icons/md";
 import { Link } from "react-router-dom";
-
 import axios from "axios";
-
 import { MainContext } from "../context/MainContext";
 import { END_POINT } from "../utils/constant";
 function NotificationDropdown() {
   const [page, setPage] = useState();
-  const { accessToken } = useContext(MainContext);
+  const { accessToken, refreshNoti } = useContext(MainContext);
   const [isSettingVisible, setIsSettingVisible] = useState(false);
   const [dataReceive, setDataReceive] = useState([]);
- 
+  const getNoti = async () => {
+    try {
+      const res = await axios.get(
+        `${END_POINT}/notification?limit=5`,
+        {
+          headers: { authorization: `Bearer ${accessToken}` },
+        }
+      );
+      res.status===200 && setDataReceive(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   useEffect(() => {
-    const ourRequest = axios.CancelToken.source();
-    const controller = new AbortController()
-    const getNoti = async () => {
-      try {
-        const res = await axios.get(
-          `${END_POINT}/notification?limit=5`,
-          {
-            headers: { authorization: `Bearer ${accessToken}` },
-            cancelToken:ourRequest.token,
-            signal: controller.signal
-          }
-        );
-        res.status===200 && setDataReceive(() => res.data.data);
-        console.log(res);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     getNoti();
-    return () => controller.abort()
-  }, [dataReceive]);
-  console.log("a");
+  }, [refreshNoti]);
   return (
     <div>
       <div className="absolute w-96 top-16 right-5 border border-gray-200 bg-white z-20 p-2 rounded-lg shadow-md">

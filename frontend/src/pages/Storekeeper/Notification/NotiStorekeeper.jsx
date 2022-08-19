@@ -6,7 +6,7 @@ import { MainContext } from "../../../context/MainContext";
 import axios from "axios";
 import { END_POINT } from "../../../utils/constant";
 function NotiStorekeeper() {
-  const { user, accessToken } = useContext(MainContext);
+  const { user, accessToken, refreshNoti } = useContext(MainContext);
   const [dataReceive, setDataReceive] = useState([]);
   const [dataSend, setDataSend] = useState();
   const getNoti = async () => {
@@ -18,14 +18,13 @@ function NotiStorekeeper() {
         }
       );
       res.data.data.length > 0 && setDataReceive(() => res.data.data);
-      // console.log(res);
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
     getNoti();
-  }, []);
+  }, [refreshNoti]);
 
   return (
     <div>

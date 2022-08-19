@@ -553,7 +553,7 @@ const Home = () => {
       </div>
       <div className="hidden lg:flex flex-row flex-wrap justify-around items-center container mx-auto my-12 ">
         {services.length >0 && services.map((service) => (
-          <Link to="/" key={service._id}>
+          <Link to={`dich-vu/${service._id}`} key={service._id}>
             <div className="group shadow-2xl">
               <img
                 src={`${END_POINT}/public/${service.logo}`}
