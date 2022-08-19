@@ -423,12 +423,11 @@ paths:
       consumes:
         - multipart/form-data
       parameters:
-      - in: body
+      - in: formData
         name: logo
         required: true
         description: file
-        schema:
-          type: string
+        type: file
       responses:
         200:
           description: upload logo successfully.
@@ -442,12 +441,11 @@ paths:
       consumes:
         - multipart/form-data
       parameters:
-      - in: body
+      - in: formData
         name: banners
         required: true
         description: array of files
-        schema:
-          type: array
+        type: file
       responses:
         200:
           description: upload banners successfully.
@@ -1573,7 +1571,6 @@ paths:
                   type: string
               expired:
                   type: string
-        - in: formData
       responses:
         200:
           description: Create car successfully.
@@ -5033,19 +5030,19 @@ paths:
             }
         400:
           description: service is not found.  
-  /service/{serviceId}:
+  /service/{service}:
     get:
       tags:
         - "service"
-      summary: get delivery service by id
+      summary: get delivery service by id or name
       produces:
         - application/json
       parameters:
         - in: path
-          name: serviceId
+          name: service
           type: string
+          description: Id/Name of a service 
           required: true
-          description: Id of a service 
       responses:
         200:
           description: get service successfully.
