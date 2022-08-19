@@ -89,7 +89,7 @@ warehouseAdminRoute.put('/:id',
     }
 )
 /**
-* @route PUT /api/admin/inventory/:warehouseId
+* @route PUT /api/admin/add_inventory/:warehouseId
 * @description add productshipment to a warehouse
 * @access private
 */
@@ -101,10 +101,9 @@ warehouseAdminRoute.put('/add_inventory/:warehouseId/', async (req, res) => {
         const warehouse = await Warehouse.findById(warehouseId)
         if (!productShipment || !warehouse) return sendError(res, "No information")
         let add = {shipment: productShipment, turnover: turnover}
+        const totalTurnover = warehouse.turnover + Number(turnover)
         let inventory_product_shipments = [...warehouse.inventory_product_shipments, add]
-        await Warehouse.findByIdAndUpdate(warehouseId, {inventory_product_shipments})
-        const totalTurnover = await calculateWarehouseTurnover(warehouseId)
-        await Warehouse.findByIdAndUpdate(warehouseId, {turnover: totalTurnover})
+        await Warehouse.findByIdAndUpdate(warehouseId, {inventory_product_shipments: inventory_product_shipments, turnover: totalTurnover})
         return sendSuccess(res, "Add product shipment successfully")
     }
     catch (error) {
@@ -113,7 +112,7 @@ warehouseAdminRoute.put('/add_inventory/:warehouseId/', async (req, res) => {
     }
 })
 /**
-* @route PUT /api/admin/export/:warehouseId
+* @route PUT /api/admin/update_inventory/:warehouseId
 * @description export or import productshipment to a warehouse
 * @access private
 */
@@ -127,10 +126,12 @@ warehouseAdminRoute.put('/update_inventory/:warehouseId', async (req, res) => {
         if (!productShipment || !warehouse) return sendError(res, "No information")
         for (let i = 0; i < warehouse.inventory_product_shipments.length; i++) {
             if (warehouse.inventory_product_shipments[i].shipment == productShipmentId) {
+                if (warehouse.inventory_product_shipments[i].status == status) {
+                    return sendError(res, "Status already set")
+                }
                 warehouse.inventory_product_shipments[i].status = status
-                await Warehouse.findByIdAndUpdate(warehouseId, {inventory_product_shipments: warehouse.inventory_product_shipments})
-                const totalTurnover = await calculateWarehouseTurnover(warehouseId)
-                await Warehouse.findByIdAndUpdate(warehouseId, {turnover: totalTurnover})
+                warehouse.turnover = warehouse.turnover + (status == 'import' ? +warehouse.inventory_product_shipments[i].turnover : -warehouse.inventory_product_shipments[i].turnover)
+                await Warehouse.findByIdAndUpdate(warehouseId, {inventory_product_shipments: warehouse.inventory_product_shipments, turnover: warehouse.turnover})
                 return sendSuccess(res, `${status} successfully`)
             }
         };
@@ -138,6 +139,7 @@ warehouseAdminRoute.put('/update_inventory/:warehouseId', async (req, res) => {
 
     }
     catch (error) {
+        console.log(error);
         return sendServerError(res)
     }
 })

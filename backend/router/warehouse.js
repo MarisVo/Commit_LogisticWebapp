@@ -51,10 +51,10 @@ warehouseRoute.get('/:id', verifyToken,
             const warehouse = await Warehouse.findById(id)
             if (!warehouse) {return sendError(res, "not information found.")}
             if (role === STAFF.ADMIN || (role === STAFF.STOREKEEPER && req.user.role._id == warehouse.storekeeper)) {
-                sendSuccess(res, "get warehouse successful.", warehouse)
+                return sendSuccess(res, "get warehouse successful.", warehouse)
             }
             else {
-                sendError(res, "Access denied.")
+                return sendError(res, "Access denied.")
             }
         } catch(error){
             return sendServerError(res)
@@ -109,7 +109,7 @@ warehouseRoute.put('/:id', verifyToken, verifyStorekeeper,
     }    
 )
 /**
-* @route PUT /api/admin/inventory/:warehouseId
+* @route PUT /api/add_inventory/:warehouseId
 * @description add productshipment to a warehouse
 * @access private
 */
@@ -125,10 +125,9 @@ warehouseRoute.put('/add_inventory/:warehouseId/', verifyToken, verifyStorekeepe
                 const warehouse = await Warehouse.findById(warehouseId)
                 if (!productShipment || !warehouse) return sendError(res, "No information")
                 let add = {shipment: productShipment, turnover: turnover}
+                const totalTurnover = warehouse.turnover + Number(turnover)
                 let inventory_product_shipments = [...warehouse.inventory_product_shipments, add]
-                await Warehouse.findByIdAndUpdate(warehouseId, {inventory_product_shipments})
-                const totalTurnover = await calculateWarehouseTurnover(warehouseId)
-                await Warehouse.findByIdAndUpdate(warehouseId, {turnover: totalTurnover})
+                await Warehouse.findByIdAndUpdate(warehouseId, {inventory_product_shipments: inventory_product_shipments, turnover: totalTurnover})
                 return sendSuccess(res, "Add product shipment successfully")
             }
             catch (error) {
@@ -140,7 +139,7 @@ warehouseRoute.put('/add_inventory/:warehouseId/', verifyToken, verifyStorekeepe
         }
 })
 /**
-* @route PUT /api/admin/export/:warehouseId
+* @route PUT /api//update_inventory/:warehouseId
 * @description export or import productshipment to a warehouse
 * @access private
 */
@@ -158,10 +157,12 @@ warehouseRoute.put('/update_inventory/:warehouseId', verifyToken, verifyStorekee
             if (!productShipment || !warehouse) return sendError(res, "No information")
             for (let i = 0; i < warehouse.inventory_product_shipments.length; i++) {
                 if (warehouse.inventory_product_shipments[i].shipment == productShipmentId) {
+                    if (warehouse.inventory_product_shipments[i].status == status) {
+                        return sendError(res, "Status already set")
+                    }
                     warehouse.inventory_product_shipments[i].status = status
-                    await Warehouse.findByIdAndUpdate(warehouseId, {inventory_product_shipments: warehouse.inventory_product_shipments})
-                    const totalTurnover = await calculateWarehouseTurnover(warehouseId)
-                    await Warehouse.findByIdAndUpdate(warehouseId, {turnover: totalTurnover})
+                    warehouse.turnover = warehouse.turnover + (status == 'import' ? +warehouse.inventory_product_shipments[i].turnover : -warehouse.inventory_product_shipments[i].turnover)
+                    await Warehouse.findByIdAndUpdate(warehouseId, {inventory_product_shipments: warehouse.inventory_product_shipments, turnover: warehouse.turnover})
                     return sendSuccess(res, `${status} successfully`)
                 }
             };
@@ -172,14 +173,9 @@ warehouseRoute.put('/update_inventory/:warehouseId', verifyToken, verifyStorekee
             return sendServerError(res)
         }
     } else {
-        sendError(res, "Access denied.")
+        return sendError(res, "Access denied.")
     }
     
 })
-/**
-* @route DELETE /api/admin/warehouse/:id
-* @description delete a existing warehouse
-* @access private
-*/
 
 export default warehouseRoute
