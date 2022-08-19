@@ -98,13 +98,8 @@ priceAdminRoute.delete("/:id", async (req, res) => {
     const isExist = await Price.exists({ _id: id });
     if (!isExist) return sendError(res, "price does not exist.");
     await DeliveryService.findOneAndUpdate({ price: id }, { $unset: { price: id } });
-    await Price.findByIdAndRemove(id)
-      .then(() => {
-        return sendSuccess(res, "Delete price successfully.");
-      })
-      .catch((err) => {
-        return sendError(res, err);
-      });
+    const price = await Price.findByIdAndRemove(id)
+    return sendSuccess(res, "Delete price successfully.", price);
   } catch (error) {
     return sendServerError(res);
   }

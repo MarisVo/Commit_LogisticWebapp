@@ -61,6 +61,8 @@ tags:
   description: "Endpoint Consultancy"
 - name: "notification"
   description: "Endpoint Notification for user's realtime interaction"
+- name: "staff"
+  description: "Endpoint Staff"
 - name: "warehouse" 
   description: "Endpoint Warehouse" 
 - name: "participant" 
@@ -77,6 +79,8 @@ tags:
   description: "Endpoint PriceList"
 - name: "customer"
   description: "Endpoint Customer"
+- name: "receiver"
+  description: "Endpoint Receiver"
 paths:
   /auth/verify-token:
     post:
@@ -1161,7 +1165,7 @@ paths:
             type: string
           required: true
           description: user id
-        - in: body
+        - in: formData
           name: user
           description: a existing user.
           schema:
@@ -1212,7 +1216,7 @@ paths:
             type: string
           required: true
           description: user id
-        - in: body
+        - in: formData
           name: customer
           description: a existing customer.
           schema:
@@ -1262,7 +1266,7 @@ paths:
             type: string
           required: true
           description: user id
-        - in: body
+        - in: formData
           name: user
           description: a existing user.
           schema:
@@ -1311,7 +1315,7 @@ paths:
             type: string
           required: true
           description: user id
-        - in: body
+        - in: formData
           name: customer
           description: a existing customer.
           schema:
@@ -1459,7 +1463,7 @@ paths:
           type: string
           required: true
           description: Id of an car 
-        - in: body
+        - in: formData
           name: road
           description: a new car.
           schema:
@@ -1541,7 +1545,7 @@ paths:
         - application/json
       parameters:
         - in: body
-          name: road
+          name: road        
           description: a new car.
           schema:
             type: object
@@ -1652,37 +1656,20 @@ paths:
       consumes:
         - application/json
       parameters:
-        - in: body
-          name: prohibited product
-          description: a new prohibited product.
-          schema:
-            type: object
-            required:
-              - name
-              - detail
-              - image
-            properties:
-              name:           
-                  type: string
-              detail:           
-                  type: string
         - in: formData
-          name: images
-          description: a images prohibited product.
+          name: name
+          type: string
+          required: true
+          description: name of prohibited product
+        - in: formData
+          name: detail
+          type: string
+          required: true
+          description: detail of prohibited product
+        - in: formData
+          name: image
           type: file
-      requestBody:
-        content: 
-          application/json:
-            schema:            
-              type: object
-              properties:      
-                name:           
-                  type: string
-                images: 
-                  type: string
-                  format: base64
-                detail:   
-                  type: string
+          description: Image of prohibited product
       responses:
         200:
           description: Create prohibited product successfully.
@@ -1707,40 +1694,20 @@ paths:
       parameters:
         - in: path
           name: id
-          schema: 
-            type: string
           required: true
           description: prohibited product id
-        - in: body
-          name: prohibited product
-          description: a existing prohibited product.
-          schema:
-            type: object
-            required:
-              - name
-              - detail
-            properties:
-              name:
-                type: string
-              detail:
-                type: string
         - in: formData
-          name: images
-          description: a images prohibited product.
+          name: name
+          type: string
+          description: name of prohibited product
+        - in: formData
+          name: detail
+          type: string
+          description: detail of prohibited product
+        - in: formData
+          name: image
           type: file
-      requestBody:
-        content: 
-          multipart/form-data: 
-            schema:            
-              type: object
-              properties:      
-                name:
-                  type: string
-                images:
-                  type: string
-                  format: base64 
-                detail:
-                  type: string
+          description: Image of prohibited product
       responses:
         200:
           description: Update prohibited product successfully.
@@ -1873,7 +1840,7 @@ paths:
           type: string
           required: true
           description: Id of an road 
-        - in: body
+        - in: formData
           name: road
           description: a new road.
           schema:
@@ -1935,7 +1902,7 @@ paths:
       consumes:
         - application/json
       parameters:
-        - in: body
+        - in: formData
           name: road
           description: a new road.
           schema:
@@ -2050,7 +2017,7 @@ paths:
           type: string
           required: true
           description: Id of an product-shipment 
-        - in: body
+        - in: formData
           name: product-shipment
           description: Update product-shipment.
           schema:
@@ -2242,7 +2209,7 @@ paths:
           type: string
           required: true
           description: Id of an bill 
-        - in: body
+        - in: formData
           name: bill
           description: a new bill.
           schema:
@@ -2316,7 +2283,7 @@ paths:
       consumes:
         - application/json
       parameters:         
-        - in: body
+        - in: body      
           name: bill
           description: a new bill.
           schema:
@@ -3117,18 +3084,18 @@ paths:
     post:
       tags:
         - "order"
-      summary: "Customer create a new order"
+      summary: "Customer or Admin create a new order"
       consumes:
         - application/json
       parameters:
         - in: body
           name: order
-          description: a new order.
+          description: a new order(if user is admin, fill in customerEmail/customerPhone)
           schema:
             type: object      
             required: 
             - serviceName, receiver, origin, destination     
-            properties:
+            properties:              
               serviceName:
                 type: string
               receiver: 
@@ -3143,7 +3110,11 @@ paths:
               origin:
                 type: string               
               destination:
-                type: string               
+                type: string   
+              customerEmail:
+                type: string
+              customerPhone:
+                type: string            
       responses:
         200:
           description: Create new order successfully.
@@ -3168,6 +3139,14 @@ paths:
           name: pageSize
           type: string
           description: Number of order in a page
+        - in: query
+          name: status
+          type: string
+          description: waiting/accepted/probably proceed/processing/completed/refused/cancel          
+        - in: query
+          name: sortBy
+          type: string
+          description: sort by field name, -updatedAt
       responses:
         200:
           description: get order successfully.
@@ -3217,6 +3196,37 @@ paths:
           description: order is not found.
       security:
         - bearerAuth: []
+    put: 
+      tags:
+        - "order"
+      summary: Customer or Admin update information of an waiting order
+      produces:
+        - application/json     
+      parameters:
+        - in: path
+          name: orderId
+          type: string
+          required: true
+          description: Id of a order 
+        - in: body
+          name: updatedOrder
+          description: updatedOrder   
+          schema:
+            type: object                
+            properties:
+              serviceName:
+                type: string   
+              origin:
+                type: string  
+              destination:
+                type: string  
+      responses:
+        200:
+          description: updated order successfully.            
+        400:
+          description: order is not found.
+      security:
+        - bearerAuth: []
 
   /admin/order:
     get:
@@ -3234,6 +3244,26 @@ paths:
           name: pageSize
           type: string
           description: Number of order in a page
+        - in: query
+          name: status
+          type: string
+          description: waiting/accepted/probably proceed/processing/completed/refused/cancel          
+        - in: query
+          name: sortBy
+          type: string
+          description: sort by field name, -updatedAt
+        - in: query
+          name: customerName
+          type: string
+          description: customer's name
+        - in: query
+          name: customerPhone
+          type: string
+          description: customer's phone
+        - in: query
+          name: customerEmail
+          type: string
+          description: customer's email
       responses:
         200:
           description: get order successfully.
@@ -3303,46 +3333,6 @@ paths:
           description: delete order successfully.                  
         400:
           description: order is not found.
-      security:
-        - bearerAuth: []
-  /admin/order/create:
-    post:
-      tags:
-        - "order"
-      summary: "Admin create a new order for offline customer"
-      consumes:
-        - application/json
-      parameters:
-        - in: body
-          name: order
-          description: a new order.
-          schema:
-            type: object      
-            required: 
-            - serviceName, receiver, origin, destination     
-            properties:
-              serviceName:
-                type: string
-              customerEmail:
-                type: string
-              receiver: 
-                type: object
-                properties:
-                  name:
-                    type: string
-                  phone:
-                    type: string
-                  identity:
-                    type: string                                   
-              origin:
-                type: string               
-              destination:
-                type: string               
-      responses:
-        200:
-          description: Create new order successfully.
-        400:
-          description: Create order failed.
       security:
         - bearerAuth: [] 
   /order/tracking/{lstOrderId}:
@@ -4318,6 +4308,10 @@ paths:
           type: string
           description: num of page
         - in: query
+          name: sortBy
+          type: string
+          description: sort in order
+        - in: query
           name: fromProvince
           type: string
           description: Origin province
@@ -4334,7 +4328,7 @@ paths:
             type: object
             example: {
                   "fromProvince": "string",
-                  "toProvince": "path",
+                  "toProvince": "string",
                   "zonecode": "string",
                   "distance":  "number",
             }
@@ -4360,7 +4354,7 @@ paths:
             type: object
             example: {
               "fromProvince": "string",
-              "toProvince": "path",
+              "toProvince": "string",
               "zonecode": "string",
               "distance":  "number",            
             }
@@ -4396,7 +4390,7 @@ paths:
             type: object
             example: {
               "fromProvince": "string",
-              "toProvince": "path",
+              "toProvince": "string",
               "zonecode": "string",
               "distance":  "number",
             }
@@ -4426,6 +4420,18 @@ paths:
           type: string
           required: true
           description: Id of a service 
+        - in: query
+          name: sortBy
+          type: string
+          description: sort in order
+        - in: query
+          name: fromProvince
+          type: string
+          description: Origin province
+        - in: query
+          name: toProvince
+          type: string
+          description: Destination province
       responses:
         200:
           description: get distance successfully.
@@ -4433,7 +4439,7 @@ paths:
             type: object
             example: {
               "fromProvince": "string",
-              "toProvince": "path",
+              "toProvince": "string",
               "zonecode": "string",
               "distance":  "number",          
             }
@@ -4481,7 +4487,7 @@ paths:
             type: object
             example: {
               "fromProvince": "string",
-              "toProvince": "path",
+              "toProvince": "string",
               "zonecode": "string",
               "distance":  "number",
             }
@@ -4529,7 +4535,7 @@ paths:
             type: object
             example: {
               "fromProvince": "string",
-              "toProvince": "path",
+              "toProvince": "string",
               "zonecode": "string",
               "distance":  "number",
             }
@@ -4859,27 +4865,22 @@ paths:
       summary: "Create a new priceList"
       consumes:
         - multipart/form-data
-        - application/json
       parameters:
         - in: path
           name: serviceId
           type: string
           required: true
           description: Id of a service 
-        - in: body
-          name: priceList
-          description: a new priceList.
-          schema:
-            type: object
-            required:
-              - province 
-            properties:
-              province:
-                type: string
+        - in: formData
+          name: province
+          description: Province name to which the price files are associated.
+          type: string
+          required: true   
         - in: formData
           name: file
           description: file for priceList.
-          type: file          
+          type: file  
+          required: true        
       requestBody:
         content: 
           multipart/form-data: 
@@ -5582,7 +5583,187 @@ paths:
           description: Delete applicant failed.
       security:
         - bearerAuth: []
-
+  /admin/staff:
+    get:
+      tags: 
+        - staff
+      summary: get list of staffs
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: id
+          type: string
+          description: id of staff
+        - in: query
+          name: keyword
+          type: string
+          description: keyword for searching staff 
+        - in: query
+          name: sort
+          type: number
+          description: sort staff by order
+        - in: query
+          name: filter
+          type: string
+          description: admin, driver, shipper, storekeeper or staff
+      responses:
+        200:
+          description: Get staff information successfully.
+        400:
+          description: Get staff information failed.
+      security:
+        - bearerAuth: []
+  /admin/staff/{staffId}:
+    delete:
+      tags:
+        - staff
+      summary: Delete staff by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: staffId
+          type: string
+          description: id of staff  
+      responses:
+        200:
+          description: delete staff successfully.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - staff
+      summary: Update staff by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: staffId
+          type: string
+          description: id of staff
+        - in: body
+          name: update content
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              staff_type:
+                type: string
+      responses:
+        200:
+          description: Update staff information successfully.
+        400:
+          description: Update staff information failed.
+      security:
+        - bearerAuth: []
+  /admin/receiver:
+    get:
+      tags: 
+        - receiver
+      summary: get list of receivers
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: id
+          type: string
+          description: id of receiver 
+        - in: query
+          name: keyword
+          type: string
+          description: keyword for searching receiver 
+        - in: query
+          name: sort
+          type: number
+          description: sort receiver by order
+      responses:
+        200:
+          description: get receiver successfully.
+          schema:
+            type: object
+              example: {
+                "name": "string",
+                "phone": "string",
+                "identity": "string",
+              }
+        400:
+          description: Receiver not found.
+      security:
+        - bearerAuth: []
+  /admin/receiver/{receiverId}:
+    put:
+      tags:
+        - receiver
+      summary: Update receiver by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: receiverId
+          type: string
+          description: id of receiver 
+        - in: body
+          name: update content
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              phone:
+                type: string
+              identity:
+                type: string
+      responses:
+        200:
+           description: Update receiver successfully. 
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - receiver
+      summary: Delete receiver by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: receiverId
+          type: string
+          description: id of receiver  
+      responses:
+        200:
+          description: delete receiver successfully.
+      security:
+        - bearerAuth: []
+  /receiver/{orderId}:
+    put:
+      tags:
+        - receiver
+      summary: Update receiver by customer if order is waiting
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: orderId
+          type: string
+          description: id of order to check 
+        - in: body
+          name: update content
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              phone:
+                type: string
+              identity:
+                type: string
+      responses:
+        200:
+           description: Update receiver successfully. 
+      security:
+        - bearerAuth: []
 securityDefinitions:
   bearerAuth:
     type: "apiKey"

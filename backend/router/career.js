@@ -73,11 +73,11 @@ careerRoute.get("/", async (req, res) => {
     if (state) {
       query.state = state;
     }
-    const length = await Career.count();
     const career = await Career.find({ $and: [query, keywordCondition] })
       .limit(pageSize)
       .skip(pageSize * page)
       .sort(`${sortBy}`);
+    var length = await Career.find({ $and: [query, keywordCondition] }).count();
     if (career)
       return sendSuccess(res, "Get career information successfully.", {
         length,

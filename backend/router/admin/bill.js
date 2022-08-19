@@ -193,6 +193,7 @@ billAdminRoute.delete('/:id', async (req, res) => {
 
         const data = await Bill.findByIdAndRemove(id)
         return sendSuccess(res, "Delete product shipment successfully.", data)
+
     }
     catch (error) {
         console.log(error)

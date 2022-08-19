@@ -129,13 +129,9 @@ carAdminRoute.delete('/:id', async (req, res) => {
         if (!isExit)
             return sendError(res, "Car not exists")
 
-        await Car.findByIdAndRemove(id)
-            .then(() => {
-                return sendSuccess(res, "Delete car successfully.")
-            })
-            .catch((err) => {
-                return sendError(res, err)
-            })
+        const data = await Car.findByIdAndRemove(id)
+        return sendSuccess(res, "Delete car successfully.", data)
+           
     }
     catch (error) {
         console.log(error)
