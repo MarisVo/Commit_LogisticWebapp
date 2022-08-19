@@ -585,54 +585,6 @@ paths:
             }
         400:
           description: the service is not exist. / the service don't support this road.
-  /tracking/warehouse:
-    get:
-      tags:
-        - tracking
-      summary: get list of warehouses by province and district query
-      produces:
-        - application/json
-      parameters:
-      - in: query
-        name: province
-        type: string
-        required: true
-      - in: query
-        name: district
-        type: string
-        required: true
-  
-      responses:
-        200:
-          description: request successfully
-          schema:
-            type: object
-            example: {
-              "warehouses": ['warehouse1', 'warehouse2']
-            }
-  /tracking/service/{serviceId}:
-    get:
-      tags:
-        - tracking
-      summary: get pricelist of service
-      produces:
-        - application/json
-      parameters:
-      - in: path
-        name: serviceId
-        type: string
-        required: true
-        description: serviceId of request service
-      responses:
-        200:
-          description: request successfully
-          schema:
-            type: object
-            example: {
-              "serviceWithUniquePriceFiles": ["pricelist1","pricelist2"]
-            }
-        400:
-          description: not exist.
   /public/uploads/{dirName}/{fileName}:
     get:
       tags:
@@ -1517,17 +1469,29 @@ paths:
           schema:
             type: object
             required:
+              - plate
+              - car_type 
               - volumn
-              - tonnage 
-              - car_type
+              - tonnage
+              - car_fleet
+              - seri
+              - expired
             properties:
+              plate: 
+                  type: string
+              car_type:
+                type: string
+                enum: ['8_ton', '20_ton']
               volumn: 
                   type: number
               tonnage:
                   type: number
-              car_type:
-                type: string
-                enum: ['8_ton', '20_ton']
+              car_fleet:
+                  type: string
+              seri:
+                  type: string
+              expired:
+                  type: string
         - in: formData
       responses:
         200:
@@ -1580,21 +1544,36 @@ paths:
       consumes:
         - application/json
       parameters:
-        - in: formData
-          name: car
+        - in: body
+          name: road        
           description: a new car.
           schema:
             type: object
+            required:
+              - plate
+              - car_type 
+              - volumn
+              - tonnage
+              - car_fleet
+              - seri
+              - expired
             properties:
-              plate:
-                type: string 
+              plate: 
+                  type: string
               car_type:
                 type: string
                 enum: ['8_ton', '20_ton']
-              volumn:
-                type: number 
+              volumn: 
+                  type: number
               tonnage:
-                type: number 
+                  type: number
+              car_fleet:
+                  type: string
+              seri:
+                  type: string
+              expired:
+                  type: string
+        - in: formData
       responses:
         200:
           description: Create car successfully.
@@ -2092,7 +2071,7 @@ paths:
       security:
           - bearerAuth: []
 
-  /admin/product-shipment/create:
+  /admin/product-shipment/create/{product_id}:
     post:
       tags:
         - "product-shipment"
@@ -2100,7 +2079,12 @@ paths:
       consumes:
         - application/json
       parameters:
-        - in: formData
+        - in: path
+          name: product_id
+          type: string
+          required: true
+          description: Id of an product
+        - in: body
           name: product-shipment
           description: a new product-shipment.
           schema:
@@ -2108,8 +2092,6 @@ paths:
             properties:
               quantity:
                 type: number 
-              product_id:
-                type: string
       responses:
         200:
           description: Create product shipment successfully.
@@ -2117,7 +2099,6 @@ paths:
             type: object
             example: {
               "quantity": "string",
-              "product_id": "string",
             }
         400:
           description: Create product shipment failed. 
@@ -2301,8 +2282,8 @@ paths:
       summary: "Create a new bill"
       consumes:
         - application/json
-      parameters:
-        - in: formData
+      parameters:         
+        - in: body      
           name: bill
           description: a new bill.
           schema:
@@ -2316,8 +2297,10 @@ paths:
                 type: string 
               driver:
                 type: string 
-              product_shipment:
-                type: string 
+              actual_fuel:
+                type: number 
+              theoretical_fuel: 
+                type: number 
               status:
                 type: string
                 enum: ['waiting', 'accepted', 'processing', 'completed', 'refused']
@@ -2331,11 +2314,49 @@ paths:
               "road": "string",
               "car": "string",
               "driver": "string",
-              "product_shipment": "string",
+              "actual_fuel": "number",
+              "theoretical_fuel": "number",
               "status": "string",
             }
         400:
           description: Create bill failed. 
+      security:
+        - bearerAuth: []
+  
+  /admin/bill/product_shipments/{billId}:
+    post:
+      tags:
+        - "bill"
+      summary: "Update a turnover, shipment of bill"
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: billId
+          type: string
+          required: true
+          description: Id of an bill 
+        - in: body
+          name: bill
+          description: a new bill.
+          schema:
+            type: object
+            properties:
+              shipment:
+                type: string 
+              turnover:
+                type: number
+      responses:
+        200:
+          description: Update bill successfully.
+          schema:
+            type: object
+            example: {
+              "shipment": "string",
+              "turnover": "number",
+            }
+        400:
+          description: Update bill failed. 
       security:
         - bearerAuth: []
 
