@@ -154,18 +154,18 @@ const App = () => {
                   <Route path="contact-us" element={<AdminContactUs />}></Route>
                   <Route path="commitment" element={<AdminCommitment />}></Route>
                   <Route path="message" element={<AdminContactMessage />}></Route>
-                  <Route path="service" element={<AdminDeliveryService />}></Route>
+                  <Route path="dich-vu" element={<AdminDeliveryService />}></Route>
                   <Route path="partner" element={<AdminPartner />}></Route>
                   <Route path="viec-lam" element={<AdminCareer />}></Route>
                   <Route path="ung-vien" element={<AdminApplicant />}></Route>
                   <Route path="phong-ban" element={<AdminDepartment />}></Route>
-                  <Route path="warehouse" element={<AdminWarehouse />}></Route>
-                  <Route path="car" element={<AdminCar />}></Route>
-                  <Route path="road" element={<AdminRoad />}></Route>
+                  <Route path="kho" element={<AdminWarehouse />}></Route>
+                  <Route path="phuong-tien" element={<AdminCar />}></Route>
+                  <Route path="hanh-trinh" element={<AdminRoad />}></Route>
                   <Route path="staff" element={<AdminStaff />}></Route>
                   <Route path="customer" element={<AdminCustomer />}></Route>
                   <Route path="order" element={<AdminOrder />}></Route>
-                  <Route path="staff_regis" element={<StaffRegister />}></Route>
+                  <Route path="them-nhan-vien" element={<StaffRegister />}></Route>
                   <Route path="phi-bao-tri" element={<AdminMaintenance />}>
                   </Route>
                 </Route>

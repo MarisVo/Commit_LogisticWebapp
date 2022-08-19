@@ -138,13 +138,8 @@ billAdminRoute.delete('/:id', async (req, res) => {
         if (!isExit)
             return sendError(res, "Bill not exists")
 
-        await Bill.findByIdAndRemove(id)
-            .then(() => {
-                return sendSuccess(res, "Delete bill successfully.")
-            })
-            .catch((err) => {
-                return sendError(res, err)
-            })
+        const data = await Bill.findByIdAndRemove(id)
+        return sendSuccess(res, "Delete bill successfully.", data)
     }
     catch (error) {
         console.log(error)

@@ -1,4 +1,4 @@
-import logoJT from "../assets/icons/logo-J&T.svg";
+import logoJT from "../assets/icons/vietnam-post.png";
 import { FaChevronDown, FaBars } from "react-icons/fa";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -126,7 +126,7 @@ const Header = () => {
         </div>
         <div className="hidden sm:block">
           <Link to="/">
-            <img src={logoJT} className="" alt="logo-JnT"/>
+            <img src={logoJT} className="h-[80px]" alt="logo-JnT"/>
           </Link>
         </div>
         <ul className="hidden lg:flex h-full justify-center items-center m-0">
@@ -227,7 +227,7 @@ const Header = () => {
               <FaChevronDown className="h-4 w-4 pl-[6px]" />
             </Link>
             <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg animate-up">
-              {
+             {/*  {
                 services.map(service=>(
 
                   <li>
@@ -240,7 +240,43 @@ const Header = () => {
                     </Link>
                   </li>
                 ))
-              }
+              } */}
+                  <li>
+                    <Link
+                      to="chuyen-phat-tieu-chuan"
+                      className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100"
+                    >
+                      <span>Dich vu chuyển phát tiêu chuẩn</span>
+                      <i className="text-[#f0b90c] font-bold">J&T Express</i>
+                    </Link>
+                  </li>
+                   <li>
+                    <Link
+                      to="chuyen-phat-nhanh"
+                      className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100"
+                    >
+                      <span>Dịch vụ chuyển phát nhanh</span>
+                      <i className="text-[#f0b90c] font-bold">J&T Fast</i>
+                    </Link>
+                  </li>
+                   <li>
+                    <Link
+                      to="sieu-dich-vu-chuyen-phat"
+                      className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100"
+                    >
+                      <span>Dịch vụ siêu giao hàng</span>
+                      <i className="text-[#f0b90c] font-bold">J&T Supper</i>
+                    </Link>
+                  </li>
+                   <li>
+                    <Link
+                      to="chuyen-phat-do-tuoi-song"
+                      className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100"
+                    >
+                      <span>Dịch vụ tươi sống</span>
+                      <i className="text-[#f0b90c] font-bold">J&T Fresh</i>
+                    </Link>
+                  </li>
                 
             </ul>
           </div>

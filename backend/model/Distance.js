@@ -24,6 +24,4 @@ const DistanceSchema = new Schema(
     { timestamps: true }
 )
 
-DistanceSchema.index({ provinceA: 1, provinceB: 1 }, { unique: true })
-
 export default mongoose.model('distances', DistanceSchema)
