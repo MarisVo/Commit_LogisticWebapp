@@ -66,117 +66,85 @@ function Tracking({navigation}) {
             backgroundColor: "red",
             marginHorizontal: 24,
           }}>
-            <View style={{flex:1,flexDirection: "row", alignContent:"space-between"}}>
           <View
-            style={{flex: 1,  justifyContent:"space-around",backgroundColor: "blue"}}>
-            <Select
-              selectedValue={dataForSearch.province}
-              minWidth="40%"
-              height="56px"
-              borderRadius={16}
-              backgroundColor="#FFD124"
-              placeholderTextColor="black"
-              accessibilityLabel="Choose Service"
-              fontSize="14px"
-              placeholder="Tỉnh/Thành phố"
-              _selectedItem={{
-                bg: "teal.600",
-                endIcon: <CheckIcon size="5" />,
-              }}
-              mt={1}
-              onValueChange={itemValue =>
-                setDataForSearch({province: itemValue, district: null})
-              }>
-              {provinces.map(province => (
-                <Select.Item
-                  label={province.name}
-                  value={province.name}
-                  key={province.name}
-                />
-              ))}
-            </Select>
-            <Select
-              selectedValue={dataForSearch.province}
-              minWidth="40%"
-              height="56px"
-              borderRadius={16}
-              backgroundColor="#FFD124"
-              placeholderTextColor="black"
-              accessibilityLabel="Choose Service"
-              fontSize="14px"
-              placeholder="Quận/huyện"
-              _selectedItem={{
-                bg: "teal.600",
-                endIcon: <CheckIcon size="5" />,
-              }}
-              mt={1}
-              onValueChange={itemValue =>
-                setDataForSearch({province: itemValue, district: null})
-              }>
-              {provinces.map(province => (
-                <Select.Item
-                  label={province.name}
-                  value={province.name}
-                  key={province.name}
-                />
-              ))}
-            </Select>
-          </View>
-          <View
-            style={{flex: 1,  justifyContent:"space-around",backgroundColor: "blue"}}>
-            <Select
-              selectedValue={dataForSearch.province}
-              minWidth="40%"
-              height="56px"
-              borderRadius={16}
-              backgroundColor="#FFD124"
-              placeholderTextColor="black"
-              accessibilityLabel="Choose Service"
-              fontSize="14px"
-              placeholder="Tỉnh/Thành phố"
-              _selectedItem={{
-                bg: "teal.600",
-                endIcon: <CheckIcon size="5" />,
-              }}
-              mt={1}
-              onValueChange={itemValue =>
-                setDataForSearch({province: itemValue, district: null})
-              }>
-              {provinces.map(province => (
-                <Select.Item
-                  label={province.name}
-                  value={province.name}
-                  key={province.name}
-                />
-              ))}
-            </Select>
-            <Select
-              selectedValue={dataForSearch.province}
-              minWidth="40%"
-              height="56px"
-              borderRadius={16}
-              backgroundColor="#FFD124"
-              placeholderTextColor="black"
-              accessibilityLabel="Choose Service"
-              fontSize="14px"
-              placeholder="Quận/huyện"
-              _selectedItem={{
-                bg: "teal.600",
-                endIcon: <CheckIcon size="5" />,
-              }}
-              mt={1}
-              onValueChange={itemValue =>
-                setDataForSearch({province: itemValue, district: null})
-              }>
-              {provinces.map(province => (
-                <Select.Item
-                  label={province.name}
-                  value={province.name}
-                  key={province.name}
-                />
-              ))}
-            </Select>
-          </View>
+            style={{
+              flex: 1,
+              // alignContent: "space-between",
+              backgroundColor: "yellow",
+              // justifyContent:"space-around"
+
+
+            }}>
+            <View
+              style={{
+                flex:1,
+                justifyContent: "space-around",
+                paddingVertical:10,
+                alignItems:"center",
+                flexDirection: "row",
+                backgroundColor: "blue",
+              }}>
+              <Select
+                selectedValue={dataForSearch.province}
+                minWidth="40%"
+                height="56px"
+                borderRadius={16}
+                backgroundColor="#FFD124"
+                placeholderTextColor="black"
+                accessibilityLabel="Choose Service"
+                fontSize="14px"
+                placeholder="Tỉnh/Thành phố"
+                _selectedItem={{
+                  bg: "teal.600",
+                  endIcon: <CheckIcon size="5" />,
+                }}
+                mt={1}
+                onValueChange={itemValue =>
+                  setDataForSearch({province: itemValue, district: null})
+                }>
+                {provinces.map(province => (
+                  <Select.Item
+                    label={province.name}
+                    value={province.name}
+                    key={province.name}
+                  />
+                ))}
+              </Select>
+              <Select
+                selectedValue={dataForSearch.province}
+                minWidth="40%"
+                height="56px"
+                borderRadius={16}
+                backgroundColor="#FFD124"
+                placeholderTextColor="black"
+                accessibilityLabel="Choose Service"
+                fontSize="14px"
+                placeholder="Quận/huyện"
+                _selectedItem={{
+                  bg: "teal.600",
+                  endIcon: <CheckIcon size="5" />,
+                }}
+                mt={1}
+                onValueChange={itemValue =>
+                  setDataForSearch({province: itemValue, district: null})
+                }>
+                {provinces.map(province => (
+                  <Select.Item
+                    label={province.name}
+                    value={province.name}
+                    key={province.name}
+                  />
+                ))}
+              </Select>
+            </View>
+            <View style={{flex:1,backgroundColor:"orange"}}>
+                  <View style={{backgroundColor:"white",width:"40%"}}>
+                    <TextInput placeholder="Khối lượng"/>
+                  </View>
+            </View>
+            <View style={{flex:1,backgroundColor:"pink"}}>
+
+            </View>
           </View>
           <View
             style={{

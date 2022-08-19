@@ -201,7 +201,7 @@ const Home = () => {
   const [listProvinces, setListProvince] = useState([]);
   const [listDistricts, setListDistricts] = useState([]);
   const [quotes, setQuotes] = useState([]);
-  const [services, setServices] = useState(DeliveryServices);
+  const [services, setServices] = useState([]);
   // const [banners, setBanners] = useState(banner.banners);
   const [partners, setPartners] = useState([]);
   const [person, setPerson] = useState({});
@@ -230,6 +230,15 @@ const Home = () => {
       console.log(error);
     }
   };
+  const fetchDeliveryService = async () => {
+    try {
+      const res = await axios.get(`${END_POINT}/service`);
+      if (res.status === 200) return setServices(res.data.data.service);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     setMetadata((prev) => {
       return {
@@ -247,16 +256,8 @@ const Home = () => {
 
     fetchQuotes();
     fetchPartner();
-    // const fetchDeliveryService = (async () => {
-    //   try {
-    //     const res = await axios.get(`${END_POINT}/service`);
-    //     // if (res.status === 200) return setServices(res.data.data.service);
-    //     if (res.data.data.length > 0) return setServices(res.data.data.service);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // })()
-    // Không biết cần không?
+    fetchDeliveryService()
+
   }, []);
   const handleSelectProvince = (provinceSelected) => {
     const provinceCode = listProvinces.find(
@@ -550,26 +551,21 @@ const Home = () => {
           </Fade>
         </div>
       </div>
-      <div className="hidden lg:flex flex-row justify-around items-center container mx-auto my-12 ">
-        {services.map((service, key) => (
-          <Link to={service.path} key={key}>
+      <div className="hidden lg:flex flex-row flex-wrap justify-around items-center container mx-auto my-12 ">
+        {services.length >0 && services.map((service) => (
+          <Link to="/" key={service._id}>
             <div className="group shadow-2xl">
               <img
-                src={service.images.front}
-                alt={service.type}
-                className="group-hover:hidden w-[174px]"
-              />
-              <img
-                src={service.images.back}
-                alt={service.type}
-                className="hidden group-hover:block w-[174px]"
+                src={`${END_POINT}/public/${service.logo}`}
+                alt={service.name}
+                className="group-hover:scale-110 duration-500 w-[174px]"
               />
             </div>
             <div className="pt-4 flex flex-col">
               <span className="text-xl font-bold uppercase">
-                {service.type}{" "}
+                {service.name}
               </span>
-              <span className="text-base">{service.name}</span>
+              <span className="text-base">{service.sub_detail}</span>
             </div>
           </Link>
         ))}
