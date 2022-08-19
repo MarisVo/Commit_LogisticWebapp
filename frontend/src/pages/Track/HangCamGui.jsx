@@ -1,12 +1,13 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import { END_POINT } from "../../utils/constant";
 
 export default function HangCamGui() {
     const [data,setData] = useState([]);
 
     const getDataFromApi = async () => {
         try {
-          const res = await axios.get("http://localhost:8000/api/prohibited-product")
+          const res = await axios.get(`${END_POINT}/prohibited-product`)
           setData(res.data.data.listCar);
         }
         catch (e) {
@@ -39,7 +40,7 @@ export default function HangCamGui() {
                 margin:"auto"
              }} >
                 <div className='flex flex-row justify-center mb-10 mt-5' key={e.id}>
-                    <img style={{height:"94px"}} className='mr-6' src={e.images} alt="hinh chat cam" />
+                    <img style={{height:"94px"}} className='mr-6' src={`http://localhost:8000/api/public/${e.images}`} alt="hinh chat cam" />
                     <div >
                         <h1 className='text-[#ffbb0f] text-2xl font-bold'>{index+1}. {e.name}</h1>
                         <span>{e.detail}</span>

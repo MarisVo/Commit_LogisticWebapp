@@ -38,14 +38,14 @@ export default function AdminPage() {
   const items = [
     getItem(
       <div>
-        <Link to="about">Về chúng tôi</Link>
+        <Link to="ve_chung_toi">Về chúng tôi</Link>
       </div>,
       "1",
       <MdGroup />
     ),
     getItem(
       <div>
-        <Link to="contact-us">Liên hệ</Link>
+        <Link to="lien_he">Liên hệ</Link>
       </div>,
       "2",
       <MdConnectWithoutContact />
@@ -60,7 +60,7 @@ export default function AdminPage() {
     ),
     getItem(
       <div>
-        <Link to="message">Gửi tin nhắn</Link> {/*contact message*/}
+        <Link to="tin_nhan">Gửi tin nhắn</Link> {/*contact message*/}
       </div>,
       "4",
       <AiOutlineMessage />
@@ -132,7 +132,7 @@ export default function AdminPage() {
     getItem(
       <div>
 
-        <Link to="staff">Nhân viên</Link>
+        <Link to="nhan_vien">Nhân viên</Link>
 
       </div>,
       "14",
@@ -141,7 +141,7 @@ export default function AdminPage() {
     getItem(
       <div>
 
-        <Link to="order">Đơn hàng</Link>
+        <Link to="don_hang">Đơn hàng</Link>
 
       </div>,
       "15",
@@ -169,13 +169,12 @@ export default function AdminPage() {
     getItem(
       <div>
 
-        <Link to="don_hang">Đơn hàng</Link>
+        <Link to="hoa_don">Hóa đơn</Link>
 
       </div>,
       "18",
       <DesktopOutlined> </DesktopOutlined>
     ),
-
 
     // getItem("User", "sub1", <UserOutlined />, [getItem("Tom", "3"), getItem("Bill", "4"), getItem("Alex", "5")]),
   ];

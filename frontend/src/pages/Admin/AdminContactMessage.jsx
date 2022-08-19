@@ -7,12 +7,13 @@ import AdminEditMessage from "../../components/Admin/Message/AdminEditMessage";
 import { MainContext } from "../../context/MainContext";
 // import AdminNewMessage from "../../components/Admin/Message/AdminNewMessage";
 import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
+import { END_POINT } from "../../utils/constant";
 
 // import { handleSearch } from "../../components/Admin/HandleSearch/HandleSearch";
 
 export default function AdminContactMessage() {
   const [change, setChange] = useState(1)
-  const api = "http://localhost:8000/api/admin/message"
+  const api = `${END_POINT}/admin/message`
   const { accessToken } = useContext(MainContext)
   const [dataStore,setStoreData] = useState([])
   const [id, setId] = useState('')

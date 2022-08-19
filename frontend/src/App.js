@@ -63,6 +63,8 @@ import {
   AdminProhibitProduct,
   AdminBill,
   ChangePassword,
+  AdminTurnover,
+  ServiceAll,
 
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -73,7 +75,7 @@ import CustomerRoute from "./layouts/CustomerRoute";
 import Metadata from "./SEO/Metadata";
 import DriverRoute from "./layouts/DriverRoute";
 const App = () => {
- return (
+  return (
     <MainProvider>
       <Metadata>
         <BrowserRouter>
@@ -96,29 +98,31 @@ const App = () => {
                 <Route path="tra-cuu/hang-cam-gui" element={<Track number="hang-cam-gui" />} />
 
                 {/* ------------------------Tuyển dụng------------------- */}
-               {/*  <Route path="tuyen-dung" element={<CareerOpportunities />}>
-                  <Route path="chi-tiet-viec-lam-noi-bat" element={<RecruitmentDetails />} /> */}
-                  {/* <Route
-                  path="chi-tiet-viec-lam-moi"
-                  element={<RecruitmentDetails />}
-                /> */}
-             {/*    </Route> */}
-               {/*  <Route path="cuoc-song" element={<Life />} /> */}
+                <Route path="tuyen-dung" element={<CareerOpportunities />}>
+                  <Route path="chi-tiet-viec-lam-noi-bat" element={<RecruitmentDetails />} />
+                  <Route
+                    path="chi-tiet-viec-lam-moi"
+                    element={<RecruitmentDetails />}
+                  />
+
+                </Route>
+                <Route path="cuoc-song" element={<Life />} />
                 {/* ------------------------Dịch vụ---------------------- */}
                 <Route path="dich-vu" element={<Service />} />
+                <Route path="dich-vu/:id" element={<ServiceAll />} />
                 <Route path="chuyen-phat-tieu-chuan" element={<StandardService />} />
                 <Route path="chuyen-phat-nhanh" element={<FastService />} />
                 <Route path="sieu-dich-vu-chuyen-phat" element={<SuperService />} />
                 <Route path="chuyen-phat-do-tuoi-song" element={<FreshService />} />
                 {/* ----------------------Profile------------------ */}
-                 <Route element={<CustomerRoute />}>
-                <Route path="khach-hang/trang-ca-nhan" element={<Profile />} />
-                <Route path="khach-hang/dat-hang" element={<Purchase />} />
-                <Route path="khach-hang/thay-doi-mat-khau" element={<ChangePassword />} />
-                <Route path="khach-hang/dat-hang/:id" element={<PurchaseDetail />} />
-                <Route path="khach-hang/dat-hang/don-hang/:id" element={<PurchaseStage />} />
-                <Route path="khach-hang/thong-bao/don-hang" element={<NotificationCustomer />} />
-              </Route>
+                <Route element={<CustomerRoute />}>
+                  <Route path="khach-hang/trang-ca-nhan" element={<Profile />} />
+                  <Route path="khach-hang/dat-hang" element={<Purchase />} />
+                  <Route path="khach-hang/thay-doi-mat-khau" element={<ChangePassword />} />
+                  <Route path="khach-hang/dat-hang/:id" element={<PurchaseDetail />} />
+                  <Route path="khach-hang/dat-hang/don-hang/:id" element={<PurchaseStage />} />
+                  <Route path="khach-hang/thong-bao/don-hang" element={<NotificationCustomer />} />
+                </Route>
 
                 {/* -------------------------Đăng kí/Đăng nhập------------- */}
                 <Route element={<ProtectedRoute />}>
@@ -150,10 +154,10 @@ const App = () => {
                   <Route path="thong-bao" element={<NotiStorekeeper />} />
                 </Route>
                 <Route path="quan-tri" element={<AdminPage />}>
-                  <Route path="about" element={<AdminAbout />}></Route>
-                  <Route path="contact-us" element={<AdminContactUs />}></Route>
+                  <Route path="ve_chung_toi" element={<AdminAbout />}></Route>
+                  <Route path="lien_he" element={<AdminContactUs />}></Route>
                   <Route path="commitment" element={<AdminCommitment />}></Route>
-                  <Route path="message" element={<AdminContactMessage />}></Route>
+                  <Route path="tin_nhan" element={<AdminContactMessage />}></Route>
                   <Route path="dich-vu" element={<AdminDeliveryService />}></Route>
                   <Route path="partner" element={<AdminPartner />}></Route>
                   <Route path="viec-lam" element={<AdminCareer />}></Route>
@@ -162,12 +166,14 @@ const App = () => {
                   <Route path="kho" element={<AdminWarehouse />}></Route>
                   <Route path="phuong-tien" element={<AdminCar />}></Route>
                   <Route path="hanh-trinh" element={<AdminRoad />}></Route>
-                  <Route path="staff" element={<AdminStaff />}></Route>
+                  <Route path="nhan_vien" element={<AdminStaff />}></Route>
                   <Route path="customer" element={<AdminCustomer />}></Route>
-                  <Route path="order" element={<AdminOrder />}></Route>
+                  <Route path="don_hang" element={<AdminOrder />}></Route>
+                  <Route path="hoa_don" element={<AdminBill />}> </Route>
+                  <Route path="doanh_so" element={<AdminTurnover />}> </Route>
                   <Route path="them-nhan-vien" element={<StaffRegister />}></Route>
-                  <Route path="phi-bao-tri" element={<AdminMaintenance />}>
-                  </Route>
+                  <Route path="phi-bao-tri" element={<AdminMaintenance />}></Route>
+                  <Route path="hang_cam_gui" element={<AdminProhibitProduct />}> </Route>
                 </Route>
               </Route>
 
@@ -185,16 +191,17 @@ const App = () => {
                 <Route path="car" element={<AdminCar />}></Route>
                 <Route path="road" element={<AdminRoad />}></Route>
                 <Route path="staff" element={<AdminStaff />}></Route>
-                <Route path="customer" element={<AdminCustomer/>}></Route>
-                <Route path="order" element={<AdminOrder/>}></Route>
+                <Route path="customer" element={<AdminCustomer />}></Route>
+                <Route path="order" element={<AdminOrder />}></Route>
                 <Route path="staff_regis" element={<StaffRegister />}></Route>
                 <Route path="maintenance" element={<AdminMaintenance />}> </Route>
                 <Route path="hang_cam_gui" element={<AdminProhibitProduct />}> </Route>
                 <Route path="don_hang" element={<AdminBill />}> </Route>
+                <Route path="doanh_so" element={<AdminTurnover />}> </Route>
               </Route>
-          </Routes>
-        </div>
-      </BrowserRouter>
+            </Routes>
+          </div>
+        </BrowserRouter>
       </Metadata>
     </MainProvider>
   );

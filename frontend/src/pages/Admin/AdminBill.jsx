@@ -3,11 +3,12 @@ import 'antd/dist/antd.css';
 import { Button, Input, Table, Space, DatePicker, Form, InputNumber, Select } from "antd";
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
-import AddNewProhibit from '../../components/Admin/ProhibitProduct/AddNewProhibit';
 import ConfirmModal from '../../components/ConfirmModal';
 import EditProhibit from '../../components/Admin/ProhibitProduct/EditProhibit';
 import { AiFillEdit, AiOutlineDelete } from 'react-icons/ai'
 import { MainContext } from '../../context/MainContext';
+import AddNewBill from '../../components/Admin/Bill/AddNewBill';
+import { END_POINT } from "../../utils/constant";
 import { TOKEN } from "./adminToken";
 import axios from 'axios';
 
@@ -23,7 +24,7 @@ export default function AdminBill() {
   const [loading, setLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(false)
   const [open, setOpen] = useState(false);
-  const api = "http://localhost:8000/api/prohibited-product"
+  const api = `${END_POINT}/admin/bill`
   const [data, setData] = useState([
     {
       service:"123456bna2",
@@ -49,8 +50,12 @@ export default function AdminBill() {
 
   const getDataFromApi = async () => {
     try {
-      const res = await axios.get(api)
-      setData(res.data.data);
+      const res = await axios({
+        url:api,
+        method:"get",
+        headers: { authorization: `Bearer ${accessToken}` },
+      })
+      setData(res.data.data.bills);
     }
     catch (e) {
       console.log(e);
@@ -60,7 +65,7 @@ export default function AdminBill() {
   const postData = async (data) => {
     try {
       const res = await axios({
-        url: 'http://localhost:8000/api/admin/prohibited-product/create',
+        url: `${api}/create`,
         method: "post",
         data: data,
         headers: { authorization: `Bearer ${accessToken}` },
@@ -74,7 +79,7 @@ export default function AdminBill() {
   const editData = async (data, id) => {
     try {
       const res = await axios({
-        url: `http://localhost:8000/api/admin/prohibited-product/${id}`,
+        url: `${api}/${id}`,
         method: "put",
         headers: { authorization: `Bearer ${accessToken}` },
         data: data,
@@ -88,7 +93,7 @@ export default function AdminBill() {
   const delData = async (id) => {
     try {
       const res = await axios({
-        url: `http://localhost:8000/api/admin/prohibited-product/${id}`,
+        url: `${api}/${id}`,
         method: "delete",
         headers: { authorization: `Bearer ${accessToken}` },
       })
@@ -99,7 +104,7 @@ export default function AdminBill() {
   }
 
   useEffect(() => {
-    // getDataFromApi()
+    getDataFromApi()
   }, [])
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -266,12 +271,12 @@ export default function AdminBill() {
       ...getColumnSearchProps('driver'),
     },
     {
-      title: "Mã vận chuyển sản phẩm",
+      title: "Doanh số",
       dataIndex: "product_shipments",
       key: "product_shipments",
       width: "14.5%",
      render: (e)=>e.map(el=>(
-      <div>{el}</div>
+      <div>{el.turnover}</div>
      ))
     },
     {
@@ -323,7 +328,7 @@ export default function AdminBill() {
   const onSearch = (value) => {
     console.log(value)
     if (value === "" || value === undefined) {
-      // getDataFromApi();
+      getDataFromApi();
     }
     else {
       getSearch(value)
@@ -338,9 +343,7 @@ export default function AdminBill() {
     // setImgFile(valueImg)
     const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('input');
     const newData = {
-      name: tableData[0].value,
-      detail: tableData[1].value,
-      images: valueImg,
+     
     }
     console.log(newData);
     // postData(newData)
@@ -349,7 +352,7 @@ export default function AdminBill() {
         setLoading(false)
         setOpen(false)
         setIsDisable(false)
-        // getDataFromApi()
+        getDataFromApi()
       }, 2000)
     }
     catch {
@@ -376,7 +379,7 @@ export default function AdminBill() {
         setLoading(false)
         setOpenEdit(false)
         setIsDisable(false)
-        // getDataFromApi();
+        getDataFromApi();
         // console.log(newData);
 
       }, 2000)
@@ -389,14 +392,14 @@ export default function AdminBill() {
   const acceptDelete = async () => {
     setLoading(true)
     setIsDisable(true)
-    // delData(idItem)
+    delData(idItem)
     // console.log(idItem);
     try {
       await setTimeout(() => {
         setLoading(false)
         setOpenDel(false)
         setIsDisable(false)
-        // getDataFromApi()
+        getDataFromApi()
       }, 2000)
     }
     catch {
@@ -431,7 +434,7 @@ export default function AdminBill() {
       </Table>
 
 
-      <AddNewProhibit
+      <AddNewBill
         isVisible={open}
         onOk={acceptAddNewProhibit}
         loading={loading}
