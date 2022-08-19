@@ -2308,19 +2308,14 @@ paths:
       security:
           - bearerAuth: []
 
-  /admin/bill/create/{carfleet_id}:
+  /admin/bill/create:
     post:
       tags:
         - "bill"
       summary: "Create a new bill"
       consumes:
         - application/json
-      parameters:
-        - in: path
-          name: carfleet_id
-          type: string
-          required: true
-          description: Id of an car fleet 
+      parameters:         
         - in: body
           name: bill
           description: a new bill.

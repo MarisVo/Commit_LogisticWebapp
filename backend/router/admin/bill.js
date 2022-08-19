@@ -95,28 +95,31 @@ billAdminRoute.get('/:id',
  * @description create information of bill
  * @access private
  */
-billAdminRoute.post('/create/:carfleet_id', async (req, res) => {
+billAdminRoute.post('/create', async (req, res) => {
     const errors = createBillValidate(req.body)
     if (errors)
         return sendError(res, errors)
     try {
-        const { carfleet_id } = req.params
         const { service, road, car, driver, status, actual_fuel, theoretical_fuel } = req.body
 
         const isExistService = await DeliveryService.exists({ _id: service })
         const isExistRoad = await Road.exists({ _id: road })
-        const isExistCar = await Car.exists({ _id: car })
+        const isExistCar = await Car.findOne({ _id: car })
         const isExistDriver = await Staff.exists({ _id: driver })
-        
         if (!isExistService)
             return sendError(res, 'Service does not exist.')
         if (!isExistRoad)
             return sendError(res, 'Road does not exist.')
-        if (!isExistCar)
+        if (!isExistCar) {
             return sendError(res, 'Car does not exist.')
+        }
+        const carfleet_id = isExistCar.car_fleet
+        if (!carfleet_id) {
+            return sendError(res, 'Car fleet does not exist.')
+        }
         if (!isExistDriver)
             return sendError(res, 'Driver does not exist.')
-        
+        console.log(isExistCar,carfleet_id);
         const bill = await Bill.create({ service, road, car, driver, status, actual_fuel, theoretical_fuel })
 
         const updateCarFleet = await CarFleet.findOneAndUpdate(
