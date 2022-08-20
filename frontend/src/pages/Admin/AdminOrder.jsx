@@ -27,7 +27,7 @@ export default function AdminOrder() {
 
 
     const [open, setOpen] = useState(false)
-    const [change,setChange] = useState(1);
+    const [change, setChange] = useState(1);
 
 
     const [data, setData] = useState([
@@ -165,7 +165,7 @@ export default function AdminOrder() {
         setOpenDel(true)
     }
 
-   
+
 
 
 
@@ -307,22 +307,26 @@ export default function AdminOrder() {
             dataIndex: "action",
             width: "14.2%",
             render: (e, data) => (
-                <div className="flex flex-row justify-around">
-                    <button className="flex flex-row " role="button" onClick={(e) => handledit(e, data.orderId)}>
-                        <AiFillEdit style={{
-                            marginTop: "0.2rem",
-                            marginRight: "0.5rem"
-                        }} />
-                        Sửa
-                    </button>
-                    <button className="flex flex-row " role="button" onClick={(e) => handleDel(e, data.orderId)}>
-                        <AiOutlineDelete style={{
-                            marginTop: "0.2rem",
-                            marginRight: "0.5rem"
-                        }} />
-                        Xóa
-                    </button>
-                </div>
+                <>
+                    {e && (
+                        <div className="flex flex-row justify-around">
+                            <button className="flex flex-row " role="button" onClick={(e) => handledit(e, data.orderId)}>
+                                <AiFillEdit style={{
+                                    marginTop: "0.2rem",
+                                    marginRight: "0.5rem"
+                                }} />
+                                Sửa
+                            </button>
+                            <button className="flex flex-row " role="button" onClick={(e) => handleDel(e, data.orderId)}>
+                                <AiOutlineDelete style={{
+                                    marginTop: "0.2rem",
+                                    marginRight: "0.5rem"
+                                }} />
+                                Xóa
+                            </button>
+                        </div>
+                    )}
+                </>
             ),
         },
     ];
@@ -355,7 +359,7 @@ export default function AdminOrder() {
                 setLoading(false)
                 setOpen(false)
                 setIsDisable(false)
-                setChange(change+1);
+                setChange(change + 1);
                 getDataFromApi()
             }, 2000)
         }
@@ -370,7 +374,7 @@ export default function AdminOrder() {
         delDataToApi(id)
         try {
             await setTimeout(() => {
-                setChange(change+1)
+                setChange(change + 1)
                 setLoading(false)
                 setOpenDel(false)
                 setIsDisable(false)
@@ -387,9 +391,9 @@ export default function AdminOrder() {
         setIsDisable(true)
         const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('select')
         const items = {
-            status:tableData[0].value,
+            status: tableData[0].value,
         }
-        editDataToApi(items,id)
+        editDataToApi(items, id)
         try {
             await setTimeout(() => {
                 setChange('edit')
