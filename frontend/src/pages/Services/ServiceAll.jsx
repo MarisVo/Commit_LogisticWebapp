@@ -164,13 +164,13 @@ export default function ServiceAll() {
               )
           )
         }   
-         <div>
+         {/* <div>
               <img
                 className="w-auto h-auto object-cover hidden lg:block"
                 src={`${END_POINT}/public/${services?.logo}`}
                 alt=""
               />
-            </div>
+            </div> */}
           </div>
           <img
             src="https://jtexpress.vn/themes/jtexpress/assets/images/car-service-detail.png"

@@ -1,21 +1,21 @@
 import { useContext, useEffect, useState } from "react";
-import { Table , Input } from "antd";
+import { Table, Input } from "antd";
 const data2 = [
-    {
-        createAt:"2022-04-02",
-        license_plate:"52K-22222",
-        car_type:"10 ton",
-        description:"Sửa ABC XYZ",
-        cost:100_000
-    },
-    {
-        createAt:"2022-08-11",
-        license_plate:"52K-33333",
-        car_type:"8 ton",
-        description:"Bảo trì ABC XYZ",
-        cost:2_300_000
-    }
-  ]
+  {
+    createAt: "2022-04-02",
+    license_plate: "52K-22222",
+    car_type: "10 ton",
+    description: "Sửa ABC XYZ",
+    cost: 100_000,
+  },
+  {
+    createAt: "2022-08-11",
+    license_plate: "52K-33333",
+    car_type: "8 ton",
+    description: "Bảo trì ABC XYZ",
+    cost: 2_300_000,
+  },
+];
 function Maintenance() {
   const [data, setData] = useState(data2);
   const columns = [
@@ -99,21 +99,22 @@ function Maintenance() {
 
   return (
     <>
-    <div className="flex justify-between mb-4">
-        <span className="text-3xl font-bold uppercase">Maintenance</span>
-
+      <span className="text-3xl font-bold uppercase">
+        Quản lý chi phí đội xe
+      </span>
+      <div className="flex justify-center items-center my-5">
         <Input.Search
           className="w-1/3 lg:w-[400px]"
           placeholder="Nhập từ khóa"
-        //   onSearch={searchByKeyword}
+          //   onSearch={searchByKeyword}
         />
-        <button
-        //   className="px-5 py-2 border border-neutral-800 text-center hover:bg-slate-300"
-        className="lg:w-[200px]"
-        //   onClick={() => setIsAddVisible(true)}
+        {/* <button
+            className="px-5 py-2 border border-neutral-800 text-center hover:bg-slate-300"
+          className="lg:w-[200px]"
+            onClick={() => setIsAddVisible(true)}
         >
-          {/* + Thêm mới */}
-        </button>
+          + Thêm mới
+        </button> */}
       </div>
       <Table
         rowKey={(record) => record._id}

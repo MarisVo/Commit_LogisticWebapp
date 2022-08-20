@@ -8,7 +8,7 @@ import { MainContext } from "../../../context/MainContext";
 import {notification} from "antd"
 import {SOCKET_URL} from "../../../utils/constant"
 function NotificationIcon() {
-  const {user} = useContext(MainContext)
+  const {user, setRefreshNoti} = useContext(MainContext)
   const [isNotiVisible, setIsNotiVisible] = useState(false);
   const [dotShow,setDotShow] = useState(false)
   let { pathname } = useLocation();
@@ -31,7 +31,7 @@ function NotificationIcon() {
     socket.on("receive", ({ message, title, link }) => {
       openNotification({ message, title, link })
       setDotShow(true)
-      console.log(socket);
+      setRefreshNoti((pre)=>pre+1)
     });
     console.log(socket);
     return ()=>socket.disconnect()
@@ -53,7 +53,7 @@ function NotificationIcon() {
         </div>
         {/* Dropdown */}
       </Badge>
-      {isNotiVisible && <NotificationDropdown />}
+      {isNotiVisible && <NotificationDropdown/>}
     </div>
   );
 }

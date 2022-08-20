@@ -1,10 +1,11 @@
 import { Table, Input } from "antd";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
 import ConfirmModal from "../../components/ConfirmModal";
-import EditApplicant from "../../components/Admin/Applicant/EditApplicant"
+import EditApplicant from "../../components/Admin/Applicant/EditApplicant";
 import axios from "axios";
 import { END_POINT } from "../../utils/constant";
+import { MainContext } from "../../context/MainContext";
 
 const dataFetch = [
   {
@@ -42,96 +43,125 @@ const dataFetch = [
   },
 ];
 function AdminApplicant() {
+  const { accessToken } = useContext(MainContext);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
   const [isDeleteVisible, setIsDeleteVisible] = useState(false);
   const [isEditVisible, setIsEditVisible] = useState(false);
   const [valueCompare, setValueCompare] = useState("");
+  const [idCompare, setIdCompare] = useState("");
   const [dataForEdit, setDataForEdit] = useState({});
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 10,
+    pageSize: 4,
+    total: 15,
+  });
+  const [params, setParams] = useState({
+    total: pagination.total,
+    pageSize: pagination.pageSize,
+    page: pagination.current - 1,
+    keyword: null,
+    sortBy: null,
+    name: null,
+    department: null,
+    type: null,
+    location: null,
+    state: null,
   });
   const columns = [
     {
-      title: "Tên ứng viên",
-      dataIndex: "name",
-      sorter: (a, b) => {
-        if (a.name.last < b.name.last) return -1;
-        if (a.name.last > b.name.last) return 1;
-      },
-      render: (name) => `${name.first} ${name.last}`,
-    },
-    {
-      title: "Ngày nộp hồ sơ",
-      dataIndex: "date",
+      title: "Họ",
+      dataIndex: "firstName",
       sorter: true,
     },
     {
-      title: "Phòng ban",
-      dataIndex: "department",
-      filters: [
-        {
-          text: "Kĩ thuật",
-          value: "technical",
-        },
-        {
-          text: "Nhân sự",
-          value: "human",
-        },
-      ],
+      title: "Tên",
+      dataIndex: "lastName",
+      sorter: true,
     },
     {
-      title: "Vị trí làm việc",
-      dataIndex: "job",
-      filters: [
-        {
-          text: "noname",
-          value: "technical",
-        },
-        {
-          text: "noname",
-          value: "human",
-        },
-      ],
+      title: "Số điện thoại",
+      dataIndex: "phoneNumber",
     },
     {
-      title: "Địa điểm làm việc",
-      dataIndex: "location",
-      filters: [
-        {
-          text: "Hồ Chí Minh",
-          value: "Hồ Chí Minh",
-        },
-        {
-          text: "Hà Nội",
-          value: "Hà Nội",
-        },
-      ],
+      title: "Email",
+      dataIndex: "email",
     },
+    {
+      title: "Nguồn",
+      dataIndex: "source",
+    },
+    {
+      title: "Ngày nộp hồ sơ",
+      dataIndex: "createAt",
+      sorter: true,
+      render: (a) => <div>{a?.split("T")[0]}</div>,
+    },
+    // {
+    //   title: "Phòng ban",
+    //   dataIndex: "department",
+    //   filters: [
+    //     {
+    //       text: "Kĩ thuật",
+    //       value: "technical",
+    //     },
+    //     {
+    //       text: "Nhân sự",
+    //       value: "human",
+    //     },
+    //   ],
+    // },
+    // {
+    //   title: "Vị trí làm việc",
+    //   dataIndex: "job",
+    //   filters: [
+    //     {
+    //       text: "noname",
+    //       value: "technical",
+    //     },
+    //     {
+    //       text: "noname",
+    //       value: "human",
+    //     },
+    //   ],
+    // },
+    // {
+    //   title: "Địa điểm làm việc",
+    //   dataIndex: "location",
+    //   filters: [
+    //     {
+    //       text: "Hồ Chí Minh",
+    //       value: "Hồ Chí Minh",
+    //     },
+    //     {
+    //       text: "Hà Nội",
+    //       value: "Hà Nội",
+    //     },
+    //   ],
+    // },
     {
       title: "Trạng thái",
-      dataIndex: "status",
+      dataIndex: "state",
       filters: [
         {
           text: "Đang đợi",
-          value: "Đang đợi",
+          value: "pending",
         },
         {
           text: "Duyệt",
-          value: "Duyệt",
+          value: "approved",
         },
         {
           text: "Loại",
-          value: "Loại",
+          value: "rejected",
         },
       ],
-      onFilter: (value, record) => record.status === value,
-      render: (status) => (
+      onFilter: (value, record) => record.state === value,
+      render: (state) => (
         <>
-          {status === "Duyệt" || status === "Loại" ? (
-            status === "Duyệt" ? (
+          {state === "approved" || state === "rejected" ? (
+            state === "approved" ? (
               <div className="text-green-600 font-bold bg-green-200 text-center rounded-lg py-1">
                 Duyệt
               </div>
@@ -153,7 +183,10 @@ function AdminApplicant() {
       dataIndex: "action",
       render: (_, record) => (
         <div className="flex flex-row gap-y-1 gap-x-3">
-          <button className="flex items-baseline gap-x-1 " onClick={() => handleClickEdit(record)}>
+          <button
+            className="flex items-baseline gap-x-1 "
+            onClick={() => handleClickEdit(record)}
+          >
             <AiFillEdit className="translate-y-[1px]" />
             Sửa
           </button>
@@ -161,7 +194,7 @@ function AdminApplicant() {
             className="flex items-baseline gap-x-1 "
             onClick={() => {
               setIsDeleteVisible(true);
-              setValueCompare(record.name.first);
+              setIdCompare(record._id);
             }}
           >
             <AiOutlineDelete className="translate-y-[1px]" />
@@ -171,48 +204,78 @@ function AdminApplicant() {
       ),
     },
   ];
-  const fetchData = async () => {
+  const fetchData = async (params = {}) => {
     setLoading(true);
     try {
-      // const {data:response} = await axios.get(
-      //     `${END_POINT}/applicant`
-      // )
-      // console.log(response)
-      setLoading(false);
+      const res = await axios.get(
+        `${END_POINT}/admin/applicant`,
+        {
+          params,
+          headers: { authorization: `Bearer ${accessToken}` },
+        }
+      );
 
-      setData(dataFetch); //response.data
+      setData(res.data.data);
+      setLoading(false);
+      setPagination({
+        pageSize: params.pageSize,
+        current: params.page + 1,
+        total: params.total
+      });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData(params);
+  }, [params]);
+  const handleTableChange = (newPagination, filters, sorter) => {
+    console.log(sorter)
+    const sort = sorter.order === "descend" ? `-${sorter.field}` : sorter.field;
+    setParams({
+      ...params,
+      ...filters,
+      sortBy: sort,
+      ...newPagination,
+      page: newPagination.current - 1,
+    });
+  };
   const handleClickEdit = (record) => {
     setIsEditVisible(true);
-    const [dataEdit] = data.filter((ele) => ele.name === record.name);
-    setDataForEdit(dataEdit);
+    setDataForEdit(record);
+  };
+  const searchByKeyword = (value) => {
+    setParams({
+      ...params,
+      page: 0,
+      keyword: value,
+    });
   };
   const acceptDelete = async () => {
-    setLoading(true);
+    // setLoading(true);
     setIsDisable(true);
     try {
-      await setTimeout(() => {
-        //thay bằng DELETE request
-        setLoading(false);
-        setIsDeleteVisible(false);
-        setIsDisable(false);
-        // const newArray = data.filter(ele => ele.name.first !== valueCompare)
-        // setData(newArray)
-      }, 2000);
-    } catch {}
+      await axios.delete(`${END_POINT}/admin/applicant/${idCompare}`, {
+        headers: { authorization: `Bearer ${accessToken}` },
+      });
+      setLoading(false);
+      // setIsDisable(false);
+      fetchData({ ...pagination, page: pagination.current - 1 });
+      setIsDeleteVisible(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div>
       <div className="flex justify-between mb-4">
         <span className="text-3xl font-bold uppercase">Ứng viên</span>
 
-        <Input.Search className="w-1/3 lg:w-[400px]" placeholder="Search" />
+        <Input.Search
+          className="w-1/3 lg:w-[400px]"
+          placeholder="Search"
+          onSearch={searchByKeyword}
+        />
         <div className="w-[200px]"></div>
       </div>
       <Table
@@ -221,7 +284,7 @@ function AdminApplicant() {
         dataSource={data}
         pagination={pagination}
         loading={loading}
-        // onChange={handleTableChange}
+        onChange={handleTableChange}
       />
       {/* phần Modal sửa xóa */}
       {isEditVisible && (
@@ -230,7 +293,7 @@ function AdminApplicant() {
           onClose={() => setIsEditVisible(false)}
           disable={isDisable}
           data={dataForEdit}
-          refetchData={fetchData}
+          refetchData={() => fetchData(params)}
         />
       )}
       <ConfirmModal

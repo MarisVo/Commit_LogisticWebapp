@@ -13,9 +13,7 @@ import { AiOutlineMessage, AiOutlinePartition, AiOutlineUserAdd } from "react-ic
 import { BsFillPersonFill, BsPaperclip } from "react-icons/bs";
 import {ImProfile} from "react-icons/im"
 import { Layout, Menu } from "antd";
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { useContext } from "react";
+import React,{ useState, useContext, useEffect } from "react";
 import { Link, Navigate, Outlet, useNavigate } from "react-router-dom";
 import logo from "../../../assets/icons/logo-J&T.svg";
 import { MainContext } from "../../../context/MainContext";
@@ -23,10 +21,17 @@ import AdminDropDownAvatar from "./AdminDropDownAvatar";
 const { Header, Sider, Content } = Layout;
 
 export default function AdminPage() {
-  const {user} = useContext(MainContext)
+  const {user, setMetadata} = useContext(MainContext)
   const navigate = useNavigate()
-   
   const [collapsed, setCollapsed] = useState(false);
+  useEffect(()=>{
+    setMetadata((prev) => {
+      return {
+        ...prev,
+        title: "Quản trị | TKTL",
+      };
+    });
+  },[])
   function getItem(label, key, icon, children) {
     return {
       key,
@@ -67,7 +72,7 @@ export default function AdminPage() {
     ),
     getItem(
       <div>
-        <Link to="service">Dịch cụ vận chuyển</Link>
+        <Link to="dich-vu">Dịch vụ vận chuyển</Link>
       </div>,
       "5",
       <MdOutlineDeliveryDining />
@@ -103,28 +108,28 @@ export default function AdminPage() {
     ),
     getItem(
       <div>
-        <Link to="warehouse">Kho bãi</Link>
+        <Link to="kho">Kho bãi</Link>
       </div>,
       "10",
       <FaWarehouse />
     ),
     getItem(
       <div>
-        <Link to="car">Phương tiện</Link>
+        <Link to="phuong-tien">Phương tiện</Link>
       </div>,
       "11",
       <FaTruckMoving />
     ),
     getItem(
       <div>
-        <Link to="road">Hành trình</Link>
+        <Link to="hanh-trinh">Hành trình</Link>
       </div>,
       "12",
       <FaRoad />
     ),
     getItem(
       <div>
-        <Link to="staff_regis">Thêm nhân viên mới</Link>
+        <Link to="them-nhan-vien">Thêm nhân viên mới</Link>
       </div>,
       "13",
       <AiOutlineUserAdd />

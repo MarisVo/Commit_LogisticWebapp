@@ -24,7 +24,8 @@ function AdminCareer() {
   const [nameCompare, setNameCompare] = useState("");
   const [dataForEdit, setDataForEdit] = useState({});
   const [params, setParams] = useState({
-    ...pagination,
+    total:pagination.total,
+    pageSize:pagination.pageSize,
     page: pagination.current - 1,
     keyword: null,
     sortBy: null,
@@ -151,11 +152,10 @@ function AdminCareer() {
     setLoading(true);
     try {
       const { data: response } = await axios.get(`${END_POINT}/career`, {
-        params: params,
+        params
       });
       setData(response.data.career);
       setLoading(false);
-      console.log(response)
       setPagination({
         pageSize: params.pageSize,
         current: params.page + 1,

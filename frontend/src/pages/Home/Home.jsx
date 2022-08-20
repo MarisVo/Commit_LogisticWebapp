@@ -63,7 +63,7 @@ const flags = [
 const DeliveryServices = [
   {
     _id: 1,
-    type: "j&T Epress",
+    type: "TKTL Epress",
     name: "Chuyển phát tiêu chuẩn",
     path: "chuyen-phat-tieu-chuan",
     images: {
@@ -74,7 +74,7 @@ const DeliveryServices = [
   },
   {
     _id: 2,
-    type: "j&T Fast",
+    type: "TKTL Fast",
     name: "Chuyển phát nhanh",
     path: "chuyen-phat-nhanh",
     images: {
@@ -85,7 +85,7 @@ const DeliveryServices = [
   },
   {
     _id: 3,
-    type: "j&T Super",
+    type: "TKTL Super",
     name: "Siêu dịch vụ giao hàng",
     path: "sieu-dich-vu-chuyen-phat",
     images: {
@@ -96,7 +96,7 @@ const DeliveryServices = [
   },
   {
     _id: 4,
-    type: "j&T Fresh",
+    type: "TKTL Fresh",
     name: "Giao hàng tươi sống",
     path: "chuyen-phat-do-tuoi-song",
     images: {
@@ -200,43 +200,21 @@ const partnersFake = [
 const Home = () => {
   const [listProvinces, setListProvince] = useState([]);
   const [listDistricts, setListDistricts] = useState([]);
-  const [quotes, setQuotes] = useState(coops);
-  const [services, setServices] = useState(DeliveryServices);
+  const [quotes, setQuotes] = useState([]);
+  const [services, setServices] = useState([]);
   // const [banners, setBanners] = useState(banner.banners);
-  const [partners, setPartners] = useState(partnersFake);
-  const [person, setPerson] = useState([]);
-  const [keyOrder, setKeyOrder] = useState('');
-  const { setMetadata, dataWarehouse, setDataWarehouse, order, setOrder } = useContext(MainContext);
-
-  // const searchWarehouse = (e) => {
-  //   e.preventDefault()
-  //   if (currentDistrict && currentProvince) {
-  //     const find = async () => {
-  //       try {
-  //         const { data: response } = await axios.get(
-  //           `${END_POINT}/warehouse`,
-  //           {
-  //             params: {
-  //               province: currentProvince,
-  //               district: currentDistrict,
-  //             },
-  //           }
-  //         );
-  //         setWarehouse(response.data);
-  //       } catch (error) {}
-  //     };
-  //     find();
-  //   } else {
-  //     alert("Mời chọn đủ thông tin tra cứu");
-  //   }
-  // };
+  const [partners, setPartners] = useState([]);
+  const [person, setPerson] = useState({});
+  const [keyOrder, setKeyOrder] = useState("");
+  const { setMetadata, dataWarehouse, setDataWarehouse, order, setOrder } =
+    useContext(MainContext);
 
   const fetchQuotes = async () => {
     try {
       const res = await axios.get(`${END_POINT}/quote?limit=10`);
       if (res.status === 200) {
-        setQuotes(res.data.data)
-        setPerson(res.data.data[0])
+        setQuotes(res.data.data);
+        res.data.data.length > 0 && setPerson(res.data.data[0]);
       }
     } catch (error) {
       console.log(error);
@@ -244,15 +222,23 @@ const Home = () => {
   };
   const fetchPartner = async () => {
     try {
-      const res = await axios.get(`${END_POINT}/partner`)
-      console.log("partner",res)
-      if(res.status===200) {
-        setPartners(res.data.data.partners)
-      } 
+      const res = await axios.get(`${END_POINT}/partner`);
+      if (res.status === 200) {
+        setPartners(res.data.data.partners);
+      }
     } catch (error) {
-      console.log(error)
+      console.log(error);
+    }
+  };
+  const fetchDeliveryService = async () => {
+    try {
+      const res = await axios.get(`${END_POINT}/service`);
+      if (res.status === 200) return setServices(res.data.data.service);
+    } catch (error) {
+      console.log(error);
     }
   }
+
   useEffect(() => {
     setMetadata((prev) => {
       return {
@@ -269,20 +255,14 @@ const Home = () => {
     setListDistricts(dataDistricts);
 
     fetchQuotes();
-    fetchPartner()
-    // const fetchDeliveryService = (async () => {
-    //   try {
-    //     const res = await axios.get(`${END_POINT}/service`);
-    //     // if (res.status === 200) return setServices(res.data.data.service);
-    //     if (res.data.data.length > 0) return setServices(res.data.data.service);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // })()
-    // Không biết cần không?
+    fetchPartner();
+    fetchDeliveryService()
+
   }, []);
   const handleSelectProvince = (provinceSelected) => {
-    const provinceCode = listProvinces.find((province) => province.name === provinceSelected)?.code;
+    const provinceCode = listProvinces.find(
+      (province) => province.name === provinceSelected
+    )?.code;
     const dataDistricts = getDistrictsByProvinceCode(provinceCode);
     setDataWarehouse({
       province: provinceSelected,
@@ -302,7 +282,7 @@ const Home = () => {
     setPerson(person);
   };
   return (
-    <div className="pt-[65px]">
+    <div className="pt-[65px] pb-4">
       <Carousel autoplay autoplaySpeed={2000} effect="fade">
         {/* {banners.map((banner,key) => (
           <div key={key}>
@@ -346,16 +326,24 @@ const Home = () => {
       </Carousel>
 
       <div className="container flex items-center justify-center mx-auto w-full py-4 ">
-        <Tabs defaultActiveKey="vận đơn" type="card" className="w-full shadow-xl p-3 rounded-xl ">
+        <Tabs
+          defaultActiveKey="vận đơn"
+          type="card"
+          className="w-full shadow-xl p-3 rounded-xl "
+        >
           <TabPane
-            tab={<div className="text-lg h-[30px] text-[#fcd535]">Tra cứu đơn hàng</div>}
+            tab={
+              <div className="text-lg h-[30px] text-[#fcd535]">
+                Tra cứu đơn hàng
+              </div>
+            }
             key="vận đơn"
           >
             <div>
               <form className="flex flex-col lg:flex-row ">
                 <input
                   value={keyOrder}
-                  onChange={e => setKeyOrder(e.target.value)}
+                  onChange={(e) => setKeyOrder(e.target.value)}
                   className="border border-gray-300 text-[#F0B90B] text-sm rounded focus:ring-yellow-500 focus:border-yellow-500 block w-full p-3 mb-2 lg:mb-0   "
                   placeholder="Nhập mã vận đơn của bạn (cách nhau bới dấu phẩy), tối đa 10 vận đơn"
                 ></input>
@@ -363,23 +351,25 @@ const Home = () => {
                   to="tra-cuu/van-don"
                   className="text-white bg-yellow-500 hover:bg-yellow-400 focus:ring-4  focus:ring-red-500 font-medium rounded-lg text-lg w-full lg:w-44 lg:ml-2 px-5 py-2.5 text-center "
                   onClick={(e) => {
-                    if(keyOrder!==""&&keyOrder!==null){
-                      setOrder(keyOrder)
-                    }
-                    else{
+                    if (keyOrder !== "" && keyOrder !== null) {
+                      setOrder(keyOrder);
+                    } else {
                       e.preventDefault();
-                      alert("Vui lòng điền đầy đủ thông tin")
+                      alert("Vui lòng điền đầy đủ thông tin");
                     }
-                      
-                    }}
+                  }}
                 >
-                    Tìm kiếm
+                  Tìm kiếm
                 </Link>
               </form>
             </div>
           </TabPane>
           <TabPane
-            tab={<div className="text-lg h-[30px] text-[#fcd535]">Tra cứu bưu cục</div>}
+            tab={
+              <div className="text-lg h-[30px] text-[#fcd535]">
+                Tra cứu bưu cục
+              </div>
+            }
             key="2"
           >
             <form className="flex flex-col items-center lg:flex-row gap-y-3">
@@ -434,7 +424,10 @@ const Home = () => {
           </TabPane>
           <TabPane
             tab={
-              <Link to="tra-cuu/bang-gia" className="text-lg h-[30px] text-[#fcd535]">
+              <Link
+                to="tra-cuu/bang-gia"
+                className="text-lg h-[30px] text-[#fcd535]"
+              >
                 Bảng giá
               </Link>
             }
@@ -472,15 +465,25 @@ const Home = () => {
       {/* Test searching */}
 
       <div className="flex flex-col justify-center items-center py-4 mt-6">
-        <span className="uppercase text-xl font-black">mạng lưới phủ sóng các nước</span>
+        <span className="uppercase text-xl font-black">
+          mạng lưới phủ sóng hầu hết các tỉnh thành Việt Nam
+        </span>
         <span className="text-sm">
-          J&T Express tự hào đã & đang mở rộng mạng lưới quốc tế để mang đến trải nghiệm tốt nhất
+          Tien Kim Thanh express tự hào đã & đang mở rộng mạng lưới trên khắp
+          đất nước, mang trong mình sứ mệnh vươn ra tầm cỡ thế giới
         </span>
       </div>
-      <Fade bottom duration={1500}>
+      <div className="flex flex-col justify-center items-center m-6 text-red-500">
+        <img src="" alt="Hình chụp bưu cục tại 3 chí nhánh HCM HN Đà Nẵng! Không có thì bỏ" />
+      </div>
+
+      {/* <Fade bottom duration={1500}>
         <div className="grid grid-cols-3 text-white text-center gap-y-12 mb-9">
           {flags.map((flag, key) => (
-            <div className="relative flex flex-col justify-start items-center" key={key}>
+            <div
+              className="relative flex flex-col justify-start items-center"
+              key={key}
+            >
               <img
                 src={flag.url}
                 alt={flag.name}
@@ -492,16 +495,19 @@ const Home = () => {
             </div>
           ))}
         </div>
-      </Fade>
+      </Fade> */}
 
       <div className="flex flex-col lg:flex-row ">
         <div className="flex flex-col items-center justify-center text-justify gap-y-7 w-full lg:max-w-[500px] py-6 px-3 bg-[#F0B90B] lg:rounded-r-xl">
           <Fade left duration={1500}>
-            <span className="text-4xl font-black container text-white">VỀ CHÚNG TÔI</span>
+            <span className="text-4xl font-black container text-white">
+              VỀ CHÚNG TÔI
+            </span>
             <span className=" text-base container tracking-wide px-4 lg:px-6 w-full">
-              J&T Express là thương hiệu chuyển phát nhanh dựa trên sự phát triển của công nghệ và
-              Internet. Chúng tôi sở hữu mạng lưới rộng khắp nhằm hỗ trợ các hoạt động giao nhận
-              hàng hóa nhanh chóng không chỉ ở nội thành mà còn ở ngoại thành và các vùng xa của các
+              J&T Express là thương hiệu chuyển phát nhanh dựa trên sự phát
+              triển của công nghệ và Internet. Chúng tôi sở hữu mạng lưới rộng
+              khắp nhằm hỗ trợ các hoạt động giao nhận hàng hóa nhanh chóng
+              không chỉ ở nội thành mà còn ở ngoại thành và các vùng xa của các
               tỉnh thành trong cả nước Việt Nam.
             </span>
           </Fade>
@@ -530,7 +536,9 @@ const Home = () => {
                 alt="staff-pic"
               />
               <span className="text-xl font-extrabold">19.000+ NHÂN VIÊN</span>
-              <span>Hơn 19.000 nhân viên đang làm việc khắp các tỉnh thành</span>
+              <span>
+                Hơn 19.000 nhân viên đang làm việc khắp các tỉnh thành
+              </span>
             </div>
             <div className="flex flex-col items-center text-center py-4">
               <img
@@ -543,30 +551,27 @@ const Home = () => {
           </Fade>
         </div>
       </div>
-      <div className="hidden lg:flex flex-row justify-around items-center container mx-auto my-12 ">
-        {services.map((service, key) => (
-          <Link to={service.path} key={key}>
+      <div className="hidden lg:flex flex-row flex-wrap justify-around items-center container mx-auto my-12 ">
+        {services.length >0 && services.map((service) => (
+          <Link to={`dich-vu/${service._id}`} key={service._id}>
             <div className="group shadow-2xl">
               <img
-                src={service.images.front}
-                alt={service.type}
-                className="group-hover:hidden w-[174px]"
-              />
-              <img
-                src={service.images.back}
-                alt={service.type}
-                className="hidden group-hover:block w-[174px]"
+                src={`${END_POINT}/public/${service.logo}`}
+                alt={service.name}
+                className="group-hover:scale-110 duration-500 w-[174px]"
               />
             </div>
             <div className="pt-4 flex flex-col">
-              <span className="text-xl font-bold uppercase">{service.type} </span>
-              <span className="text-base">{service.name}</span>
+              <span className="text-xl font-bold uppercase">
+                {service.name}
+              </span>
+              <span className="text-base">{service.sub_detail}</span>
             </div>
           </Link>
         ))}
       </div>
 
-      <div className="flex items-center justify-center my-6 container mx-auto">
+      {/* <div className="flex items-center justify-center my-6 container mx-auto">
         <Zoom duration={1000}>
           <iframe
             width="731"
@@ -578,7 +583,7 @@ const Home = () => {
             allowFullScreen
           ></iframe>
         </Zoom>
-      </div>
+      </div> */}
       <div className="relative h-[670px] lg:h-[462px]">
         <img
           src="https://jtexpress.vn/themes/jtexpress/assets/images/bg-download-appnew.png"
@@ -607,78 +612,94 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="container mx-auto px-2 lg:px-0  my-10">
-        <span className="block text-2xl sm:text-4xl lg:text-4xl font-black my-6 lg:my-0">
-          ĐỐI TÁC NÓI VỀ CHÚNG TÔI
-        </span>
-        <div className="grid grid-cols-1 lg:grid-cols-[60%_35%] gap-x-10 ">
-          <div className="flex flex-col justify-center items-center  ">
-            <span>
-              Từ khi đặt chân vào Việt Nam năm 2018, J&T Express luôn nỗ lực hết mình, hoàn thành
-              nghĩa vụ của một đối tác vận chuyển lớn trong khu vực, mang lại dịch vụ tốt nhất cho
-              tất cả khách hàng, nhận về nhiều lời khen và nhận xét tích cực. Đây là sự tự hào và
-              động lực để J&T Express tiếp tục giữ vững thành tích, phát huy dịch vụ, nâng cao hơn
-              nữa trải nghiệm khách hàng.
-            </span>
-            <div className="w-full py-4">
-              <Carousel
-                autoplay
-                autoplaySpeed={2000}
-                focusOnSelect
-                draggable
-                slidesToShow={3}
-                arrows
-                responsive={[]}
-                className=" overflow-hidden"
-              >
-                {quotes.map((quote) => (
-                  <div
-                    className="flex flex-col items-center text-center"
-                    key={quote._id}
-                    onClick={() => showPerson(quote._id)}
-                  >
-                    <div className="w-[100px] h-[100px] sm:w-[134px] sm:h-[134px]">
-                      <img
-                        src={`${END_POINT}/public/${quote.avatar}`}
-                        className="h-full w-full rounded-full object-cover"
-                        alt={quote.name}
-                      />
+      {quotes.length > 0 && (
+        <div className="container mx-auto px-2 lg:px-0  my-10">
+          <span className="block text-2xl sm:text-4xl lg:text-4xl font-black my-6 lg:my-0">
+            ĐỐI TÁC NÓI VỀ CHÚNG TÔI
+          </span>
+          <div className="grid grid-cols-1 lg:grid-cols-[60%_35%] gap-x-10 ">
+            <div className="flex flex-col justify-center items-center  ">
+              <span>
+                Từ khi đặt chân vào Việt Nam năm 2018, J&T Express luôn nỗ lực
+                hết mình, hoàn thành nghĩa vụ của một đối tác vận chuyển lớn
+                trong khu vực, mang lại dịch vụ tốt nhất cho tất cả khách hàng,
+                nhận về nhiều lời khen và nhận xét tích cực. Đây là sự tự hào và
+                động lực để J&T Express tiếp tục giữ vững thành tích, phát huy
+                dịch vụ, nâng cao hơn nữa trải nghiệm khách hàng.
+              </span>
+
+              <div className="w-full py-4">
+                <Carousel
+                  autoplay
+                  autoplaySpeed={2000}
+                  focusOnSelect
+                  draggable
+                  slidesToShow={3}
+                  arrows
+                  // responsive={[]}
+                  className=" overflow-hidden"
+                >
+                  {quotes.map((quote) => (
+                    <div
+                      className="flex flex-col items-center text-center"
+                      key={quote._id}
+                      onClick={() => showPerson(quote._id)}
+                    >
+                      <div className="w-[100px] h-[100px] sm:w-[134px] sm:h-[134px]">
+                        <img
+                          src={`${END_POINT}/public/${quote.avatar}`}
+                          className="h-full w-full rounded-full object-cover"
+                          alt={quote.name}
+                        />
+                      </div>
+                      <span className="font-bold">{quote.name}</span>
+                      <span className="px-2 ">{quote.description}</span>
                     </div>
-                    <span className="font-bold">{quote.name}</span>
-                    <span className="px-2 ">{quote.description}</span>
-                  </div>
-                ))}
-              </Carousel>
-            </div>
-          </div>
-          <div className="bg-[#F0B90B] rounded-xl shadow-2xl lg:min-h-[450px] overflow-hidden  ">
-            <div className="flex flex-col items-center px-4 py-8">
-              <div className="w-[134px] h-[134px]">
-                <img
-                  src={`${END_POINT}/public/${person.avatar}`}
-                  className=" h-full w-full rounded-full object-cover"
-                  alt=""
-                />
+                  ))}
+                </Carousel>
               </div>
-              <span className="text-xl font-bold pt-4">{person.name}</span>
-              <span>{person.description}</span>
-              <div className="mx-3 sm:mx-10 lg:mx-0">
-                <span className="py-6 line-clamp-6 text-justify">{person.quote}</span>
+            </div>
+            <div className="bg-[#F0B90B] rounded-xl shadow-2xl lg:min-h-[450px] overflow-hidden  ">
+              <div className="flex flex-col items-center px-4 py-8">
+                <div className="w-[134px] h-[134px]">
+                  {person.avatar !== undefined && (
+                    <img
+                      src={`${END_POINT}/public/${person.avatar}`}
+                      className=" h-full w-full rounded-full object-cover"
+                      alt=""
+                    />
+                  )}
+                </div>
+                <span className="text-xl font-bold pt-4">{person.name}</span>
+                <span>{person.description}</span>
+                <div className="mx-3 sm:mx-10 lg:mx-0">
+                  <span className="py-6 line-clamp-6 text-justify">
+                    {person.quote}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
       <div className="container m-auto">
-        <Carousel autoplay autoplaySpeed={2000} draggable slidesToShow={5} dots={false} className="w-full">
-          {partners.map((partner) => (
-            <img
-              src={`${END_POINT}/public/${partner.logo}`}
-              alt={partner.name}
-              className="w-[186px] h-[100px] object-scale-down"
-              key={partner._id}
-            />
-          ))}
+        <Carousel
+          autoplay
+          autoplaySpeed={2000}
+          draggable
+          slidesToShow={5}
+          dots={false}
+          className="w-full"
+        >
+          {partners.length > 0 &&
+            partners.map((partner) => (
+              <img
+                src={`${END_POINT}/public/${partner.logo}`}
+                alt={partner.name}
+                className="w-[186px] h-[100px] object-scale-down"
+                key={partner._id}
+              />
+            ))}
         </Carousel>
       </div>
     </div>

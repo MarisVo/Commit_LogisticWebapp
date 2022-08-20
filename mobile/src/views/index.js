@@ -8,7 +8,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Products from './product';
 import Profile from './profile';
-
+import Warehouses from "./settingPage/Warehouses"
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Register from './register';
 import Login from './login';
@@ -93,6 +93,7 @@ const RootComponent = () => {
         {/* <Stack.Screen name="CreateOrder" component={CreateOrder} /> */}
       {/*   <Stack.Screen name="Register" component={Register} /> */}
         <Stack.Screen name="Tracking" component={Tracking} />
+        <Stack.Screen name="Warehouses" component={Warehouses} />
       </Stack.Navigator>
     </NavigationContainer>
   );

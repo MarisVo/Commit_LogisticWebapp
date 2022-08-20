@@ -15,7 +15,7 @@ module.exports = {
         button_color: "#e5a663",
       },
       backgroundImage: {
-        history: "url('/src/assets/images/map-world-in-mobile.png')",
+        history: "url('/src/assets/images/vietnamwhite.png')",
       },
       keyframes: {
         up: {

@@ -1,18 +1,16 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import { BsThreeDots, BsCheck2 } from "react-icons/bs";
 import { AiOutlineFundProjectionScreen } from "react-icons/ai";
-import {MdNotificationImportant} from "react-icons/md"
+import { MdNotificationImportant } from "react-icons/md";
 import { Link } from "react-router-dom";
-
 import axios from "axios";
-
 import { MainContext } from "../context/MainContext";
 import { END_POINT } from "../utils/constant";
 function NotificationDropdown() {
-  const [page,setPage] = useState()
-  const {accessToken } = useContext(MainContext);
+  const [page, setPage] = useState();
+  const { accessToken, refreshNoti } = useContext(MainContext);
   const [isSettingVisible, setIsSettingVisible] = useState(false);
-  const [dataReceive,setDataReceive] = useState([])
+  const [dataReceive, setDataReceive] = useState([]);
   const getNoti = async () => {
     try {
       const res = await axios.get(
@@ -21,15 +19,14 @@ function NotificationDropdown() {
           headers: { authorization: `Bearer ${accessToken}` },
         }
       );
-      res.status===200 && setDataReceive(() => res.data.data);
-      console.log(res);
+      res.status===200 && setDataReceive(res.data.data);
     } catch (error) {
       console.log(error);
     }
-  };
+  }
   useEffect(() => {
     getNoti();
-  }, []);
+  }, [refreshNoti]);
   return (
     <div>
       <div className="absolute w-96 top-16 right-5 border border-gray-200 bg-white z-20 p-2 rounded-lg shadow-md">
@@ -58,25 +55,34 @@ function NotificationDropdown() {
           )}
         </div>
         <div className="">
-          {dataReceive.lenght>0?(dataReceive.map(data=>(
-            <div className="flex justify-start items-center gap-x-2 leading-3 p-1 hover:bg-slate-100" key={data._id}>
-            <div className="w-14 h-14 mx-1 text-yellow-500">
-            <img
-              alt="noti"
-              className="w-full h-full"
-              src="https://images.squarespace-cdn.com/content/v1/56001a27e4b08aa6c7fa74e1/1560511769633-THRKK2P2TKYE2ZNOLSY9/Notify_Red.png"
-            />
+          {dataReceive.length > 0 ? (
+            dataReceive.map((data) => (
+              <div
+                className="flex justify-start items-center gap-x-2 leading-3 p-1 hover:bg-slate-100"
+                key={data._id}
+              >
+                <div className="w-14 h-14 mx-1 text-yellow-500">
+                  <img
+                    alt="noti"
+                    className="w-full h-full"
+                    src="https://images.squarespace-cdn.com/content/v1/56001a27e4b08aa6c7fa74e1/1560511769633-THRKK2P2TKYE2ZNOLSY9/Notify_Red.png"
+                  />
+                </div>
+                <div className="flex flex-col gap-y-2">
+                  <h4 className="font-bold m-0">{data.title}</h4>
+                  <h5 className="m-0">{data.message}</h5>
+                  <span className="text-xs text-blue-500">
+                    {data.updatedAt?.split("T")[0]}
+                  </span>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="flex flex-col items-center justify-center p-4 text-center gap-y-3">
+              <MdNotificationImportant className="w-16 h-16 text-yellow-300" />
+              <span>Không có thông báo mới</span>
             </div>
-            <div className="flex flex-col gap-y-2">
-              <h4 className="font-bold m-0">{data.title}</h4>
-              <h5 className="m-0">{data.message}</h5>
-              <span className="text-xs text-blue-500">{data.updatedAt?.split("T")[0]}</span>
-            </div>
-          </div>
-          ))):(<div className="flex flex-col items-center justify-center p-4 text-center gap-y-3">
-            <MdNotificationImportant className="w-16 h-16 text-yellow-300"/>
-            <span>Không có thông báo mới</span>
-          </div>)}
+          )}
           {/* <div className="flex justify-start items-center gap-x-2 leading-3 py-1 hover:bg-slate-100">
             <img
               alt="noti"
