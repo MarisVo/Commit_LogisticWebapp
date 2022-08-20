@@ -80,6 +80,12 @@ const MainProvider = ({ children }) => {
           headers: { authorization: `Bearer ${accessToken}` },
         }
       );
+      console.log("Log out successfully.")
+    } 
+    catch (err) {
+      console.log(err);
+    }
+    finally {
       localStorage.removeItem(process.env.REACT_APP_LOCALSTORAGE_TOKEN_NAME);
       localStorage.removeItem(process.env.REACT_APP_LOCALSTORAGE_REFRESH_NAME);
       localStorage.removeItem("login");
@@ -88,8 +94,6 @@ const MainProvider = ({ children }) => {
       setUser(null);
       alert("Đăng xuất thành công");
       window.location.href = "/";
-    } catch (err) {
-      console.log(err);
     }
   };
   /* useEffect(()=>{

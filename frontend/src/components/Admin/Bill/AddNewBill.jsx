@@ -45,9 +45,9 @@ function AddNewBill({ isVisible, onClose, onOk, loading, disable }) {
                             <Item label="Lô hàng">
                                 <Input />
                             </Item>
-                            <Item label="Doanh số">
+                            {/* <Item label="Doanh số">
                                 <Input />
-                            </Item>
+                            </Item> */}
                             <Item label="Thiết bị">
                                 <Input />
                             </Item>
