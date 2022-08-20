@@ -13,8 +13,8 @@ import { END_POINT } from "../../utils/constant";
 export default function AdminAbout() {
   const { accessToken } = useContext(MainContext);
   const form = useRef();
-  const [checkLogo,setCheckLogo] = useState(false)
-  const [checkBanners,setCheckBanners] = useState(false)
+  const [checkLogo, setCheckLogo] = useState(false)
+  const [checkBanners, setCheckBanners] = useState(false)
   const [description, setDes] = useState('');
   const [values, setValues] = useState('');
   const [vision, setVision] = useState('')
@@ -134,32 +134,32 @@ export default function AdminAbout() {
   }
 
   const handleSubmit = () => {
-   if(checkBanners===false||checkLogo===false){
-    alert("Vui lòng điền đầy đủ thông tin")
-   }
-   
-   else{
-    const items = {
-      description: description,
-      values: values,
-      vision: vision,
+    if (checkBanners === false || checkLogo === false) {
+      alert("Vui lòng điền đầy đủ thông tin")
     }
 
-    let fileBanners = new FormData();
-    fileListBanners.forEach(e=>{
-      fileBanners.append("banners", e)
-    })
+    else {
+      const items = {
+        description: description,
+        values: values,
+        vision: vision,
+      }
 
-    let valueLogo = new FormData();
-    valueLogo.append("logo", fileListLogo)
-    postApi(items)
-    postApiBanner(fileBanners);
-    postApiLogo(valueLogo);
-    // console.log(valueLogo);
-    // console.log(fileListLogo);
-    // callAboutData()
-    alert("Cập nhật thành công")
-   }
+      let fileBanners = new FormData();
+      fileListBanners.forEach(e => {
+        fileBanners.append("banners", e)
+      })
+
+      let valueLogo = new FormData();
+      valueLogo.append("logo", fileListLogo)
+      postApi(items)
+      postApiBanner(fileBanners);
+      postApiLogo(valueLogo);
+      // console.log(valueLogo);
+      // console.log(fileListLogo);
+      // callAboutData()
+      alert("Cập nhật thành công")
+    }
   }
 
   return (
@@ -176,7 +176,9 @@ export default function AdminAbout() {
     >
 
       <Form.Item label="id">
-        <Input.TextArea value={aboutState._id} rows={4} disabled='true' />
+        {aboutState&&(
+          <Input.TextArea value={aboutState._id} rows={4} disabled='true' />
+        )}
       </Form.Item>
 
       <Form.Item label="description">
@@ -202,14 +204,18 @@ export default function AdminAbout() {
 
       <Form.Item label="Banners">
         <input type="file" id="file-upload" multiple required onChange={changeBanners} />
-        {fileListBanners.map((e, index) => (
-          <div className="peer hover:bg-gray-300 flex align-center" style={{ position: "relative", width: 100, height: 100, border: "1px solid #cccc", marginTop: 8, padding: 5 }}>
-            <div id={index} className="peer-hover:flex" style={{ position: 'absolute', right: 3, cursor: "pointer" }}>
-              <DeleteOutlined className="hover:bg-gray-100" onClick={handleDel} />
-            </div>
-            <img src={e.preview} className="peer" />
-          </div>
-        ))}
+        {fileListBanners && (
+          <>
+            {fileListBanners.map((e, index) => (
+              <div className="peer hover:bg-gray-300 flex align-center" style={{ position: "relative", width: 100, height: 100, border: "1px solid #cccc", marginTop: 8, padding: 5 }}>
+                <div id={index} className="peer-hover:flex" style={{ position: 'absolute', right: 3, cursor: "pointer" }}>
+                  <DeleteOutlined className="hover:bg-gray-100" onClick={handleDel} />
+                </div>
+                <img src={e.preview} className="peer" />
+              </div>
+            ))}
+          </>
+        )}
       </Form.Item>
 
       <Form.Item

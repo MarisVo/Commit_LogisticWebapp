@@ -338,15 +338,30 @@ export default function AdminBill() {
   const acceptAddNewProhibit = async (e) => {
     setLoading(true)
     setIsDisable(true)
-    let valueImg = new FormData();
-    valueImg.append("images", imgFile);
-    // setImgFile(valueImg)
     const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('input');
     const newData = {
-     
+      "service": tableData[5].value,
+      "road": tableData[0].value,
+      "car": tableData[1].value,
+      "driver": tableData[2].value,
+      // "product_shipment": tableData[4].value,
+      "status": tableData[3].value
     }
-    console.log(newData);
-    // postData(newData)
+    // console.log(newData);
+    const items = new FormData();
+    items.append("service", tableData[5].value);
+    items.append( "road", tableData[0].value);
+    items.append("car", tableData[1].value);
+    items.append("driver", tableData[2].value);
+    items.append( "status", tableData[3].value);
+    items.append( "product_shipment",tableData[4].value);
+
+    const bill = new FormData();
+    bill.append("bill",items);
+
+
+
+    postData(bill);
     try {
       await setTimeout(() => {
         setLoading(false)

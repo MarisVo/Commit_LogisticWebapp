@@ -1,19 +1,23 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useContext, useEffect } from 'react'
 import { Button, Input, Table, Space } from "antd";
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import { AiFillEdit, AiOutlineDelete } from 'react-icons/ai'
 import EditCustomer from '../../components/Admin/Customer/EditCustomer';
 import ConfirmModal from '../../components/ConfirmModal';
+import { END_POINT } from '../../utils/constant';
 import { TOKEN } from "./adminToken";
+import axios from 'axios';
+import { MainContext } from '../../context/MainContext';
 
 export default function AdminCustomer() {
-  const [id,setId] = useState()
+  const [id, setId] = useState()
   const [dataEdit, setDataEdit] = useState()
-  const [openEdit,setOpenEdit] = useState(false)
-  const [openDel,setOpenDel] = useState(false)
+  const [openEdit, setOpenEdit] = useState(false)
+  const [openDel, setOpenDel] = useState(false)
   const [loading, setLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(false)
+  const { accessToken } = useContext(MainContext)
 
   const defaultData = [
     {
@@ -45,6 +49,54 @@ export default function AdminCustomer() {
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
 
+
+  const getDataFromApi = async () => {
+    try {
+      const res = await axios({
+        method: "get",
+        url: `${END_POINT}/customer`,
+        headers: { authorization: `Bearer ${accessToken}` },
+      })
+      setData(res.data.data)
+    }
+    catch (e) {
+      console.log(e);
+    }
+  }
+
+  const editData = async (data, id) => {
+    try {
+      const res = await axios({
+        method: "put",
+        url: `${END_POINT}/admin/customer/${id}`,
+        headers: { authorization: `Bearer ${accessToken}` },
+        data: data,
+      })
+      // setData(res.data.data)
+    }
+    catch (e) {
+      console.log(e);
+    }
+  }
+
+  const deltDataFromApi = async () => {
+    try {
+      const res = await axios({
+        method: "delete",
+        url: `${END_POINT}/admin/customer/${id}`,
+        headers: { authorization: `Bearer ${accessToken}` },
+      })
+      // setData(res.data.data)
+    }
+    catch (e) {
+      console.log(e);
+    }
+  }
+
+  useEffect(() => {
+    getDataFromApi();
+  }, [])
+
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -56,20 +108,14 @@ export default function AdminCustomer() {
     setSearchText('');
   };
 
-  const handledit = (e,id) => {
-    const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('td');
-    const oldData = {
-      name: tableData[0].innerHTML,
-      position: tableData[1].innerHTML,
-      type: tableData[2].innerHTML,
-      timeStart: tableData[3].innerHTML,
-    }
-    setDataEdit(oldData);
+  const handledit = (e, id) => {
+    const oldData = data.filter(e => e._id === id);
+    setDataEdit(oldData[0]);
     setId(id)
     setOpenEdit(true);
   }
 
-  const handleDel= (e,id)=>{
+  const handleDel = (e, id) => {
     setOpenDel(true)
     setId(id)
   }
@@ -169,7 +215,7 @@ export default function AdminCustomer() {
       title: "Tên khách hàng",
       dataIndex: "name",
       key: "name",
-      width: "20.5%",
+      width: "13%",
       onFilter: (value, record) => record.name.indexOf(value) === 0,
       sorter: (a, b) => a.name.length - b.name.length,
       sortDirections: ['descend'],
@@ -177,99 +223,98 @@ export default function AdminCustomer() {
     },
     {
       title: "Cấp",
-      dataIndex: "position",
-      key: "position",
-      width: "20.5%",
-      filters: [
-        {
-          text: <span>Vãng lai </span>,
-          value: 'Vãng lai',
-        },
-        {
-          text: <span>Phổ thông</span>,
-          value: 'Phổ thông',
-        },
-        {
-          text: <span>Vip</span>,
-          value: 'Vip',
-        }
-      ],
-      onFilter: (value, record) => record.position.startsWith(value),
-      filterSearch: true,
+      dataIndex: "rank_passers",
+      key: "rank_passers",
+      width: "13%",
+      render: e => (
+        <>
+          {e && (
+            <div>{e.level}</div>
+          )}
+        </>
+      )
     },
     {
       title: "Loại Khách Hàng",
-      dataIndex: "type",
-      key: "type",
-      width: "20.5%",
-      filters: [
-        {
-          text: <span>Doanh nghiệp</span>,
-          value: 'Doanh nghiệp',
-        },
-        {
-          text: <span>Trung gian</span>,
-          value: 'Trung gian',
-        },
-        {
-          text: <span>Vãng lai</span>,
-          value: 'Vãng lai',
-        }
-      ],
-      onFilter: (value, record) => record.type.startsWith(value),
-      filterSearch: true,
+      dataIndex: "customer_type",
+      key: "customer_type",
+      width: "13%",
     },
-    // {
-    //   title: "Địa chỉ",
-    //   dataIndex: "address",
-    //   key: "address",
-    //   width: "14%",
-    //   filters: [
-    //     {
-    //       text: <span>Hồ Chí Minh</span>,
-    //       value: 'HCM',
-    //     },
-    //     {
-    //       text: <span>Hà Nội</span>,
-    //       value: 'Hà Nội',
-    //     },
-    //     {
-    //       text: <span>Bình Dương</span>,
-    //       value: 'Bình Dương',
-    //     },
-    //   ],
-    //   onFilter: (value, record) => record.address.startsWith(value),
-    //   filterSearch: true,
-    // },
+    {
+      title: "Địa chỉ",
+      dataIndex: "address",
+      key: "address",
+      width: "14%",
+
+    },
+
+    {
+      title: "Mô tả",
+      dataIndex: "description",
+      key: "description",
+      width: "12%",
+
+    },
+
+    {
+      title: "Mã code công ty",
+      dataIndex: "companyTaxcode_business",
+      key: "companyTaxcode_business",
+      width: "12%",
+      render: e => (
+        <>{e && (
+          <div>{e}</div>
+        )}</>
+      )
+    },
+
+    {
+      title: "Doanh nghiệp",
+      dataIndex: "accepted_business",
+      key: "accepted_business",
+      width: "10%",
+      render: e => (
+        <>
+          {e && (
+            <div>Có</div>
+          )}
+        </>
+      )
+    },
+
     {
       title: "Ngày đăng ký",
-      dataIndex: "timeStart",
-      key: "timeStart",
-      width: "20.5%",
-      sorter: (a, b) =>new Date(a.timeStart) -new Date(b.timeStart),
+      dataIndex: "createdAt",
+      key: "createdAt",
+      width: "13%",
+      sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
       sortDirections: ['descend', 'ascend'],
     },
     {
       title: '',
       dataIndex: "action",
       // width: "14%",
-      render: (e,data) => (
-        <div className="flex flex-row justify-around">
-          <button className="flex flex-row " role="button" onClick={(e)=>handledit(e,data.id)}>
-            <AiFillEdit style={{
-              marginTop: "0.2rem",
-              marginRight: "0.5rem"
-            }} />
-            Sửa 
-          </button>
-          <button className="flex flex-row " role="button" onClick={(e)=>handleDel(e,data.id)}>
-             <AiOutlineDelete style={{
-              marginTop: "0.2rem",
-              marginRight: "0.5rem"
-            }}/>
-            Xóa
-          </button>
-        </div>
+      render: (e, data) => (
+        <>
+          {e && (
+            <div className="flex flex-row justify-around">
+              <button className="flex flex-row " role="button" onClick={(e) => handledit(e, data._id)}>
+                <AiFillEdit style={{
+                  marginTop: "0.2rem",
+                  marginRight: "0.5rem"
+                }} />
+                Sửa
+              </button>
+              <button className="flex flex-row " role="button" onClick={(e) => handleDel(e, data._id)}>
+                <AiOutlineDelete style={{
+                  marginTop: "0.2rem",
+                  marginRight: "0.5rem"
+                }} />
+                Xóa
+              </button>
+            </div>
+          )}
+        </>
       ),
     },
   ];
@@ -278,42 +323,57 @@ export default function AdminCustomer() {
     console.log('params', pagination, filters, sorter, extra);
   };
 
+  const searchDataFromApi = async (key) => {
+    const res = await axios({
+      url: `${END_POINT}/customer?keyword=${key}`,
+      headers: { authorization: `Bearer ${accessToken}` },
+      method: "get"
+    })
+    setData(res.data.data)
+  }
 
-  
   const { Search } = Input;
+
   const onSearch = (value) => {
-    console.log(value)
-    const suiData = defaultData.filter(e=>{
-      
-      return e.name.toLowerCase().includes(value.toLowerCase())||e.type.toLowerCase().includes(value.toLowerCase())||
-      e.position.toLowerCase().includes(value.toLowerCase())
-    });
-    setData(suiData)
-    console.log(data);
-    if(value===""||value===undefined){
-      setData(defaultData)
+    if (value === "" || value === undefined) {
+      getDataFromApi();
     }
+    else {
+      searchDataFromApi(value)
+    }
+    console.log(data);
+
   };
 
 
   const acceptEditNewCustomer = async (e) => {
     setLoading(true)
     setIsDisable(true)
- 
+    const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('input');
+    const selectData = e.target.parentElement.parentElement.parentElement.querySelectorAll('select');
+    const newData = {
+      name: tableData[0].value,
+      description: tableData[1].value,
+      address: tableData[2].value,
+      companyTaxcode_business: tableData[3].value,
+      customer_type: selectData[0].value,
+      accepted_business: selectData[1].value,
+      rank_passers: {
+        point: tableData[4].value,
+        level: selectData[2].value,
+      }
+
+    }
+    console.log(id);
+    editData(newData, id);
 
     try {
       await setTimeout(() => {
         setLoading(false)
         setOpenEdit(false)
         setIsDisable(false)
-        const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('input');
-        const newData = {
-          name: tableData[0].value,
-          position: tableData[1].value,
-          type: tableData[2].value,
-          timeStart: tableData[3].value,  
-        }
-        console.log(newData);
+        getDataFromApi();
+
       }, 2000)
     }
     catch {
@@ -324,30 +384,32 @@ export default function AdminCustomer() {
   const acceptDelete = async () => {
     setLoading(true)
     setIsDisable(true)
+    deltDataFromApi(id)
     try {
-        await setTimeout(() => {
-            setLoading(false)
-            setOpenDel(false)
-            setIsDisable(false)
-        }, 2000)
+      await setTimeout(() => {
+        setLoading(false)
+        setOpenDel(false)
+        setIsDisable(false)
+        getDataFromApi();
+      }, 2000)
     }
     catch {
 
     }
-}
+  }
 
   return (
     <div>
-       <Search
-          placeholder="Search"
-          onSearch={onSearch}
-          style={{
-            width: 400,
-            margin: "auto",
-            display: "block",
-            marginBottom:"20px"
-          }}
-        />
+      <Search
+        placeholder="Search"
+        onSearch={onSearch}
+        style={{
+          width: 400,
+          margin: "auto",
+          display: "block",
+          marginBottom: "20px"
+        }}
+      />
       <Table
         columns={columns}
         dataSource={data}

@@ -167,7 +167,7 @@ const App = () => {
                   <Route path="phuong-tien" element={<AdminCar />}></Route>
                   <Route path="hanh-trinh" element={<AdminRoad />}></Route>
                   <Route path="nhan_vien" element={<AdminStaff />}></Route>
-                  <Route path="customer" element={<AdminCustomer />}></Route>
+                  <Route path="khach_hang" element={<AdminCustomer />}></Route>
                   <Route path="don_hang" element={<AdminOrder />}></Route>
                   <Route path="hoa_don" element={<AdminBill />}> </Route>
                   <Route path="doanh_so" element={<AdminTurnover />}> </Route>
@@ -177,7 +177,7 @@ const App = () => {
                 </Route>
               </Route>
 
-              <Route path="admin" element={<AdminPage />}>
+              {/* <Route path="admin" element={<AdminPage />}>
                 <Route path="about" element={<AdminAbout />}></Route>
                 <Route path="contact-us" element={<AdminContactUs />}></Route>
                 <Route path="commitment" element={<AdminCommitment />}></Route>
@@ -198,7 +198,7 @@ const App = () => {
                 <Route path="hang_cam_gui" element={<AdminProhibitProduct />}> </Route>
                 <Route path="don_hang" element={<AdminBill />}> </Route>
                 <Route path="doanh_so" element={<AdminTurnover />}> </Route>
-              </Route>
+              </Route> */}
             </Routes>
           </div>
         </BrowserRouter>

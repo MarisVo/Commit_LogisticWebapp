@@ -29,8 +29,8 @@ export default function AdminContactMessage() {
         headers: { authorization: `Bearer ${accessToken}` },
       });
       if (result.status === 200) {
-        setDataMessgae(result.data.data);
-        setStoreData(result.data.data)
+        setDataMessgae(result.data.data.messages);
+        setStoreData(result.data.data.messages)
         // console.log(result.data.data);
       }
     } catch (error) {
@@ -166,11 +166,15 @@ export default function AdminContactMessage() {
       onFilter: (value, record) => record.status === value,
       render: (status) => (
         <>
+          {status&&(
+          <>
           {status === "seen" ?
             <div className="text-green-600 font-bold bg-green-200 text-center rounded-lg py-1">seen</div>
             :
             <div className='text-red-600 font-bold bg-red-300 text-center rounded-lg py-1'>unseen</div>
           }
+        </>
+        )}
         </>
       )
     },

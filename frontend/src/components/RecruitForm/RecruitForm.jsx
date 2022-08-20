@@ -24,30 +24,37 @@ const RecruitForm = ({ id }) => {
             msg.email = 'Vui lòng nhập email của bạn !';
         } else if (!isEmail(email)) {
             msg.email = 'Email không hợp lệ';
+            setInform("")
         }
 
         if (isEmpty(name)) {
             msg.name = 'Vui lòng nhập họ và tên ';
+            setInform("")
         }
 
         if (isEmpty(ho)) {
             msg.ho = 'Vui lòng nhập họ và tên ';
+            setInform("")
         }
 
         if (isEmpty(phone)) {
             msg.phone = 'Vui lòng nhập số điện thoại ';
+            setInform("")
         }
 
         if (isEmpty(message)) {
             msg.message = 'Vui lòng nhập tin nhắn của bạn ';
+            setInform("")
         }
 
         if (file === null) {
             msg.file = 'Vui lòng gửi file CV của bạn ';
+            setInform("")
         }
 
         if (isEmpty(option)) {
             msg.option = 'Vui lòng điền nguồn của bạn ';
+            setInform("")
         }
 
         setValidationMsg(msg);
