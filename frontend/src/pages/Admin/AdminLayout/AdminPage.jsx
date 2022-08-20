@@ -67,7 +67,7 @@ export default function AdminPage() {
     ),
     getItem(
       <div>
-        <Link to="service">Dịch cụ vận chuyển</Link>
+        <Link to="dich-vu">Dịch vụ vận chuyển</Link>
       </div>,
       "5",
       <MdOutlineDeliveryDining />
@@ -103,28 +103,28 @@ export default function AdminPage() {
     ),
     getItem(
       <div>
-        <Link to="warehouse">Kho bãi</Link>
+        <Link to="kho">Kho bãi</Link>
       </div>,
       "10",
       <FaWarehouse />
     ),
     getItem(
       <div>
-        <Link to="car">Phương tiện</Link>
+        <Link to="phuong-tien">Phương tiện</Link>
       </div>,
       "11",
       <FaTruckMoving />
     ),
     getItem(
       <div>
-        <Link to="road">Hành trình</Link>
+        <Link to="hanh-trinh">Hành trình</Link>
       </div>,
       "12",
       <FaRoad />
     ),
     getItem(
       <div>
-        <Link to="staff_regis">Thêm nhân viên mới</Link>
+        <Link to="them-nhan-vien">Thêm nhân viên mới</Link>
       </div>,
       "13",
       <AiOutlineUserAdd />

@@ -146,10 +146,10 @@ function AdminWarehouse() {
     const searchByKeyword = async () => {
         setLoading(true);
         try {
-        const { data: response } = await axios.get(`${END_POINT}/car`, {
+        const { data: response } = await axios.get(`${END_POINT}/warehouse`, {
             params: { district: district, province: province },
         });
-        setData(response.data);
+        setData(response.data.warehouses);
         setLoading(false);
         } catch (error) {
         console.error(error.message);
@@ -213,42 +213,42 @@ function AdminWarehouse() {
         <div className="flex justify-between mb-4">
             <span className="text-3xl font-bold uppercase">Kho bãi</span>
                 <div className="w-1/3 lg:w-[400px]">
-                <select
-                    name="province_id"
-                    id="dropdown-province"
-                    className="h-1/2 w-full "
-                    onChange={(e) => setProvinceCodeTo(e.target.value)}
-                >
-                    <option data-select2-id="select2-data-81-rsyi" value="">
-                        Tỉnh/ Thành phố
-                    </option>
-
-                    {provincesTo?.length > 0 && provincesTo.map((province) => (
-                        <option
-                            className="text-[#161D25]"
-                            value={province.code}
-                            key={province.code}
-                        >
-                            {province.name}                             
+                    <select
+                        name="province_id"
+                        id="dropdown-province"
+                        className="h-1/2 w-full "
+                        onChange={(e) => setProvinceCodeTo(e.target.value)}
+                    >
+                        <option data-select2-id="select2-data-81-rsyi" value="">
+                            Tỉnh/ Thành phố
                         </option>
-                    ))}
-                </select>
-                <select
-                    className=" h-1/2 w-full "
-                    onChange={(e) => setDistrictCodeTo(e.target.value)}
-                >
-                    <option value="">Quận/ Huyện</option>
 
-                    {districtsTo?.length > 0 && districtsTo.map((district) => (
-                        <option
-                            className="text-[#161D25]"
-                            value={district.code}
-                            key={district.code}
-                        >
-                            {district.name}
-                        </option>
-                    ))}
-                </select>
+                        {provincesTo?.length > 0 && provincesTo.map((province) => (
+                            <option
+                                className="text-[#161D25]"
+                                value={province.code}
+                                key={province.code}
+                            >
+                                {province.name}                             
+                            </option>
+                        ))}
+                    </select>
+                    <select
+                        className=" h-1/2 w-full "
+                        onChange={(e) => setDistrictCodeTo(e.target.value)}
+                    >
+                        <option value="">Quận/ Huyện</option>
+
+                        {districtsTo?.length > 0 && districtsTo.map((district) => (
+                            <option
+                                className="text-[#161D25]"
+                                value={district.code}
+                                key={district.code}
+                            >
+                                {district.name}
+                            </option>
+                        ))}
+                    </select>
                 </div>
                 <button>
                     <AiOutlineSearch  className="w-1/24 lg:w-[100px] hover:text-blue-600 text-4xl" onClick={searchByKeyword}/>

@@ -158,20 +158,20 @@ const App = () => {
                   <Route path="lien_he" element={<AdminContactUs />}></Route>
                   <Route path="commitment" element={<AdminCommitment />}></Route>
                   <Route path="tin_nhan" element={<AdminContactMessage />}></Route>
-                  <Route path="service" element={<AdminDeliveryService />}></Route>
+                  <Route path="dich-vu" element={<AdminDeliveryService />}></Route>
                   <Route path="partner" element={<AdminPartner />}></Route>
                   <Route path="viec-lam" element={<AdminCareer />}></Route>
                   <Route path="ung-vien" element={<AdminApplicant />}></Route>
                   <Route path="phong-ban" element={<AdminDepartment />}></Route>
-                  <Route path="warehouse" element={<AdminWarehouse />}></Route>
-                  <Route path="car" element={<AdminCar />}></Route>
-                  <Route path="road" element={<AdminRoad />}></Route>
+                  <Route path="kho" element={<AdminWarehouse />}></Route>
+                  <Route path="phuong-tien" element={<AdminCar />}></Route>
+                  <Route path="hanh-trinh" element={<AdminRoad />}></Route>
                   <Route path="nhan_vien" element={<AdminStaff />}></Route>
                   <Route path="khach_hang" element={<AdminCustomer />}></Route>
                   <Route path="don_hang" element={<AdminOrder />}></Route>
                   <Route path="hoa_don" element={<AdminBill />}> </Route>
                   <Route path="doanh_so" element={<AdminTurnover />}> </Route>
-                  <Route path="staff_regis" element={<StaffRegister />}></Route>
+                  <Route path="them-nhan-vien" element={<StaffRegister />}></Route>
                   <Route path="phi-bao-tri" element={<AdminMaintenance />}></Route>
                   <Route path="hang_cam_gui" element={<AdminProhibitProduct />}> </Route>
                 </Route>
