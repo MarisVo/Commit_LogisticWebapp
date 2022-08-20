@@ -75,11 +75,11 @@ const NewJob = ({ setDetail }) => {
                                 className="border-[1px] rounded-r-xl before:content-[''] before:block before:border-l-[10px] before:border-[#ccc] p-[16px] mb-[16px] bg-[#f2f2f2] lg:hover:scale-105 duration-300"
                             >
                                 <h4 className="text-[16px] sm:text-[18px] font-bold tracking-wider cursor-pointer truncate">
-                                    {job.name}
+                                    {job?.name}
                                 </h4>
                                 <p className="text-[16px] opacity-70 cursor-pointer truncate">
                                     <FontAwesomeIcon icon={faLocationDot} className=" pr-[16px]" />
-                                    {job.location}
+                                    {job?.location}
                                 </p>
                                 <div style={{ cursor: 'pointer' }}>
                                     <span

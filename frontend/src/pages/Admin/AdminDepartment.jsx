@@ -15,11 +15,11 @@ function AdminDepartment() {
       dataIndex: "name",
       sorter: true
     },
-    {
-      title: "Trưởng ban",
-      dataIndex: "director",
-      sorter: true
-    },
+    // {
+    //   title: "Trưởng ban",
+    //   dataIndex: "director",
+    //   sorter: true
+    // },
     // {
     //     title: 'Vị trí',
     //     dataIndex: 'location',
@@ -84,8 +84,8 @@ function AdminDepartment() {
   const [isDisable, setIsDisable] = useState(false);
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 1,
-    total: 3,
+    pageSize: 4,
+    total: 15,
   });
   const [params, setParams] = useState({
     ...pagination,

@@ -8,6 +8,7 @@ const MainProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState(null);
   const [refreshToken, setRefreshToken] = useState(null);
   const [user, setUser] = useState(null);
+  const [refreshNoti,setRefreshNoti] = useState(1)
   const [dataWarehouse, setDataWarehouse] = useState({
     province: null,
     district: null
@@ -113,6 +114,8 @@ const MainProvider = ({ children }) => {
         setDataWarehouse,
         setOrder,
         order,
+        refreshNoti,
+        setRefreshNoti
       }}
     >
       {children}

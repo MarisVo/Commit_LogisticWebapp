@@ -67,6 +67,20 @@ const Setting = ({navigation}) => {
           }}>
           <Text style={{fontSize: 25}}>Track</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            height: "20%",
+            aspectRatio: 1.6,
+            borderColor: "black",
+            borderWidth: 2,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          onPress={() => {
+            navigation.navigate("Warehouses");
+          }}>
+          <Text style={{fontSize: 25}}>Warehouse</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
