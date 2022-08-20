@@ -134,17 +134,17 @@ export default function AdminAbout() {
   }
 
   const handleSubmit = () => {
+    const items = {
+      description: description,
+      values: values,
+      vision: vision,
+    }
     if (checkBanners === false || checkLogo === false) {
-      alert("Vui lòng điền đầy đủ thông tin")
+      postApi(items)
+      alert("Cập nhật thành công")
     }
 
     else {
-      const items = {
-        description: description,
-        values: values,
-        vision: vision,
-      }
-
       let fileBanners = new FormData();
       fileListBanners.forEach(e => {
         fileBanners.append("banners", e)

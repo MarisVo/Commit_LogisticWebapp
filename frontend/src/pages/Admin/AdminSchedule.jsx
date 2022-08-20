@@ -3,19 +3,18 @@ import 'antd/dist/antd.css';
 import { Button, Input, Table, Space, DatePicker, Form, InputNumber, Select } from "antd";
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
+import AddNewStaff from '../../components/Admin/Staff/AddNewStaff';
 import ConfirmModal from '../../components/ConfirmModal';
-import EditProhibit from '../../components/Admin/ProhibitProduct/EditProhibit';
+import EditStaff from '../../components/Admin/Staff/EditStaff';
 import { AiFillEdit, AiOutlineDelete } from 'react-icons/ai'
-import { MainContext } from '../../context/MainContext';
-import AddNewBill from '../../components/Admin/Bill/AddNewBill';
-import { END_POINT } from "../../utils/constant";
+import { END_POINT } from '../../utils/constant';
 import { TOKEN } from "./adminToken";
 import axios from 'axios';
+import { MainContext } from '../../context/MainContext';
 
-export default function AdminTurnover() {
-  const { accessToken } = useContext(MainContext)
-  const [idItem, setId] = useState()
-
+export default function AdminSchedule() {
+  const [idItem,setId] = useState()
+  const {accessToken} = useContext(MainContext)
   const [dataEdit, setDataEdit] = useState()
   const [openEdit, setOpenEdit] = useState(false)
 
@@ -24,85 +23,55 @@ export default function AdminTurnover() {
   const [loading, setLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(false)
   const [open, setOpen] = useState(false);
-  const api = `${END_POINT}/admin/bill`
+
   const [data, setData] = useState([
     {
-        total: 200,
-        payment_method: "cash",
-        paid: 150,
-        type_of_turnover: "complete order",
-        refund: 250,
-        bill: "12345678",
-        order: "1071263",
-        message: "Đây là doanh số"
-  },
+        name:"Dũng",
+        address:"Hà Nội",
+        phone:"09821345",
+        infor:"Đồ nội thất",
+        note:"Hàng dễ vỡ",
+        status:"Đang vận chuyển"
+    }
   ])
 
-  const [imgFile, setImgFile] = useState()
+  const getDataFromApi = async ()=>{
+    try{
+      const res = await axios.get(`${END_POINT}/admin/staff`)
+    //   setData(res.data.data)
+      console.log(res.data.data);
+    }
+
+    catch(e){
+      console.log(e);
+    }
+  }
+
+  const editStaff = async (data,id)=>{
+    const res = await axios({
+      method:"put",
+      data:data,
+      url:`${END_POINT}/admin/staff/${id}`,
+      headers: { authorization: `Bearer ${accessToken}` },
+    })
+  }
+
+  const delStaff = async (id)=>{
+    const res = await axios({
+      method:"delete",
+      url:`${END_POINT}/admin/staff/${id}`,
+      headers: { authorization: `Bearer ${accessToken}` },
+    })
+  }
+
+  useEffect(()=>{
+    getDataFromApi()
+  },[])
 
   // ____
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
-
-//   const getDataFromApi = async () => {
-//     try {
-//       const res = await axios({
-//         url:api,
-//         method:"get",
-//         headers: { authorization: `Bearer ${accessToken}` },
-//       })
-//       setData(res.data.data.bills);
-//     }
-//     catch (e) {
-//       console.log(e);
-//     }
-//   }
-
-  const postData = async (data) => {
-    try {
-      const res = await axios({
-        url: `${api}/create`,
-        method: "post",
-        data: data,
-        headers: { authorization: `Bearer ${accessToken}` },
-      })
-    }
-    catch (e) {
-      console.log(e);
-    }
-  }
-
-  const editData = async (data, id) => {
-    try {
-      const res = await axios({
-        url: `${api}/${id}`,
-        method: "put",
-        headers: { authorization: `Bearer ${accessToken}` },
-        data: data,
-      })
-    }
-    catch (e) {
-      console.log(e);
-    }
-  }
-
-  const delData = async (id) => {
-    try {
-      const res = await axios({
-        url: `${api}/${id}`,
-        method: "delete",
-        headers: { authorization: `Bearer ${accessToken}` },
-      })
-    }
-    catch (e) {
-      console.log(e);
-    }
-  }
-
-  useEffect(() => {
-    // getDataFromApi()
-  }, [])
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -115,25 +84,18 @@ export default function AdminTurnover() {
     setSearchText('');
   };
 
-  const handledit = (e, id) => {
-    const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('td');
-    const oldData = data.filter(e => e._id === id);
-    console.log(oldData);
+  const handledit = (e,id) => {
+    const oldData = data.filter(e=>e._id===id);
     setDataEdit(oldData[0]);
     setId(id)
     setOpenEdit(true);
+    // console.log(dataEdit);
   }
 
-  const handleDel = (e, id) => {
+  const handleDel = (e,id) => {
     setId(id)
     setOpenDel(true)
-    console.log(idItem);
-  }
-
-  const changeFile = (e) => {
-    const img = e.target.files[0];
-    img.preview = URL.createObjectURL(img)
-    setImgFile(img);
+    // console.log(idItem);
   }
 
 
@@ -228,85 +190,58 @@ export default function AdminTurnover() {
 
   const columns = [
     {
-      title: "Tổng tiền",
-      dataIndex: "total",
-      key: "total",
-      width: "13%",
-      onFilter: (value, record) => record.total.indexOf(value) === 0,
-      sorter: (a, b) => a.total.length - b.total.length,
+      title: "Tên",
+      dataIndex: "name",
+      key: "name",
+      width: "14%",
+      onFilter: (value, record) => record.name.indexOf(value) === 0,
+      sorter: (a, b) => a.name.length - b.name.length,
       sortDirections: ['descend'],
-      ...getColumnSearchProps('total'),
+      ...getColumnSearchProps('name'),
     },
     {
-      title: "Đã trả",
-      dataIndex: "paid",
-      key: "paid",
-      width: "13%",
-      onFilter: (value, record) => record.paid.indexOf(value) === 0,
-      sorter: (a, b) => a.paid.length - b.paid.length,
-      sortDirections: ['descend'],
-      ...getColumnSearchProps('paid'),
-    },
-    {
-      title: "Trả lại",
-      dataIndex: "refund",
-      key: "refund",
-      width: "13%",
-      onFilter: (value, record) => record.refund.indexOf(value) === 0,
-      sorter: (a, b) => a.refund.length - b.refund.length,
-      sortDirections: ['descend'],
-      ...getColumnSearchProps('refund'),
-    },
-    {
-      title: "Phương thức thanh toàn",
-      dataIndex: "payment_method",
-      key: "payment_method",
-      width: "13%",
-      onFilter: (value, record) => record.payment_method.indexOf(value) === 0,
-      sorter: (a, b) => a.payment_method.length - b.payment_method.length,
-      sortDirections: ['descend'],
-      ...getColumnSearchProps('payment_method'),
-    },
-    {
-      title: "Kiểu doanh số",
-      dataIndex: "type_of_turnover",
-      key: "type_of_turnover",
-      width: "13%",
-    },
-    {
-      title: "Mã hóa đơn",
-      dataIndex: "bill",
-      key: "bill",
-      width: "13%",
+      title: "Mã phòng ban",
+      dataIndex: "department",
+      key: "department",
+      width: "14%",
     },
 
     {
-        title: "Thông điệp",
-        dataIndex: "message",
-        key: "message",
-        width: "13%",
-      },
+      title: "Công việc",
+      dataIndex: "staff_type",
+      key: "staff_type",
+      width: "14%",
+    },
 
     {
-        title: "Mã vận đơn",
-        dataIndex: "order",
-        key: "order",
-        width: "13%",
-      },
+      title: "Đội xe",
+      dataIndex: "car_fleet",
+      key: "car_fleet",
+      width: "14%",
+    },
+    {
+      title: "Ngày bắt đầu làm việc",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      width: "14%",
+      onFilter: (value, record) => record.createdAt.indexOf(value) === 0,
+      sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+      sortDirections: ['descend', 'ascend'],
+    },
     {
       title: '',
-      dataIndex: "",
-      // width: "15%",
-      render: (e, data) => (
+      dataIndex: "_id",
+      // width: "14%",
+      render: (e,data) => (
         <div className="flex flex-row justify-around">
-          <button className="flex flex-row " role="button" onClick={(e) => handledit(e, data._id)}>
+          <button className="flex flex-row " role="button" onClick={(e)=>handledit(e,data._id)}>
             <AiFillEdit style={{
               marginTop: "0.2rem",
               marginRight: "0.5rem"
             }} />
             Sửa
           </button>
-          <button className="flex flex-row " role="button" onClick={(e) => handleDel(e, data._id)}>
+          <button className="flex flex-row " role="button" onClick={(e)=>handleDel(e,data._id)}>
             <AiOutlineDelete style={{
               marginTop: "0.2rem",
               marginRight: "0.5rem"
@@ -317,50 +252,45 @@ export default function AdminTurnover() {
       ),
     },
   ];
+  const searchDataFromApi = async (key)=>{
+    try{
+      const res = await axios.get(`${END_POINT}/admin/staff?keyword=${key}`)
+      setData(res.data.data)
+      console.log(res.data.data);
+    }
 
+    catch(e){
+      console.log(e);
+    }
+  }
   const { Search } = Input;
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
   };
 
-  const getSearch = async (key) => {
-    try {
-      const res = await axios.get(`${api}?keyword=${key}`);
-      setData(res.data.data);
-    }
-    catch (e) {
-      console.log(e);
-    }
-  }
-
   const onSearch = (value) => {
     console.log(value)
-    if (value === "" || value === undefined) {
-    //   getDataFromApi();
-    }
-    else {
-      getSearch(value)
+    searchDataFromApi(value)
+    if(value===""||value===undefined){
+     getDataFromApi();
     }
   };
 
-  const acceptAddNewProhibit = async (e) => {
+  const acceptAddNewStaff = async (e) => {
     setLoading(true)
     setIsDisable(true)
-    let valueImg = new FormData();
-    valueImg.append("images", imgFile);
-    // setImgFile(valueImg)
-    const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('input');
-    const newData = {
-     
-    }
-    console.log(newData);
-    // postData(newData)
+
     try {
       await setTimeout(() => {
         setLoading(false)
         setOpen(false)
         setIsDisable(false)
-        // getDataFromApi()
+        const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('input');
+        const newData = {
+          name: tableData[0].value,
+          staff_type: tableData[1].value,
+        }
+
       }, 2000)
     }
     catch {
@@ -368,26 +298,23 @@ export default function AdminTurnover() {
     }
   }
 
-  const acceptEditNewProhibit = async (e) => {
+  const acceptEditNewStaff = async (e) => {
     setLoading(true)
     setIsDisable(true)
-    let valueImg = new FormData();
-    valueImg.append("images", imgFile);
     const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('input');
     const newData = {
       name: tableData[0].value,
-      detail: tableData[1].value,
-      images :valueImg,
+      staff_type: tableData[1].value,
     }
 
-    console.log(newData);
-    // editData(newData,idItem);
+    editStaff(newData,idItem)
+
     try {
       await setTimeout(() => {
         setLoading(false)
         setOpenEdit(false)
         setIsDisable(false)
-        // getDataFromApi();
+        getDataFromApi()
         // console.log(newData);
 
       }, 2000)
@@ -400,14 +327,13 @@ export default function AdminTurnover() {
   const acceptDelete = async () => {
     setLoading(true)
     setIsDisable(true)
-    delData(idItem)
-    // console.log(idItem);
+    delStaff(idItem)
     try {
       await setTimeout(() => {
         setLoading(false)
         setOpenDel(false)
         setIsDisable(false)
-        // getDataFromApi()
+        getDataFromApi()
       }, 2000)
     }
     catch {
@@ -427,12 +353,12 @@ export default function AdminTurnover() {
             display: "block",
           }}
         />
-        <button
+        {/* <button
           className="p-2 w-32 hover:opacity-80  border-black border-2 "
           onClick={() => setOpen(true)}
         >
           +Thêm
-        </button>
+        </button> */}
       </div>
       <Table
         columns={columns}
@@ -442,29 +368,26 @@ export default function AdminTurnover() {
       </Table>
 
 
-      <AddNewBill
+      {/* <AddNewStaff
         isVisible={open}
-        onOk={acceptAddNewProhibit}
+        onOk={acceptAddNewStaff}
         loading={loading}
         disable={isDisable}
         onClose={() => setOpen(false)}
-        fileData={changeFile}
-      />
+      /> */}
 
-      <EditProhibit
+      <EditStaff
         isVisible={openEdit}
-        onOk={acceptEditNewProhibit}
+        onOk={acceptEditNewStaff}
         loading={loading}
         disable={isDisable}
         dataEdit={dataEdit}
         onClose={() => setOpenEdit(false)}
-        data={dataEdit}
-        fileData={changeFile}
       />
 
       <ConfirmModal
         isVisible={openDel}
-        text={`Xóa sản phẩm`}
+        text={`xóa nhân viên`}
         onClose={() => setOpenDel(false)}
         loading={loading}
         disable={isDisable}

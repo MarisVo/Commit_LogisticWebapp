@@ -57,11 +57,9 @@ export default function AdminOrder() {
                 method: "get",
                 headers: { authorization: `Bearer ${accessToken}` },
             });
-            // console.log(res);
-            if (res.status === 200) {
-                setData(res.data.data.order);
-                console.log(data);
-            }
+            console.log(res);
+            setData(res.data.data.orders);
+            console.log(data);
         }
         catch (error) {
             console.log(error);
@@ -308,24 +306,23 @@ export default function AdminOrder() {
             width: "14.2%",
             render: (e, data) => (
                 <>
-                    {e && (
-                        <div className="flex flex-row justify-around">
-                            <button className="flex flex-row " role="button" onClick={(e) => handledit(e, data.orderId)}>
-                                <AiFillEdit style={{
-                                    marginTop: "0.2rem",
-                                    marginRight: "0.5rem"
-                                }} />
-                                Sửa
-                            </button>
-                            <button className="flex flex-row " role="button" onClick={(e) => handleDel(e, data.orderId)}>
-                                <AiOutlineDelete style={{
-                                    marginTop: "0.2rem",
-                                    marginRight: "0.5rem"
-                                }} />
-                                Xóa
-                            </button>
-                        </div>
-                    )}
+
+                    <div className="flex flex-row justify-around">
+                        <button className="flex flex-row " role="button" onClick={(e) => handledit(e, data.orderId)}>
+                            <AiFillEdit style={{
+                                marginTop: "0.2rem",
+                                marginRight: "0.5rem"
+                            }} />
+                            Sửa
+                        </button>
+                        <button className="flex flex-row " role="button" onClick={(e) => handleDel(e, data.orderId)}>
+                            <AiOutlineDelete style={{
+                                marginTop: "0.2rem",
+                                marginRight: "0.5rem"
+                            }} />
+                            Xóa
+                        </button>
+                    </div>
                 </>
             ),
         },

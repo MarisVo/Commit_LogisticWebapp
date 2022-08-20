@@ -296,24 +296,24 @@ export default function AdminCustomer() {
       // width: "14%",
       render: (e, data) => (
         <>
-          {e && (
-            <div className="flex flex-row justify-around">
-              <button className="flex flex-row " role="button" onClick={(e) => handledit(e, data._id)}>
-                <AiFillEdit style={{
-                  marginTop: "0.2rem",
-                  marginRight: "0.5rem"
-                }} />
-                Sửa
-              </button>
-              <button className="flex flex-row " role="button" onClick={(e) => handleDel(e, data._id)}>
-                <AiOutlineDelete style={{
-                  marginTop: "0.2rem",
-                  marginRight: "0.5rem"
-                }} />
-                Xóa
-              </button>
-            </div>
-          )}
+
+          <div className="flex flex-row justify-around">
+            <button className="flex flex-row " role="button" onClick={(e) => handledit(e, data._id)}>
+              <AiFillEdit style={{
+                marginTop: "0.2rem",
+                marginRight: "0.5rem"
+              }} />
+              Sửa
+            </button>
+            <button className="flex flex-row " role="button" onClick={(e) => handleDel(e, data._id)}>
+              <AiOutlineDelete style={{
+                marginTop: "0.2rem",
+                marginRight: "0.5rem"
+              }} />
+              Xóa
+            </button>
+          </div>
+
         </>
       ),
     },
