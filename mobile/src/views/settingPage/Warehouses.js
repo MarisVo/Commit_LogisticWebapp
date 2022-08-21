@@ -11,7 +11,7 @@ import {
   TextInput,
   ScrollView,
   FlatList,
-  Platform
+  Platform,
 } from "react-native";
 import {getDistrictsByProvinceCode, getProvinces} from "sub-vn";
 import IconAwesome from "react-native-vector-icons/FontAwesome";
@@ -142,14 +142,15 @@ function Warehouse({navigation}) {
     });
   };
   return (
-    <View style={{backgroundColor: "#FFD124", height: "100%"}}>
+    <SafeAreaView style={{backgroundColor: "#FFD124", height: "100%"}}>
       <View
         style={{
-          height: "15%",
+          height: "12%",
           position: "relative",
           justifyContent: "center",
           alignItems: "center",
-        }}>
+        }}
+      >
         <View
           style={{
             position: "absolute",
@@ -157,11 +158,13 @@ function Warehouse({navigation}) {
             width: 50,
             height: 50,
             justifyContent: "center",
-          }}>
+          }}
+        >
           <TouchableOpacity
             onPress={() => {
               navigation.goBack();
-            }}>
+            }}
+          >
             <IconAwesome name="arrow-left" size={26} />
           </TouchableOpacity>
         </View>
@@ -171,177 +174,192 @@ function Warehouse({navigation}) {
       </View>
       <View
         style={{
-          height: "85%",
+          height: "88%",
           backgroundColor: "white",
           borderTopLeftRadius: 40,
           borderTopRightRadius: 40,
-        }}>
+          paddingHorizontal: 24,
+          // justifyContent:"center"
+        }}
+      >
         <View
           style={{
-            height: "100%",
-            marginHorizontal: 24,
-          }}>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}>
-            <Select
-              selectedValue={dataForSearch.province}
-              minWidth="45%"
-              height="56px"
-              borderRadius={5}
-              backgroundColor="#FFD124"
-              placeholderTextColor="black"
-              accessibilityLabel="Choose Service"
-              fontSize="14px"
-              placeholder="Tỉnh/Thành phố"
-              _selectedItem={{
-                bg: "teal.600",
-                endIcon: <CheckIcon size="5" />,
-              }}
-              mt={1}
-              onValueChange={value => handleSelectProvince(value)}>
-              {provinces.map(province => (
-                <Select.Item
-                  label={province.name}
-                  value={province.name}
-                  key={province.name}
-                />
-              ))}
-            </Select>
-            <Select
-              selectedValue={dataForSearch.district}
-              minWidth="45%"
-              height="56px"
-              borderRadius={5}
-              backgroundColor="#FFD124"
-              placeholderTextColor="black"
-              accessibilityLabel="Choose Service"
-              fontSize="14px"
-              placeholder="Quận/huyện"
-              _selectedItem={{
-                bg: "teal.600",
-                endIcon: <CheckIcon size="5" />,
-              }}
-              mt={1}
-              onValueChange={value => handleSelectDistrict(value)}>
-              {districts.map(district => (
-                <Select.Item
-                  label={district.name}
-                  value={district.name}
-                  key={district.name}
-                />
-              ))}
-            </Select>
-          </View>
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Select
+            selectedValue={dataForSearch.province}
+            minWidth="45%"
+            height="56px"
+            borderRadius={5}
+            backgroundColor="#FFD124"
+            placeholderTextColor="black"
+            accessibilityLabel="Choose Service"
+            fontSize="14px"
+            placeholder="Tỉnh/Thành phố"
+            _selectedItem={{
+              bg: "teal.600",
+              endIcon: <CheckIcon size="5" />,
+            }}
+            mt={1}
+            onValueChange={value => handleSelectProvince(value)}
+          >
+            {provinces.map(province => (
+              <Select.Item
+                label={province.name}
+                value={province.name}
+                key={province.name}
+              />
+            ))}
+          </Select>
+          <Select
+            selectedValue={dataForSearch.district}
+            minWidth="45%"
+            height="56px"
+            borderRadius={5}
+            backgroundColor="#FFD124"
+            placeholderTextColor="black"
+            accessibilityLabel="Choose Service"
+            fontSize="14px"
+            placeholder="Quận/huyện"
+            _selectedItem={{
+              bg: "teal.600",
+              endIcon: <CheckIcon size="5" />,
+            }}
+            mt={1}
+            onValueChange={value => handleSelectDistrict(value)}
+          >
+            {districts.map(district => (
+              <Select.Item
+                label={district.name}
+                value={district.name}
+                key={district.name}
+              />
+            ))}
+          </Select>
+        </View>
 
-          <View
-            style={{
-              flex: 7,
-              alignItems:"center"
-            }}>
-            <FlatList
-              keyExtractor={item => item._id}
-              data={warehouses}
-              showsVerticalScrollIndicator={false}
-              renderItem={({item}) => (
+        <View
+          style={{
+            flex: 7,
+            alignItems: "center",
+          }}
+        >
+          <FlatList
+            keyExtractor={item => item._id}
+            data={warehouses}
+            showsVerticalScrollIndicator={false}
+            renderItem={({item}) => (
+              <View
+                style={{
+                  height: 146,
+                  width: "100%",
+                  flexDirection: "row",
+                  marginVertical: 12,
+                  // marginHorizontal:10,
+                  borderRadius: 5,
+                  backgroundColor: "white",
+                  shadowColor: "#000000",
+                  shadowOffset: {
+                    width: 3,
+                    height: 3,
+                  },
+                  shadowRadius: 5,
+                  shadowOpacity: 1.0,
+                  elevation: 5,
+                }}
+              >
                 <View
                   style={{
-                    height: 146,
-                    width: "100%",
-                    flexDirection: "row",
-                    marginVertical: 12,
-                    // marginHorizontal:10,
-                    borderRadius: 5,
-                    backgroundColor:"white",
-                    shadowColor: '#000000',
-                    shadowOffset: {
-                      width: 3,
-                      height: 3
-                    },
-                    shadowRadius: 5,
-                    shadowOpacity: 1.0,
-                    elevation:5
-                  }}>
+                    height: "100%",
+                    width: "4%",
+                    backgroundColor: "#FFD124",
+                    borderTopLeftRadius: 5,
+                    borderBottomLeftRadius: 5,
+                  }}
+                ></View>
+                <View style={{width: "95%"}}>
                   <View
                     style={{
-                      height: "100%",
-                      width: "4%",
-                      backgroundColor: "#FFD124",
-                      borderTopLeftRadius:5,
-                      borderBottomLeftRadius:5,
-                    }}></View>
-                  <View style={{width: "95%"}}>
+                      flex: 1,
+                      justifyContent: "flex-end",
+                      alignContent: "center",
+                      flexDirection: "row",
+                      marginRight: 24,
+                      backgroundColor: "white",
+                    }}
+                  >
+                    <View style={{justifyContent: "center"}}>
+                      <IconAwesome name="circle" color="#00FF57" />
+                    </View>
+                    <Text
+                      style={{
+                        textAlignVertical: "center",
+                        fontSize: 12,
+                        marginLeft: 6,
+                      }}
+                    >
+                      Đang mở cửa
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flex: 6,
+                      alignItems: "center",
+                    }}
+                  >
                     <View
                       style={{
                         flex: 1,
-                        justifyContent: "flex-end",
-                        alignContent: "center",
+                        width: "90%",
                         flexDirection: "row",
-                        marginRight: 24,
-                        backgroundColor:"white"
-                      }}>
-                      <View style={{justifyContent: "center"}}>
-                        <IconAwesome name="circle" color="#00FF57" />
+                        paddingVertical: 10,
+                      }}
+                    >
+                      <View style={{marginRight: 5, minWidth: 20}}>
+                        <IonIcon name="location-sharp" size={20} />
                       </View>
-                      <Text
-                        style={{
-                          textAlignVertical: "center",
-                          fontSize: 12,
-                          marginLeft: 6,
-                        }}>
-                        Đang mở cửa
+                      <Text style={{width: "85%", fontSize: 16}}>
+                        {item.street}
                       </Text>
                     </View>
                     <View
                       style={{
-                        flex: 6,
-                        alignItems: "center",
-                      }}>
+                        flex: 1,
+                        width: "90%",
+                        flexDirection: "row",
+                        paddingVertical: 10,
+                      }}
+                    >
                       <View
                         style={{
-                          flex: 1,
-                          width: "90%",
-                          flexDirection: "row",
-                          paddingVertical: 10,
-                        }}>
-                        <View style={{marginRight: 5,minWidth:20}}>
-                          <IonIcon name="location-sharp" size={20} />
-                        </View>
-                        <Text style={{width: "85%", fontSize: 16} }>
-                          {item.street}
-                        </Text>
+                          marginRight: 5,
+                          minWidth: 20,
+                          alignItems: "center",
+                        }}
+                      >
+                        <IconAwesome name="phone" size={20} />
                       </View>
-                      <View
+                      <Text
                         style={{
-                          flex: 1,
-                          width: "90%",
-                          flexDirection: "row",
-                          paddingVertical: 10,
-                        }}>
-                        <View style={{marginRight: 5, minWidth:20,alignItems:"center"}}>
-                          <IconAwesome name="phone" size={20} />
-                        </View>
-                        <Text
-                          style={{
-                            fontSize: 16,
-                            width:"80%",
-                          }}>
-                          {item.phone}
-                        </Text>
-                      </View>
+                          fontSize: 16,
+                          width: "80%",
+                        }}
+                      >
+                        {item.phone}
+                      </Text>
                     </View>
                   </View>
                 </View>
-              )}
-            />
-          </View>
+              </View>
+            )}
+          />
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 

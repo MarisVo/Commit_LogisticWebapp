@@ -9,10 +9,13 @@ import {
   Image,
   StyleSheet,
   TextInput,
+  Button,
+  Pressable,
 } from "react-native";
 import {getDistrictsByProvinceCode, getProvinces} from "sub-vn";
-import Icon from "react-native-vector-icons/FontAwesome";
-import {Select, CheckIcon} from "native-base";
+import IconAwesome from "react-native-vector-icons/FontAwesome";
+import IconAnt from "react-native-vector-icons/AntDesign";
+import {Select, CheckIcon, Radio, Stack} from "native-base";
 
 function Tracking({navigation}) {
   const [warehouse, setWarehouse] = useState({});
@@ -26,14 +29,15 @@ function Tracking({navigation}) {
     setProvinces(dataProvinces);
   }, []);
   return (
-    <View style={{backgroundColor: "#FFD124", height: "100%"}}>
+    <SafeAreaView style={{backgroundColor: "#FFD124", height: "100%"}}>
       <View
         style={{
-          height: "15%",
+          height: "12%",
           position: "relative",
           justifyContent: "center",
           alignItems: "center",
-        }}>
+        }}
+      >
         <View
           style={{
             position: "absolute",
@@ -41,12 +45,14 @@ function Tracking({navigation}) {
             width: 50,
             height: 50,
             justifyContent: "center",
-          }}>
+          }}
+        >
           <TouchableOpacity
             onPress={() => {
               navigation.goBack();
-            }}>
-            <Icon name="arrow-left" size={26} />
+            }}
+          >
+            <IconAwesome name="arrow-left" size={26} />
           </TouchableOpacity>
         </View>
         <Text style={{fontSize: 20, fontWeight: "bold"}}>
@@ -55,53 +61,50 @@ function Tracking({navigation}) {
       </View>
       <View
         style={{
-          height: "85%",
+          height: "88%",
           backgroundColor: "white",
           borderTopLeftRadius: 40,
           borderTopRightRadius: 40,
-        }}>
+          paddingHorizontal: 24,
+          // justifyContent: "center",
+        }}
+      >
         <View
           style={{
-            height: "100%",
-            backgroundColor: "red",
-            marginHorizontal: 24,
-          }}>
+            paddingVertical: 10,
+          }}
+        >
           <View
             style={{
-              flex: 1,
-              // alignContent: "space-between",
-              backgroundColor: "yellow",
-              // justifyContent:"space-around"
-
-
-            }}>
-            <View
-              style={{
-                flex:1,
-                justifyContent: "space-around",
-                paddingVertical:10,
-                alignItems:"center",
-                flexDirection: "row",
-                backgroundColor: "blue",
-              }}>
+              justifyContent: "space-between",
+              paddingVertical: 10,
+              alignItems: "center",
+              flexDirection: "row",
+            }}
+          >
+            <View style={{flex: 1}}>
+              <Text style={{paddingVertical: 5, paddingLeft: 15, fontSize: 13}}>
+                Chọn điểm đi
+              </Text>
               <Select
                 selectedValue={dataForSearch.province}
-                minWidth="40%"
+                minWidth="42%"
                 height="56px"
                 borderRadius={16}
                 backgroundColor="#FFD124"
                 placeholderTextColor="black"
                 accessibilityLabel="Choose Service"
                 fontSize="14px"
+                // alignSelf="center"
                 placeholder="Tỉnh/Thành phố"
                 _selectedItem={{
                   bg: "teal.600",
                   endIcon: <CheckIcon size="5" />,
                 }}
-                mt={1}
                 onValueChange={itemValue =>
                   setDataForSearch({province: itemValue, district: null})
-                }>
+                }
+              >
                 {provinces.map(province => (
                   <Select.Item
                     label={province.name}
@@ -110,24 +113,35 @@ function Tracking({navigation}) {
                   />
                 ))}
               </Select>
+            </View>
+            <IconAnt
+              name="arrowright"
+              size={24}
+              style={{marginHorizontal: 2, transform: [{translateY: 15}]}}
+            />
+            <View style={{flex: 1}}>
+              <Text style={{paddingVertical: 5, paddingLeft: 15, fontSize: 13}}>
+                Chọn điểm đi
+              </Text>
               <Select
                 selectedValue={dataForSearch.province}
-                minWidth="40%"
+                minWidth="42%"
                 height="56px"
                 borderRadius={16}
                 backgroundColor="#FFD124"
                 placeholderTextColor="black"
                 accessibilityLabel="Choose Service"
                 fontSize="14px"
-                placeholder="Quận/huyện"
+                // alignSelf="center"
+                placeholder="Quận/Huyện"
                 _selectedItem={{
                   bg: "teal.600",
                   endIcon: <CheckIcon size="5" />,
                 }}
-                mt={1}
                 onValueChange={itemValue =>
                   setDataForSearch({province: itemValue, district: null})
-                }>
+                }
+              >
                 {provinces.map(province => (
                   <Select.Item
                     label={province.name}
@@ -137,24 +151,196 @@ function Tracking({navigation}) {
                 ))}
               </Select>
             </View>
-            <View style={{flex:1,backgroundColor:"orange"}}>
-                  <View style={{backgroundColor:"white",width:"40%"}}>
-                    <TextInput placeholder="Khối lượng"/>
-                  </View>
-            </View>
-            <View style={{flex:1,backgroundColor:"pink"}}>
-
-            </View>
           </View>
           <View
             style={{
-              flex: 3,
+              justifyContent: "center",
+              paddingVertical: 10,
               flexDirection: "row",
-              backgroundColor: "green",
-            }}></View>
+            }}
+          >
+            <View
+              style={{
+                flex: 1,
+                position: "relative",
+                backgroundColor: "white",
+                borderRadius: 16,
+                borderWidth:1
+              }}
+            >
+              <TextInput
+                style={{height: 56}}
+                textAlign="center"
+                fontSize={16}
+              />
+              <Text
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  fontSize: 13,
+                  lineHeight: 20,
+                  transform: [{translateX: 16}, {translateY: -12}],
+                  backgroundColor: "white",
+                }}
+              >
+                Khối lượng
+              </Text>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                paddingLeft: 5,
+              }}
+            >
+              <Radio.Group
+                defaultValue="2"
+                // name="exampleGroup"
+                accessibilityLabel="select unit"
+              >
+                <Stack
+                  direction={{
+                    base: "row",
+                  }}
+                  alignItems={{
+                    base: "space-between",
+                  }}
+                  space={3}
+                >
+                  <Radio value="1" my={1} size="sm">
+                    <Text style={{fontSize: 12, lineHeight: 30, color: "#000"}}>
+                      Tấn
+                    </Text>
+                  </Radio>
+                  <Radio value="2" my={1} size="sm">
+                    <Text style={{fontSize: 12, lineHeight: 30, color: "#000"}}>
+                      KG
+                    </Text>
+                  </Radio>
+                  <Radio value="3" my={1} size="sm">
+                    <View style={{flexDirection: "row"}}>
+                      <Text
+                        style={{fontSize: 12, lineHeight: 30, color: "#000"}}
+                      >
+                        M
+                      </Text>
+                      <Text
+                        style={{fontSize: 7, lineHeight: 18, color: "#000"}}
+                      >
+                        3
+                      </Text>
+                    </View>
+                  </Radio>
+                </Stack>
+              </Radio.Group>
+            </View>
+          </View>
+          <View style={{paddingVertical: 10}}>
+            <View style={{flexDirection: "row", alignItems: "center"}}>
+              <View
+                style={{
+                  flex: 1,
+                  position: "relative",
+                  backgroundColor: "white",
+                  borderRadius: 16,
+                  borderWidth:1
+                }}
+              >
+                <TextInput
+                  placeholder="Dài"
+                  style={{height: 56}}
+                  textAlign="center"
+                  fontSize={16}
+                />
+                <Text
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    fontSize: 13,
+                    lineHeight: 20,
+                    transform: [{translateX: 16}, {translateY: -12}],
+                    backgroundColor: "white",
+                  }}
+                >
+                  Kích thước
+                </Text>
+              </View>
+              <View style={{paddingHorizontal: 5}}>
+                <Text fontSize={12}>x</Text>
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: "white",
+                  borderRadius: 16,
+                  borderWidth:1
+                }}
+              >
+                <TextInput
+                  placeholder="Rộng"
+                  style={{height: 56}}
+                  textAlign="center"
+                  fontSize={16}
+                />
+              </View>
+              <View style={{paddingHorizontal: 5}}>
+                <Text fontSize={12}>x</Text>
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: "white",
+                  borderRadius: 16,
+                  borderWidth:1
+                }}
+              >
+                <TextInput
+                  placeholder="Cao"
+                  style={{height: 56}}
+                  textAlign="center"
+                  fontSize={16}
+                />
+              </View>
+            </View>
+          </View>
+          <View style={{width:"40%", paddingVertical:10, justifyContent:"center"}}>
+            <Select
+              width="40%"
+              minWidth="135px"
+              // selectedValue="nhanh"
+              height="56px"
+              borderRadius={16}
+              backgroundColor="#FFD124"
+              placeholderTextColor="black"
+              accessibilityLabel="Choose Service"
+              fontSize="14px"
+              placeholder="Tiêu chuẩn"
+              _selectedItem={{
+                bg: "teal.600",
+                endIcon: <CheckIcon size="5" />,
+              }}
+              // onValueChange={itemValue =>
+              //   setDataForSearch({province: itemValue, district: null})
+              // }
+            >
+              <Select.Item label="Nhanh" value="nhanh" key="nhanh" />
+              <Select.Item label="Siêu giao hàng" value="nhanh" key="nhanh" />
+              <Select.Item label="Tươi sống" value="nhanh" key="nhanh" />
+            </Select>
+          </View>
+        </View>
+        <View
+          style={{
+            alignItems:"center",
+            marginTop:20,
+          }}
+        >
+          <TouchableOpacity style={{width:150,height:58,borderRadius:16,backgroundColor:"#FFD124",justifyContent:"center"}}>
+            <Text style={{textAlign:"center", fontSize:18,color:"white"}}>Tra cứu</Text>
+          </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
