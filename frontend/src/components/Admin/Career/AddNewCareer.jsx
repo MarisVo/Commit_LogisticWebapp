@@ -21,12 +21,11 @@ function AddNewCareer({ onClose, refetchData }) {
   const [idDepartment, setIdDepartment] = useState();
   const [loading, setLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
-  console.log(data);
   useEffect(() => {
     const fetchDepartmentsList = async () => {
       try {
         const { data: response } = await axios.get(`${END_POINT}/department`);
-        setDepartments(response.data);
+        setDepartments(response.data.department);
       } catch (error) {
         console.log(error);
       }

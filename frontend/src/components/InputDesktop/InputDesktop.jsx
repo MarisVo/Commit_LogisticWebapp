@@ -3,24 +3,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-const InputDesktop = ({onSearch,onChangeKey, onChangeLocation, onChangeType,onChangeState, onChangeDepartment}) => {
-    
-    const [department,setDepartment] = useState([])
+const InputDesktop = ({ onSearch, onChangeKey, onChangeLocation, onChangeType, onChangeState, onChangeDepartment }) => {
 
-    const getDepartment =async ()=>{
+    const [department, setDepartment] = useState([])
+
+    const getDepartment = async () => {
         const res = await axios({
-            url:'http://localhost:8000/api/department',
-            method:"get",
+            url: 'http://localhost:8000/api/department',
+            method: "get",
         })
-        if(res.status===200){
+        if (res.status === 200) {
             setDepartment(res.data.data.department);
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getDepartment()
-    },[])
-    
+    }, [])
+
     const locationsWork = [
         {
             id: 1,
@@ -174,8 +174,8 @@ const InputDesktop = ({onSearch,onChangeKey, onChangeLocation, onChangeType,onCh
                     <label className="mb-[8px] text-[#161D25]" htmlFor="">
                         Địa điểm làm việc
                     </label>
-                    <select name="" id="" className="outline outline-[1px] outline-slate-300 w-[210px] p-[8px]" 
-                    onChange={onChangeLocation}>
+                    <select name="" id="" className="outline outline-[1px] outline-slate-300 w-[210px] p-[8px]"
+                        onChange={onChangeLocation}>
                         {locationsWork.map((item) => {
                             return (
                                 <option key={item.id} value={item.location} className="text-[#444444] ">
@@ -190,7 +190,7 @@ const InputDesktop = ({onSearch,onChangeKey, onChangeLocation, onChangeType,onCh
                         Ngành nghề
                     </label>
                     <select name="" id="" className="outline outline-[1px] outline-slate-300 w-[210px] p-[8px]"
-                    onChange={onChangeType}>
+                        onChange={onChangeType}>
                         {professions.map((item) => {
                             return (
                                 <option key={item.id} value={item.profession} className="text-[#444444]">
@@ -205,15 +205,19 @@ const InputDesktop = ({onSearch,onChangeKey, onChangeLocation, onChangeType,onCh
                         Phòng ban
                     </label>
                     <select name="" id="" className="outline outline-[1px] outline-slate-300 w-[210px] p-[8px]"
-                    onChange={onChangeDepartment}>
+                        onChange={onChangeDepartment}>
                         <option value="Phòng ban">Phòng ban</option>
-                        {department.map((item) => {
-                            return (
-                                <option key={item.id} value={item.name} className="text-[#444444]">
-                                    {item.name}
-                                </option>
-                            );
-                        })}
+                        {department && (
+                            <>
+                                {department.map((item) => {
+                                    return (
+                                        <option key={item.id} value={item.name} className="text-[#444444]">
+                                            {item.name}
+                                        </option>
+                                    );
+                                })}
+                            </>
+                        )}
                     </select>
                 </div>
                 <div className="flex flex-col">
@@ -221,7 +225,7 @@ const InputDesktop = ({onSearch,onChangeKey, onChangeLocation, onChangeType,onCh
                         Chức vụ
                     </label>
                     <select name="" id="" className="outline outline-[1px] outline-slate-300 w-[210px] p-[8px]"
-                    onChange={onChangeState}>
+                        onChange={onChangeState}>
                         {positions.map((item) => {
                             return (
                                 <option key={item.id} value={item.position} className="text-[#444444]">

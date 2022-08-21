@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Carousel } from "antd";
 import styled from "styled-components";
 import { MainContext } from "../../context/MainContext";
@@ -21,15 +21,16 @@ const CarouselWrapper = styled(Carousel)`
     background: #fc8080;
   }
 `;
-export default function FreshService() {
+export default function ServiceAll() {
   const { setMetadata } = useContext(MainContext);
     const [quotes,setQuotes] = useState([])
   const [services,setServices] = useState({})
   const [features,setFeatures] = useState([])
   const [participants,setParticipants] = useState([])
+  const params = useParams()
    
     const [id,SetId]=useState("")
-   useEffect(() => {
+  /*  useEffect(() => {
     setMetadata((prev) => {
       return {
         ...prev,
@@ -37,10 +38,11 @@ export default function FreshService() {
       };
     });
     
-  }, []);
+  }, []); */
+  console.log(params)
   useEffect(()=>{
      try{
-       const getId = async()=>{
+     /*   const getId = async()=>{
           const res = await axios.get(`${END_POINT}/service`)
           console.log(res)
           const {data} =res.data
@@ -51,19 +53,26 @@ export default function FreshService() {
             }
           })
         }
-        getId()
-        if(id){
+        getId() */
+        console.log(params.id)
+        if(params.id){
 
           const getservice = async()=>{
-             const res = await axios.get(`${END_POINT}/service/${id}`)
+             const res = await axios.get(`${END_POINT}/service/${params.id}`)
              console.log(res)
              const {data} =res.data
              console.log(data)
              setServices(data)
+             setMetadata((prev) => {
+                return {
+                    ...prev,
+                    title: `${data.sub_detail} | TKTL`,
+                };
+                });
           }
           getservice()
           const getquote = async()=>{
-             const res = await axios.get(`${END_POINT}/quote/service/${id}`)
+             const res = await axios.get(`${END_POINT}/quote/service/${params.id}`)
         
              const {data} =res.data
              console.log(data)
@@ -71,7 +80,7 @@ export default function FreshService() {
           }
           getquote()
           const getfeature = async()=>{
-             const res = await axios.get(`${END_POINT}/feature/service/${id}`)
+             const res = await axios.get(`${END_POINT}/feature/service/${params.id}`)
          
              const {data} =res.data
              console.log(data.feature)
@@ -79,7 +88,7 @@ export default function FreshService() {
           }
           getfeature()
           const getparticipant = async()=>{ 
-             const res = await axios.get(`${END_POINT}/participant/service/${id}`)
+             const res = await axios.get(`${END_POINT}/participant/service/${params.id}`)
       
              const {data} =res.data
              console.log(data)
@@ -91,7 +100,7 @@ export default function FreshService() {
      catch(err){
       console.log(err)
      }
-  },[id])
+  },[params])
   return (
     <section id="layout-content">
       <div className="h-full lg:h-[610px] w-full relative pt-12">
@@ -155,13 +164,13 @@ export default function FreshService() {
               )
           )
         }   
-         <div>
+         {/* <div>
               <img
                 className="w-auto h-auto object-cover hidden lg:block"
                 src={`${END_POINT}/public/${services?.logo}`}
                 alt=""
               />
-            </div>
+            </div> */}
           </div>
           <img
             src="https://jtexpress.vn/themes/jtexpress/assets/images/car-service-detail.png"

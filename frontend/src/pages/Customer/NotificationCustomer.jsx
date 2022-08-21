@@ -5,10 +5,9 @@ import { MainContext } from "../../context/MainContext";
 import axios from "axios";
 import { END_POINT } from "../../utils/constant";
 import { message } from 'antd';
-
 function NotificationCustomer() {
   const [open, setOpen] = useState(false);
-  const {accessToken} = useContext(MainContext)
+  const {accessToken, refreshNoti} = useContext(MainContext)
     const [notifycations, setNotifycations] = useState([]);
   const handleOpen = () => {
     setOpen(!open);
@@ -30,7 +29,7 @@ function NotificationCustomer() {
   };
   useEffect(() => {
     getNoti();
-  }, []);
+  }, [refreshNoti]);
 
   return (
     <div className="">

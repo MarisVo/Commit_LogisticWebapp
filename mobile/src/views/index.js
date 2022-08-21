@@ -1,7 +1,6 @@
 import React from 'react';
 import {Text, View, SafeAreaView, Image} from 'react-native';
 import Home from './home';
-import Login from './login';
 import Setting from './setting';
 import Tracking from './settingPage/Tracking';
 import {NavigationContainer} from '@react-navigation/native';
@@ -9,20 +8,27 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Products from './product';
 import Profile from './profile';
-
+import Warehouses from "./settingPage/Warehouses"
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Register from './register';
+import Login from './login';
+
+import ForgetPassword from './forgetPassword';
+import CreateOrder from './createOrder';
+import WatchListOrder from './watchListOrder';
+import Statistic from './statistic';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const MyTabs = () => {
   return (
-    <Tab.Navigator screenOptions={{headerShown: false}}>
+    <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen
         name="Home"
         component={Home}
         options={{
-          tabBarLabel: 'Home',
-          tabBarIcon: ({color, size}) => (
+          tabBarLabel: "Home",
+          tabBarIcon: ({ color, size }) => (
             // <Image source={require("../images/message.jpg") }  style={{height:35,width:35}} resizeMode="stretch" />
             <Icon name="home" color={color} size={size} />
           ),
@@ -32,8 +38,8 @@ const MyTabs = () => {
         name="Profile"
         component={Profile}
         options={{
-          tabBarLabel: 'Profile',
-          tabBarIcon: ({color, size}) => (
+          tabBarLabel: "Profile",
+          tabBarIcon: ({ color, size }) => (
             // <Image source={require("../images/message.jpg") }  style={{height:35,width:35}} resizeMode="stretch" />
             <Icon name="user" color={color} size={size} />
           ),
@@ -44,8 +50,28 @@ const MyTabs = () => {
         name="Setting"
         component={Setting}
         options={{
-          tabBarLabel: 'Setting',
-          tabBarIcon: ({color, size}) => (
+          tabBarLabel: "Setting",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="gear" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Statistic"
+        component={Statistic}
+        options={{
+          tabBarLabel: "Statistic",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="gear" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="WatchListOrder"
+        component={WatchListOrder}
+        options={{
+          tabBarLabel: "WatchListOrder",
+          tabBarIcon: ({ color, size }) => (
             <Icon name="gear" color={color} size={size} />
           ),
         }}
@@ -62,7 +88,12 @@ const RootComponent = () => {
         screenOptions={{headerShown: false}}>
         <Stack.Screen name="HomeTabs" component={MyTabs} />
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
+        {/* <Stack.Screen name="CreateOrder" component={CreateOrder} /> */}
+      {/*   <Stack.Screen name="Register" component={Register} /> */}
         <Stack.Screen name="Tracking" component={Tracking} />
+        <Stack.Screen name="Warehouses" component={Warehouses} />
       </Stack.Navigator>
     </NavigationContainer>
   );

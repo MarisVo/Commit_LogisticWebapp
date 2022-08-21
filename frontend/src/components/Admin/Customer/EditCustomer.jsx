@@ -1,9 +1,9 @@
-import { useState,useRef } from 'react'
-import { Form, Input, DatePicker, Button } from 'antd'
+import { useState, useRef } from 'react'
+import { Form, Input, DatePicker, Button, InputNumber } from 'antd'
 
 const { Item } = Form
-function EditCustomer({ isVisible, onClose, onOk, loading, disable, dataEdit}) {
-    const form =useRef();
+function EditCustomer({ isVisible, onClose, onOk, loading, disable, dataEdit }) {
+    const form = useRef();
 
     return (
         <>
@@ -23,7 +23,7 @@ function EditCustomer({ isVisible, onClose, onOk, loading, disable, dataEdit}) {
                             </Button>
                         </div>
                         <Form
-                        ref={form}
+                            ref={form}
                             labelCol={{
                                 span: 6,
                             }}
@@ -33,16 +33,49 @@ function EditCustomer({ isVisible, onClose, onOk, loading, disable, dataEdit}) {
                             layout="horizontal"
                         >
                             <Item label="Tên khách hàng">
-                                <Input defaultValue = {dataEdit.name} />
+                                <Input defaultValue={dataEdit.name} />
                             </Item>
-                            <Item label="Ngày đăng ký">
-                                <DatePicker/>
+                            {/* <Item label="Cấp">
+                                <Input defaultValue={dataEdit.address} />
+                            </Item> */}
+                            <Item label="Mô tả">
+                                <Input defaultValue={dataEdit.description} />
                             </Item>
-                            <Item label="Cấp">
-                                <Input defaultValue={dataEdit.position}/>
+                            <Item label="Địa chỉ">
+                                <Input defaultValue={dataEdit.address} />
+                            </Item>
+                            <Item label="Mã doanh nghiệp">
+                                <Input defaultValue={dataEdit.companyTaxcode_business} placeholder="Dành cho doanh nghiệp" />
                             </Item>
                             <Item label="Loại khách hàng">
-                                <Input defaultValue={dataEdit.type}/>
+                                <select defaultValue={dataEdit.customer_type}>
+                                    {/* <option value={dataEdit.customer_type}>{dataEdit.customer_type}</option> */}
+                                    <option value="intermediary">Trung gian</option>
+                                    <option value="business">Doanh nghiệp</option>
+                                    <option value="passers">Vãng lai</option>
+                                </select>
+                            </Item>
+                            <Item label="Doanh nghiệp">
+                                <select defaultValue={dataEdit.accepted_business}>
+                                    {/* <option value={dataEdit.accepted_business}>{dataEdit.accepted_business}</option> */}
+                                    <option value="true">Có</option>
+                                    <option value="false">Không</option>
+                                </select>
+                            </Item>
+
+                            <Item label="Xếp hạng">
+                                <select defaultValue={dataEdit.rank_passers.level}>
+                                    {/* <option value={dataEdit.rank_passers.level}>{dataEdit.rank_passers.level}</option> */}
+                                    <option value="titan">Titan</option>
+                                    <option value="gold">Gold</option>
+                                    <option value="silver">Silver</option>
+                                    <option value="bronze">Bronze</option>
+                                    <option value="unrank">Unrank</option>
+                                </select>
+                            </Item>
+
+                            <Item label="Điểm khách hàng">
+                                <InputNumber value={dataEdit.rank_passers.point}/>
                             </Item>
                             <div className='flex justify-end mt-2 text-sm gap-x-6'>
                                 <Button

@@ -8,6 +8,7 @@ import { useContext } from "react";
 import { MainContext } from "../context/MainContext";
 import Notification from './Notification';
 import axios from "axios";
+import { END_POINT } from "../utils/constant";
 
 
 
@@ -34,44 +35,53 @@ const Header = () => {
       getItem(<Link to="tra-cuu/bang-gia">Bảng giá</Link>, "7"),
       getItem(<Link to="tra-cuu/gang-cam-gui">Hàng cấm gửi</Link>, "8"),
     ]),
-    getItem(<Link to="dich-vu">Dịch vụ</Link>, "sub4", [
-      getItem(
-        <Link to="chuyen-phat-tieu-chuan" className="flex flex-col leading-5">
-          <span>Dịch vụ chuyển phát tiêu chuẩn</span>
-          <i className=" text-[#f0b90c] font-bold">J&T Epress</i>
-        </Link>,
-        "9"
-      ),
-      getItem(
-        <Link to="chuyen-phat-nhanh" className="flex flex-col leading-5">
-          <span>Dịch vụ chuyển phát nhanh</span>
-          <i className=" text-[#f0b90c] font-bold">J&T Fast</i>
-        </Link>,
-        "10"
-      ),
-      getItem(
-        <Link to="sieu-dich-vu-chuyen-phat" className="flex flex-col leading-5">
-          <span>Dịch vụ Siêu giao hàng</span>
-          <i className=" text-[#f0b90c] font-bold">J&T Super</i>
-        </Link>,
-        "11"
-      ),
-      getItem(
-        <Link to="chuyen-phat-do-tuoi-song" className="flex flex-col leading-5">
-          <span>Dịch vụ Tươi sống</span>
-          <i className=" text-[#f0b90c] font-bold">J&T Fresh</i>
-        </Link>,
-        "12"
-      ),
-    ]),
+    getItem(<Link to="dich-vu">Dịch vụ</Link>, "sub4",
+    services.map((service,key)=> getItem(
+          <Link to={`dich-vu/${service._id}`} className="flex flex-col leading-5">
+            <span>{service.name}</span>
+            <i className=" text-[#f0b90c] font-bold">{service.sub_detail}</i>
+          </Link>,
+          key+9
+        ))
+    //  [
+    //   getItem(
+    //     <Link to="chuyen-phat-tieu-chuan" className="flex flex-col leading-5">
+    //       <span>Dịch vụ chuyển phát tiêu chuẩn</span>
+    //       <i className=" text-[#f0b90c] font-bold">TKT Epress</i>
+    //     </Link>,
+    //     "9"
+    //   ),
+    //   getItem(
+    //     <Link to="chuyen-phat-nhanh" className="flex flex-col leading-5">
+    //       <span>Dịch vụ chuyển phát nhanh</span>
+    //       <i className=" text-[#f0b90c] font-bold">TKT Fast</i>
+    //     </Link>,
+    //     "10"
+    //   ),
+    //   getItem(
+    //     <Link to="sieu-dich-vu-chuyen-phat" className="flex flex-col leading-5">
+    //       <span>Dịch vụ Siêu giao hàng</span>
+    //       <i className=" text-[#f0b90c] font-bold">TKT Super</i>
+    //     </Link>,
+    //     "11"
+    //   ),
+    //   getItem(
+    //     <Link to="chuyen-phat-do-tuoi-song" className="flex flex-col leading-5">
+    //       <span>Dịch vụ Tươi sống</span>
+    //       <i className=" text-[#f0b90c] font-bold">TKT Fresh</i>
+    //     </Link>,
+    //     "12"
+    //   ),
+    // ]
+    ),
     getItem(<Link to="tuyen-dung">Tuển dụng </Link>, "sub5", [
-      getItem(<Link to="tuyen-dung">Cơ hội nghề nghiệp</Link>, "13"),
-      getItem(<Link to="cuoc-song">Cuộc sống J&T Epress</Link>, "14"),
+      getItem(<Link to="tuyen-dung">Cơ hội nghề nghiệp</Link>, "20"),
+      getItem(<Link to="cuoc-song">Cuộc sống TKT Epress</Link>, "21"),
     ]), 
 
     getItem(<Link to="tu-van/lien-he">Tư vấn</Link>, "sub6", [
-      getItem(<Link to="tu-van/lien-he">Liên hệ</Link>, "15"),
-      getItem(<Link to="tu-van/dang-ki-tu-van">Đăng kí tư vấn</Link>, "16"),
+      getItem(<Link to="tu-van/lien-he">Liên hệ</Link>, "22"),
+      getItem(<Link to="tu-van/dang-ki-tu-van">Đăng kí tư vấn</Link>, "23"),
     ]), 
   ];
   const rootSubmenuKeys = ["sub1", "sub2", "sub3", "sub4", "sub5", "sub6"];
@@ -82,7 +92,17 @@ const Header = () => {
   //   setDefaultService(dichVu);
   //   navigate(`/track?type=${dichVu}`);
   // }
-
+   useEffect(() => {
+       const getService = async()=>{
+          const res = await axios.get(`${END_POINT}/service`)
+          console.log(res)
+          const {data} =res.data
+          console.log(data.service)
+          setServices(data.service)
+        }
+      getService()
+    
+  }, []);
 
 
   // xử lý thêm màu menu
@@ -109,21 +129,7 @@ const Header = () => {
   const Logout = () => {
     logoutHandle();
   };
- /*  useEffect(()=>{
-    const getservices = async()=>{
-      const res = await axios.get("http://localhost:8000/api/service")
-      console.log(res)
-      const {data} =res.data
-      data.service.map(service=>{
-        if(service.sub_detail==="J&T Express"){
 
-          console.log(service) 
-        }
-      })
-      setServices(data.service)
-    }
-    getservices()
-  },[]) */
   return (
     <div className='fixed bg-white inset-x-0 h-[65px] z-20'>
       <div className=" lg:static flex justify-around items-center h-full px-4 lg:px-0 container mx-auto text-sm ">
@@ -233,12 +239,11 @@ const Header = () => {
               <FaChevronDown className="h-4 w-4 pl-[6px]" />
             </Link>
             <ul className="hidden group-hover:block absolute bg-white rounded-lg z-10 border shadow-lg animate-up">
-             {/*  {
+              {
                 services.map(service=>(
-
                   <li>
                     <Link
-                      to="chuyen-phat-tieu-chuan"
+                      to={`dich-vu/${service._id}`}
                       className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100"
                     >
                       <span>{service.name}</span>
@@ -246,14 +251,14 @@ const Header = () => {
                     </Link>
                   </li>
                 ))
-              } */}
-                  <li>
+              }
+                {/*   <li>
                     <Link
                       to="chuyen-phat-tieu-chuan"
                       className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100"
                     >
                       <span>Dich vu chuyển phát tiêu chuẩn</span>
-                      <i className="text-[#f0b90c] font-bold">J&T Express</i>
+                      <i className="text-[#f0b90c] font-bold">TKT Express</i>
                     </Link>
                   </li>
                    <li>
@@ -262,7 +267,7 @@ const Header = () => {
                       className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100"
                     >
                       <span>Dịch vụ chuyển phát nhanh</span>
-                      <i className="text-[#f0b90c] font-bold">J&T Fast</i>
+                      <i className="text-[#f0b90c] font-bold">TKT Fast</i>
                     </Link>
                   </li>
                    <li>
@@ -271,7 +276,7 @@ const Header = () => {
                       className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100"
                     >
                       <span>Dịch vụ siêu giao hàng</span>
-                      <i className="text-[#f0b90c] font-bold">J&T Supper</i>
+                      <i className="text-[#f0b90c] font-bold">TKT Supper</i>
                     </Link>
                   </li>
                    <li>
@@ -280,9 +285,9 @@ const Header = () => {
                       className="flex flex-col px-4 py-2 w-auto rounded-lg hover:bg-yellow-100"
                     >
                       <span>Dịch vụ tươi sống</span>
-                      <i className="text-[#f0b90c] font-bold">J&T Fresh</i>
+                      <i className="text-[#f0b90c] font-bold">TKT Fresh</i>
                     </Link>
-                  </li>
+                  </li> */}
                 
             </ul>
           </div>
@@ -308,7 +313,7 @@ const Header = () => {
                   to="cuoc-song"
                   className="flex px-4 py-2 w-auto rounded-lg hover:bg-yellow-100"
                 >
-                  Cuộc sống J&T Epress
+                  Cuộc sống TKT Epress
                 </Link>
               </li>
             </ul>

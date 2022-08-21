@@ -64,6 +64,7 @@ import {
   AdminBill,
   ChangePassword,
   AdminTurnover,
+  ServiceAll,
 
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -108,6 +109,7 @@ const App = () => {
                 <Route path="cuoc-song" element={<Life />} />
                 {/* ------------------------Dịch vụ---------------------- */}
                 <Route path="dich-vu" element={<Service />} />
+                <Route path="dich-vu/:id" element={<ServiceAll />} />
                 <Route path="chuyen-phat-tieu-chuan" element={<StandardService />} />
                 <Route path="chuyen-phat-nhanh" element={<FastService />} />
                 <Route path="sieu-dich-vu-chuyen-phat" element={<SuperService />} />
@@ -134,7 +136,7 @@ const App = () => {
                 <Route path="tu-van/dang-ki-tu-van" element={<SignUpAdvice />} />
                 <Route path="*" element={<PageNotFound />} />
               </Route>
-
+                {/* -----------------------Nhân viên----------------------- */}
               <Route element={<StaffRoute />}>
                 <Route path="/" element={<DefaultLayout />}>
                   <Route element={<DriverRoute />}>
@@ -156,46 +158,23 @@ const App = () => {
                   <Route path="lien_he" element={<AdminContactUs />}></Route>
                   <Route path="commitment" element={<AdminCommitment />}></Route>
                   <Route path="tin_nhan" element={<AdminContactMessage />}></Route>
-                  <Route path="service" element={<AdminDeliveryService />}></Route>
+                  <Route path="dich-vu" element={<AdminDeliveryService />}></Route>
                   <Route path="partner" element={<AdminPartner />}></Route>
                   <Route path="viec-lam" element={<AdminCareer />}></Route>
                   <Route path="ung-vien" element={<AdminApplicant />}></Route>
                   <Route path="phong-ban" element={<AdminDepartment />}></Route>
-                  <Route path="warehouse" element={<AdminWarehouse />}></Route>
-                  <Route path="car" element={<AdminCar />}></Route>
-                  <Route path="road" element={<AdminRoad />}></Route>
+                  <Route path="kho" element={<AdminWarehouse />}></Route>
+                  <Route path="phuong-tien" element={<AdminCar />}></Route>
+                  <Route path="hanh-trinh" element={<AdminRoad />}></Route>
                   <Route path="nhan_vien" element={<AdminStaff />}></Route>
-                  <Route path="customer" element={<AdminCustomer />}></Route>
+                  <Route path="khach_hang" element={<AdminCustomer />}></Route>
                   <Route path="don_hang" element={<AdminOrder />}></Route>
                   <Route path="hoa_don" element={<AdminBill />}> </Route>
                   <Route path="doanh_so" element={<AdminTurnover />}> </Route>
-                  <Route path="staff_regis" element={<StaffRegister />}></Route>
+                  <Route path="them-nhan-vien" element={<StaffRegister />}></Route>
                   <Route path="phi-bao-tri" element={<AdminMaintenance />}></Route>
                   <Route path="hang_cam_gui" element={<AdminProhibitProduct />}> </Route>
                 </Route>
-              </Route>
-
-              <Route path="admin" element={<AdminPage />}>
-                <Route path="about" element={<AdminAbout />}></Route>
-                <Route path="contact-us" element={<AdminContactUs />}></Route>
-                <Route path="commitment" element={<AdminCommitment />}></Route>
-                <Route path="message" element={<AdminContactMessage />}></Route>
-                <Route path="service" element={<AdminDeliveryService />}></Route>
-                <Route path="partner" element={<AdminPartner />}></Route>
-                <Route path="career" element={<AdminCareer />}></Route>
-                <Route path="applicant" element={<AdminApplicant />}></Route>
-                <Route path="department" element={<AdminDepartment />}></Route>
-                <Route path="warehouse" element={<AdminWarehouse />}></Route>
-                <Route path="car" element={<AdminCar />}></Route>
-                <Route path="road" element={<AdminRoad />}></Route>
-                <Route path="staff" element={<AdminStaff />}></Route>
-                <Route path="customer" element={<AdminCustomer />}></Route>
-                <Route path="order" element={<AdminOrder />}></Route>
-                <Route path="staff_regis" element={<StaffRegister />}></Route>
-                <Route path="maintenance" element={<AdminMaintenance />}> </Route>
-                <Route path="hang_cam_gui" element={<AdminProhibitProduct />}> </Route>
-                <Route path="don_hang" element={<AdminBill />}> </Route>
-                <Route path="doanh_so" element={<AdminTurnover />}> </Route>
               </Route>
             </Routes>
           </div>
