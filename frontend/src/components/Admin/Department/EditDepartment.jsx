@@ -1,16 +1,29 @@
-import { useContext, useState } from "react";
-import { Form, Input, DatePicker, Button } from "antd";
+import { useContext, useState, useEffect } from "react";
+import { Form, Input, Button, Select } from "antd";
 import axios from "axios";
 import { END_POINT } from "../../../utils/constant";
 import { MainContext } from "../../../context/MainContext";
 
+const { Option } = Select;
 const { Item } = Form;
 function EditDepartment({ onClose, data, refetchData }) {
-  const {accessToken} = useContext(MainContext)
+  const { accessToken } = useContext(MainContext);
   const [dataEdit, setDataEdit] = useState(data);
+  const [staffList, setStaffList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
   console.log("data là", dataEdit);
+  console.log(staffList);
+  const getStaffList = async () => {
+    try {
+      const res = await axios.get(`${END_POINT}/admin/staff`, {
+        headers: { authorization: `Bearer ${accessToken}` },
+      });
+      setStaffList(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const acceptEditDepartment = async () => {
     setLoading(true);
     // setIsDisable(true);
@@ -22,10 +35,13 @@ function EditDepartment({ onClose, data, refetchData }) {
       // setIsDisable(false);
       refetchData();
       onClose();
-    } catch(error) {
-      console.log(error)
+    } catch (error) {
+      console.log(error);
     }
   };
+  useEffect(() => {
+    getStaffList();
+  }, []);
   return (
     <>
       <div className="fixed inset-0  bg-slate-600 bg-opacity-50 z-20 flex justify-center items-center">
@@ -54,8 +70,20 @@ function EditDepartment({ onClose, data, refetchData }) {
               span: 14,
             }}
             layout="horizontal"
+            autoComplete="off"
+            initialValues={dataEdit}
+            onFinish={acceptEditDepartment}
           >
-            <Item label="Tên phòng ban">
+            <Item
+              label="Tên phòng ban"
+              name="name"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập tên phòng ban",
+                },
+              ]}
+            >
               <Input
                 value={dataEdit.name}
                 onChange={(e) =>
@@ -66,19 +94,41 @@ function EditDepartment({ onClose, data, refetchData }) {
                 }
               />
             </Item>
-           
-            <Item label="Trưởng ban">
-              <Input
+            <Item
+              name="director"
+              label="Trưởng ban"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng chọn thông tin",
+                },
+              ]}
+            >
+              <Select
                 value={dataEdit.director}
-                onChange={(e) =>
-                  setDataEdit({
-                    ...dataEdit,
-                    director: e.target.value,
-                  })
+                allowClear
+                showSearch
+                onChange={(value) =>
+                  setDataEdit({ ...dataEdit, director: value })
                 }
-              />
+              >
+                {staffList.map((staff) => (
+                  <Option value={staff._id} key={staff._id}>
+                    {staff.name}
+                  </Option>
+                ))}
+              </Select>
             </Item>
-            <Item label="Mô tả">
+            <Item
+              label="Mô tả"
+              name="description"
+              rules={[
+                {
+                  required: true,
+                  message: "Không được bỏ trống",
+                },
+              ]}
+            >
               <Input
                 value={dataEdit.description}
                 onChange={(e) =>
@@ -89,7 +139,16 @@ function EditDepartment({ onClose, data, refetchData }) {
                 }
               />
             </Item>
-            <Item label="Địa điểm làm việc">
+            <Item
+              label="Địa điểm làm việc"
+              name="location"
+              rules={[
+                {
+                  required: true,
+                  message: "Không được bỏ trống",
+                },
+              ]}
+            >
               <Input
                 value={dataEdit.location}
                 onChange={(e) =>
@@ -98,6 +157,30 @@ function EditDepartment({ onClose, data, refetchData }) {
                     location: e.target.value,
                   })
                 }
+              />
+            </Item>
+            <Item
+              label="Số nhân viên"
+              name="scale"
+              rules={[
+                {
+                  required: true,
+                  message: "Không được bỏ trống",
+                },
+                {
+                  pattern: new RegExp(/^[0-9]+$/),
+                  message: "Vui lòng chỉ nhập số",
+                },
+              ]}
+            >
+              <Input
+                value={dataEdit.scale}
+                onChange={(e) => {
+                  setDataEdit({
+                    ...dataEdit,
+                    scale: e.target.value,
+                  });
+                }}
               />
             </Item>
             <div className="flex justify-end mt-2 text-sm gap-x-6">
@@ -116,7 +199,7 @@ function EditDepartment({ onClose, data, refetchData }) {
                 type="primary"
                 size="large"
                 loading={loading}
-                onClick={acceptEditDepartment}
+                htmlType="submit"
                 className="rounded-lg"
               >
                 Xác nhận

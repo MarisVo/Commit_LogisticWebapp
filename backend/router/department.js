@@ -48,11 +48,11 @@ departmentRoute.get("/", async (req, res) => {
           ],
         }
       : {};
-    const length = await Department.count();
     const department = await Department.find(keywordCondition)
       .limit(pageSize)
       .skip(pageSize * page)
       .sort(`${sortBy}`);
+    var length = await Department.find(keywordCondition).count();
     if (department)
       return sendSuccess(res, "Get department information successfully.", {
         length,

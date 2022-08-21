@@ -33,18 +33,6 @@ function EditStaff({ isVisible, onClose, onOk, loading, disable, dataEdit}) {
                             <Item label="Họ tên">
                                 <Input defaultValue = {dataEdit.name} />
                             </Item>
-                            <Item label="Phòng ban">
-                                <Input defaultValue={dataEdit.department} />
-                            </Item>
-                            <Item label="Ngày bắt đầu">
-                                <DatePicker/>
-                            </Item>
-                            <Item label="Địa chỉ">
-                                <Input defaultValue={dataEdit.address}/>
-                            </Item>
-                            <Item label="Vị trí">
-                                <Input defaultValue={dataEdit.position}/>
-                            </Item>
                             <Item label="Công việc">
                                 <Input defaultValue={dataEdit.staff_type}/>
                             </Item>

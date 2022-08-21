@@ -11,8 +11,8 @@ function AddNewCar({ onClose, refetchData }) {
   const [data, setData] = useState({
     plate: "",
     car_type: "",
-    tonnage: "",
     volumn: "",
+    tonnage: "",
   });
   console.log(data);
   const [loading, setLoading] = useState(false);
@@ -98,7 +98,7 @@ function AddNewCar({ onClose, refetchData }) {
                 },
               ]}
             >
-              
+               
               <Select 
                 placeholder="Chọn loại xe"
                 onChange={carType}

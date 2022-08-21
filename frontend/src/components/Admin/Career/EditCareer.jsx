@@ -1,13 +1,13 @@
 import { useState, useContext } from "react";
 import { Form, Input, DatePicker, Button, Select } from "antd";
+import moment from "moment";
 import axios from "axios";
 import { END_POINT } from "../../../utils/constant";
 import { MainContext } from "../../../context/MainContext";
-const {Option} = Select
+const { Option } = Select;
 const { Item } = Form;
 function EditCareer({ onClose, data, refetchData }) {
-  const [dataEdit, setDataEdit] = useState({...data,
-    _id:null});
+  const [dataEdit, setDataEdit] = useState({ ...data, _id: null });
   const [loading, setLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
   console.log("data là", dataEdit);
@@ -55,8 +55,23 @@ function EditCareer({ onClose, data, refetchData }) {
               span: 14,
             }}
             layout="horizontal"
+            autoComplete="off"
+            initialValues={{
+              ...dataEdit,
+              deadline:moment(dataEdit.deadline)
+            }}
+            onFinish={acceptEditCareer}
           >
-            <Item label="Tên công việc">
+            <Item
+              label="Tên công việc"
+              name="name"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập tên công việc",
+                },
+              ]}
+            >
               <Input
                 value={dataEdit.name}
                 onChange={(e) =>
@@ -67,7 +82,16 @@ function EditCareer({ onClose, data, refetchData }) {
                 }
               />
             </Item>
-            <Item label="Vị trí công việc">
+            <Item
+              label="Vị trí công việc"
+              name="type"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập loại công việc",
+                },
+              ]}
+            >
               <Input
                 value={dataEdit.type}
                 onChange={(e) =>
@@ -78,10 +102,18 @@ function EditCareer({ onClose, data, refetchData }) {
                 }
               />
             </Item>
-            <Item label="Hạn nộp hồ sơ">
+            <Item
+              label="Hạn nộp hồ sơ"
+              name="deadline"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng chọn hạn nộp",
+                },
+              ]}
+            >
               <DatePicker
-                // defaultalue={dataEdit.deadline}
-                onChange={(e, dateString) =>
+                onChange={(e, dateString) => 
                   setDataEdit({
                     ...dataEdit,
                     deadline: dateString,
@@ -89,7 +121,16 @@ function EditCareer({ onClose, data, refetchData }) {
                 }
               />
             </Item>
-            <Item label="Địa điểm làm việc">
+            <Item
+              label="Địa điểm làm việc"
+              name="location"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập nơi làm việc",
+                },
+              ]}
+            >
               <Input
                 value={dataEdit.location}
                 onChange={(e) =>
@@ -110,8 +151,12 @@ function EditCareer({ onClose, data, refetchData }) {
                   })
                 }
               >
-                <Option value="Đang mở"><div className="text-green-600 font-bold">Mở</div></Option>
-                <Option value="Đã đóng"><span className="text-red-600 font-bold">Đóng</span></Option>
+                <Option value="Đang mở">
+                  <div className="text-green-600 font-bold">Mở</div>
+                </Option>
+                <Option value="Đã đóng">
+                  <span className="text-red-600 font-bold">Đóng</span>
+                </Option>
               </Select>
             </Item>
             <div className="flex justify-end mt-2 text-sm gap-x-6">
@@ -130,7 +175,7 @@ function EditCareer({ onClose, data, refetchData }) {
                 type="primary"
                 size="large"
                 loading={loading}
-                onClick={acceptEditCareer}
+                htmlType="submit"
                 className="rounded-lg"
               >
                 Xác nhận
