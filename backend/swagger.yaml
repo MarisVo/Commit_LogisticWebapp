@@ -5,7 +5,7 @@ info:
   title: "Logistic Web Service"
   contact:
     email: "d.bed11@gptgdt.net"
-host: "14.186.134.214:8000"
+host: "localhost:8000"
 basePath: "/api"
 schemes:
 - "http"
