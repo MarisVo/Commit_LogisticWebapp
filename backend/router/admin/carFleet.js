@@ -12,11 +12,11 @@ import Bill from "../../model/Bill.js";
 const carFleetAdminRoute = express.Router();
 
 /**
- * @route POST /api/admin/carFleet/:carId
+ * @route POST /api/admin/carFleet/
  * @description register new carFleet
  * @access private
  */
-carFleetAdminRoute.post("/:carId", async (req, res) => {
+carFleetAdminRoute.post("/", async (req, res) => {
   const errors = carFleetValidate(req.body);
   if (errors) return sendError(res, errors);
 
@@ -28,20 +28,6 @@ carFleetAdminRoute.post("/:carId", async (req, res) => {
       director,
     });
 
-    const car = await Car.exists({
-      _id: req.params.carId,
-    });
-    if (car) {
-      await Car.updateOne(
-        {
-          _id: car._id,
-        },
-        {
-          $push: { car_fleet: carFleet },
-        }
-      );
-      return sendSuccess(res, "Added carFleet in car file successfully");
-    }
   } catch (error) {
     console.log(error);
     return sendServerError(res);
@@ -103,16 +89,12 @@ carFleetAdminRoute.delete("/:id", async (req, res) => {
  * @access public
  */
 
-carFleetAdminRoute.get("/car/:carFleetId", async (req, res) => {
-  const { plate } = req.query;
-  const { carFleetId } = req.params;
+carFleetAdminRoute.get("/car/:plate", async (req, res) => {
+  const { plate } = req.params;
   try {
-    const carFleet = await CarFleet.findById(carFleetId);
-    if (!carFleet) return sendError(res, "carFleet does not exist.");
     const car = await Car.find({ plate: plate });
     if (!car) return sendError(res, "car does not exist.");
     const bill = await Bill.find({ car: car  });
-    console.log(bill)
     if (!bill) return sendError(res, "Bill does not exist.");
     var turnover = 0;
     if (bill[0].product_shipments.length) {

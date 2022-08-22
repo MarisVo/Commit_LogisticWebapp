@@ -5644,7 +5644,7 @@ paths:
                 type: string
                 required: true
               director:
-                type: object
+                type: string
       responses:
         200:
           description: Create carFleet successfully.
@@ -5652,7 +5652,7 @@ paths:
             type: object
             example: {
             "name": "string",
-            "director": "object",
+            "director": "string",
             }
         400:
           description: Create carFleet failed.  
@@ -5683,7 +5683,7 @@ paths:
                 type: string
                 required: true
               director:
-                type: object
+                type: string
       responses:
         200:
           description: update carFleet successfully.
@@ -5691,7 +5691,7 @@ paths:
             type: object
             example: {
             "name": "string",
-            "director": "object",
+            "director": "string",
             }
         400:
           description: carFleet cannot be found. 
@@ -5725,7 +5725,7 @@ paths:
       security:
         - bearerAuth: [] 
 
-  /api/admin/carFleet/car/{carFleetId}:
+  /api/admin/carFleet/car/{plate}:
     get:
       tags:
         - "carFleet"
@@ -5734,10 +5734,10 @@ paths:
         - application/json
       parameters:
         - in: path
-          name: carFleetId
+          name: plate
           type: string
           required: true
-          description: Id of a carFleet
+          description: Plate of a car
       responses:
         200:
           description: get carFleet information successfully.
@@ -5745,10 +5745,12 @@ paths:
             type: object
             example: {
             "turnover": "number",
-            "director": "object",
+            "director": "string",
             }
         400:
           description: car turnover information is not found.
+      security:
+        - bearerAuth: [] 
   /api/admin/carFleet/{carFleetId}:
     get:
       tags:
@@ -5769,47 +5771,12 @@ paths:
             type: object
             example: {
             "turnover": "number",
-            "director": "object",
+            "director": "string",
             }
         400:
-          description: cars turnover information is not found.
-  /admin/carFleet/car/{id}:
-    put:
-      tags:
-        - "carFleet"
-      summary: update carFleet
-      produces:
-        - application/json        
-      consumes:
-        - application/json
-      parameters:
-        - in: path
-          name: id
-          type: string
-          required: true
-          description: Id of a carFleet
-        - in: query
-          name: plate
-          type: string
-          required: true
-          description: Plate of a car
-        - in: body
-          name: turnover
-          description: an updated carFleet turnover.
-          type: number
-      responses:
-        200:
-          description: update carFleet successfully.
-          schema:
-            type: object
-            example: {
-            "car": "object",
-            "turnover": "number",
-            }
-        400:
-          description: carFleet cannot be found. 
+          description: cars turnover information is not found.     
       security:
-        - bearerAuth: []         
+        - bearerAuth: []    
 
 
 
