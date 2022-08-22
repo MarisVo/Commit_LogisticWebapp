@@ -39,7 +39,7 @@ roadAdminRoute.get("/", async (req, res) => {
             query.distance = distance;
         }
         
-        const length = await Road.count()
+        const length = await Road.find({ $and: [query, keywordList] }).count()
         const road = await Road.find({ $and: [query, keywordList] })
             .skip(pageSize * page)
             .limit(pageSize)

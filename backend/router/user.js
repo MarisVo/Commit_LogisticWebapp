@@ -27,7 +27,7 @@ userRoute.get('/',
                 ]
             } : {}
 
-            const length = await User.count()
+            const length = await User.find({listKeyword}, {password: false}).count()
             const listUser = await User.find({listKeyword}, {password: false})
             .limit(pageSize)
             .skip(pageSize*page)
