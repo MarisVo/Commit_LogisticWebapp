@@ -471,8 +471,6 @@ export default function AdminBill() {
         onOk={acceptDelete}
       />
 
-
-
     </div>
   )
 }
