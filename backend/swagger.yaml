@@ -5724,34 +5724,6 @@ paths:
           description: Delete carFleet failed.      
       security:
         - bearerAuth: [] 
-
-  /api/admin/carFleet/car/{plate}:
-    get:
-      tags:
-        - "carFleet"
-      summary: get a single car turnover information
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          name: plate
-          type: string
-          required: true
-          description: Plate of a car
-      responses:
-        200:
-          description: get carFleet information successfully.
-          schema:
-            type: object
-            example: {
-            "turnover": "number",
-            "director": "string",
-            }
-        400:
-          description: car turnover information is not found.
-      security:
-        - bearerAuth: [] 
-  /api/admin/carFleet/{carFleetId}:
     get:
       tags:
         - "carFleet"
@@ -5776,7 +5748,33 @@ paths:
         400:
           description: cars turnover information is not found.     
       security:
-        - bearerAuth: []    
+        - bearerAuth: []  
+  /admin/carFleet/car/{plate}:
+    get:
+      tags:
+        - "carFleet"
+      summary: get a single car turnover information
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: plate
+          type: string
+          required: true
+          description: Plate of a car
+      responses:
+        200:
+          description: get carFleet information successfully.
+          schema:
+            type: object
+            example: {
+            "turnover": "number",
+            "director": "string",
+            }
+        400:
+          description: car turnover information is not found.
+      security:
+        - bearerAuth: []   
 
 
 
