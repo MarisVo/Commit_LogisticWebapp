@@ -55,6 +55,7 @@ function EditCareer({ onClose, data, refetchData }) {
               span: 14,
             }}
             layout="horizontal"
+            autoComplete="off"
             initialValues={{
               ...dataEdit,
               deadline:moment(dataEdit.deadline)

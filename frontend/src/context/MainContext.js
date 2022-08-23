@@ -8,6 +8,7 @@ const MainProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState(null);
   const [refreshToken, setRefreshToken] = useState(null);
   const [user, setUser] = useState(null);
+  const [refreshNoti,setRefreshNoti] = useState(1)
   const [dataWarehouse, setDataWarehouse] = useState({
     province: null,
     district: null
@@ -80,6 +81,12 @@ const MainProvider = ({ children }) => {
           headers: { authorization: `Bearer ${accessToken}` },
         }
       );
+      console.log("Log out successfully.")
+    } 
+    catch (err) {
+      console.log(err);
+    }
+    finally {
       localStorage.removeItem(process.env.REACT_APP_LOCALSTORAGE_TOKEN_NAME);
       localStorage.removeItem(process.env.REACT_APP_LOCALSTORAGE_REFRESH_NAME);
       localStorage.removeItem("login");
@@ -88,8 +95,6 @@ const MainProvider = ({ children }) => {
       setUser(null);
       alert("Đăng xuất thành công");
       window.location.href = "/";
-    } catch (err) {
-      console.log(err);
     }
   };
   /* useEffect(()=>{
@@ -109,6 +114,8 @@ const MainProvider = ({ children }) => {
         setDataWarehouse,
         setOrder,
         order,
+        refreshNoti,
+        setRefreshNoti
       }}
     >
       {children}

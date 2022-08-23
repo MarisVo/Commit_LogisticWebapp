@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect, useContext } from 'react'
 import 'antd/dist/antd.css';
 import { Button, Input, Table, Space, DatePicker, Form, InputNumber, Select } from "antd";
 import { SearchOutlined } from '@ant-design/icons';
@@ -7,11 +7,14 @@ import AddNewStaff from '../../components/Admin/Staff/AddNewStaff';
 import ConfirmModal from '../../components/ConfirmModal';
 import EditStaff from '../../components/Admin/Staff/EditStaff';
 import { AiFillEdit, AiOutlineDelete } from 'react-icons/ai'
+import { END_POINT } from '../../utils/constant';
 import { TOKEN } from "./adminToken";
+import axios from 'axios';
+import { MainContext } from '../../context/MainContext';
 
 export default function AdminStaff() {
   const [idItem,setId] = useState()
-
+  const {accessToken} = useContext(MainContext)
   const [dataEdit, setDataEdit] = useState()
   const [openEdit, setOpenEdit] = useState(false)
 
@@ -20,36 +23,41 @@ export default function AdminStaff() {
   const [loading, setLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(false)
   const [open, setOpen] = useState(false);
-  const defaultData = [
-    {
-      id: 1,
-      name: "Le Van C",
-      department: "Vận chuyển",
-      position: "nhân viên",
-      staff_type: "Tài xế",
-      timeStart: "5-5-1998",
-      address: "HCM-Q7"
-    },
-    {
-      id: 2,
-      name: "Tran Van B",
-      department: "IT",
-      position: "nhân viên",
-      staff_type: "Admin",
-      timeStart: "2-3-1996",
-      address: "HCM-Q2"
-    },
-    {
-      id: 3,
-      name: "Nguyen Van A",
-      department: "Nhân sự",
-      position: "nhân viên",
-      staff_type: "Nhân viên",
-      timeStart: "2-5-2000",
-      address: "HCM-Q1"
-    },
-  ]
-  const [data, setData] = useState(defaultData)
+
+  const [data, setData] = useState([])
+
+  const getDataFromApi = async ()=>{
+    try{
+      const res = await axios.get(`${END_POINT}/admin/staff`)
+      setData(res.data.data)
+      console.log(res.data.data);
+    }
+
+    catch(e){
+      console.log(e);
+    }
+  }
+
+  const editStaff = async (data,id)=>{
+    const res = await axios({
+      method:"put",
+      data:data,
+      url:`${END_POINT}/admin/staff/${id}`,
+      headers: { authorization: `Bearer ${accessToken}` },
+    })
+  }
+
+  const delStaff = async (id)=>{
+    const res = await axios({
+      method:"delete",
+      url:`${END_POINT}/admin/staff/${id}`,
+      headers: { authorization: `Bearer ${accessToken}` },
+    })
+  }
+
+  useEffect(()=>{
+    getDataFromApi()
+  },[])
 
   // ____
   const [searchText, setSearchText] = useState('');
@@ -68,24 +76,17 @@ export default function AdminStaff() {
   };
 
   const handledit = (e,id) => {
-    const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('td');
-    const oldData = {
-      name: tableData[0].innerHTML,
-      department: tableData[1].innerHTML,
-      position: tableData[2].innerHTML,
-      staff_type: tableData[3].innerHTML,
-      timeStart: tableData[2].innerHTML,
-      address: tableData[4].innerHTML
-    }
-    setDataEdit(oldData);
+    const oldData = data.filter(e=>e._id===id);
+    setDataEdit(oldData[0]);
     setId(id)
     setOpenEdit(true);
+    // console.log(dataEdit);
   }
 
   const handleDel = (e,id) => {
     setId(id)
     setOpenDel(true)
-    console.log(idItem);
+    // console.log(idItem);
   }
 
 
@@ -190,129 +191,48 @@ export default function AdminStaff() {
       ...getColumnSearchProps('name'),
     },
     {
-      title: "department",
+      title: "Mã phòng ban",
       dataIndex: "department",
       key: "department",
       width: "14%",
-      filters: [
-        {
-          text: <span>Vận chuyểm</span>,
-          value: 'Vận chuyển',
-        },
-        {
-          text: <span>IT</span>,
-          value: 'IT',
-        },
-        {
-          text: <span>Nhân sự</span>,
-          value: 'Nhân sự',
-        },
-      ],
-      onFilter: (value, record) => record.department.startsWith(value),
-      filterSearch: true,
     },
 
-    {
-      title: "Vị trí",
-      dataIndex: "position",
-      key: "position",
-      width: "14%",
-      filters: [
-        {
-          text: <span>Nhân viên </span>,
-          value: 'nhân viên',
-        },
-        {
-          text: <span>Leader</span>,
-          value: 'leader',
-        },
-        {
-          text: <span>Phó giám đốc</span>,
-          value: 'phó giám đốc',
-        },
-        {
-          text: <span>Giám đốc</span>,
-          value: 'giám đốc',
-        },
-      ],
-      onFilter: (value, record) => record.position.startsWith(value),
-      filterSearch: true,
-    },
     {
       title: "Công việc",
       dataIndex: "staff_type",
       key: "staff_type",
       width: "14%",
-      filters: [
-        {
-          text: <span>Admin</span>,
-          value: 'Admin',
-        },
-        {
-          text: <span>Tài xế</span>,
-          value: 'Tài xế',
-        },
-        {
-          text: <span>Nhân viên</span>,
-          value: 'Nhân viên',
-        },
-        {
-          text: <span>Shipper</span>,
-          value: 'Shipper',
-        },
-        {
-          text: <span>Thủ kho</span>,
-          value: 'Thủ kho',
-        },
-      ],
-      onFilter: (value, record) => record.staff_type.startsWith(value),
-      filterSearch: true,
     },
+
     {
-      title: "Địa chỉ",
-      dataIndex: "address",
-      key: "address",
+      title: "Đội xe",
+      dataIndex: "car_fleet",
+      key: "car_fleet",
       width: "14%",
-      filters: [
-        {
-          text: <span>Hồ Chí Minh</span>,
-          value: 'HCM',
-        },
-        {
-          text: <span>Hà Nội</span>,
-          value: 'Hà Nội',
-        },
-        {
-          text: <span>Bình Dương</span>,
-          value: 'Bình Dương',
-        },
-      ],
-      onFilter: (value, record) => record.address.startsWith(value),
-      filterSearch: true,
     },
     {
       title: "Ngày bắt đầu làm việc",
-      dataIndex: "timeStart",
-      key: "timeStart",
+      dataIndex: "createdAt",
+      key: "createdAt",
       width: "14%",
-      onFilter: (value, record) => record.timeStart.indexOf(value) === 0,
-      sorter: (a, b) => new Date(a.timeStart) - new Date(b.timeStart),
+      onFilter: (value, record) => record.createdAt.indexOf(value) === 0,
+      sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
       sortDirections: ['descend', 'ascend'],
     },
     {
       title: '',
-      dataIndex: "id",
+      dataIndex: "_id",
       // width: "14%",
       render: (e,data) => (
         <div className="flex flex-row justify-around">
-          <button className="flex flex-row " role="button" onClick={(e)=>handledit(e,data.id)}>
+          <button className="flex flex-row " role="button" onClick={(e)=>handledit(e,data._id)}>
             <AiFillEdit style={{
               marginTop: "0.2rem",
               marginRight: "0.5rem"
             }} />
             Sửa
           </button>
-          <button className="flex flex-row " role="button" onClick={(e)=>handleDel(e,data.id)}>
+          <button className="flex flex-row " role="button" onClick={(e)=>handleDel(e,data._id)}>
             <AiOutlineDelete style={{
               marginTop: "0.2rem",
               marginRight: "0.5rem"
@@ -323,7 +243,17 @@ export default function AdminStaff() {
       ),
     },
   ];
+  const searchDataFromApi = async (key)=>{
+    try{
+      const res = await axios.get(`${END_POINT}/admin/staff?keyword=${key}`)
+      setData(res.data.data)
+      console.log(res.data.data);
+    }
 
+    catch(e){
+      console.log(e);
+    }
+  }
   const { Search } = Input;
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
@@ -331,14 +261,9 @@ export default function AdminStaff() {
 
   const onSearch = (value) => {
     console.log(value)
-    setData(defaultData.filter(e=>{
-      return e.name.toLowerCase().includes(value.toLowerCase())||e.staff_type.toLowerCase().includes(value.toLowerCase())||
-      e.position.toLowerCase().includes(value.toLowerCase())||e.department.toLowerCase().includes(value.toLowerCase())
-      ||e.address.toLowerCase().includes(value.toLowerCase())
-    }))
-    console.log(data);
+    searchDataFromApi(value)
     if(value===""||value===undefined){
-      setData(defaultData)
+     getDataFromApi();
     }
   };
 
@@ -354,11 +279,7 @@ export default function AdminStaff() {
         const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('input');
         const newData = {
           name: tableData[0].value,
-          department: tableData[1].value,
-          position: tableData[4].value,
-          staff_type: tableData[5].value,
-          timeStart: tableData[2].value,
-          address: tableData[3].value
+          staff_type: tableData[1].value,
         }
 
       }, 2000)
@@ -371,21 +292,20 @@ export default function AdminStaff() {
   const acceptEditNewStaff = async (e) => {
     setLoading(true)
     setIsDisable(true)
+    const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('input');
+    const newData = {
+      name: tableData[0].value,
+      staff_type: tableData[1].value,
+    }
+
+    editStaff(newData,idItem)
 
     try {
       await setTimeout(() => {
         setLoading(false)
         setOpenEdit(false)
         setIsDisable(false)
-        const tableData = e.target.parentElement.parentElement.parentElement.querySelectorAll('input');
-        const newData = {
-          name: tableData[0].value,
-          department: tableData[1].value,
-          position: tableData[4].value,
-          type: tableData[5].value,
-          timeStart: tableData[2].value,
-          address: tableData[3].value
-        }
+        getDataFromApi()
         // console.log(newData);
 
       }, 2000)
@@ -398,11 +318,13 @@ export default function AdminStaff() {
   const acceptDelete = async () => {
     setLoading(true)
     setIsDisable(true)
+    delStaff(idItem)
     try {
       await setTimeout(() => {
         setLoading(false)
         setOpenDel(false)
         setIsDisable(false)
+        getDataFromApi()
       }, 2000)
     }
     catch {
@@ -422,12 +344,12 @@ export default function AdminStaff() {
             display: "block",
           }}
         />
-        <button
+        {/* <button
           className="p-2 w-32 hover:opacity-80  border-black border-2 "
           onClick={() => setOpen(true)}
         >
           +Thêm
-        </button>
+        </button> */}
       </div>
       <Table
         columns={columns}
@@ -437,13 +359,13 @@ export default function AdminStaff() {
       </Table>
 
 
-      <AddNewStaff
+      {/* <AddNewStaff
         isVisible={open}
         onOk={acceptAddNewStaff}
         loading={loading}
         disable={isDisable}
         onClose={() => setOpen(false)}
-      />
+      /> */}
 
       <EditStaff
         isVisible={openEdit}
