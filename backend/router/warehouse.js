@@ -1,5 +1,6 @@
 import express, { request } from "express"
 import Warehouse from "../model/Warehouse.js"
+import Bill from "../model/Bill.js"
 import { sendError, sendServerError, sendSuccess } from "../helper/client.js"
 import ProductShipment from "../model/ProductShipment.js"
 import { verifyToken, verifyStorekeeper } from "../middleware/index.js"
@@ -33,8 +34,23 @@ warehouseRoute.get('/', verifyToken,
                 return sendServerError(res)
             }
         }
-        else {
-            sendError(res, "Access denied.")
+        else if (role === STAFF.STOREKEEPER) {
+            try {
+                const warehouses = await Warehouse.find()
+                for (let i = 0; i < warehouses.length; i++) {
+                    if (warehouses[i].storekeeper == req.user.role._id) {
+                        return sendSuccess(res, "Get warehouse successfully", warehouses[i])
+                    }
+                    else {
+                     return sendError(res, "You do not manage a warehouse")
+                    }
+                }
+            }
+            catch (error) {
+                return sendServerError(res)
+            }
+        } else {
+            return sendError(res, "Access denied.")
         }
     }
 )
@@ -109,21 +125,30 @@ warehouseRoute.put('/:id', verifyToken, verifyStorekeeper,
     }    
 )
 /**
-* @route PUT /api/add_inventory/:warehouseId
+* @route PUT /api/add-inventory/:warehouseId
 * @description add productshipment to a warehouse
 * @access private
 */
-warehouseRoute.put('/add_inventory/:warehouseId/', verifyToken, verifyStorekeeper,
+warehouseRoute.put('/add-inventory/:warehouseId/', verifyToken, verifyStorekeeper,
     async (req, res) => {
         const warehouseId = req.params.warehouseId
         const warehouse = await Warehouse.findById(warehouseId)
         if (!warehouse) {return sendError(res, "warehouse not found.")}
         if (warehouse.storekeeper == req.user.role._id) {
             try {
-                let {productShipmentId, turnover} = req.body
+                let {productShipmentId} = req.body
                 const productShipment = await ProductShipment.findById(productShipmentId)
                 const warehouse = await Warehouse.findById(warehouseId)
                 if (!productShipment || !warehouse) return sendError(res, "No information")
+                const bills = await Bill.find()
+                for (let i = 0; i < bills.length; i++) {
+                    for (let j = 0; j < bills[i].product_shipments.length; j++) {
+                        if (bills[i].product_shipments[j].shipment == productShipmentId) {
+                            var turnover = bills[i].product_shipments[j].turnover;
+                            break;
+                        }
+                    }
+                }
                 let add = {shipment: productShipment, turnover: turnover}
                 const totalTurnover = warehouse.turnover + Number(turnover)
                 let inventory_product_shipments = [...warehouse.inventory_product_shipments, add]
@@ -139,11 +164,11 @@ warehouseRoute.put('/add_inventory/:warehouseId/', verifyToken, verifyStorekeepe
         }
 })
 /**
-* @route PUT /api//update_inventory/:warehouseId
+* @route PUT /api//update-inventory/:warehouseId
 * @description export or import productshipment to a warehouse
 * @access private
 */
-warehouseRoute.put('/update_inventory/:warehouseId', verifyToken, verifyStorekeeper,
+warehouseRoute.put('/update-inventory/:warehouseId', verifyToken, verifyStorekeeper,
     async (req, res) => {
     const warehouseId = req.params.warehouseId
     const warehouse = await Warehouse.findById(warehouseId)

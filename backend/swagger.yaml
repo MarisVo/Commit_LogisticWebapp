@@ -2641,7 +2641,7 @@ paths:
           description: Delete warehouse failed.
       security:
         - bearerAuth: []
-  /admin/warehouse/add_inventory/{warehouseId}:
+  /admin/warehouse/add-inventory/{warehouseId}:
     put:
       tags:
         - "warehouse"
@@ -2671,7 +2671,7 @@ paths:
           description: Add inventory product shipment failed.
       security:
         - bearerAuth: []
-  /admin/warehouse/update_inventory/{warehouseId}:
+  /admin/warehouse/update-inventory/{warehouseId}:
     put:
       tags:
         - "warehouse"
@@ -2822,7 +2822,7 @@ paths:
                 type: string
       security:
         - bearerAuth: []
-  /warehouse/add_inventory/{warehouseId}:
+  /warehouse/add-inventory/{warehouseId}:
     put:
       tags:
         - "warehouse"
@@ -2852,7 +2852,7 @@ paths:
           description: Add inventory product shipment failed.
       security:
         - bearerAuth: []
-  /warehouse/update_inventory/{warehouseId}:
+  /warehouse/update-inventory/{warehouseId}:
     put:
       tags:
         - "warehouse"

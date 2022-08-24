@@ -1,5 +1,6 @@
-import express from "express"
+import express, { request } from "express"
 import Warehouse from "../../model/Warehouse.js"
+import Bill from "../../model/Bill.js"
 import { sendError, sendRequest, sendServerError, sendSuccess } from "../../helper/client.js"
 import ProductShipment from "../../model/ProductShipment.js"
 import {createWarehouseValidate} from "../../validation/warehouse.js"
@@ -89,17 +90,26 @@ warehouseAdminRoute.put('/:id',
     }
 )
 /**
-* @route PUT /api/admin/add_inventory/:warehouseId
+* @route PUT /api/admin/add-inventory/:warehouseId
 * @description add productshipment to a warehouse
 * @access private
 */
-warehouseAdminRoute.put('/add_inventory/:warehouseId/', async (req, res) => {
+warehouseAdminRoute.put('/add-inventory/:warehouseId/', async (req, res) => {
     try {
         let warehouseId = req.params.warehouseId
-        let {productShipmentId, turnover} = req.body
+        let {productShipmentId} = req.body
         const productShipment = await ProductShipment.findById(productShipmentId)
         const warehouse = await Warehouse.findById(warehouseId)
         if (!productShipment || !warehouse) return sendError(res, "No information")
+        const bills = await Bill.find()
+        for (let i = 0; i < bills.length; i++) {
+            for (let j = 0; j < bills[i].product_shipments.length; j++) {
+                if (bills[i].product_shipments[j].shipment == productShipmentId) {
+                    var turnover = bills[i].product_shipments[j].turnover;
+                    break;
+                }
+            }
+        }
         let add = {shipment: productShipment, turnover: turnover}
         const totalTurnover = warehouse.turnover + Number(turnover)
         let inventory_product_shipments = [...warehouse.inventory_product_shipments, add]
@@ -112,11 +122,11 @@ warehouseAdminRoute.put('/add_inventory/:warehouseId/', async (req, res) => {
     }
 })
 /**
-* @route PUT /api/admin/update_inventory/:warehouseId
+* @route PUT /api/admin/update-inventory/:warehouseId
 * @description export or import productshipment to a warehouse
 * @access private
 */
-warehouseAdminRoute.put('/update_inventory/:warehouseId', async (req, res) => {
+warehouseAdminRoute.put('/update-inventory/:warehouseId', async (req, res) => {
     try {
         const warehouseId = req.params.warehouseId
         const {productShipmentId, status} = req.body
