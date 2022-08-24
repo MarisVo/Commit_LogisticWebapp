@@ -1,5 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { Table, Input } from "antd";
+import axios from "axios";
+import { MainContext } from "../../context/MainContext";
+import { END_POINT } from "../../utils/constant";
+
 const data2 = [
   {
     createAt: "2022-04-02",
@@ -17,6 +21,7 @@ const data2 = [
   },
 ];
 function Maintenance() {
+  const { accessToken } = useContext(MainContext);
   const [data, setData] = useState(data2);
   const columns = [
     {
@@ -96,7 +101,23 @@ function Maintenance() {
     //   ),
     // },
   ];
-
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(
+          `${END_POINT}/admin/carFleet/car/63034deea9ed067de9573463`,
+          {
+            headers: { authorization: `Bearer ${accessToken}` },
+            params:{plate:"palte"}
+          }
+        );
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
   return (
     <>
       <span className="text-3xl font-bold uppercase">

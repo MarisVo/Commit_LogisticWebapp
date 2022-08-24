@@ -12,7 +12,11 @@ import {
   ScrollView,
   FlatList,
   Platform,
+  Alert,
 } from "react-native";
+import axios from "axios";
+import {END_POINT} from "../../utils/constant";
+console.log("endpoint",END_POINT)
 import {getDistrictsByProvinceCode, getProvinces} from "sub-vn";
 import IconAwesome from "react-native-vector-icons/FontAwesome";
 import IonIcon from "react-native-vector-icons/Ionicons";
@@ -121,7 +125,7 @@ function Warehouse({navigation}) {
   useEffect(() => {
     const dataProvinces = getProvinces();
     setProvinces(dataProvinces);
-    setWarehouses(data);
+    // setWarehouses(data);
   }, []);
   const handleSelectProvince = provinceSelected => {
     const provinceCode = provinces.find(
@@ -133,6 +137,7 @@ function Warehouse({navigation}) {
       district: null,
     });
     setDistricts(dataDistricts);
+   
   };
   const handleSelectDistrict = districtSelected => {
     // setCurrentDistrict(districtSelected);
@@ -140,6 +145,43 @@ function Warehouse({navigation}) {
       ...dataForSearch,
       district: districtSelected,
     });
+    setWarehouses([])
+  };
+  const handleSearch = () => {
+    if (dataForSearch.province && dataForSearch.district) {
+    const province = dataForSearch.province?.replace("Thành phố ", "")?.replace("Tỉnh ", "");
+      const fetchData = async () => {
+        try {
+          const res = await axios.get(`${END_POINT}/warehouse`, {
+            params: {...dataForSearch,province},
+          });
+          
+          setWarehouses(res.data.data.warehouses);
+        } catch (error) {
+          Alert.alert("Thông báo", `${error}`, [
+            {
+              text: "Cancel",
+              // onPress: () => console.log("Cancel Pressed"),
+              style: "cancel",
+            },
+            {text: "OK",
+            //  onPress: () => console.log("OK Pressed")
+            },
+          ]);
+        }
+      };
+      fetchData();
+    // setWarehouses(data)
+    return
+    }
+    Alert.alert("Thông báo", "Mời chọn đủ thông tin", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      {text: "OK", onPress: () => console.log("OK Pressed")},
+    ]);
   };
   return (
     <SafeAreaView style={{backgroundColor: "#FFD124", height: "100%"}}>
@@ -185,6 +227,7 @@ function Warehouse({navigation}) {
         <View
           style={{
             flex: 1,
+            paddingVertical: 15,
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
@@ -248,116 +291,148 @@ function Warehouse({navigation}) {
             alignItems: "center",
           }}
         >
-          <FlatList
-            keyExtractor={item => item._id}
-            data={warehouses}
-            showsVerticalScrollIndicator={false}
-            renderItem={({item}) => (
-              <View
-                style={{
-                  height: 146,
-                  width: "100%",
-                  flexDirection: "row",
-                  marginVertical: 12,
-                  // marginHorizontal:10,
-                  borderRadius: 5,
-                  backgroundColor: "white",
-                  shadowColor: "#000000",
-                  shadowOffset: {
-                    width: 3,
-                    height: 3,
-                  },
-                  shadowRadius: 5,
-                  shadowOpacity: 1.0,
-                  elevation: 5,
-                }}
-              >
+          {warehouses.length > 0 ? (
+            <FlatList
+              keyExtractor={item => item._id}
+              data={warehouses}
+              showsVerticalScrollIndicator={false}
+              renderItem={({item}) => (
                 <View
                   style={{
-                    height: "100%",
-                    width: "4%",
-                    backgroundColor: "#FFD124",
-                    borderTopLeftRadius: 5,
-                    borderBottomLeftRadius: 5,
+                    height: 146,
+                    width: "100%",
+                    flexDirection: "row",
+                    marginVertical: 12,
+                    // marginHorizontal:10,
+                    borderRadius: 5,
+                    backgroundColor: "white",
+                    shadowColor: "#000000",
+                    shadowOffset: {
+                      width: 3,
+                      height: 3,
+                    },
+                    shadowRadius: 5,
+                    shadowOpacity: 1.0,
+                    elevation: 5,
                   }}
-                ></View>
-                <View style={{width: "95%"}}>
+                >
                   <View
                     style={{
-                      flex: 1,
-                      justifyContent: "flex-end",
-                      alignContent: "center",
-                      flexDirection: "row",
-                      marginRight: 24,
-                      backgroundColor: "white",
+                      height: "100%",
+                      width: "4%",
+                      backgroundColor: "#FFD124",
+                      borderTopLeftRadius: 5,
+                      borderBottomLeftRadius: 5,
                     }}
-                  >
-                    <View style={{justifyContent: "center"}}>
-                      <IconAwesome name="circle" color="#00FF57" />
-                    </View>
-                    <Text
-                      style={{
-                        textAlignVertical: "center",
-                        fontSize: 12,
-                        marginLeft: 6,
-                      }}
-                    >
-                      Đang mở cửa
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      flex: 6,
-                      alignItems: "center",
-                    }}
-                  >
+                  ></View>
+                  <View style={{width: "95%"}}>
                     <View
                       style={{
                         flex: 1,
-                        width: "90%",
+                        justifyContent: "flex-end",
+                        alignContent: "center",
                         flexDirection: "row",
-                        paddingVertical: 10,
+                        marginRight: 24,
+                        backgroundColor: "white",
                       }}
                     >
-                      <View style={{marginRight: 5, minWidth: 20}}>
-                        <IonIcon name="location-sharp" size={20} />
+                      <View style={{justifyContent: "center"}}>
+                        <IconAwesome name="circle" color="#00FF57" />
                       </View>
-                      <Text style={{width: "85%", fontSize: 16}}>
-                        {item.street}
+                      <Text
+                        style={{
+                          textAlignVertical: "center",
+                          fontSize: 12,
+                          marginLeft: 6,
+                        }}
+                      >
+                        Đang mở cửa
                       </Text>
                     </View>
                     <View
                       style={{
-                        flex: 1,
-                        width: "90%",
-                        flexDirection: "row",
-                        paddingVertical: 10,
+                        flex: 6,
+                        alignItems: "center",
                       }}
                     >
                       <View
                         style={{
-                          marginRight: 5,
-                          minWidth: 20,
-                          alignItems: "center",
+                          flex: 1,
+                          width: "90%",
+                          flexDirection: "row",
+                          paddingVertical: 10,
                         }}
                       >
-                        <IconAwesome name="phone" size={20} />
+                        <View style={{marginRight: 5, minWidth: 20}}>
+                          <IonIcon name="location-sharp" size={20} />
+                        </View>
+                        <Text style={{width: "85%", fontSize: 16}}>
+                          {item.street}
+                        </Text>
                       </View>
-                      <Text
+                      <View
                         style={{
-                          fontSize: 16,
-                          width: "80%",
+                          flex: 1,
+                          width: "90%",
+                          flexDirection: "row",
+                          paddingVertical: 10,
                         }}
                       >
-                        {item.phone}
-                      </Text>
+                        <View
+                          style={{
+                            marginRight: 5,
+                            minWidth: 20,
+                            alignItems: "center",
+                          }}
+                        >
+                          <IconAwesome name="phone" size={20} />
+                        </View>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            width: "80%",
+                          }}
+                        >
+                          {item.phone}
+                        </Text>
+                      </View>
                     </View>
                   </View>
                 </View>
-              </View>
-            )}
-          />
+              )}
+            />
+          ) : (
+            <TouchableOpacity
+              style={{
+                width: 150,
+                height: 58,
+                borderRadius: 16,
+                backgroundColor: "#FFD124",
+                justifyContent: "center",
+              }}
+              onPress={handleSearch}
+            >
+              <Text style={{textAlign: "center", fontSize: 18, color: "white"}}>
+                Tra cứu
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
+        {/* { warehouses.length===0 && <View
+          style={{
+            flex:1,
+            alignItems:"center",
+            marginTop:20,
+            backgroundColor:"red"
+          }}
+        >
+          <TouchableOpacity 
+          style={{width:150,height:58,borderRadius:16,backgroundColor:"#FFD124",justifyContent:"center"}}
+          onPress={handleSearch}
+          >
+            <Text style={{textAlign:"center", fontSize:18,color:"white"}}>Tra cứu</Text>
+          </TouchableOpacity>
+        </View> } */}
       </View>
     </SafeAreaView>
   );
