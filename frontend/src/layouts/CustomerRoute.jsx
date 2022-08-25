@@ -74,11 +74,7 @@ function CustomerRoute() {
        window.removeEventListener("resize",getWidth)
      }
   },[width])
-  useEffect(()=>{
-    const res = ()=>{
 
-    }
-  },[])
 
   if (user && user.role.customer_type) {
     return <>
@@ -108,10 +104,10 @@ function CustomerRoute() {
                         <div className="text-center">Chào mừng</div>
                         <div className="md:text-xl sm:text-lg  text-center font-semibold text-[#00003B]">{user.role.name}</div>
                     </div>
-                    <Menu  theme="" mode="inline" defaultSelectedKeys={[""]} items={items} />
+                    <Menu  theme="" mode="inline" defaultSelectedKeys={["1"]} items={items} />
                 </div>
               </div>
-              <div className="col-span-9 sm:col-span-7 bg-[#f8faff] rounded-lg   shadow-xl mb-3">
+              <div className="col-span-9 sm:col-span-7 bg-[#f8faff] rounded-lg   ">
                <Outlet></Outlet>
               </div>
            </div>

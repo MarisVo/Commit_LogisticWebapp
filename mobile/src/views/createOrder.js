@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Text, View, SafeAreaView, ImageBackground, StatusBar, Dimensions, TouchableOpacity, Image, TextInput } from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome";
+import Location from "react-native-vector-icons/Ionicons";
+
 const windowwidth = Dimensions.get("window").width
 const windowheight = Dimensions.get("window").height
 const CreateOrder = ({navigation}) => {
@@ -44,7 +46,7 @@ const CreateOrder = ({navigation}) => {
                         />
                       </View>
                       <View style={{width:"90%",paddingHorizontal:25,height:50,marginTop:10,borderRadius:9,borderWidth:2,alignItems:"center",justifyContent:"center",flexDirection:"row"}} >
-                        <Icon name="phone"  style={{width:20,height:15,fontSize:15}}  />
+                        <Location name="location"  style={{width:20,height:15,fontSize:15}}  />
                         <TextInput style={{width:"100%",height:"100%",fontSize:18}}
                             placeholder="Địa chỉ"
                             autoCapitalize={false}
@@ -71,7 +73,7 @@ const CreateOrder = ({navigation}) => {
                         />
                       </View>
                       <View style={{width:"90%",paddingHorizontal:25,height:50,marginTop:10,borderRadius:9,borderWidth:2,alignItems:"center",justifyContent:"center",flexDirection:"row"}} >
-                        <Icon name="phone"  style={{width:20,height:15,fontSize:15}}  />
+                         <Location name="location"  style={{width:20,height:15,fontSize:15}}  />
                         <TextInput style={{width:"100%",height:"100%",fontSize:18}}
                             placeholder="Địa chỉ"
                             autoCapitalize={false}
