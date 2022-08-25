@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Text, View, SafeAreaView, ScrollView, StatusBar, Dimensions, TouchableOpacity, Image, TextInput } from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome";
+import Icon5 from "react-native-vector-icons/FontAwesome5";
+import Steering from "react-native-vector-icons/MaterialCommunityIcons";
 import Search1 from "react-native-vector-icons/AntDesign";
 import Scan from "react-native-vector-icons/MaterialCommunityIcons";
-
+import Location from "react-native-vector-icons/Ionicons";
 import StepIndicator from 'react-native-step-indicator';
 const windowwidth = Dimensions.get("window").width
 const windowheight = Dimensions.get("window").height
@@ -53,7 +55,6 @@ const customStyles = {
   labelSize: 13,
   currentStepLabelColor: '#fe7013'
 }
-
     return (
         <View style={{flex:1,backgroundColor:"#ffd124"}}>
            <StatusBar barStyle="light-content" backgroundColor="#000" />
@@ -79,7 +80,7 @@ const customStyles = {
                    </View>
             </View>
            <View style={{width:"100%",height:"100%",backgroundColor:"white",borderTopRightRadius:45,borderTopLeftRadius:45}}>
-                <View style={{width:windowwidth-50,marginLeft:25,marginTop:25,height:windowheight-350,borderRadius:12,borderWidth:1,alignItems:"flex-start",justifyContent:"center"}}>
+                <View style={{width:windowwidth-50,marginLeft:25,marginTop:25,height:windowheight-350,marginBottom:10,borderRadius:12,borderWidth:1,alignItems:"flex-start",justifyContent:"center"}}>
                      <View style={{width:"100%",height:35,alignItems:"flex-start",justifyContent:"space-between",flexDirection:"row"}}>
                         <View style={{backgroundColor:"#4E9F3D",marginLeft:6,paddingHorizontal:15,paddingVertical:6}}>
                           <Text style={{color:"white"}}>#13123</Text>
@@ -110,19 +111,47 @@ const customStyles = {
                         </View>
                     </View>
                 </View>    
-                 <View style={{width:windowwidth-50,marginLeft:25,height:230,borderRadius:8,borderWidth:1,alignItems:"center",justifyContent:"center",flexDirection:"column"}}>
-                      <View style={{width:"100%",height:35,backgroundColor:"#ffd124",alignItems:"center",justifyContent:"center"}}>
+                 <View style={{width:windowwidth-50,marginBottom:20,marginLeft:25,height:142,borderRadius:9,borderWidth:1,flexDirection:"column"}}>
+                      <View style={{width:"100%",height:35,backgroundColor:"#ffd124",alignItems:"center",borderTopLeftRadius:9,borderTopRightRadius:9,justifyContent:"center"}}>
                         <Text style={{textAlign:"center",fontSize:20,fontWeight:"700"}}>Địa chỉ người nhận</Text>
                       </View>
-                      <View style={{width:"90%",paddingHorizontal:25,height:50,marginTop:10,borderRadius:9,borderWidth:2,alignItems:"center",justifyContent:"center",flexDirection:"row"}} >
-                        <Icon name="user"  style={{width:20,height:15,fontSize:25}}  />
-                        <TextInput style={{width:"100%",height:"100%",fontSize:18}}
-                            placeholder="Email/SĐT"
-                            autoCapitalize={false}
-                        />
+                      <View style={{width:"100%",paddingHorizontal:20,height:"100%",marginTop:6,alignItems:"flex-start",justifyContent:"flex-start",flexDirection:"column"}} >
+                            <View style={{flexDirection:"row",alignItems:"center",paddingBottom:5}}>
+                               <Icon name="user"  style={{width:20,height:20,fontSize:18,marginRight:5}}  />
+                                <Text style={{fontSize:18,fontWeight:"700"}}>Nguyễn Văn Hiếu</Text>
+                            </View>
+                            <View style={{flexDirection:"row",alignItems:"center",paddingBottom:5}}>
+                               <Icon name="phone"  style={{width:20,height:20,fontSize:18,marginRight:5}}  />
+                                <Text style={{fontSize:18,fontWeight:"700"}}>978923029</Text>
+                            </View>
+                            <View style={{flexDirection:"row",alignItems:"center",paddingBottom:5}}>
+                               <Location name="location"  style={{width:20,height:20,marginRight:5,fontSize:18}}  />
+                                <Text style={{fontSize:18,fontWeight:"700"}}>5527B Nguyễn Trung Trực Thủ Đức</Text>
+                            </View>          
+                      </View>                        
+                </View>         
+                 <View style={{width:windowwidth-50,marginBottom:50,marginLeft:25,height:170,borderRadius:9,borderWidth:1,flexDirection:"column"}}>
+                      <View style={{width:"100%",height:35,backgroundColor:"#ffd124",alignItems:"center",borderTopLeftRadius:9,borderTopRightRadius:9,justifyContent:"center"}}>
+                        <Text style={{textAlign:"center",fontSize:20,fontWeight:"700"}}>Thông tin hàng hóa</Text>
                       </View>
-                     
-                                      
+                      <View style={{width:"100%",paddingHorizontal:20,height:"100%",marginTop:6,alignItems:"flex-start",justifyContent:"flex-start",flexDirection:"column"}} >
+                            <View style={{flexDirection:"row",alignItems:"center",paddingBottom:5}}>
+                               <Icon name="money"  style={{width:20,height:20,fontSize:18,marginRight:5}}  />
+                                <Text style={{fontSize:18,fontWeight:"700"}}>5.000.000VND</Text>
+                            </View>
+                            <View style={{flexDirection:"row",alignItems:"center",paddingBottom:5}}>
+                               <Icon5 name="weight-hanging"  style={{width:20,height:20,fontSize:18,marginRight:5}}  />
+                                <Text style={{fontSize:18,fontWeight:"700"}}>50KG</Text>
+                            </View>
+                            <View style={{flexDirection:"row",alignItems:"center",paddingBottom:5}}>
+                               <Steering name="steering"  style={{width:20,height:20,fontSize:18,marginRight:5}}  />
+                                <Text style={{fontSize:18,fontWeight:"700"}}>90.000VND</Text>
+                            </View>
+                            <View style={{flexDirection:"row",alignItems:"center",paddingBottom:5}}>
+                               <Location name="location"  style={{width:20,height:20,marginRight:5,fontSize:18}}  />
+                                <Text style={{fontSize:18,fontWeight:"700"}}>5527B Nguyễn Trung Trực Thủ Đức</Text>
+                            </View>                     
+                      </View>                          
                 </View>         
             </View>
             </ScrollView>
