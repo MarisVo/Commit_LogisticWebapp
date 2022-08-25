@@ -342,60 +342,61 @@ export default function AdminSchedule() {
   }
 
   return (
-    <div>
-      <div className='flex justify-end mb-5'>
-        <Search
-          placeholder="Search"
-          onSearch={onSearch}
-          style={{
-            width: 400,
-            margin: "auto",
-            display: "block",
-          }}
-        />
-        {/* <button
-          className="p-2 w-32 hover:opacity-80  border-black border-2 "
-          onClick={() => setOpen(true)}
-        >
-          +Thêm
-        </button> */}
-      </div>
-      <Table
-        columns={columns}
-        dataSource={data}
-        onChange={onChange}
-      >
-      </Table>
+    // <div>
+    //   <div className='flex justify-end mb-5'>
+    //     <Search
+    //       placeholder="Search"
+    //       onSearch={onSearch}
+    //       style={{
+    //         width: 400,
+    //         margin: "auto",
+    //         display: "block",
+    //       }}
+    //     />
+    //     {/* <button
+    //       className="p-2 w-32 hover:opacity-80  border-black border-2 "
+    //       onClick={() => setOpen(true)}
+    //     >
+    //       +Thêm
+    //     </button> */}
+    //   </div>
+    //   <Table
+    //     columns={columns}
+    //     dataSource={data}
+    //     onChange={onChange}
+    //   >
+    //   </Table>
 
 
-      {/* <AddNewStaff
-        isVisible={open}
-        onOk={acceptAddNewStaff}
-        loading={loading}
-        disable={isDisable}
-        onClose={() => setOpen(false)}
-      /> */}
+    //   {/* <AddNewStaff
+    //     isVisible={open}
+    //     onOk={acceptAddNewStaff}
+    //     loading={loading}
+    //     disable={isDisable}
+    //     onClose={() => setOpen(false)}
+    //   /> */}
 
-      <EditStaff
-        isVisible={openEdit}
-        onOk={acceptEditNewStaff}
-        loading={loading}
-        disable={isDisable}
-        dataEdit={dataEdit}
-        onClose={() => setOpenEdit(false)}
-      />
+    //   <EditStaff
+    //     isVisible={openEdit}
+    //     onOk={acceptEditNewStaff}
+    //     loading={loading}
+    //     disable={isDisable}
+    //     dataEdit={dataEdit}
+    //     onClose={() => setOpenEdit(false)}
+    //   />
 
-      <ConfirmModal
-        isVisible={openDel}
-        text={`xóa nhân viên`}
-        onClose={() => setOpenDel(false)}
-        loading={loading}
-        disable={isDisable}
-        onOk={acceptDelete}
-      />
+    //   <ConfirmModal
+    //     isVisible={openDel}
+    //     text={`xóa nhân viên`}
+    //     onClose={() => setOpenDel(false)}
+    //     loading={loading}
+    //     disable={isDisable}
+    //     onOk={acceptDelete}
+    //   />
 
 
 
-    </div>
+    // </div>
+    <div></div>
   )
 }
