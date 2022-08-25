@@ -12,7 +12,7 @@ import { END_POINT } from "../../utils/constant";
 import { TOKEN } from "./adminToken";
 import axios from 'axios';
 
-export default function AdminTurnover() {
+export default function AdminBill() {
   const { accessToken } = useContext(MainContext)
   const [idItem, setId] = useState()
 
@@ -470,8 +470,6 @@ export default function AdminTurnover() {
         disable={isDisable}
         onOk={acceptDelete}
       />
-
-
 
     </div>
   )
