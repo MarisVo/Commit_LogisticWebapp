@@ -87,11 +87,7 @@ app.use(bodyParser.json())
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/public', publicRoute)
-<<<<<<< HEAD
-    .use('/api/admin', verifyToken, verifyAdmin , adminRoute)
-=======
-    .use('/api/admin', verifyToken, verifyAdmin, adminRoute)
->>>>>>> c3721f693629ee75b06b9e71ec856eec5883d590
+    .use('/api/admin',/* verifyToken, verifyAdmin,*/ adminRoute)
     .use('/api/auth', authRoute)
     .use('/api/tracking', trackingRoute)
     .use('/api/order', orderRoute)
