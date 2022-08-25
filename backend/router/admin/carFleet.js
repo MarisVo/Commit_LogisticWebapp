@@ -8,6 +8,7 @@ import CarFleet from "../../model/CarFleet.js";
 import { carFleetValidate } from "../../validation/carFleet.js";
 import Car from "../../model/Car.js";
 import Bill from "../../model/Bill.js";
+import ProductShipmentSchema from "../../model/ProductShipment.js";
 
 const carFleetAdminRoute = express.Router();
 
@@ -92,10 +93,10 @@ carFleetAdminRoute.delete("/:id", async (req, res) => {
 carFleetAdminRoute.get("/car/:plate", async (req, res) => {
   const { plate } = req.params;
   try {
-    const car = await Car.find({ plate: plate });
+    const car = await Car.findOne({ plate: plate });
     if (!car) return sendError(res, "car does not exist.");
     const bill = await Bill.find({ car: car  });
-    if (!bill) return sendError(res, "Bill does not exist.");
+    if (!bill.length) return sendError(res, "Bill does not exist.");
     var turnover = 0;
     if (bill[0].product_shipments.length) {
       for (let i = 0; i < bill[0].product_shipments.length; i++) { 
