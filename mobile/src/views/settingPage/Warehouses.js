@@ -170,10 +170,11 @@ function Warehouse({navigation}) {
           ]);
         }
       };
-      fetchData();
+      
     // setWarehouses(data)
-    return
+    return fetchData()
     }
+    console.log("1")
     Alert.alert("Thông báo", "Mời chọn đủ thông tin", [
       {
         text: "Cancel",
