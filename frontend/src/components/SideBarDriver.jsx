@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaPen } from "react-icons/fa";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import {
@@ -8,8 +8,10 @@ import {
   IoNotificationsOutline,
 } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import { MainContext } from "../context/MainContext";
 
 const SideBarDriver = ({ open, handleOpen }) => {
+    const { user } = useContext(MainContext)
   return (
     <div>
       <div
@@ -28,7 +30,7 @@ const SideBarDriver = ({ open, handleOpen }) => {
               <IoArrowBackCircleOutline className="w-6 h-6 z-101" />
             </div>
             <div className="text-xl font-semibold text-[#00003B] ">
-              Nguyễn Văn Thật
+             {user.role.name}
             </div>
             <div className="flex items-center  ">
               <FaPen />
