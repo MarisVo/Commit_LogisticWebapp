@@ -15,8 +15,10 @@ import Login from './login';
 import SettingnNoti from './settingPage/SettingNoti';
 import ForgetPassword from './forgetPassword';
 import CreateOrder from './createOrder';
-import WatchListOrder from './watchListOrder';
+
 import Statistic from './statistic';
+import ListOrder from './listOrder';
+import watchListOrder from './watchListOrder';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -57,20 +59,20 @@ const MyTabs = () => {
         }}
       />
       <Tab.Screen
-        name="Statistic"
-        component={Statistic}
+        name="WatchListOrder"
+        component={watchListOrder}
         options={{
-          tabBarLabel: "Statistic",
+          tabBarLabel: "WatchListOrder",
           tabBarIcon: ({ color, size }) => (
             <Icon name="gear" color={color} size={size} />
           ),
         }}
       />
       <Tab.Screen
-        name="WatchListOrder"
-        component={WatchListOrder}
+        name="Statistic"
+        component={Statistic}
         options={{
-          tabBarLabel: "WatchListOrder",
+          tabBarLabel: "Statistic",
           tabBarIcon: ({ color, size }) => (
             <Icon name="gear" color={color} size={size} />
           ),
