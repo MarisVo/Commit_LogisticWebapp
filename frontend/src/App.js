@@ -175,6 +175,7 @@ const App = () => {
                   <Route path="them-nhan-vien" element={<StaffRegister />}></Route>
                   <Route path="phi-bao-tri" element={<AdminMaintenance />}></Route>
                   <Route path="hang_cam_gui" element={<AdminProhibitProduct />}> </Route>
+                  <Route path="lich_trinh" element={<AdminSchedule />}> </Route>
                 </Route>
               </Route>
             </Routes>

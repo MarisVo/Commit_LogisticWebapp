@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect, useContext } from 'react'
 import 'antd/dist/antd.css';
 import { Button, Input, Table, Space, DatePicker, Form, InputNumber, Select } from "antd";
@@ -13,7 +12,7 @@ import { END_POINT } from "../../utils/constant";
 import { TOKEN } from "./adminToken";
 import axios from 'axios';
 
-export default function AdminBill() {
+export default function AdminTurnover() {
   const { accessToken } = useContext(MainContext)
   const [idItem, setId] = useState()
 
@@ -471,6 +470,8 @@ export default function AdminBill() {
         disable={isDisable}
         onOk={acceptDelete}
       />
+
+
 
     </div>
   )

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Form, Input, DatePicker, Button, InputNumber } from 'antd'
 
 const { Item } = Form
-function AddNewBill({ isVisible, onClose, onOk, loading, disable }) {
+function AddProductShipment({ isVisible, onClose, onOk, loading, disable }) {
 
     return (
         <>
@@ -11,7 +11,7 @@ function AddNewBill({ isVisible, onClose, onOk, loading, disable }) {
                 <div className='fixed inset-0  bg-slate-600 bg-opacity-50 z-20 flex justify-center items-center'>
                     <div className='relative w-[700px] flex flex-col bg-white p-6 gap-y-3 animate-modal_in mx-4 rounded-xl overflow-auto'>
                         <div className='flex justify-between items-center gap-y-3'>
-                            <span className='text-xl uppercase font-bold h-fit'>Thêm Hóa Đơn</span>
+                            <span className='text-xl uppercase font-bold h-fit'>Cập nhật lô sản phẩm</span>
                             <Button
                                 size="large"
                                 disabled={disable}
@@ -30,34 +30,19 @@ function AddNewBill({ isVisible, onClose, onOk, loading, disable }) {
                             }}
                             layout="horizontal"
                         >
-                            <Item label="Mã đường đi">
+                            <Item label="Mã lô sản phẩm">
                                 <Input />
                             </Item>
-                            <Item label="ID Xe">
-                                <Input />
-                            </Item>
-                            <Item label="ID Lái xe">
-                                <Input />
-                            </Item>
-                            <Item label="Trạng thái">
-                               <select>
-                                <option value="processing">Đang tiến hành</option>
-                                <option value="waiting">Đang chờ</option>
-                                <option value="completed">Hoàn thành</option>
-                               </select>
-                            </Item>
-                            <Item label="Xăng dự tính">
-                                <InputNumber />
-                            </Item>
-                            <Item label="Xăng thực tế">
+                            
+                            <Item label="Doanh số">
                                 <InputNumber />
                             </Item>
                             {/* <Item label="Doanh số">
                                 <Input />
                             </Item> */}
-                            <Item label="ID Thiết bị">
+                            {/* <Item label="ID Thiết bị">
                                 <Input />
-                            </Item>
+                            </Item> */}
                             
                             <div className='flex justify-end mt-2 text-sm gap-x-6'>
                                 <Button
@@ -89,4 +74,4 @@ function AddNewBill({ isVisible, onClose, onOk, loading, disable }) {
     );
 }
 
-export default AddNewBill;
+export default AddProductShipment;
