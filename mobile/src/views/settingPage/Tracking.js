@@ -161,7 +161,7 @@ function Tracking({navigation}) {
             }}
           >
             <View style={{flex: 1}}>
-              <Text style={{paddingVertical: 5, paddingLeft: 15, fontSize: 13}}>
+              <Text style={{paddingVertical: 5, paddingLeft: 15, fontSize: 13, color:"#3A3C3F"}}>
                 Chọn điểm đi
               </Text>
               <Select
@@ -199,7 +199,7 @@ function Tracking({navigation}) {
               style={{marginHorizontal: 2, transform: [{translateY: 15}]}}
             />
             <View style={{flex: 1}}>
-              <Text style={{paddingVertical: 5, paddingLeft: 15, fontSize: 13}}>
+              <Text style={{paddingVertical: 5, paddingLeft: 15, fontSize: 13, color:"#3A3C3F"}}>
                 Chọn điểm đến
               </Text>
               <Select
@@ -260,6 +260,7 @@ function Tracking({navigation}) {
                   position: "absolute",
                   top: 0,
                   fontSize: 13,
+                  color:"#3A3C3F",
                   lineHeight: 20,
                   transform: [{translateX: 16}, {translateY: -12}],
                   backgroundColor: "white",
