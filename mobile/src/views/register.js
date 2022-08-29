@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Text, View, SafeAreaView, ImageBackground, StatusBar, Dimensions, TouchableOpacity, Image, TextInput, Switch, Button } from 'react-native';
-import Entypo from "react-native-vector-icons/Entypo"
 import Icon from "react-native-vector-icons/FontAwesome";
+import { useEffect } from 'react';
 const windowwidth = Dimensions.get("window").width
 const windowheight = Dimensions.get("window").height
 const Register = ({navigation}) => {
-        const [page,setPage] = useState(null)
+        const [nextPage,setNextPage] = useState(false)
     return (
         <View style={{flex:1}}>
            <StatusBar barStyle="default" />
@@ -15,16 +15,20 @@ const Register = ({navigation}) => {
             <View style={{width:"100%",height:"3%",flexDirection:"column"}}>
                     <Text style={{width:"5%",height:"5%",borderRadius:50,backgroundColor:"#ffd124"}}>.</Text>
             </View>      
-              {/* <PreviousRegister page={page} setPage={setPage} />  */} 
-              <NextRegister page={page} setPage={setPage} />  
+            {
+                nextPage===false?
+                <PreviousRegister navigation={navigation} setNextPage={setNextPage} />  
+                :
+               <NextRegister navigation={navigation}  setNextPage={setNextPage} />   
+            }
        </View>
     );
 };
-const PreviousRegister = ({navigation,page,setPage})=>{
+const PreviousRegister = ({navigation,setNextPage})=>{
         const [email,setEmail] = useState("")
     const [password,setPassword] = useState("")
     const [passHidden,setPassHidden] = useState("")
-    const [navigate,setNavigate]=useState("")
+    
     return (
         <View style={{flex:1}}>
             <View style={{width:"100%",height:"12%",backgroundColor:"#f6f8f6",borderTopRightRadius:45,borderTopLeftRadius:45}}>
@@ -76,7 +80,9 @@ const PreviousRegister = ({navigation,page,setPage})=>{
                 <View style={{width:windowwidth-70,marginLeft:35,height:"5%",alignItems:"center",justifyContent:"flex-end",marginTop:10,flexDirection:"row"}}>
                 </View>
             
-                  <TouchableOpacity style={{backgroundColor:"white",borderRadius:100 ,width:windowwidth-70,marginLeft:48,height:"10%",alignItems:"center",justifyContent:"center",marginTop:10}}>
+                  <TouchableOpacity style={{backgroundColor:"white",borderRadius:100 ,width:windowwidth-70,marginLeft:48,height:"10%",alignItems:"center",justifyContent:"center",marginTop:10}}
+                    onPress={()=>setNextPage(true)}
+                  >
                       <Text className={{position:"absolute",color:"black",fontWeight:"1000"}}>Tiếp theo</Text>
                   </TouchableOpacity>
                 <View style={{width:windowwidth-70,marginLeft:35,height:"5%",alignItems:"center",justifyContent:"center",marginTop:10}}>
@@ -98,11 +104,10 @@ const PreviousRegister = ({navigation,page,setPage})=>{
         </View>
     )
 }
-const NextRegister = ({page,setPage})=>{
+const NextRegister = ({setNextPage,navigation})=>{
         const [email,setEmail] = useState("")
     const [password,setPassword] = useState("")
     const [passHidden,setPassHidden] = useState("")
-    const [navigate,setNavigate]=useState("")
     const [isEnable,setIsEnable]=useState(false)
     const handleToggleSwitch = ()=>{
         setIsEnable(!isEnable)
@@ -114,7 +119,9 @@ const NextRegister = ({page,setPage})=>{
             </View> */}
             <View style={{width:"100%",height:"100%",backgroundColor:"#ffd124",borderTopRightRadius:45,borderTopLeftRadius:45}}>
                 <View style={{width:"100%",height:40,alignItems:"center",justifyContent:"flex-start",marginTop:20,flexDirection:"row",marginBottom:10}}>
-                     <TouchableOpacity style={{borderRadius:15,width:"25%",height:"100%",alignItems:"center",justifyContent:"center",marginTop:6}}>
+                     <TouchableOpacity style={{borderRadius:15,width:"25%",height:"100%",alignItems:"center",justifyContent:"center",marginTop:6}}
+                      onPress={()=>setNextPage(false)}
+                     >
                             <Icon name="arrow-left"  style={{width:50,height:55,fontSize:25}}  />
                     </TouchableOpacity>
                 </View>

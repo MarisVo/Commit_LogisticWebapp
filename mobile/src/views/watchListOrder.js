@@ -58,7 +58,7 @@ const customStyles = {
     return (
         <View style={{flex:1,backgroundColor:"#ffd124"}}>
            <StatusBar barStyle="light-content" backgroundColor="#000" />
-             <View style={{width:"100%",height:60,alignItems:"center",backgroundColor:"#ffd124",justifyContent:"center",position:'relative'}}> 
+             <View style={{width:"100%",height:50,alignItems:"center",backgroundColor:"#ffd124",justifyContent:"center",position:'relative'}}> 
                     <Icon name="arrow-left"  style={{width:50,height:45,fontSize:30,position:"absolute",fontWeight:700,top:8,left:10}}  />
                     
                      <Text style={{width:"60%",height:40,color:"#3A3C3F",fontSize:25,fontWeight:"700",textAlign:"center"}}>Thống kê doanh thu</Text>

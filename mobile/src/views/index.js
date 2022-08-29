@@ -93,7 +93,6 @@ const RootComponent = () => {
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
         {/* <Stack.Screen name="CreateOrder" component={CreateOrder} /> */}
-      {/*   <Stack.Screen name="Register" component={Register} /> */}
         <Stack.Screen name="Tracking" component={Tracking} />
         <Stack.Screen name="Warehouses" component={Warehouses} />
       </Stack.Navigator>
