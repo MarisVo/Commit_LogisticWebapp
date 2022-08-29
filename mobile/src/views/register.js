@@ -28,7 +28,10 @@ const PreviousRegister = ({navigation,setNextPage})=>{
         const [email,setEmail] = useState("")
     const [password,setPassword] = useState("")
     const [passHidden,setPassHidden] = useState("")
-    
+    const [err,setErr]=useState({})
+    useEffect(()=>{
+
+    },[])
     return (
         <View style={{flex:1}}>
             <View style={{width:"100%",height:"12%",backgroundColor:"#f6f8f6",borderTopRightRadius:45,borderTopLeftRadius:45}}>

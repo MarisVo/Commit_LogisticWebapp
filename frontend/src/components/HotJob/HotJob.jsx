@@ -21,6 +21,7 @@ const HotJob = ({ setDetail }) => {
             console.log(res);
             if (res.status === 200) {
                 let item = res.data.data.career;
+                console.log(item)
                 if (item.length > 1) {
                     let newItem = item.sort((a, b) => a.applicants.length - b.applicants.length);
                     let items = []
