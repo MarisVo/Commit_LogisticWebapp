@@ -108,16 +108,25 @@ paths:
           schema:
             type: object
             example: {
-              "accessToken":"123456",
-              "user":{
-                "id":"userId",
-                "email":"email",
-                "phone":"phone",
-                "role":"role",
+              "success": true,
+              "message": "Verify token successfully.",
+              "data": {
+                "user": {
+                  "id": "_id",
+                  "email": "example@test.net",
+                  "phone": "12345678",
+                  "role":{},
+                }
               }
             }
         401:
           description: Unauthorized.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Unauthorized.",
+            }
   /auth/register:
     post:
       tags:
@@ -138,9 +147,11 @@ paths:
               type: string
             email:
               type: string
-            phone:
-              type: string
             password:
+              type: string
+            verify_password:
+              type: string
+            phone:
               type: string
             address:
               type: string
@@ -155,8 +166,20 @@ paths:
       responses:
         200:
           description: send otp code successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "send otp code successfully.",
+            }
         400:
           description: Send OTP failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "send OTP failed.",
+            }
   /auth/verify-otp:
     post:
       tags:
@@ -176,8 +199,20 @@ paths:
       responses:
         200:
           description: user registered successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "user registered successfully.",
+            }
         400:
           description: validate failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "validate failed.",
+            }
   /auth/update-otp:
     get:
       tags:
@@ -193,10 +228,28 @@ paths:
       responses:
         200:
           description: update otp successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "update otp successfully.",
+            }
         404:
           description: verify option is invalid.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "verify option is invalid.",
+            }
         400:
           description: Send OTP failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Send OTP failed.",
+            }
   /auth/login:
     post:
       tags:
@@ -226,19 +279,47 @@ paths:
           schema:
             type: object
             example: {
+              "success": true,
+              "message": "Login successfully.",
+              "data": {
               "accessToken":"string",
               "refreshToken":"string",
               "user": {
                 "id":"string",
                 "email":"string",
                 "phone":"string",
-                "role":{},
+                "role": {
+                  "_id": "_id",
+                  "name": "string",
+                  "address": "string",
+                  "description": string,
+                  "customer_type": "business",
+                  "rank_passers": {
+                    "point": number,
+                    "level": "string",
+                    "_id": "string",
+                  },
+                "companyTaxcode_business": "string",
+                },
               }
+              },
             }
         400:
           description: email/phone or password is wrong.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "email/phone or password is wrong.",
+            }
         403:
           description: your role is not valid. access denied.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "your role is not valid. access denied.",
+            }
   /auth/staff-login:
     post:
       tags:
@@ -268,19 +349,39 @@ paths:
           schema:
             type: object
             example: {
+              "success": true,
+              "message": "Login successfully.",
+              "data": {
               "accessToken":"string",
               "refreshToken":"string",
               "user": {
                 "id":"string",
                 "email":"string",
                 "phone":"string",
-                "role":{},
+                "role": {
+                  "_id": "_id",
+                  "name": "string",
+                  "staff_type": "string",
+                },
               }
+              },
             }
         400:
           description: email/phone or password is wrong.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "email/phone or password is wrong.",
+            }
         403:
           description: your role is not valid. access denied.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "your role is not valid. access denied.",
+            }
   /auth/forgot-pw:
     post:
       tags:
@@ -305,10 +406,28 @@ paths:
       responses:
         200:
           description: generate new password successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "generate new password successfully.",
+            }
         400:
           description: send new password failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "send new password failed.",
+            }
         404:
           description: email/phone doesn't exist.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "email/phone doesn't exist.",
+            }
   /auth/change-pw:
     put:
       tags:
@@ -335,8 +454,20 @@ paths:
       responses:
         200:
           description: change your password successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "change your password successfully.",
+            }
         400:
           description: current password isn't correct.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "current password isn't correct.",
+            }
       security:
         - bearerAuth: []
   /auth/logout:
@@ -358,8 +489,20 @@ paths:
       responses:
         200:
           description: log out successfully. see you soon.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "log out successfully. see you soon.",
+            }
         401:
           description: refresh token is invalid.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "refresh token is invalid.",
+            }
       security:
         - bearerAuth: []
   /admin/auth/register:
@@ -390,8 +533,20 @@ paths:
       responses:
         200:
           description: user registered successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "user registered successfully.",
+            }
         400:
-          description: user is exist
+          description: user already exists.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "user already exists.",
+            }
       security:
         - bearerAuth: []
   /about:
