@@ -5627,7 +5627,7 @@ paths:
           description: Update staff information failed.
       security:
         - bearerAuth: []
-  /admin/carFleet/{carId}:
+  /admin/carFleet:
     post:
       tags:
         - "carFleet"
@@ -5724,6 +5724,7 @@ paths:
           description: Delete carFleet failed.      
       security:
         - bearerAuth: [] 
+  /admin/carFleet/{name}:
     get:
       tags:
         - "carFleet"
@@ -5732,18 +5733,20 @@ paths:
         - application/json
       parameters:
         - in: path
-          name: carFleetId
+          name: name
           type: string
           required: true
-          description: Id of carFleet
+          description: Name of carFleet
       responses:
         200:
           description: get carFleet information successfully.
           schema:
             type: object
             example: {
-            "turnover": "number",
+            "name": "string",
             "director": "string",
+            "turnover": "number",
+            "cars": "array",
             }
         400:
           description: cars turnover information is not found.     
@@ -5768,8 +5771,10 @@ paths:
           schema:
             type: object
             example: {
-            "turnover": "number",
+            "name": "string",
             "director": "string",
+            "turnover": "number",
+            "cars": "array",
             }
         400:
           description: car turnover information is not found.
