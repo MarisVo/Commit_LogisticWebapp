@@ -562,14 +562,24 @@ paths:
           schema:
             type: object
             example: {
-              "description": "string",
-              "vision": "string",
-              "values": "string",
-              "logo": "path",
-              "banners": ["path1", "path2"],
+              "success": true,
+              "message": "get about information successfully.",
+              "data": {
+                "description": "string",
+                "vision": "string",
+                "values": "string",
+                "logo": "path",
+                "banners": ["path1", "path2"],
+              },
             }
         400:
           description: about information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "about information is not found.",
+            }
   /admin/about/logo:
     post:
       tags:
@@ -586,6 +596,12 @@ paths:
       responses:
         200:
           description: upload logo successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "upload logo successfully.",
+            }
       security:
         - bearerAuth: []
   /admin/about/banners:
@@ -604,6 +620,12 @@ paths:
       responses:
         200:
           description: upload banners successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": " upload banners successfully.",
+            }
       security:
         - bearerAuth: []
   /admin/about:
@@ -629,6 +651,12 @@ paths:
       responses:
         200:
           description: set about-us information successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "set about-us information successfully.",
+            }
       security:
         - bearerAuth: []
   /contactUs:
