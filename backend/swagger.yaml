@@ -1072,11 +1072,28 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "logo": "path",
+              "success": true,
+              "message": "Get partner successful.",
+              "data": {
+                "length": "number",
+                "partners": [
+                  {
+                    "_id": "id",
+                    "name": "string",
+                    "logo": "path",
+                  },
+                  
+                ]
+              }
             }
         400:
           description: partner is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "partner is not found.",
+            }
   /partner/{partnerId}:
     get:
       tags:
@@ -1096,11 +1113,22 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "logo": "path",
+              "success": true,
+              "message": "get partner successful.",
+              "data": {
+                "_id": "id",
+                "name": "string",
+                "logo": "path",
+              }
             }
         400:
           description: partnerId is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "partner is not found.",
+            }
   /admin/partner:
     post:
       tags:
@@ -1111,7 +1139,7 @@ paths:
       parameters:
         - in: formData
           name: name
-          description: a new partner.
+          description: a new partner name.
           type: string
           required: true
         - in: formData
@@ -1125,11 +1153,21 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "logo": "path",
+              "success": true,
+              "message": "Create partner successfully",
+              "data": {
+                "name": "string",
+                "logo": "path",
+              }
             }
         400:
           description: Create partner failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Create partner failed.",
+            }
       security:
         - bearerAuth: []
   /admin/partner/{partnerId}:
@@ -1147,7 +1185,7 @@ paths:
           description: partner id
         - in: formData
           name: name
-          description: a new partner.
+          description: a new partner name.
           type: string
         - in: formData
           name: logo
@@ -1159,14 +1197,23 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "logo": "path",
+              "success": true,
+              "message": "Update partner successfully",
+              "data": {
+                "name": "string",
+                "logo": "path",
+              }
             }
         400:
           description: Update partner failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Update partner failed.",
+            }
       security:
         - bearerAuth: []
-
     delete:
       tags:
         - "partner"
@@ -1182,16 +1229,25 @@ paths:
       responses:
         200:
           description: Delete partner successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete partner successfully",
+              "data": {
+                "_id": "id",
+                "name": "string",
+                "logo": "path",
+              }
+            }
         400:
-          description: Update partner failed.
+          description: Delete partner failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Delete partner failed.",
+            }
       security:
         - bearerAuth: []
   /admin/message:
