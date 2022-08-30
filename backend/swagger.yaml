@@ -672,17 +672,27 @@ paths:
           schema:
             type: object
             example: {
-              "address":"string",
-              "phone":"phone",
-              "email":"email",
-              "facebook":"url",
-              "instagram":"url",
-              "tiktok":"url",
-              "youtube":"url",
-              "hr_mailbox": "email",
+              "success": true,
+              "message": "set about-us information successfully.",
+              "data": {
+                "address":"string",
+                "phone":"phone",
+                "email":"email",
+                "facebook":"url",
+                "instagram":"url",
+                "tiktok":"url",
+                "youtube":"url",
+                "hr_mailbox": "email",
+              }
             }
         400:
           description: contact information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "contact information is not found.",
+            }
   /admin/contactUs:
     post:
       tags:
@@ -716,6 +726,12 @@ paths:
       responses:
         200:
           description: set contact-us information successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "set contact-us information successfully.",
+            }
       security:
         - bearerAuth: []
   /tracking/postage:
