@@ -782,6 +782,12 @@ paths:
             }
         400:
           description: the service is not exist. / the service don't support this road.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "the service is not exist. / the service don't support this road.",
+            }
   /public/uploads/{dirName}/{fileName}:
     get:
       tags:
