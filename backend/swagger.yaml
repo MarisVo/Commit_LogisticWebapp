@@ -856,12 +856,28 @@ paths:
           schema:
             type: object
             example: {
-              "heading": "string",
-              "logo": "path",
-              "detail": "string",              
+              "success": true,
+              "message": "Get commitment successful.",
+              "data": {
+                "length": "number",
+                "commits": [
+                  {
+                    "_id": "630e17c7762611f726d07223",
+                    "heading": "string",
+                    "logo": "path",
+                    "detail": "string",
+                  },
+                ]
+              }             
             }
         400:
           description: commitment is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "commitment is not found.",
+            }
   /commitment/{commitmentId}:
     get:
       tags:
@@ -881,12 +897,23 @@ paths:
           schema:
             type: object
             example: {
-              "heading": "string",
-              "logo": "path",
-              "detail": "string",              
+              "success": true,
+              "message": "get commitment information successfully.",
+              "data": {
+                "_id": "id",
+                "heading": "string",
+                "logo": "path",
+                "detail": "string",
+              }              
             }
         400:
           description: commitment is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "commitment is not found.",
+            }
   /admin/commitment:
     post:
       tags:
@@ -915,12 +942,22 @@ paths:
           schema:
             type: object
             example: {
-              "heading": "string",
-              "logo": "path",
-              "detail": "string",
+              "success": true,
+              "message": "Create commitment successfully.",
+              "data": {
+                "heading": "string",
+                "logo": "path",
+                "detail": "string",
+              }
             }
         400:
           description: Create commitment failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Create commitment failed.",
+            }
       security:
         - bearerAuth: []
   /admin/commitment/{commitmentId}:
@@ -955,12 +992,22 @@ paths:
           schema:
             type: object
             example: {
-              "heading": "string",
-              "logo": "path",
-              "detail": "string",
+              "success": true,
+              "message": "Update commitment successfully.",
+              "data": {
+                "heading": "string",
+                "logo": "path",
+                "detail": "string",
+              }
             }
         400:
           description: Update commitment failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Update commitment failed.",
+            }
       security:
         - bearerAuth: []
 
@@ -979,16 +1026,20 @@ paths:
       responses:
         200:
           description: Delete commitment successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete commitment successfully.",
+            }
         400:
-          description: Update commitment failed.
+          description: Delete commitment failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Delete commitment failed.",
+            }
       security:
         - bearerAuth: []
   /partner:
