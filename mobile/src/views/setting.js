@@ -55,7 +55,7 @@ const Setting = ({navigation}) => {
         </View>
         <TouchableOpacity
           style={{
-            height: "20%",
+            height: "10%",
             aspectRatio: 1.6,
             borderColor: "black",
             borderWidth: 2,
@@ -69,7 +69,7 @@ const Setting = ({navigation}) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={{
-            height: "20%",
+            height: "10%",
             aspectRatio: 1.6,
             borderColor: "black",
             borderWidth: 2,
@@ -80,6 +80,20 @@ const Setting = ({navigation}) => {
             navigation.navigate("Warehouses");
           }}>
           <Text style={{fontSize: 25}}>Warehouse</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            height: "10%",
+            aspectRatio: 1.6,
+            borderColor: "black",
+            borderWidth: 2,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          onPress={() => {
+            navigation.navigate("SettingNoti");
+          }}>
+          <Text style={{fontSize: 25}}>Notification</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

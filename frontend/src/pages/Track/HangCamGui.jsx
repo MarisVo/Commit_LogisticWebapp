@@ -1,10 +1,20 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import { useContext } from 'react';
+import { MainContext } from '../../context/MainContext';
 import { END_POINT } from "../../utils/constant";
 
 export default function HangCamGui() {
     const [data,setData] = useState([]);
-
+    const {setMetadata} = useContext(MainContext);
+    useEffect(() => {
+        setMetadata((prev) => {
+          return {
+            ...prev,
+            title: "Hàng cấm gửi | TKTL",
+          };
+        });
+    },[])
     const getDataFromApi = async () => {
         try {
           const res = await axios.get(`${END_POINT}/prohibited-product`)

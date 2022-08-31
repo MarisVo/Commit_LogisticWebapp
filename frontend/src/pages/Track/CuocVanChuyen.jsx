@@ -1,11 +1,12 @@
 import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
 	getProvincesWithDetail,
 	getProvinces,
 	getWardsByDistrictCode,
 	getDistrictsByProvinceCode,
 } from 'sub-vn';
+import { MainContext } from '../../context/MainContext';
 import { END_POINT } from '../../utils/constant';
 export default function CuocVanChuyen() {
 	// ================== FROM STATE =======================
@@ -25,7 +26,7 @@ export default function CuocVanChuyen() {
 	const [provinceCodeTo, setProvinceCodeTo] = useState(null);
 	const [districtCodeTo, setDistrictCodeTo] = useState(null);
 	const [wardCodeTo, setWardCodeTo] = useState(null);
-
+	   const {setMetadata} = useContext(MainContext);
 	// weight
 	const [weight, setWeight] = useState(null);
 	const [unit, setUnit] = useState('kg');
@@ -39,7 +40,14 @@ export default function CuocVanChuyen() {
 	useEffect(() => {
 		setProvincesFrom(getProvinces());
 	}, []);
-
+	  useEffect(() => {
+        setMetadata((prev) => {
+          return {
+            ...prev,
+            title: "Cước vận chuyển | TKTL",
+          };
+        });
+    },[])
 	// get all districts by province code
 	// useEffect(() => {
 	// 	setDistrictsFrom(getDistrictsByProvinceCode(provinceCodeFrom));

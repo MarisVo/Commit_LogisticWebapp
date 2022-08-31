@@ -15,9 +15,18 @@ export default function BuuCuc() {
   const [districtSelected, setDistrictSelected] = useState(null);
   const [isValid, setIsValid] = useState(true);
   const [result, setResult] = useState([]);
+  const {setMetadata} = useContext(MainContext);
   const pathname = useLocation();
   // get all provinces
- 
+  
+    useEffect(() => {
+        setMetadata((prev) => {
+          return {
+            ...prev,
+            title: "Bưu cục | TKTL",
+          };
+        });
+    },[])
   useEffect(() => {
     const getProvince = getProvinces()
     setProvinces(getProvince);

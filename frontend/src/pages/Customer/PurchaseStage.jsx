@@ -26,7 +26,7 @@ function PurchaseStage() {
             <div className="flex items-center justify-between cursor-pointer ml-2 mr-3 ">
               <Link
                 className="flex items-center justify-start mt-1  hover:translate-y-[-1px] transition-all hover:text-yellow-500  "
-                to="/khach-hang/trang-ca-nhan"
+                to="/khach-hang/dat-hang"
               >
                 <LeftOutlined className="text-[12px] sm:text-xs" />
                 <span className="  font-medium sm:mt-1   cursor-pointer text-[12px] sm:text-xs">

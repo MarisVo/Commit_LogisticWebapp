@@ -12,8 +12,7 @@ import { TOKEN } from "./adminToken";
 import axios from 'axios';
 import { MainContext } from '../../context/MainContext';
 
-
-export default function AdminStaff() {
+export default function AdminSchedule() {
   const [idItem,setId] = useState()
   const {accessToken} = useContext(MainContext)
   const [dataEdit, setDataEdit] = useState()
@@ -25,17 +24,22 @@ export default function AdminStaff() {
   const [isDisable, setIsDisable] = useState(false)
   const [open, setOpen] = useState(false);
 
-  const [data, setData] = useState([])
+  const [data, setData] = useState([
+    {
+        name:"Dũng",
+        address:"Hà Nội",
+        phone:"09821345",
+        infor:"Đồ nội thất",
+        note:"Hàng dễ vỡ",
+        status:"Đang vận chuyển"
+    }
+  ])
 
   const getDataFromApi = async ()=>{
     try{
-      const res = await axios({
-        url:`${END_POINT}/admin/staff`,
-        method:"get",
-        headers: { authorization: `Bearer ${accessToken}` },
-      })
-      setData(res.data.data)
-      console.log(res);
+      const res = await axios.get(`${END_POINT}/admin/staff`)
+    //   setData(res.data.data)
+      console.log(res.data.data);
     }
 
     catch(e){
@@ -338,60 +342,61 @@ export default function AdminStaff() {
   }
 
   return (
-    <div>
-      <div className='flex justify-end mb-5'>
-        <Search
-          placeholder="Search"
-          onSearch={onSearch}
-          style={{
-            width: 400,
-            margin: "auto",
-            display: "block",
-          }}
-        />
-        {/* <button
-          className="p-2 w-32 hover:opacity-80  border-black border-2 "
-          onClick={() => setOpen(true)}
-        >
-          +Thêm
-        </button> */}
-      </div>
-      <Table
-        columns={columns}
-        dataSource={data}
-        onChange={onChange}
-      >
-      </Table>
+    // <div>
+    //   <div className='flex justify-end mb-5'>
+    //     <Search
+    //       placeholder="Search"
+    //       onSearch={onSearch}
+    //       style={{
+    //         width: 400,
+    //         margin: "auto",
+    //         display: "block",
+    //       }}
+    //     />
+    //     {/* <button
+    //       className="p-2 w-32 hover:opacity-80  border-black border-2 "
+    //       onClick={() => setOpen(true)}
+    //     >
+    //       +Thêm
+    //     </button> */}
+    //   </div>
+    //   <Table
+    //     columns={columns}
+    //     dataSource={data}
+    //     onChange={onChange}
+    //   >
+    //   </Table>
 
 
-      {/* <AddNewStaff
-        isVisible={open}
-        onOk={acceptAddNewStaff}
-        loading={loading}
-        disable={isDisable}
-        onClose={() => setOpen(false)}
-      /> */}
+    //   {/* <AddNewStaff
+    //     isVisible={open}
+    //     onOk={acceptAddNewStaff}
+    //     loading={loading}
+    //     disable={isDisable}
+    //     onClose={() => setOpen(false)}
+    //   /> */}
 
-      <EditStaff
-        isVisible={openEdit}
-        onOk={acceptEditNewStaff}
-        loading={loading}
-        disable={isDisable}
-        dataEdit={dataEdit}
-        onClose={() => setOpenEdit(false)}
-      />
+    //   <EditStaff
+    //     isVisible={openEdit}
+    //     onOk={acceptEditNewStaff}
+    //     loading={loading}
+    //     disable={isDisable}
+    //     dataEdit={dataEdit}
+    //     onClose={() => setOpenEdit(false)}
+    //   />
 
-      <ConfirmModal
-        isVisible={openDel}
-        text={`xóa nhân viên`}
-        onClose={() => setOpenDel(false)}
-        loading={loading}
-        disable={isDisable}
-        onOk={acceptDelete}
-      />
+    //   <ConfirmModal
+    //     isVisible={openDel}
+    //     text={`xóa nhân viên`}
+    //     onClose={() => setOpenDel(false)}
+    //     loading={loading}
+    //     disable={isDisable}
+    //     onOk={acceptDelete}
+    //   />
 
 
 
-    </div>
+    // </div>
+    <div></div>
   )
 }

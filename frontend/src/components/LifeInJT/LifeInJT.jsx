@@ -1,20 +1,21 @@
 import Images from '../../utils/images';
 import { RightOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
 const LifeInJT = () => {
     return (
-        <div className="m-auto px-[16px] lg:px-[0px] text-2xl max-w-[1140px] mb-[60px]">
+        <div className="m-auto px-[16px] lg:px-[0px] text-2xl max-w-[1140px] mt-5 mb-[60px]">
             <div className="flex justify-between mb-[20px]">
                 <h3 className="flex items-center font-extrabold text-1xl sm:text-3xl">
                     Cuộc sống <img src={Images.LOGO} alt="" />
                 </h3>
-                <a
-                    href="#"
+                <Link
+                    to="/cuoc-song"
                     className="hidden items-center gap-2 bg-[#e5a663] px-[12px] sm:py-[4px] sm:px-[16px] rounded-lg text-[14px] text-[#000] sm:text-sm sm:flex"
                 >
                     <RightOutlined className="text-[12px] sm:text-sm" />
                     Xem chi tiết
-                </a>
+                </Link>
             </div>
             <div className="grid grid-cols-2 gap-3 overflow-hidden md:grid-cols-3 md:gap-8">
                 <img src={Images.image1} alt="J&T daily working" className="w-[100%] h-[100%] rounded-lg shadow-xl" />

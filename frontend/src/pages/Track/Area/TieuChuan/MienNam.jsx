@@ -1,17 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 // import { MIEN_NAM } from '../../../../utils/constant';
-export default function MienNam({data}) {
+import { END_POINT } from './../../../../utils/constant';
+export default function MienNam({data,search,location}) {
+	
+	/* console.log("loca",location) */
+	
 	return (
-		<div className="px-[22px] lg:px-[56px] py-[44px]">
+		<div className="px-[22px] md:px-[40px] py-[44px]">
 			<div x-show="service1 =='mn'">
-				<div className="grid grid-cols-1  lg:grid-cols-4  lg:gap-y-[30px]">
-					{data.map((p) => (
-						<div className="flex items-center py-[16px] border-b-2 lg:py-0 lg:border-0 border-[#F2F2F2]">
+				<div className="grid   grid-cols-2  lg:grid-cols-4  lg:gap-y-[30px]">
+					{
+					
+			
+					
+				data.map((p) => (
+						<div className="flex items-center justify-center py-[16px] border-b-2 lg:py-0 lg:border-0 border-[#F2F2F2]" key={p._id}>
 							<a
-								class="text-lg font-normal text-[#232323]"
-								href={p.url}
+								className="text-lg font-normal text-[#232323]"
+							/* 	href={`${/api/p.file}`} */
+							 	href={`/${p.file}`} 
 								target="_blank"
 								rel="noreferrer"
 							>
@@ -19,7 +28,7 @@ export default function MienNam({data}) {
 									icon={faLocationDot}
 									className="text-[#ffbb0f]"
 								/>
-								<span className="ml-2">{p.name}</span>
+								<span className="ml-2">{p.province}</span>
 							</a>
 						</div>
 					))}

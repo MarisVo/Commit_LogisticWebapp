@@ -11,8 +11,12 @@ import {
   TextInput,
   ScrollView,
   FlatList,
-  Platform
+  Platform,
+  Alert,
 } from "react-native";
+import axios from "axios";
+import {END_POINT} from "../../utils/constant";
+console.log("endpoint",END_POINT)
 import {getDistrictsByProvinceCode, getProvinces} from "sub-vn";
 import IconAwesome from "react-native-vector-icons/FontAwesome";
 import IonIcon from "react-native-vector-icons/Ionicons";
@@ -121,7 +125,7 @@ function Warehouse({navigation}) {
   useEffect(() => {
     const dataProvinces = getProvinces();
     setProvinces(dataProvinces);
-    setWarehouses(data);
+    // setWarehouses(data);
   }, []);
   const handleSelectProvince = provinceSelected => {
     const provinceCode = provinces.find(
@@ -133,6 +137,7 @@ function Warehouse({navigation}) {
       district: null,
     });
     setDistricts(dataDistricts);
+   
   };
   const handleSelectDistrict = districtSelected => {
     // setCurrentDistrict(districtSelected);
@@ -140,16 +145,54 @@ function Warehouse({navigation}) {
       ...dataForSearch,
       district: districtSelected,
     });
+    setWarehouses([])
+  };
+  const handleSearch = () => {
+    if (dataForSearch.province && dataForSearch.district) {
+    const province = dataForSearch.province?.replace("Thành phố ", "")?.replace("Tỉnh ", "");
+      const fetchData = async () => {
+        try {
+          const res = await axios.get(`${END_POINT}/warehouse`, {
+            params: {...dataForSearch,province},
+          });
+          
+          setWarehouses(res.data.data.warehouses);
+        } catch (error) {
+          Alert.alert("Thông báo", `${error}`, [
+            {
+              text: "Cancel",
+              // onPress: () => console.log("Cancel Pressed"),
+              style: "cancel",
+            },
+            {text: "OK",
+            //  onPress: () => console.log("OK Pressed")
+            },
+          ]);
+        }
+      };
+      fetchData();
+    // setWarehouses(data)
+    return
+    }
+    Alert.alert("Thông báo", "Mời chọn đủ thông tin", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      {text: "OK", onPress: () => console.log("OK Pressed")},
+    ]);
   };
   return (
-    <View style={{backgroundColor: "#FFD124", height: "100%"}}>
+    <SafeAreaView style={{backgroundColor: "#FFD124", height: "100%"}}>
       <View
         style={{
-          height: "15%",
+          height: "12%",
           position: "relative",
           justifyContent: "center",
           alignItems: "center",
-        }}>
+        }}
+      >
         <View
           style={{
             position: "absolute",
@@ -157,11 +200,13 @@ function Warehouse({navigation}) {
             width: 50,
             height: 50,
             justifyContent: "center",
-          }}>
+          }}
+        >
           <TouchableOpacity
             onPress={() => {
               navigation.goBack();
-            }}>
+            }}
+          >
             <IconAwesome name="arrow-left" size={26} />
           </TouchableOpacity>
         </View>
@@ -171,78 +216,82 @@ function Warehouse({navigation}) {
       </View>
       <View
         style={{
-          height: "85%",
+          height: "88%",
           backgroundColor: "white",
           borderTopLeftRadius: 40,
           borderTopRightRadius: 40,
-        }}>
+          paddingHorizontal: 24,
+          // justifyContent:"center"
+        }}
+      >
         <View
           style={{
-            height: "100%",
-            marginHorizontal: 24,
-          }}>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}>
-            <Select
-              selectedValue={dataForSearch.province}
-              minWidth="45%"
-              height="56px"
-              borderRadius={5}
-              backgroundColor="#FFD124"
-              placeholderTextColor="black"
-              accessibilityLabel="Choose Service"
-              fontSize="14px"
-              placeholder="Tỉnh/Thành phố"
-              _selectedItem={{
-                bg: "teal.600",
-                endIcon: <CheckIcon size="5" />,
-              }}
-              mt={1}
-              onValueChange={value => handleSelectProvince(value)}>
-              {provinces.map(province => (
-                <Select.Item
-                  label={province.name}
-                  value={province.name}
-                  key={province.name}
-                />
-              ))}
-            </Select>
-            <Select
-              selectedValue={dataForSearch.district}
-              minWidth="45%"
-              height="56px"
-              borderRadius={5}
-              backgroundColor="#FFD124"
-              placeholderTextColor="black"
-              accessibilityLabel="Choose Service"
-              fontSize="14px"
-              placeholder="Quận/huyện"
-              _selectedItem={{
-                bg: "teal.600",
-                endIcon: <CheckIcon size="5" />,
-              }}
-              mt={1}
-              onValueChange={value => handleSelectDistrict(value)}>
-              {districts.map(district => (
-                <Select.Item
-                  label={district.name}
-                  value={district.name}
-                  key={district.name}
-                />
-              ))}
-            </Select>
-          </View>
+            flex: 1,
+            paddingVertical: 15,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Select
+            selectedValue={dataForSearch.province}
+            minWidth="45%"
+            height="56px"
+            borderRadius={5}
+            backgroundColor="#FFD124"
+            placeholderTextColor="black"
+            accessibilityLabel="Choose Service"
+            fontSize="14px"
+            placeholder="Tỉnh/Thành phố"
+            _selectedItem={{
+              bg: "teal.600",
+              endIcon: <CheckIcon size="5" />,
+            }}
+            mt={1}
+            onValueChange={value => handleSelectProvince(value)}
+          >
+            {provinces.map(province => (
+              <Select.Item
+                label={province.name}
+                value={province.name}
+                key={province.name}
+              />
+            ))}
+          </Select>
+          <Select
+            selectedValue={dataForSearch.district}
+            minWidth="45%"
+            height="56px"
+            borderRadius={5}
+            backgroundColor="#FFD124"
+            placeholderTextColor="black"
+            accessibilityLabel="Choose Service"
+            fontSize="14px"
+            placeholder="Quận/huyện"
+            _selectedItem={{
+              bg: "teal.600",
+              endIcon: <CheckIcon size="5" />,
+            }}
+            mt={1}
+            onValueChange={value => handleSelectDistrict(value)}
+          >
+            {districts.map(district => (
+              <Select.Item
+                label={district.name}
+                value={district.name}
+                key={district.name}
+              />
+            ))}
+          </Select>
+        </View>
 
-          <View
-            style={{
-              flex: 7,
-              alignItems:"center"
-            }}>
+        <View
+          style={{
+            flex: 7,
+            alignItems: "center",
+          }}
+        >
+          {warehouses.length > 0 ? (
             <FlatList
               keyExtractor={item => item._id}
               data={warehouses}
@@ -256,24 +305,26 @@ function Warehouse({navigation}) {
                     marginVertical: 12,
                     // marginHorizontal:10,
                     borderRadius: 5,
-                    backgroundColor:"white",
-                    shadowColor: '#000000',
+                    backgroundColor: "white",
+                    shadowColor: "#000000",
                     shadowOffset: {
                       width: 3,
-                      height: 3
+                      height: 3,
                     },
                     shadowRadius: 5,
                     shadowOpacity: 1.0,
-                    elevation:5
-                  }}>
+                    elevation: 5,
+                  }}
+                >
                   <View
                     style={{
                       height: "100%",
                       width: "4%",
                       backgroundColor: "#FFD124",
-                      borderTopLeftRadius:5,
-                      borderBottomLeftRadius:5,
-                    }}></View>
+                      borderTopLeftRadius: 5,
+                      borderBottomLeftRadius: 5,
+                    }}
+                  ></View>
                   <View style={{width: "95%"}}>
                     <View
                       style={{
@@ -282,8 +333,9 @@ function Warehouse({navigation}) {
                         alignContent: "center",
                         flexDirection: "row",
                         marginRight: 24,
-                        backgroundColor:"white"
-                      }}>
+                        backgroundColor: "white",
+                      }}
+                    >
                       <View style={{justifyContent: "center"}}>
                         <IconAwesome name="circle" color="#00FF57" />
                       </View>
@@ -292,7 +344,8 @@ function Warehouse({navigation}) {
                           textAlignVertical: "center",
                           fontSize: 12,
                           marginLeft: 6,
-                        }}>
+                        }}
+                      >
                         Đang mở cửa
                       </Text>
                     </View>
@@ -300,18 +353,20 @@ function Warehouse({navigation}) {
                       style={{
                         flex: 6,
                         alignItems: "center",
-                      }}>
+                      }}
+                    >
                       <View
                         style={{
                           flex: 1,
                           width: "90%",
                           flexDirection: "row",
                           paddingVertical: 10,
-                        }}>
-                        <View style={{marginRight: 5,minWidth:20}}>
+                        }}
+                      >
+                        <View style={{marginRight: 5, minWidth: 20}}>
                           <IonIcon name="location-sharp" size={20} />
                         </View>
-                        <Text style={{width: "85%", fontSize: 16} }>
+                        <Text style={{width: "85%", fontSize: 16}}>
                           {item.street}
                         </Text>
                       </View>
@@ -321,15 +376,23 @@ function Warehouse({navigation}) {
                           width: "90%",
                           flexDirection: "row",
                           paddingVertical: 10,
-                        }}>
-                        <View style={{marginRight: 5, minWidth:20,alignItems:"center"}}>
+                        }}
+                      >
+                        <View
+                          style={{
+                            marginRight: 5,
+                            minWidth: 20,
+                            alignItems: "center",
+                          }}
+                        >
                           <IconAwesome name="phone" size={20} />
                         </View>
                         <Text
                           style={{
                             fontSize: 16,
-                            width:"80%",
-                          }}>
+                            width: "80%",
+                          }}
+                        >
                           {item.phone}
                         </Text>
                       </View>
@@ -338,10 +401,40 @@ function Warehouse({navigation}) {
                 </View>
               )}
             />
-          </View>
+          ) : (
+            <TouchableOpacity
+              style={{
+                width: 150,
+                height: 58,
+                borderRadius: 16,
+                backgroundColor: "#FFD124",
+                justifyContent: "center",
+              }}
+              onPress={handleSearch}
+            >
+              <Text style={{textAlign: "center", fontSize: 18, color: "white"}}>
+                Tra cứu
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
+        {/* { warehouses.length===0 && <View
+          style={{
+            flex:1,
+            alignItems:"center",
+            marginTop:20,
+            backgroundColor:"red"
+          }}
+        >
+          <TouchableOpacity 
+          style={{width:150,height:58,borderRadius:16,backgroundColor:"#FFD124",justifyContent:"center"}}
+          onPress={handleSearch}
+          >
+            <Text style={{textAlign:"center", fontSize:18,color:"white"}}>Tra cứu</Text>
+          </TouchableOpacity>
+        </View> } */}
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 

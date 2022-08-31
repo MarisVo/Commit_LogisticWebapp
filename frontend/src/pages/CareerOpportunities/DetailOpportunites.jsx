@@ -1,7 +1,10 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useState } from 'react';
 import InputDesktop from "../../components/InputDesktop/InputDesktop";
-import RecruitForm from "../../components/RecruitForm/RecruitForm";
+import RecruitForm from '../../components/RecruitForm/RecruitForm'; 
 import Images from "../../utils/images";
 
+import InputMobile from '../../components/InputMobile/InputMobile';
 import {
   faCalendar,
   faCoins,
@@ -13,24 +16,42 @@ import {
   faMoneyBillTrendUp,
   faPersonBreastfeeding,
 } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { END_POINT } from '../../utils/constant';
 
-const RecruitmentDetails = ({ data }) => {
-  // console.log(data);
-  console.log("recruit",data)
-  return (
-    <>
-      {data && (
+const DetailOpportunites = () => {
+  const [data,setData] = useState([])
+      const params = useParams()
+      console.log(params)
+      useEffect(()=>{
+        console.log(params)
+        const getData = async()=>{
+          const api =  await axios.get(`${END_POINT}/career/${params.id}`)
+          const {data} = api.data
+          console.log(data)
+          setData(data)
+        }
+        getData()
+      },[])
+    return (
+        <div>
+              <>
+               <div className="relative" style={{ top: "35px" }}>
+                        <img src={Images.TOP_BANNER} alt="banner" />
+                        <InputDesktop
+                           
+                        />
+                        <InputMobile  />
+                    </div>
+      
         <>
-          {/* Banner */}
-          {/* <div className="relative" style={{ top: "35px" }}>
-        <img src={Images.TOP_BANNER} alt="banner" />
-        <InputDesktop />
-      </div> */}
+       
 
           <div className="m-auto max-w-[1140px] px-[16px] lg:px-[0px]  mt-[90px] lg:mt-[180px]">
             <h2 className="text-[24px] lg:text-[32px] font-bold mb-6">
-              {data.name}
+              {data?.name}
             </h2>
             <div className="gap-4 lg:grid lg:grid-cols-2 bg-[#f2f2f2]">
               <div className="p-4">
@@ -38,7 +59,7 @@ const RecruitmentDetails = ({ data }) => {
                   <FontAwesomeIcon className="mr-2" icon={faCalendar} />
                   Hạn nộp
                 </h4>
-                <p className="py-2 ml-5">{data.deadline.toString()}</p>
+                <p className="py-2 ml-5">{data?.deadline?.toString()}</p>
                 <hr />
               </div>
               <div className="p-4">
@@ -46,7 +67,7 @@ const RecruitmentDetails = ({ data }) => {
                   <FontAwesomeIcon className="mr-2" icon={faCoins} />
                   Mức lương
                 </h4>
-                <p className="py-2 ml-5">{data.bonus}</p>
+                <p className="py-2 ml-5">{data?.bonus}</p>
                 <hr />
               </div>
               <div className="p-4">
@@ -66,7 +87,7 @@ const RecruitmentDetails = ({ data }) => {
                   Địa điểm làm việc
                 </h4>
                 <p className="py-2 ml-5">
-                  {data.location}
+                  {data?.location}
                 </p>
                 <hr />
               </div>
@@ -105,19 +126,20 @@ const RecruitmentDetails = ({ data }) => {
               </p>
             </article>
           </div>
-          <div className="relative mb-[165px]">
+          <div className="relative mb-[60px] mt-10 ">
             <img
               src={Images.BOTTOM_BANNER}
               alt="IMG"
-              className="w-full h-[580px] "
+              className="w-full h-[750px]"
             />
 
-            <RecruitForm id={data._id} />
+            <RecruitForm id={data?._id} />
           </div>
         </>
-      )}
+   
     </>
-  );
+        </div>
+    );
 };
 
-export default RecruitmentDetails;
+export default DetailOpportunites;

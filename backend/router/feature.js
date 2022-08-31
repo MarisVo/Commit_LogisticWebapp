@@ -46,10 +46,10 @@ featureRoute.get("/service/:serviceId", async (req, res) => {
           ids.push(service.features[i]);
         }
       }
-      const length = await Feature.count();
       const feature = await Feature.find({ _id: ids })
         .limit(pageSize)
         .skip(pageSize * page);
+      var length = await Feature.find({ _id: ids }).count();
       return sendSuccess(res, "get feature information successfully.", {
         length,
         feature,
@@ -87,11 +87,11 @@ featureRoute.get("/", async (req, res) => {
     if (detail) {
       query.detail = detail;
     }
-    const length = await Feature.count();
     const feature = await Feature.find({ $and: [query, keywordCondition] })
       .limit(pageSize)
       .skip(pageSize * page)
       .sort(`${sortBy}`);
+    var length = await Feature.find({ $and: [query, keywordCondition] }).count();
     if (feature)
       return sendSuccess(res, "Get feature information successfully.", {
         length,

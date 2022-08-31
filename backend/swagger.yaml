@@ -5,7 +5,7 @@ info:
   title: "Logistic Web Service"
   contact:
     email: "d.bed11@gptgdt.net"
-host: "localhost:8000" #14.186.134.214
+host: "localhost:8000"
 basePath: "/api"
 schemes:
 - "http"
@@ -79,6 +79,8 @@ tags:
   description: "Endpoint PriceList"
 - name: "customer"
   description: "Endpoint Customer"
+- name: "receiver"
+  description: "Endpoint Receiver"
 paths:
   /auth/verify-token:
     post:
@@ -421,12 +423,11 @@ paths:
       consumes:
         - multipart/form-data
       parameters:
-      - in: body
+      - in: formData
         name: logo
         required: true
         description: file
-        schema:
-          type: string
+        type: file
       responses:
         200:
           description: upload logo successfully.
@@ -440,12 +441,11 @@ paths:
       consumes:
         - multipart/form-data
       parameters:
-      - in: body
+      - in: formData
         name: banners
         required: true
         description: array of files
-        schema:
-          type: array
+        type: file
       responses:
         200:
           description: upload banners successfully.
@@ -1461,24 +1461,35 @@ paths:
           type: string
           required: true
           description: Id of an car 
-        - in: formData
+        - in: body
           name: road
-          description: a new car.
+          description: update car information
           schema:
             type: object
             required:
+              - plate
+              - car_type 
               - volumn
-              - tonnage 
-              - car_type
+              - tonnage
+              - car_fleet
+              - seri
+              - expired
             properties:
+              plate: 
+                  type: string
+              car_type:
+                type: string
+                enum: ['8_ton', '20_ton']
               volumn: 
                   type: number
               tonnage:
                   type: number
-              car_type:
-                type: string
-                enum: ['8_ton', '20_ton']
-        - in: formData
+              car_fleet:
+                  type: string
+              seri:
+                  type: string
+              expired:
+                  type: string
       responses:
         200:
           description: Update car successfully.
@@ -1530,21 +1541,35 @@ paths:
       consumes:
         - application/json
       parameters:
-        - in: formData
-          name: car
+        - in: body
+          name: road        
           description: a new car.
           schema:
             type: object
+            required:
+              - plate
+              - car_type 
+              - volumn
+              - tonnage
+              - car_fleet
+              - seri
+              - expired
             properties:
-              plate:
-                type: string 
+              plate: 
+                  type: string
               car_type:
                 type: string
                 enum: ['8_ton', '20_ton']
-              volumn:
-                type: number 
+              volumn: 
+                  type: number
               tonnage:
-                type: number 
+                  type: number
+              car_fleet:
+                  type: string
+              seri:
+                  type: string
+              expired:
+                  type: string
       responses:
         200:
           description: Create car successfully.
@@ -1811,7 +1836,7 @@ paths:
           type: string
           required: true
           description: Id of an road 
-        - in: formData
+        - in: body
           name: road
           description: a new road.
           schema:
@@ -1873,7 +1898,7 @@ paths:
       consumes:
         - application/json
       parameters:
-        - in: formData
+        - in: body
           name: road
           description: a new road.
           schema:
@@ -1988,7 +2013,7 @@ paths:
           type: string
           required: true
           description: Id of an product-shipment 
-        - in: formData
+        - in: body
           name: product-shipment
           description: Update product-shipment.
           schema:
@@ -2042,7 +2067,7 @@ paths:
       security:
           - bearerAuth: []
 
-  /admin/product-shipment/create:
+  /admin/product-shipment/create/{product_id}:
     post:
       tags:
         - "product-shipment"
@@ -2050,7 +2075,12 @@ paths:
       consumes:
         - application/json
       parameters:
-        - in: formData
+        - in: path
+          name: product_id
+          type: string
+          required: true
+          description: Id of an product
+        - in: body
           name: product-shipment
           description: a new product-shipment.
           schema:
@@ -2058,8 +2088,6 @@ paths:
             properties:
               quantity:
                 type: number 
-              product_id:
-                type: string
       responses:
         200:
           description: Create product shipment successfully.
@@ -2067,7 +2095,6 @@ paths:
             type: object
             example: {
               "quantity": "string",
-              "product_id": "string",
             }
         400:
           description: Create product shipment failed. 
@@ -2178,7 +2205,7 @@ paths:
           type: string
           required: true
           description: Id of an bill 
-        - in: formData
+        - in: body
           name: bill
           description: a new bill.
           schema:
@@ -2251,8 +2278,8 @@ paths:
       summary: "Create a new bill"
       consumes:
         - application/json
-      parameters:
-        - in: formData
+      parameters:         
+        - in: body      
           name: bill
           description: a new bill.
           schema:
@@ -2266,8 +2293,10 @@ paths:
                 type: string 
               driver:
                 type: string 
-              product_shipment:
-                type: string 
+              actual_fuel:
+                type: number 
+              theoretical_fuel: 
+                type: number 
               status:
                 type: string
                 enum: ['waiting', 'accepted', 'processing', 'completed', 'refused']
@@ -2281,11 +2310,49 @@ paths:
               "road": "string",
               "car": "string",
               "driver": "string",
-              "product_shipment": "string",
+              "actual_fuel": "number",
+              "theoretical_fuel": "number",
               "status": "string",
             }
         400:
           description: Create bill failed. 
+      security:
+        - bearerAuth: []
+  
+  /admin/bill/product_shipments/{billId}:
+    post:
+      tags:
+        - "bill"
+      summary: "Update a turnover, shipment of bill"
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: billId
+          type: string
+          required: true
+          description: Id of an bill 
+        - in: body
+          name: bill
+          description: a new bill.
+          schema:
+            type: object
+            properties:
+              shipment:
+                type: string 
+              turnover:
+                type: number
+      responses:
+        200:
+          description: Update bill successfully.
+          schema:
+            type: object
+            example: {
+              "shipment": "string",
+              "turnover": "number",
+            }
+        400:
+          description: Update bill failed. 
       security:
         - bearerAuth: []
 
@@ -4962,19 +5029,19 @@ paths:
             }
         400:
           description: service is not found.  
-  /service/{serviceId}:
+  /service/{service}:
     get:
       tags:
         - "service"
-      summary: get delivery service by id
+      summary: get delivery service by id or name
       produces:
         - application/json
       parameters:
         - in: path
-          name: serviceId
+          name: service
           type: string
+          description: Id/Name of a service 
           required: true
-          description: Id of a service 
       responses:
         200:
           description: get service successfully.
@@ -5587,8 +5654,112 @@ paths:
           description: Update staff information failed.
       security:
         - bearerAuth: []
-
-
+  /admin/receiver:
+    get:
+      tags: 
+        - receiver
+      summary: get list of receivers
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: id
+          type: string
+          description: id of receiver 
+        - in: query
+          name: keyword
+          type: string
+          description: keyword for searching receiver 
+        - in: query
+          name: sort
+          type: number
+          description: sort receiver by order
+      responses:
+        200:
+          description: get receiver successfully.
+          schema:
+            type: object
+              example: {
+                "name": "string",
+                "phone": "string",
+                "identity": "string",
+              }
+        400:
+          description: Receiver not found.
+      security:
+        - bearerAuth: []
+  /admin/receiver/{receiverId}:
+    put:
+      tags:
+        - receiver
+      summary: Update receiver by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: receiverId
+          type: string
+          description: id of receiver 
+        - in: body
+          name: update content
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              phone:
+                type: string
+              identity:
+                type: string
+      responses:
+        200:
+           description: Update receiver successfully. 
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - receiver
+      summary: Delete receiver by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: receiverId
+          type: string
+          description: id of receiver  
+      responses:
+        200:
+          description: delete receiver successfully.
+      security:
+        - bearerAuth: []
+  /receiver/{orderId}:
+    put:
+      tags:
+        - receiver
+      summary: Update receiver by customer if order is waiting
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: orderId
+          type: string
+          description: id of order to check 
+        - in: body
+          name: update content
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              phone:
+                type: string
+              identity:
+                type: string
+      responses:
+        200:
+           description: Update receiver successfully. 
+      security:
+        - bearerAuth: []
 securityDefinitions:
   bearerAuth:
     type: "apiKey"

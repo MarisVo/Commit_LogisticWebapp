@@ -12,6 +12,7 @@ import {
 import { Link } from "react-router-dom";
 import { Menu } from 'antd';
 import { RiLockPasswordLine } from "react-icons/ri";
+import { BsHandbag } from "react-icons/bs";
 function getItem(label, key, icon, children) {
     return {
       key,
@@ -49,6 +50,13 @@ const items = [
       </div>,
       "4",
       <IoNotificationsOutline className="text-xl ml-[-26px] md:ml-[-16px] lg:ml-0"/>
+    ),
+    getItem(
+      <div>
+        <Link to="/khach-hang/tao-don-hang"><div className="text-base font-medium">Tạo đơn hàng</div></Link>
+      </div>,
+      "5",
+      <BsHandbag className="text-xl ml-[-26px] md:ml-[-16px] lg:ml-0"/>
     ),
 ];
 
