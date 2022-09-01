@@ -15,6 +15,12 @@ export default function MienNam({data}) {
 								target="_blank"
 								rel="noreferrer"
 							>
+								<iframe
+            style={{ width: "563px", height: "666px" }}
+            src={p.url}
+            type='application/pdf'
+            title='title'
+          />
 								<FontAwesomeIcon
 									icon={faLocationDot}
 									className="text-[#ffbb0f]"
