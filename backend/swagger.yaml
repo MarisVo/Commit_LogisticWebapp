@@ -1010,7 +1010,6 @@ paths:
             }
       security:
         - bearerAuth: []
-
     delete:
       tags:
         - "commitment"
@@ -1284,13 +1283,30 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "email": "string",
-              "phone": "string",    
-              "message": "string",          
-            }
+              "success": true,
+              "message": "get message information successfully.",
+              "data": {
+                "length": "number",
+                "messages": [
+                  {
+                    "_id": "id",
+                    "name": "string",
+                    "email": "string",
+                    "phone": "string",
+                    "message": "string",
+                    "status": "string",
+                  }
+                ]
+              }          
+            }          
         400:
-          description: commitment is not found.  
+          description: message information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "message information is not found.",
+            }
       security:
         - bearerAuth: []
   /admin/message/{messageId}:
@@ -1312,19 +1328,32 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "email": "string",
-              "phone": "string",    
-              "message": "string",          
+              "success": true,
+              "message": "get message information successfully.",
+              "data": {
+                "_id": "id",
+                "name": "string",
+                "email": "string",
+                "phone": "string",
+                "message": "string",
+                "status": "string",
+              }         
             }          
         400:
-          description: message is not found.    
+          description: message information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "message information is not found.",
+            }
+      security:
       security:
         - bearerAuth: []
     put:
       tags:
         - "message"
-      summary: "Update a existing message"
+      summary: "Update status of a existing message"
       consumes:
         - application/json
       parameters:
@@ -1336,23 +1365,32 @@ paths:
           description: message id
         - in: body
           name: message
-          description: a existing message.
+          description: a existing message's status.
           schema:
             type: object
             properties:
-              name:
+              status:
                 type: string
-              email:
-                type: string 
-              phone: 
-                type: string
-              message:
-                type: string 
       responses:
         200:
           description: Update message successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "get message information successfully.",
+              "data": {
+                "status": "string",
+              }         
+            }          
         400:
-          description: Update message failed.
+          description: This message is not existed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "This message is not existed.",     
+            }       
       security:
         - bearerAuth: []
     delete:
@@ -1370,8 +1408,20 @@ paths:
       responses:
         200:
           description: Delete message successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete message successfully.",
+            }                
         400:
-          description: Update message failed.
+          description: Message does not exist.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Message does not exist.",     
+            }
       security:
         - bearerAuth: []
   /message:
@@ -1400,9 +1450,21 @@ paths:
                 type: string 
       responses:
         200:
-          description: Send message successfully.
+          description: Send email successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Send email successfully.",  
+            }    
         400:
-          description: Create message failed.   
+          description: Send email failed.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Send email failed.",  
+            }    
   /user:
     get:
       tags:
