@@ -37,9 +37,9 @@ warehouseAdminRoute.post('/',
                 await Warehouse.create({
                     name, phone, street, ward, district, province, storekeeper , lon, lat
                 })
-                return sendSuccess(res, 'create new warehouse successfully.')
+                return sendSuccess(res, 'Create new warehouse successfully.')
             }
-            return sendError(res, 'supplied address does not exist.')
+            return sendError(res, 'Supplied address does not exist.')
         }
         catch (error) {
             console.log(error)
@@ -133,7 +133,7 @@ warehouseAdminRoute.put('/update-inventory/:warehouseId', async (req, res) => {
         if (status != 'import' && status != 'export') return sendError(res, "Status must be 'import' or 'export'")
         const warehouse = await Warehouse.findById(warehouseId)
         const productShipment = await ProductShipment.findById(productShipmentId)
-        if (!productShipment || !warehouse) return sendError(res, "No information")
+        if (!productShipment || !warehouse) return sendError(res, "No information.")
         for (let i = 0; i < warehouse.inventory_product_shipments.length; i++) {
             if (warehouse.inventory_product_shipments[i].shipment == productShipmentId) {
                 if (warehouse.inventory_product_shipments[i].status == status) {
@@ -145,7 +145,7 @@ warehouseAdminRoute.put('/update-inventory/:warehouseId', async (req, res) => {
                 return sendSuccess(res, `${status} successfully`)
             }
         };
-        return sendError(res,"This product shipment can not be found in this warehouse")    
+        return sendError(res,"This product shipment can not be found in this warehouse.")    
 
     }
     catch (error) {
@@ -163,7 +163,7 @@ warehouseAdminRoute.delete('/:id',
         const {id} = req.params;    
         try {
             const isExist = await Warehouse.exists({_id: id});
-            if (!isExist) return sendError(res, "Warehouse not exist");
+            if (!isExist) return sendError(res, "Warehouse does not exist");
             
             const data = await Warehouse.findByIdAndRemove(id)
             return sendSuccess(res, "Delete warehouse successfully.", data)

@@ -28,8 +28,8 @@ warehouseRoute.get('/', verifyToken,
                     addressCondition = {province: province, district: district}
                 const warehouses = await Warehouse.find(addressCondition).limit(pageSize).skip(pageSize*page).sort(`${sortBy}`)
                 const length = await Warehouse.count()
-                if (warehouses) return sendSuccess(res, "Get warehouse successful.", {length, warehouses})
-                return sendError(res, "Not information found.")
+                if (warehouses) return sendSuccess(res, "Get warehouse successfully.", {length, warehouses})
+                return sendError(res, "No warehouse found.")
             } catch(error){
                 return sendServerError(res)
             }
@@ -65,7 +65,7 @@ warehouseRoute.get('/:id', verifyToken,
         try {
             const {id} = req.params
             const warehouse = await Warehouse.findById(id)
-            if (!warehouse) {return sendError(res, "not information found.")}
+            if (!warehouse) {return sendError(res, "No information found.")}
             if (role === STAFF.ADMIN || (role === STAFF.STOREKEEPER && req.user.role._id == warehouse.storekeeper)) {
                 return sendSuccess(res, "get warehouse successful.", warehouse)
             }
