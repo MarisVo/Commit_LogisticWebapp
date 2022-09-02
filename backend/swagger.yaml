@@ -1536,7 +1536,7 @@ paths:
               "success": true,
               "message": "Get user successfully.",
               "data": {
-                "_id": "62e28e1d6f69b85eeb63c870",
+                "_id": "id",
                 "name": "string",
                 "email": "string",
                 "phone": "string",
