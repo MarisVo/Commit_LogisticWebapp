@@ -1491,12 +1491,29 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "email": "string",
-              "phone": "string",
+              "success": true,
+              "message": "Get user successfully.",
+              "data": {
+                "length": "number",
+                "listUser": [
+                  {
+                    "_id": "id",
+                    "name": "string",
+                    "email": "string",
+                    "phone": "string",
+                    "isActive": "boolean",
+                  },
+                ]
+              }
             }
         400:
-          description: user is not found.
+          description: Information not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Information not found.",
+            }
   /user/{userId}:
     get:
       tags:
@@ -1516,13 +1533,24 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "email": "string",
-              "phone": "string",
+              "success": true,
+              "message": "Get user successfully.",
+              "data": {
+                "_id": "62e28e1d6f69b85eeb63c870",
+                "name": "string",
+                "email": "string",
+                "phone": "string",
+                "isActive": "boolean",
+              }
             }
         400:
-          description: UserId is not found.  
-        
+          description: No information found.
+          schema: 
+            type: object
+            example: {
+              "success": false,
+              "message": "No information found.",
+            }
   /user/staff/{userId}:
     put:
       tags:
@@ -1563,17 +1591,26 @@ paths:
                   type: string
       responses:
         200:
-          description: Update staff successfully.
+          description: Update account information successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "email": "string",
-              "phone": "string",
+              "success": true,
+              "message": "Update account information successfully.",
+              "data": {
+                "name": "string",
+                "email": "string",
+                "phone": "string",
+              }
             }
         400:
           description: Update staff failed.
-
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "This email is existed.",
+            }
   /user/customer/{userId}:
     put:
       tags:
@@ -1614,16 +1651,26 @@ paths:
                   type: string
       responses:
         200:
-          description: Update staff successfully.
+          description: Update account information successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "email": "string",
-              "phone": "string",
+              "success": true,
+              "message": "Update account information successfully.",
+              "data": {
+                "name": "string",
+                "email": "string",
+                "phone": "string",
+              }
             }
         400:
           description: Update staff failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "This email is existed.",
+            }
   /admin/user/active/{userId}:
     put:
       tags:
@@ -1648,7 +1695,6 @@ paths:
             properties:
               isActive:
                 type: string
-             
       requestBody:
         content: 
           multipart/form-data: 
@@ -1663,67 +1709,22 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "email": "string",
-              "phone": "string",
-              "isActive": "string",
+              "success": true,
+              "message": "Update active user successfully.",
+              "data": {
+                "isActive": "boolean",
+              },
             }
         400:
           description: Update active user failed.
-      security:
-        - bearerAuth: []
-  
-  /user/customer/{userId}:
-    put:
-      tags:
-        - "user"
-      summary: "Update a existing customer"
-      consumes:
-        - multipart/form-data
-      parameters:
-        - in: path
-          name: userId
-          schema: 
-            type: string
-          required: true
-          description: user id
-        - in: formData
-          name: customer
-          description: a existing customer.
-          schema:
-            type: object
-            required:
-              - name
-              - email
-              - phone
-            properties:
-              name:
-                type: string
-              email:
-                type: string
-              phone:
-                type: string
-      requestBody:
-        content: 
-          multipart/form-data: 
-            schema:            
-              type: object
-              properties:      
-                name:           
-                  type: string
-      responses:
-        200:
-          description: Update staff successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "email": "string",
-              "phone": "string",
+              "success": false,
+              "message": "User does not exist",
             }
-        400:
-          description: Update staff failed.
-
+      security:
+        - bearerAuth: []
   /admin/user/{userId}:  
     delete:
         tags:
@@ -1740,16 +1741,20 @@ paths:
         responses:
           200:
             description: Delete user successfully.
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    message:
-                      type: string
-                      description: Success message
+            schema:
+              type: object
+              example: {
+                "success": true,
+                "message": "Delete user successfully.",
+              }
           400:
-            description: Update user failed.  
+            description: User does not exist
+            schema:
+              type: object
+              example: {
+                "success": false,
+                "message": "User does not exist",
+              }
         security:
           - bearerAuth: []  
   /admin/car:
