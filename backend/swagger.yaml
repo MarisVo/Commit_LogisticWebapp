@@ -1966,7 +1966,6 @@ paths:
             }
       security:
         - bearerAuth: []
-
   /admin/car/create:
     post:
       tags:
@@ -2029,7 +2028,6 @@ paths:
             }
       security:
         - bearerAuth: []
-
   /prohibited-product:
     get:
       tags:
@@ -2056,12 +2054,27 @@ paths:
           schema:
             type: object
             example: {
-                "name": "string",
-                "detail": "string",
-                "image": "path",
+                "success": true,
+                "message": "Get prohobited product successfully.",
+                "data": {
+                  "length": "number",
+                  "list": [
+                    {
+                      "name": "string",
+                      "image": "path",
+                      "detail": "string",
+                    },
+                  ]
+                }
             }
         400:
-          description: Prohibited product in not found.    
+          description: Prohibited product in not found.   
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Information not found.",
+            }
   /prohibited-product/{id}:
     get:
       tags:
@@ -2081,12 +2094,22 @@ paths:
           schema:
             type: object
             example: {
-                "name": "string",
-                "detail": "string",
-                "image": "path",
+                "success": true,
+                "message": "Get information of prohibited product successfully.",
+                "data": {
+                  "name": "string",
+                  "detail": "string",
+                  "image": "path",
+                }  
             }
         400:
           description: Id is not found. 
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Information of prohibited product is not found.",
+            }
 
   /admin/prohibited-product/create:
     post:
@@ -2116,12 +2139,22 @@ paths:
           schema:
             type: object
             example: {
-                "name": "string",
-                "detail": "path",
-                "image": "string",
+                "success": true,
+                "message": "Create prohibied product successfully.",
+                "data": {
+                  "name": "string",
+                  "image": "string",
+                  "detail": "path",
+                },
             }
         400:
           description: Create prohibited product failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Name is already existed.",
+            }
       security:
         - bearerAuth: []
   /admin/prohibited-product/{id}:
@@ -2154,12 +2187,28 @@ paths:
           schema:
             type: object
             example: {
-                "name": "string",
-                "detail": "string",
-                "image": "path",
+                "success": true,
+                "message": "Update prohibited product successfully.",
+                "data": {
+                  "name": "string",
+                  "detail": "string",
+                  "image": "path",
+                },
             }
         400:
           description: Update prohibited product failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Name is existed.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Prohibited product not exists.",
+              }
+            }
       security:
         - bearerAuth: []
     delete:
@@ -2177,16 +2226,20 @@ paths:
       responses:
         200:
           description: Delete prohibited product successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete prohibited product successfully.",
+            }
         400:
           description: Update prohibited product failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Prohibited product not exists.",
+            }
       security:
         - bearerAuth: []
   

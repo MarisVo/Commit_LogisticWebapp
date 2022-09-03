@@ -24,12 +24,12 @@ prohibitedProductRoute.get('/',
             } : {}
 
             const length = await ProhibitedProduct.find(listKeyword).count()
-            const listCar = await ProhibitedProduct.find(listKeyword)            
+            const list = await ProhibitedProduct.find(listKeyword)            
             .limit(pageSize)
             .skip(pageSize*page)
             .sort(`${sortBy}`)
             
-            if (listCar) return sendSuccess(res, "Get prohobited product successful.", {length, listCar})
+            if (list) return sendSuccess(res, "Get prohobited product successfully.", {length, list})
             return sendError(res, "Information not found.")
         } catch (error) {
             console.log(error)
@@ -47,8 +47,8 @@ prohibitedProductRoute.get('/:id', async (req, res) => {
         const { id } = req.params;
         const prohibitedProduct = await ProhibitedProduct.findById(id)
         if (prohibitedProduct)
-            return sendSuccess(res, 'get information of prohibited product successfully.', prohibitedProduct)
-        return sendError(res, 'information of prohibited product  is not found.')
+            return sendSuccess(res, 'Get information of prohibited product successfully.', prohibitedProduct)
+        return sendError(res, 'Information of prohibited product is not found.')
     } catch (error) {
         console.log(error)
         return sendServerError(res)
