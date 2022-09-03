@@ -1787,16 +1787,35 @@ paths:
           schema:
             type: object
             example: {
-                "plate": "string",
-                "car_type": "string",
-                "volumn": "string",
-                "tonnage": "string",
+                "success": true,
+                "message": "Get car successfully.",
+                "data": {
+                  "length": "number",
+                  "listCar": [
+                    {
+                      "plate": "string",
+                      "car_type": "string",
+                      "volumn": "string",
+                      "tonnage": "string",
+                      "car_fleet": "string",
+                      "insurance": {
+                        "seri": "string",
+                        "expired": "date",  
+                      }
+                    },
+                  ],
+                },
             }
         400:
           description: car in not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Information not found.",
+            }
       security:
         - bearerAuth: []
-  
   /admin/car/{carId}:
     get:
       tags:
@@ -1816,19 +1835,34 @@ paths:
           schema:
             type: object
             example: {
-                "plate": "string",
-                "car_type": "string",
-                "volumn": "string",
-                "tonnage": "string",
+                "success": true,
+                "message": "Get car successfully.",
+                "data": {
+                  "plate": "string",
+                  "car_type": "string",
+                  "volumn": "string",
+                  "tonnage": "string",
+                  "car_fleet": "string",
+                   "insurance": {
+                     "seri": "string",
+                    "expired": "date",  
+                  }
+                },
             }
         400:
           description: CarId is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Information not found.",
+            }
       security:
         - bearerAuth: []
     put:
       tags:
         - "car"
-      summary: Admin update road 
+      summary: Admin update car 
       produces:
         - application/json
       consumes:
@@ -1875,13 +1909,30 @@ paths:
           schema:
             type: object
             example: {
-                "plate": "string",
-                "car_type": "string",
-                "volumn": "string",
-                "tonnage": "string",
+                "success": true,
+                "message": "Update car successfully.",
+                "data": {
+                  "plate": "string",
+                  "car_type": "string",
+                  "volumn": "string",
+                  "tonnage": "string",
+                  "car_fleet": "string",
+                },
             }
         400:
-          description: road cannot be found.
+          description: Update car failed
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "ID does not exists.",
+              },
+              "error2": {
+                "success": false,
+                "message": "This car fleet is not existed.",
+              },
+            }
       security:
         - bearerAuth: []
     delete:
@@ -1899,16 +1950,20 @@ paths:
       responses:
         200:
           description: Delete car successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete car successfully.",
+            }
         400:
           description: Delete car failed.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Car does not exist.",
+            }
       security:
         - bearerAuth: []
 
@@ -1955,13 +2010,23 @@ paths:
           schema:
             type: object
             example: {
-                "plate": "string",
-                "car_type": "string",
-                "volumn": "string",
-                "tonnage": "string",
+                "success": true,
+                "message": "set car information successfully.",
             }
         400:
           description: Create car failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "This car plate is already existed.",
+              }
+              "error2": {
+                  "success": false,
+                  "message": "This car fleet is not existed.",
+                }
+            }
       security:
         - bearerAuth: []
 
