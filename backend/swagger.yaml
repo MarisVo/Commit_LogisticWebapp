@@ -2242,7 +2242,6 @@ paths:
             }
       security:
         - bearerAuth: []
-  
   /admin/road:
     get:
       tags:
@@ -2285,15 +2284,29 @@ paths:
           schema:
             type: object
             example: {
-              "distance": "string",
-              "origin": "string",
-              "destination": "string",
+              "success": true,
+              "message": "Get road information successfully.",
+              "data": {
+                "length": "number",
+                "road": [
+                  {
+                    "origin": "string",
+                    "destination": "string",
+                    "distance": "string",
+                  },
+                ]
+              }
             }
         400:
-          description: road in not found.
+          description: Road information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Road information is not found.",
+            }
       security:
         - bearerAuth: []
-
   /admin/road/{roadId}:
     get:
       tags:
@@ -2313,12 +2326,22 @@ paths:
           schema:
             type: object
             example: {
-              "distance": "string",
-              "origin": "string",
-              "destination": "string",
+              "success": true,
+              "message": "Get road information successfully.",
+              "data": {
+                "origin": "string",
+                "destination": "string",
+                "distance": "string",
+              }
             }
         400:
-          description: RoadId is not found. 
+          description: Road information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Road information is not found.",
+            }
       security:
         - bearerAuth: []
     put:
@@ -2347,16 +2370,40 @@ paths:
                   type: string
       responses:
         200:
-          description: Update road  successfully.
+          description: Update road successfully
           schema:
             type: object
             example: {
-              "distance": "string",
-              "origin": "string",
-              "destination": "string",
+              "success": true,
+              "message": "Update road successfully.",
+              "data": {
+                "origin": "string",
+                "destination": "string",
+                "distance": "string",
+              },
             }
         400:
           description: road cannot be found.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Origin does not exist.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Destination does not exist.",
+              }
+              "error3": {
+                "success": false,
+                "message": "This road is not existed.",
+              }
+              "error4": {
+                "success": false,
+                "message": "This road is already existed.",
+              }
+            }
       security:
         - bearerAuth: []
     delete:
@@ -2374,19 +2421,27 @@ paths:
       responses:
         200:
           description: Delete road successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Delete road successfully.",
+              "data": {
+                "origin": "string",
+                "destination": "string",
+                "distance": "string",
+              }
+            }
         400:
           description: Delete road failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Road does not exist.",
+            }
       security:
           - bearerAuth: []
-
   /admin/road/create:
     post:
       tags:
@@ -2413,19 +2468,29 @@ paths:
                   type: string
       responses:
         200:
-          description: Create road successfully.
+          description: Set road information successfully.
           schema:
             type: object
             example: {
-              "distance": "string",
-              "origin": "string",
-              "destination": "string",
+              "success": true,
+              "message": "Set road information successfully.",
             }
         400:
-          description: Create road failed. 
+          description: Create road failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Origin does not exist.",
+              },
+              "error2": {
+                "success": false,
+                "message": "Destination does not exist.",
+              },
+            }
       security:
         - bearerAuth: []
-
   /admin/product-shipment:
     get:
       tags:
