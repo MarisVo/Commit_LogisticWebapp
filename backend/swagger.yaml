@@ -2529,14 +2529,29 @@ paths:
           schema:
             type: object
             example: {
-              "quantity": "string",
-              "product_id": "string",
+              "success": true,
+              "message": "Get product shipment information successfully",
+              "data": {
+                "length": "number",
+                "listProductShipment": [
+                  {
+                    "_id": "id",
+                    "quantity": "number",
+                    "value": "number",
+                  },
+                ]
+              }
             }
         400:
           description: product shipment in not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "No information found.",
+            }
       security:
         - bearerAuth: []
-
   /admin/product-shipment/{id}:
     get:
       tags:
@@ -2556,11 +2571,22 @@ paths:
           schema:
             type: object
             example: {
-              "quantity": "string",
-              "product_id": "string",
+              "success": true,
+              "message": "Get product shipment successfully.",
+              "data": {
+                "_id": "id",
+                "quantity": "number",
+                "value": "number",
+              }
             }
         400:
           description: product-shipmentID is not found. 
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "No information found.",
+            }
       security:
         - bearerAuth: []
     put:
@@ -2590,15 +2616,27 @@ paths:
                 type: string
       responses:
         200:
-          description: Update bill  successfully.
+          description: Update product shipment information successfully.
           schema:
             type: object
             example: {
-                "quantity": "string",
-                "product_id": "string",
+                "success": true,
+                "message": "Update product shipment information successfully.",
             }
         400:
-          description: product-shipment cannot found.
+          description: Update product shipment failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "City names do not match.",
+              },
+              "error2": {
+                "success": false,
+                "message": "Product_shipment quantity over load current product quantity.",
+              },
+            }
       security:
         - bearerAuth: []
     delete:
@@ -2616,16 +2654,20 @@ paths:
       responses:
         200:
           description: Delete product-shipment successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete product shipment successfully.",
+            }
         400:
           description: Delete product-shipment failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Product shipment does not exist.",
+            }
       security:
           - bearerAuth: []
 
@@ -2652,14 +2694,31 @@ paths:
                 type: number 
       responses:
         200:
-          description: Create product shipment successfully.
+          description: Set product shipment information successfully.
           schema:
             type: object
             example: {
-              "quantity": "string",
+              "success": true,
+              "message": "Set product shipment information successfully.",
             }
         400:
-          description: Create product shipment failed. 
+          description: Create product shipment failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Product id is not existed.",
+              }
+              "error2": {
+                "success": false,
+                "message": "City names do not match.",
+              }
+              "error3": {
+                "success": false,
+                "message": "Product_shipment quantity over load current product quantity.",
+              }
+            }
       security:
         - bearerAuth: []
 
