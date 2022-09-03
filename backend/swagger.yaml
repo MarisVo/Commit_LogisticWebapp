@@ -2713,18 +2713,40 @@ paths:
           schema:
             type: object
             example: {
-              "service": "string",
-              "road": "string",
-              "car": "string",
-              "driver": "string",
-              "product_shipment": "string",
-              "status": "string",
+              "success": true,
+              "message": "Get bill information successfully.",
+              "data": {
+                "length": "number",
+                "bills": [
+                  {
+                    "_id": "id",
+                    "service": "string",
+                    "road": "string",
+                    "car": "string",
+                    "driver": "string",
+                    "product_shipments": [
+                      {
+                        "shipment": "string",
+                        "turnover": "number",
+                      },
+                    ],
+                    "status": "string",
+                    "actual_fuel": "number",
+                    "theoretical_fuel": "number",
+                  },
+                ]
+              }
             }
         400:
-          description: bill in not found.
+          description: Bill information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Bill information is not found.",
+            }
       security:
         - bearerAuth: []
-
   /admin/bill/{billId}:
     get:
       tags:
@@ -2744,15 +2766,33 @@ paths:
           schema:
             type: object
             example: {
-              "service": "string",
-              "road": "string",
-              "car": "string",
-              "driver": "string",
-              "product_shipment": "string",
-              "status": "string",
+              "success": true,
+              "message": "Get bill successfully.",
+              "data": {
+                "_id": "id",
+                "service": "string",
+                "road": "string",
+                "car": "string",
+                "driver": "string",
+                "product_shipments": [
+                  {
+                    "shipment": "id",
+                    "turnover": "number",
+                  },
+                ],
+                "status": "string",
+                "actual_fuel": "number",
+                "theoretical_fuel": "number",
+              }
             }
         400:
-          description: billId is not found. 
+          description: Bill information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Bill information is not found.",
+            }
       security:
         - bearerAuth: []
     put:
@@ -2794,15 +2834,26 @@ paths:
           schema:
             type: object
             example: {
-              "service": "string",
-              "road": "string",
-              "car": "string",
-              "driver": "string",
-              "product_shipment": "string",
-              "status": "string",
+              "success": true,
+              "message": "Update bill successfully.",
+              "data": {
+                "service": "string",
+                "road": "string",
+                "car": "string",
+                "driver": "string",
+                "status": "string",
+                "actual_fuel": "number",
+                "theoretical_fuel":"number",
+              },
             }
         400:
           description: bill cannot be found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "This bill is existed.",
+            }
       security:
         - bearerAuth: []
     delete:
@@ -2820,19 +2871,38 @@ paths:
       responses:
         200:
           description: Delete bill successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete product shipment successfully.",
+              "data": {
+                 "_id": "id",
+                "service": "string",
+                "road": "string",
+                "car": "string",
+                "driver": "string",
+                "product_shipments": [
+                  {
+                    "shipment": "id",
+                    "turnover": "number",
+                  },
+                ],
+                "status": "string",
+                "actual_fuel": "number",
+                "theoretical_fuel": "number",
+              },
+            }
         400:
           description: Delete bill failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Bill does not exist.",
+            }
       security:
           - bearerAuth: []
-
   /admin/bill/create:
     post:
       tags:
@@ -2864,23 +2934,23 @@ paths:
                 enum: ['waiting', 'accepted', 'processing', 'completed', 'refused']
       responses:
         200:
-          description: Create bill successfully.
+          description: Set bill information successfully.
           schema:
             type: object
             example: {
-              "service": "string",
-              "road": "string",
-              "car": "string",
-              "driver": "string",
-              "actual_fuel": "number",
-              "theoretical_fuel": "number",
-              "status": "string",
+              "success": true,
+              "message": "Set bill information successfully.",
             }
         400:
-          description: Create bill failed. 
+          description: Create bill failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "... does not exist.",
+            }
       security:
         - bearerAuth: []
-  
   /admin/bill/product_shipments/{billId}:
     post:
       tags:
@@ -2906,18 +2976,23 @@ paths:
                 type: number
       responses:
         200:
-          description: Update bill successfully.
+          description: Add product shipment successfully.
           schema:
             type: object
             example: {
-              "shipment": "string",
-              "turnover": "number",
+              "success": true,
+              "message": "Add product shipment successfully.",
             }
         400:
-          description: Update bill failed. 
+          description: Update bill failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "... is not existed",
+            }
       security:
         - bearerAuth: []
-
   /admin/consultancy:
     get:
       tags:
