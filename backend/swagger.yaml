@@ -3006,7 +3006,7 @@ paths:
             type: object
             example: {
               "success": false,
-              "message": "... does not exist.",
+              "message": "Service/Road/Car/Car fleet/Driver does not exist.",
             }
       security:
         - bearerAuth: []
@@ -3048,7 +3048,7 @@ paths:
             type: object
             example: {
               "success": false,
-              "message": "... is not existed",
+              "message": "The shipment/Bill is not existed",
             }
       security:
         - bearerAuth: []
@@ -3914,7 +3914,6 @@ paths:
             }
       security:
         - bearerAuth: []
-
   /order/create:
     post:
       tags:
@@ -3953,11 +3952,35 @@ paths:
       responses:
         200:
           description: Create new order successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Create new order successfully.",
+              "data": {
+                "orderId": "string",
+              }
+            }
         400:
           description: Create order failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "The service is not existing.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Origin is not existing.",
+              }
+              "error3": {
+                "success": false,
+                "message": "Destination is not existing.",
+              }
+            }
       security:
         - bearerAuth: []
-  
   /order:
     get: 
       tags:
@@ -3988,16 +4011,38 @@ paths:
           schema:
             type: object
             example: {
-              "orderId": "string",
-              "service": "string", 
-              "total_price": "string",   
-              "status": "string",
-              "origin": "string", 
-              "destination": "string",   
-              "receiver" : "string",
+              "success": true,
+              "message": "Get order information successfully.",
+              "data": {
+                "length": "number",
+                "orders": [
+                  {
+                    "orderId": "string",
+                    "service": "string",
+                    "customer": "string",
+                    "receiver" : "string",
+                    "total_price": "string",   
+                    "status": "string",
+                    "origin": "string", 
+                    "destination": "string",
+                    "feedback": [
+                      {
+                        "user": "string",
+                        "content": "string",
+                      }
+                    ]
+                  }
+                ]
+              }
             }          
         400:
-          description: order is not found.
+          description: Order information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Order information is not found.",
+            }
       security:
         - bearerAuth: []
   /order/{orderId}:    
@@ -4015,20 +4060,37 @@ paths:
           description: Id of a order 
       responses:
         200:
-          description: get order successfully.
+          description: get order information successfully.
           schema:
             type: object
             example: {
-              "orderId": "string",
-              "service": "string", 
-              "total_price": "string",   
-              "status": "string",
-              "origin": "string", 
-              "destination": "string",   
-              "receiver" : "string",
+              "success": true,
+              "message": "Get order information successfully.",
+              "data": {
+                "orderId": "string",
+                "service": "string",
+                "customer": "string",
+                "receiver" : "string",
+                "total_price": "string",   
+                "status": "string",
+                "origin": "string", 
+                "destination": "string",
+                "feedback": [
+                  {
+                    "user": "string",
+                    "content": "string",
+                  }
+                ]
+              }
             }          
         400:
           description: order is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Order information is not found.",
+            }
       security:
         - bearerAuth: []
     put: 
@@ -4057,9 +4119,47 @@ paths:
                 type: string  
       responses:
         200:
-          description: updated order successfully.            
+          description: updated order successfully. 
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Update order successfully.",
+              "data": {
+                "orderId": "string",
+                "service": "string",
+                "customer": "string",
+                "receiver" : "string",
+                "total_price": "string",   
+                "status": "string",
+                "origin": "string", 
+                "destination": "string",
+                "feedback": [
+                  {
+                    "user": "string",
+                    "content": "string",
+                  }
+                ]
+              }
+            }  
         400:
           description: order is not found.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Order is not found.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Order can't be modified.",
+              }
+              "error3": {
+                "success": false,
+                "message": "The service/Origin/Destination is not existing.",
+              }
+            }
       security:
         - bearerAuth: []
 
@@ -4105,16 +4205,38 @@ paths:
           schema:
             type: object
             example: {
-              "orderId": "string",
-              "service": "string", 
-              "total_price": "string",   
-              "status": "string",
-              "origin": "string", 
-              "destination": "string",   
-              "receiver" : "string",
+              "success": true,
+              "message": "Get order information successfully.",
+              "data": {
+                "length": "number",
+                "orders": [
+                  {
+                    "orderId": "string",
+                    "service": "string",
+                    "customer": "string",
+                    "receiver" : "string",
+                    "total_price": "string",   
+                    "status": "string",
+                    "origin": "string", 
+                    "destination": "string",
+                    "feedback": [
+                      {
+                        "user": "string",
+                        "content": "string",
+                      }
+                    ]
+                  }
+                ]
+              }
             }          
         400:
-          description: order is not found.
+          description: Order information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Order information is not found.",
+            }
       security:
         - bearerAuth: []
   /admin/order/{orderId}:
@@ -4140,15 +4262,37 @@ paths:
                 type: string
       responses:
         200:
-          description: update status successfully.
+          description: Update order information successfully.
           schema:
             type: object
             example: {
-              "orderId": "string",
-              "status": "string",              
+              "success": true,
+              "message": "Update order information successfully.",
+              "data": {
+                "orderId": "string",
+                "service": "string",
+                "customer": "string",
+                "receiver" : "string",
+                "total_price": "string",   
+                "status": "string",
+                "origin": "string", 
+                "destination": "string",
+                "feedback": [
+                  {
+                    "user": "string",
+                    "content": "string",
+                  }
+                ]
+              }
             }          
         400:
-          description: order is not found.
+          description: Order information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Order information is not found.",
+            }
       security:
         - bearerAuth: []
     delete:
@@ -4165,9 +4309,37 @@ paths:
           description: Id of an order         
       responses:
         200:
-          description: delete order successfully.                  
+          description: Delete order successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete order successfully.",
+              "data": {
+                "orderId": "string",
+                "service": "string",
+                "customer": "string",
+                "receiver" : "string",
+                "total_price": "string",   
+                "status": "string",
+                "origin": "string", 
+                "destination": "string",
+                "feedback": [
+                  {
+                    "user": "string",
+                    "content": "string",
+                  }
+                ]
+              }
+            }      
         400:
-          description: order is not found.
+          description: Order information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Order information is not found.",
+            }
       security:
         - bearerAuth: [] 
   /order/tracking/{lstOrderId}:
@@ -4189,11 +4361,14 @@ paths:
           schema:
             type: object
             example: {
-              "orders": ["order1", "order2"],
-              "success": 5,
-              "failure": 2,
+              "success": true,
+              "message": "Request successfully.",
+              "data": {
+                "orders": ["order1", "order2"],
+                "success": "number",
+                "failure": "number",
+              }
             }
-
   /product/{orderId}:
     post:
       tags:

@@ -39,8 +39,8 @@ orderAdminRoute.get('/', async (req, res) => {
         const orders = await Order.find(query).skip(pageSize*page).limit(pageSize).sort(sortBy)
         var length = await Order.find(query).count()
         if (orders)
-            return sendSuccess(res, 'get order information successfully.', {length, orders})
-        return sendError(res, 'order information is not found.', {length})
+            return sendSuccess(res, 'Get order information successfully.', {length, orders})
+        return sendError(res, 'Order information is not found.', {length})
     } catch (error) {
         console.log(error)
         return sendServerError(res)
@@ -58,8 +58,8 @@ orderAdminRoute.get('/:orderId', async (req, res) => {
         const {orderId} = req.params
         const order = await Order.findOne({orderId})
         if (order)
-            return sendSuccess(res, 'get order information successfully.', order)
-        return sendError(res, 'order information is not found.')
+            return sendSuccess(res, 'Get order information successfully.', order)
+        return sendError(res, 'Order information is not found.')
     } catch (error) {
         console.log(error)
         return sendServerError(res)
@@ -77,8 +77,8 @@ orderAdminRoute.put('/:orderId', async (req, res) => {
         const {status} = req.body
         const order = await Order.findOneAndUpdate({orderId}, {status: status})
         if (order)
-            return sendSuccess(res, 'update order information successfully.', order)
-        return sendError(res, 'order information is not found.')
+            return sendSuccess(res, 'Update order information successfully.', order)
+        return sendError(res, 'Order information is not found.')
     } catch (error) {
         console.log(error)
         return sendServerError(res)
@@ -95,8 +95,8 @@ orderAdminRoute.delete('/:orderId', async (req, res) => {
         const {orderId} = req.params
         const order = await Order.findOneAndRemove({orderId})
         if (order)
-            return sendSuccess(res, 'delete order information successfully.', order)
-        return sendError(res, 'order information is not found.')
+            return sendSuccess(res, 'Delete order successfully.', order)
+        return sendError(res, 'Order information is not found.')
     } catch (error) {
         console.log(error)
         return sendServerError(res)
