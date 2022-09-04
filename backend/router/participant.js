@@ -60,7 +60,6 @@ participantRoute.get('/service/:serviceId', async(req, res) =>{
         const service = await DeliveryService.find({ _id: serviceId})
         if (! service ) return sendError(res, 'Service is not existed')
         const result = await Participant.find({_id: service[0].participants})
-        
         return sendSuccess(res, 'Get participant successfully.', result)
     } catch (error) {
         console.log(error)

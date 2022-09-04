@@ -19,8 +19,8 @@ quoteRoute.get('/',
                 { quote: { $regex: keyword, $options: 'i'} },
             ]} : {} 
             const quotes = await Quote.find(keywordCondition).limit(limit).sort(`${sortBy}`)
-            if (quotes) return sendSuccess(res, "get quote successful.", quotes)
-            return sendError(res, "no information found.")
+            if (quotes) return sendSuccess(res, "Get quote successfully.", quotes)
+            return sendError(res, "No information found.")
         } catch(error){
             console.log(error)
             return sendServerError(res)
@@ -38,7 +38,7 @@ quoteRoute.get('/:id',
         try {
             const {id} = req.params
             const quote = await Quote.findById(id)
-            if (quote) return sendSuccess(res, "Get quote successful.", quote)
+            if (quote) return sendSuccess(res, "Get quote successfully.", quote)
             return sendError(res, "No information found.")
         } catch(error){
             console.log(error)
@@ -56,12 +56,12 @@ quoteRoute.get('/service/:serviceId', async(req, res) =>{
     try{
         const {serviceId} = req.params
         const isExistedService = await DeliveryService.exists({_id: serviceId})
-        if (!isExistedService) return sendError(res, "Service is not existed")
+        if (!isExistedService) return sendError(res, "Service is not existed.")
         const service = await DeliveryService.find({ _id: serviceId})
-        if (! service ) return sendError(res, 'service is not existed')
+        if (! service ) return sendError(res, 'Service is not existed')
         const result = await Quote.find({_id: service[0].quotes})
         
-        return sendSuccess(res, 'get quote successfully.', result)
+        return sendSuccess(res, 'Get quote successfully.', result)
     } catch (error) {
         console.log(error)
         return sendServerError(res)

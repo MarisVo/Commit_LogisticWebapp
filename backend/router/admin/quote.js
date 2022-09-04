@@ -23,7 +23,7 @@ quoteAdminRoute.post('/:serviceId',
         try {
             const {serviceId} = req.params
             const isExistedService = await DeliveryService.exists({_id: serviceId})
-            if (!isExistedService) return sendError(res, "Service is not existed")
+            if (!isExistedService) return sendError(res, "Service is not existed.")
            
             const avatar = handleFilePath(req.file) 
             const {name, description, quote} = req.body;
@@ -38,7 +38,7 @@ quoteAdminRoute.post('/:serviceId',
                             
             const newquote = await Quote.create({name, avatar: avatar , description, quote});
             await DeliveryService.updateOne( { _id: serviceId}, { $push: {quotes : newquote}} )
-            return sendSuccess(res, 'create commitment successfully.', {name, description, quote, avatar})
+            return sendSuccess(res, 'Create quote successfully.', {name, description, quote, avatar})
             
         } catch (error) {
             console.log(error)
@@ -60,13 +60,13 @@ quoteAdminRoute.put('/:id',
         try{
             const {id} = req.params
             const isExist = await Quote.exists({_id: id})
-            if(! isExist) return sendError(res, "Quote not exists")
+            if(! isExist) return sendError(res, "Quote does not exist.")
 
             const avatar = handleFilePath(req.file)
             const {name, description, quote} = req.body
             
             const data = await Quote.findByIdAndUpdate(id, {name, description, quote, avatar:avatar})
-            return sendSuccess(res, "Update quote successfully", {name, description, quote, avatar})
+            return sendSuccess(res, "Update quote successfully.", {name, description, quote, avatar})
             
         } catch (error) {
             console.log(error)
@@ -87,7 +87,7 @@ quoteAdminRoute.delete('/:id',
         const {id} = req.params;    
         try {
             const isExist = await Quote.exists({_id : id});
-            if (!isExist) return sendError(res, "Quote not exist");
+            if (!isExist) return sendError(res, "Quote does not exist.");
             await DeliveryService.updateOne({},{ $pull: { quotes: id}})
             const data = await Quote.findByIdAndRemove(id)
             return sendSuccess(res, "Delete quote successfully.", data)

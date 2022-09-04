@@ -3492,11 +3492,13 @@ paths:
             example: {
               "success": true,
               "message": "Get participant successfully.",
-              "data": {
-                "name": "string",
-                "banner": "path",    
-                "description": "string",     
-              },
+              "data": [
+                {
+                  "name": "string",
+                  "banner": "path",    
+                  "description": "string",     
+                },
+              ] 
             }          
         400:
           description: participant is not found.
@@ -3644,7 +3646,6 @@ paths:
             }
       security:
         - bearerAuth: []
-  
   /quote:
      get:
       tags:
@@ -3671,13 +3672,25 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "description": "string", 
-              "quote": "string",
-              "avatar": "path",
+              "success": true,
+              "message": "Get quote successfully.",
+              "data": [
+                {
+                  "name": "string",
+                  "description": "string", 
+                  "quote": "string",
+                  "avatar": "path",
+                },
+              ]
             }
         400:
           description: quote is not found. 
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "No information found.",
+            }
   /quote/{quoteId}:
     get:
       tags:
@@ -3693,17 +3706,27 @@ paths:
           description: Id of a quote 
       responses:
         200:
-          description: get quote successfully.
+          description: Get quote successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "description": "string", 
-              "quote": "string",
-              "avatar": "path",  
-            }          
+              "success": true,
+              "message": "Get quote successfully.",
+              "data":{
+                "name": "string",
+                "description": "string", 
+                "quote": "string",
+                "avatar": "path",
+              },
+            }
         400:
-          description: quote is not found. 
+          description: Quote is not found. 
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "No information found.",
+            }
   /quote/service/{serviceId}:
     get:
       tags:
@@ -3719,17 +3742,29 @@ paths:
           description: Id of a service 
       responses:
         200:
-          description: get quote successfully.
+          description: Get quote successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "description": "string", 
-              "quote": "string",
-              "avatar": "path",    
+              "success": true,
+              "message": "Get quote successfully.",
+              "data": [
+                {
+                "name": "string",
+                "description": "string", 
+                "quote": "string",
+                "avatar": "path",    
+                },
+              ]
             }          
         400:
           description: quote is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Service is not existed.",
+            }
   /admin/quote/{serviceId}:
     post:
       tags:
@@ -3769,20 +3804,36 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "description": "string", 
-              "quote": "string",
-              "avatar": "path",    
+              "success": true,
+              "message": "Created quote successfully.",
+              "data": {
+                "name": "string",
+                "description": "string", 
+                "quote": "string",
+                "avatar": "path",    
+              }
             }        
         400:
           description: Create quote failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Service is not existed.",
+              }
+              "error2": {
+                "success": false,
+                "message": "This person is existed !",
+              }
+            }
       security:
         - bearerAuth: []
   /admin/quote/{quoteId}:
     put:
       tags:
         - "quote"
-      summary: "Create a new quote"
+      summary: "Update an existing quote"
       consumes:
         - multipart/form-data
       parameters:
@@ -3809,17 +3860,27 @@ paths:
           type: file  
       responses:
         200:
-          description: Create quote successfully.
+          description: Update quote successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "description": "string", 
-              "quote": "string",
-              "avatar": "path",        
+              "success": true,
+              "message": "Update quote successfully.",
+              "data": {
+                "name": "string",
+                "description": "string", 
+                "quote": "string",
+                "avatar": "path",        
+              }
             }        
         400:
           description: Create quote failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Quote does not exist.",
+            }
       security:
         - bearerAuth: []
     delete:
@@ -3837,8 +3898,20 @@ paths:
       responses:
         200:
           description: Delete quote successfully.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Delete quote successfully.",
+            }
         400:
           description: Delete quote failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Quote does not exist.",
+            }
       security:
         - bearerAuth: []
 
