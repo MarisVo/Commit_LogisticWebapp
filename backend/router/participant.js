@@ -19,8 +19,8 @@ participantRoute.get('/',
                 { description: { $regex: keyword, $options: 'i'} },
             ]} : {} 
             const participants = await Participant.find(keywordCondition).limit(limit).sort(`${sortBy}`)
-            if (participants) return sendSuccess(res, "Get participant successful.", participants)
-            return sendError(res, "Not information found.")
+            if (participants) return sendSuccess(res, "Get participant successfully.", participants)
+            return sendError(res, "No information found.")
         } catch(error){
             console.log(error)
             return sendServerError(res)
@@ -39,7 +39,7 @@ participantRoute.get('/:participantId', async (req, res) => {
         const participant = await Participant.findById(participantId)
         if (participant)
             return sendSuccess(res, 'get participant information successfully.', participant)
-        return sendError(res, 'participant information is not found.')
+        return sendError(res, 'No information found.')
     } catch (error) {
         console.log(error)
         return sendServerError(res)
@@ -58,10 +58,10 @@ participantRoute.get('/service/:serviceId', async(req, res) =>{
         const isExistedService = await DeliveryService.exists({_id: serviceId})
         if (!isExistedService) return sendError(res, "Service is not existed")
         const service = await DeliveryService.find({ _id: serviceId})
-        if (! service ) return sendError(res, 'service is not existed')
+        if (! service ) return sendError(res, 'Service is not existed')
         const result = await Participant.find({_id: service[0].participants})
         
-        return sendSuccess(res, 'get participant successfully.', result)
+        return sendSuccess(res, 'Get participant successfully.', result)
     } catch (error) {
         console.log(error)
         return sendServerError(res)

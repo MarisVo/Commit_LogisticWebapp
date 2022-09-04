@@ -3418,12 +3418,24 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "banner": "path",    
-              "description": "string", 
+              "success": true,
+              "message": "Get participant successfully.",
+              "data": [
+                {
+                  "name": "string",
+                  "banner": "path",    
+                  "description": "string",
+                },
+              ]
             }
         400:
           description: participant is not found. 
+          schema:
+            type: object 
+            example: {
+              "success": false,
+              "message": "No information found.",
+            }
   /participant/{participantId}:
     get:
       tags:
@@ -3443,12 +3455,22 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "banner": "path",    
-              "description": "string",     
-            }          
+              "success": true,
+              "message": "Get participant successfully.",
+              "data": {
+                "name": "string",
+                "banner": "path",    
+                "description": "string",
+              },
+            }
         400:
-          description: participant is not found. 
+          description: participant is not found.
+          schema:
+            type: object 
+            example: {
+              "success": false,
+              "message": "No information found.",
+            } 
   /participant/service/{serviceId}:
     get:
       tags:
@@ -3464,16 +3486,26 @@ paths:
           description: Id of a service 
       responses:
         200:
-          description: get participant successfully.
+          description: Get participant successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "banner": "path",    
-              "description": "string",     
+              "success": true,
+              "message": "Get participant successfully.",
+              "data": {
+                "name": "string",
+                "banner": "path",    
+                "description": "string",     
+              },
             }          
         400:
           description: participant is not found.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Service is not existed",
+            }  
   /admin/participant/{serviceId}:
     post:
       tags:
@@ -3508,19 +3540,29 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "banner": "path",    
-              "description": "string",     
+              "success": true,
+              "message": "Create participant successfully.",
+              "data": {
+                "name": "string",
+                "banner": "path",    
+                "description": "string",       
+              },
             }        
         400:
           description: Create participant failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Service is not existed.",
+            }
       security:
         - bearerAuth: []
   /admin/participant/{participantId}:
     put:
       tags:
         - "participant"
-      summary: "Create a new participant"
+      summary: "Update an existing participant"
       consumes:
         - multipart/form-data
       parameters:
@@ -3543,16 +3585,32 @@ paths:
           type: file            
       responses:
         200:
-          description: Create participant successfully.
+          description: Update participant successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "banner": "path",    
-              "description": "string",     
+              "success": true,
+              "message": "Update participant successfully.",
+              "data": {
+                "name": "string",
+                "banner": "path",    
+                "description": "string",     
+              },
             }        
         400:
           description: Create participant failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "New name is existed",
+              },
+              "error2": {
+                "success": false,
+                "message": "Participant does not exist.",
+              },
+            }
       security:
         - bearerAuth: []
     delete:
@@ -3570,8 +3628,20 @@ paths:
       responses:
         200:
           description: Delete participant successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Deleted participant successfully.",
+            }
         400:
           description: Delete participant failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message" : "Participant does not exist.",
+            }
       security:
         - bearerAuth: []
   
