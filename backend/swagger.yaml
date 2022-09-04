@@ -4381,7 +4381,7 @@ paths:
           name: orderId
           type: string
           required: true
-          description: orderId of order
+          description: Id of order
         - in: body
           name: products
           description: array of products.
@@ -4400,12 +4400,36 @@ paths:
                     unit: 
                       type: string   
                       enum: ['m3', 'kg', 'ton']
-      
       responses:
         200:
           description: Add product(s) successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Add product to order successfully.",
+              "data": [
+                {
+                "name": "string",
+                "quantity": "number",
+                "unit": "string",
+                }
+              ]
+            }
         400:
           description: Add product(s) failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Order is not found.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Orders can't add more products.",
+              }
+            }
       security:
         - bearerAuth: []
     get:
@@ -4419,19 +4443,33 @@ paths:
           name: orderId
           type: string
           required: true
-          description: orderId of order         
+          description: Id of order         
       responses:
         200:
           description: Get product successfully.
           schema:
             type: object
             example: {
-                  "name": "string",
-                  "quantity": "string",
-                  "unit": "string",                 
+              "success": true,
+              "message": "Get products successfully.",
+              "data": [
+                {
+                "name": "string",
+                "quantity": "number",
+                "unit": "string",
+                "order": "string",
+                "product_shipments": [],
+                }
+              ]          
             }
         400:
           description: Get product failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Order is not found.",
+            }
       security:
         - bearerAuth: []
   /product/{productId}:
@@ -4463,8 +4501,30 @@ paths:
       responses:
         200:
           description: Update product successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Update product successfully.",
+            }
         400:
           description: Update product failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Product does not exist.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Order for this product is not found.",
+              }
+              "error3": {
+                "success": false,
+                "message": "Product can't be changed.",
+              }
+            }
       security:
         - bearerAuth: []
     delete:
@@ -4482,8 +4542,30 @@ paths:
       responses:
         200:
           description: Delete product successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete product successfully.",
+            }
         400:
           description: Delete product failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Product does not exist.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Order for this product is not found.",
+              }
+              "error3": {
+                "success": false,
+                "message": "Product can't be changed.",
+              }
+            }
       security:
         - bearerAuth: []
   /admin/product:
@@ -4520,12 +4602,18 @@ paths:
           schema:
             type: object
             example: {
-                  "name": "string",
-                  "quantity": integer,
-                  "unit": "string",                 
+              "success": true,
+              "message": "Get product successfully.",
+              "data": [
+                {
+                "name": "string",
+                "quantity": "number",
+                "unit": "string",
+                "order": "string",
+                "product_shipments": [],                  
+                }
+              ],          
             }
-        400:
-          description: Get product failed.
       security:
         - bearerAuth: []
   /admin/product/{orderId}:
@@ -4563,8 +4651,33 @@ paths:
       responses:
         200:
           description: Add product(s) successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Add product to order successfully.",
+              "data": [
+                {
+                "name": "string",
+                "quantity": "number",
+                "unit": "string",
+                }
+              ]
+            }
         400:
           description: Add product(s) failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Order is not found.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Orders can't add more products.",
+              }
+            }
       security:
         - bearerAuth: []
   /admin/product/{productId}:
@@ -4596,8 +4709,30 @@ paths:
       responses:
         200:
           description: Update product successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Update product successfully.",
+            }
         400:
           description: Update product failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Product does not exist.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Order for this product is not found.",
+              }
+              "error3": {
+                "success": false,
+                "message": "Product can't be changed.",
+              }
+            }
       security:
         - bearerAuth: []
     delete:
@@ -4615,11 +4750,32 @@ paths:
       responses:
         200:
           description: Delete product successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete product successfully.",
+            }
         400:
           description: Delete product failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Product does not exist.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Order for this product is not found.",
+              }
+              "error3": {
+                "success": false,
+                "message": "Product can't be changed.",
+              }
+            }
       security:
         - bearerAuth: []
-  
   /career:
     get:
       tags:

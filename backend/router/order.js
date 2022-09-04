@@ -185,7 +185,7 @@ orderRoute.get('/tracking/:lstOrderId', async (req, res) => {
         const orders = await Order.find({
             orderId: { $in: lstOrderId }
         })
-        return sendSuccess(res, 'Request successfully', { orders, success: orders.length, failure: lstOrderId.length - orders.length })
+        return sendSuccess(res, 'Request successfully.', { orders, success: orders.length, failure: lstOrderId.length - orders.length })
     } catch (error) {
         console.log(error)
         return sendServerError(res)
