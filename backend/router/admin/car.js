@@ -1,6 +1,7 @@
 import express from "express"
 import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
 import Car from "../../model/Car.js"
+import CarFleet from "../../model/CarFleet.js"
 import { createCarValidate } from "../../validation/car.js"
 
 const carAdminRoute = express.Router()
@@ -32,13 +33,13 @@ carAdminRoute.get('/',
                 query.plate = plate;
             }
 
-            const length = await Car.count()
+            const length = await Car.find({ $and: [query, listKeyword] }).count()
             const listCar = await Car.find({ $and: [query, listKeyword] })
                 .limit(pageSize)
                 .skip(pageSize * page)
                 .sort(`${sortBy}`)
 
-            if (listCar) return sendSuccess(res, "Get car successful.", {length, listCar})
+            if (listCar) return sendSuccess(res, "Get car successful.", { length, listCar })
             return sendError(res, "Information not found.")
         } catch (error) {
             console.log(error)
@@ -74,11 +75,15 @@ carAdminRoute.post('/create', async (req, res) => {
         return sendError(res, errors)
 
     try {
-        const { plate, car_type, volumn, tonnage } = req.body
+        const { plate, car_type, volumn, tonnage, car_fleet, seri, expired } = req.body
         const isExist = await Car.exists({ plate })
+        const isExistCarfleet = await CarFleet.exists({ _id: car_fleet })
         if (isExist)
             return sendError(res, "This car plate is already existed.")
-        else await Car.create({ plate, car_type, volumn, tonnage })
+        if (!isExistCarfleet)
+            return sendError(res, "This car fleet is not existed.")
+        else await Car.create({ plate, car_type, volumn, tonnage, car_fleet, 'insurance.seri': seri, 'insurance.expired': expired })
+
         return sendSuccess(res, 'set car information successfully.')
     }
     catch (error) {
@@ -94,15 +99,18 @@ carAdminRoute.post('/create', async (req, res) => {
  */
 carAdminRoute.put('/:id', async (req, res) => {
     try {
-        const { volumn, tonnage, car_type } = req.body
+        const { plate, car_type, volumn, tonnage, car_fleet, seri, expired } = req.body
         const { id } = req.params;
 
         const isExist = await Car.exists({ _id: id })
         if (!isExist)
             return sendError(res, "ID does not exists")
-
-        await Car.findByIdAndUpdate(id, { volumn: volumn, tonnage: tonnage, car_type: car_type })
-        return sendSuccess(res, "Update  successfully", { volumn, tonnage, car_type })
+            
+        const isExistCarfleet = await CarFleet.exists({ _id: car_fleet })
+        if (!isExistCarfleet)
+            return sendError(res, "This car fleet is not existed.")
+        await Car.findByIdAndUpdate(id, { plate, car_type, volumn, tonnage, car_fleet, 'insurance.seri': seri, 'insurance.expired': expired })
+        return sendSuccess(res, "Update  successfully", { volumn, tonnage, car_type, tonnage, car_fleet })
     } catch (error) {
         console.log(error)
         return sendServerError(res)

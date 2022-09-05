@@ -4,7 +4,6 @@ import { sendError, sendServerError, sendSuccess } from "../helper/client.js"
 import { lookupPostageValidate } from "../validation/tracking.js"
 import DeliveryService from '../model/DeliveryService.js'
 import Distance from '../model/Distance.js'
-import Order from "../model/Order.js"
 import { calculateShipmentFee } from "../service/order.js"
 
 const trackingRoute = express.Router()
@@ -43,16 +42,7 @@ trackingRoute.post('/postage', async (req, res) => {
         })
         if (!distance) return sendError(res, 'the service don\'t support this road.')
 
-        let result = 0
-        if (unit === PRODUCT_UNIT.KG) {
-            result = calculateShipmentFee(distance, quantity, sv.price.uKG)
-        }
-        else if (unit === PRODUCT_UNIT.TON) {
-            result = calculateShipmentFee(distance, quantity, sv.price.uTON)
-        }
-        else {
-            result = calculateShipmentFee(distance, quantity, sv.price.uM3)
-        }
+        let result = calculateShipmentFee(distance, quantity, sv.price, unit)
         return sendSuccess(res, 'calculate shipment fee successfully.', { result })
     } catch (error) {
         console.log(error)
@@ -65,17 +55,17 @@ trackingRoute.post('/postage', async (req, res) => {
  * @description get pricelist of service by province
  * @access public
  */
-trackingRoute.get('/service/:serviceId', async (req, res) => {
-    const serviceId = req.params.serviceId
-    try {
-        const service = await DeliveryService.findById(serviceId).select({ _id: 1, name: 1, sub_detail: 1, price_files: 1 })
-        if (!service || service.price_files.length === 0) return sendError(res, 'not exist.')
-        const serviceWithUniquePriceFiles = [...new Map(service.price_files.map(item => [item.province, item])).values()]
-        return sendSuccess(res, 'request successfully', serviceWithUniquePriceFiles)
-    } catch (error) {
-        console.log(error)
-        return sendServerError(res)
-    }
-})
+// trackingRoute.get('/service/:serviceId', async (req, res) => {
+//     const serviceId = req.params.serviceId
+//     try {
+//         const service = await DeliveryService.findById(serviceId).select({ _id: 1, name: 1, sub_detail: 1, price_files: 1 })
+//         if (!service || service.price_files.length === 0) return sendError(res, 'not exist.')
+//         const serviceWithUniquePriceFiles = [...new Map(service.price_files.map(item => [item.province, item])).values()]
+//         return sendSuccess(res, 'request successfully', serviceWithUniquePriceFiles)
+//     } catch (error) {
+//         console.log(error)
+//         return sendServerError(res)
+//     }
+// })
 
 export default trackingRoute

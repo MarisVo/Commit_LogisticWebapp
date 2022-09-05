@@ -23,7 +23,7 @@ prohibitedProductRoute.get('/',
                 ]
             } : {}
 
-            const length = await ProhibitedProduct.count()
+            const length = await ProhibitedProduct.find(listKeyword).count()
             const listCar = await ProhibitedProduct.find(listKeyword)            
             .limit(pageSize)
             .skip(pageSize*page)

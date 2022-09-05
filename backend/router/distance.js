@@ -16,11 +16,11 @@ distanceRoute.get("/", async (req, res) => {
     const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0;
     const page = req.query.page ? parseInt(req.query.page) : 0;
     const { fromProvince, toProvince } = req.query;
-    const length = await Distance.count();
     const distance = await Distance.find({
       fromProvince: fromProvince,
       toProvince: toProvince,
     })
+    var length = await Distance.find({ fromProvince: fromProvince, toProvince: toProvince }).count()
     .limit(pageSize)
     .skip(pageSize * page);
     if (distance)
@@ -86,11 +86,11 @@ distanceRoute.get("/service/:serviceId", async (req, res) => {
         }
       }
       query._id = ids;
-      const length = service.distances.length;
       const distance = await Distance.find( query )
         .limit(pageSize)
         .skip(pageSize * page)
         .sort(`${sortBy}`);
+      var length = await Distance.find( query ).count();
       return sendSuccess(res, "get distance information successfully.", {
         length,
         distance,

@@ -37,8 +37,16 @@ consultancyAdminRoute.get('/', async (req, res) => {
             }
         )
         .limit(pageSize).skip(pageSize*page).sort(`${sortBy}`)
+        const length = await Consultancy.find(
+            {
+                $and: [            
+                    filterCondition,
+                    keywordCondition                
+                ]
+            }
+        ).count()
         if (consultancy)
-            return sendSuccess(res, 'get consultancy information successfully.', consultancy)
+            return sendSuccess(res, 'get consultancy information successfully.', {length, consultancy})
         return sendError(res, 'consultancy information is not found.')
     } catch (error) {
         console.log(error)
