@@ -24,11 +24,11 @@ distanceRoute.get("/", async (req, res) => {
     .limit(pageSize)
     .skip(pageSize * page);
     if (distance)
-      return sendSuccess(res, "get distance information successfully.", {
+      return sendSuccess(res, "Get distance information successfully.", {
         length,
         distance,
       });
-    return sendError(res, "distance information is not found.");
+    return sendError(res, "Distance information is not found.");
   } catch (error) {
     return sendServerError(res);
   }
@@ -48,7 +48,7 @@ distanceRoute.get("/:id", async (req, res) => {
     if (distance)
       return sendSuccess(
         res,
-        "get distance information successfully.",
+        "Get distance information successfully.",
         distance
       );
     return sendError(res, "Distance information is not found.");
@@ -91,7 +91,7 @@ distanceRoute.get("/service/:serviceId", async (req, res) => {
         .skip(pageSize * page)
         .sort(`${sortBy}`);
       var length = await Distance.find( query ).count();
-      return sendSuccess(res, "get distance information successfully.", {
+      return sendSuccess(res, "Get distance information successfully.", {
         length,
         distance,
       });

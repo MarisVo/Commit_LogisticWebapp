@@ -5770,13 +5770,29 @@ paths:
           schema:
             type: object
             example: {
+              "success": true,
+              "message": "Get distance information successfully.",
+              "data": {
+                "length": "number",
+                "distance": [
+                  {
                   "fromProvince": "string",
                   "toProvince": "string",
                   "zonecode": "string",
                   "distance":  "number",
+                  }
+                ]
+              }
+                    
             }
         400:
-          description: distance information is not found.  
+          description: Dsistance information is not found.  
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Distance information is not found.",
+            }
   /distance/{distanceId}:
     get:
       tags:
@@ -5796,13 +5812,23 @@ paths:
           schema:
             type: object
             example: {
-              "fromProvince": "string",
-              "toProvince": "string",
-              "zonecode": "string",
-              "distance":  "number",            
+              "success": true,
+              "message": "Get distance information successfully.",
+              "data": {
+                "fromProvince": "string",
+                "toProvince": "string",
+                "zonecode": "string",
+                "distance":  "number",  
+              }
             }
         400:
-          description: distance is not found.
+          description: Distance information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Distance information is not found.",
+            }
     put:
       tags:
         - "distance"
@@ -5832,13 +5858,20 @@ paths:
           schema:
             type: object
             example: {
-              "fromProvince": "string",
-              "toProvince": "string",
-              "zonecode": "string",
-              "distance":  "number",
+              "success": true,
+              "message": "Update distance successfully.",
+              "data": {
+                "zonecode": "string", 
+              }
             }
         400:
           description: Update distance failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Distance does not exist.",
+            }
       security:
         - bearerAuth: []
   /distance/service/{serviceId}:
@@ -5881,13 +5914,35 @@ paths:
           schema:
             type: object
             example: {
-              "fromProvince": "string",
-              "toProvince": "string",
-              "zonecode": "string",
-              "distance":  "number",          
+              "success": true,
+              "message": "Get distance information successfully.",
+              "data": {
+                "length": "number",
+                "distance": [
+                  {
+                    "fromProvince": "string",
+                    "toProvince": "string",
+                    "zonecode": "string",
+                    "distance":  "number",     
+                  }
+                ]
+              }
+     
             }
         400:
-          description: distance is not found.
+          description: Distance information is not found.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Service does not exist.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Distance information is not found.",
+              }
+            }
   /admin/distance/create/{serviceId}:
     post:
       tags:
@@ -5929,13 +5984,17 @@ paths:
           schema:
             type: object
             example: {
-              "fromProvince": "string",
-              "toProvince": "string",
-              "zonecode": "string",
-              "distance":  "number",
+              "success": true,
+              "message": "Create distance successfully.",
             }
         400:
           description: Create distance failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Distance already exists.",
+            }
       security:
         - bearerAuth: []
   /admin/distance/{distanceId}:
@@ -5977,13 +6036,23 @@ paths:
           schema:
             type: object
             example: {
-              "fromProvince": "string",
-              "toProvince": "string",
-              "zonecode": "string",
-              "distance":  "number",
+              "success": true,
+              "message": "Update distance successfully.",
+              "data": {
+                "fromProvince": "string",
+                "toProvince": "string",
+                "zonecode": "string",
+                "distance":  "number",
+              }
             }
         400:
           description: Update distance failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Distance does not exist.",
+            }
       security:
         - bearerAuth: []
     delete:
@@ -6001,16 +6070,26 @@ paths:
       responses:
         200:
           description: Delete distance successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Delete distance successfully.",
+              "data": {
+                "fromProvince": "string",
+                "toProvince": "string",
+                "zonecode": "string",
+                "distance":  "number",
+              }
+            }
         400:
           description: Delete distance failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Distance does not exist.",
+            }
       security:
         - bearerAuth: []
   /price/{priceId}:
