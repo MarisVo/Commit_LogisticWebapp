@@ -5049,11 +5049,31 @@ paths:
           schema:
             type: object
             example: {
-              "description": "string",
+              "success": true,
+              "message": "Get department information successfully.",
+              "data": {
+                "length": "number",
+                "department": [
+                  {
+                    "_id": "id",
+                    "name": "string",
+                    "description": "string",
+                    "location": "string",
+                    "director": "string",
+                    "scale": 0,
+                    "careers": []
+                  }
+                ]
+              }
             }
         400:
           description: department information is not found.
-          
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Department information is not found.",
+            }
   /department/{departmentId}:
     get:
       tags:
@@ -5073,16 +5093,26 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "description": "string",
-              "location": "string",
-              "director": "string",
-              "scale": "string",
-              "careers": "career",
+              "success": true,
+              "message": "Get department information successfully.",
+              "data": {
+                "_id": "id",
+                "name": "string",
+                "description": "string",
+                "location": "string",
+                "director": "string",
+                "scale": 0,
+                "careers": [],
+              }
             }
         400:
           description: departmentId is not found.
-
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Department information is not found.",
+            }
   /admin/department:
     post:
       tags:
@@ -5107,19 +5137,21 @@ paths:
                 type: number
       responses:
         200:
-          description: Create department successfully.
+          description: Department registered successfully.
           schema:
             type: object
             example: {
-                "name": "string",
-                "description": "string",
-                "location": "string",
-                "director": "string",
-                "scale": "number",
-                "careers": "career",
+                "success": true,
+                "message": "Department registered successfully.",
             }
         400:
           description: Create department failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "The director staff does not exist.",
+            }
       security:
         - bearerAuth: [] 
   /admin/department/{departmentId}:
@@ -5156,9 +5188,34 @@ paths:
                 type: number
       responses:
         200:
-          description: change department update successfully.
+          description: Update department successfully.
+          schema:
+            type: object
+            example: {
+                "success": true,
+                "message": "Update department successfully.",
+                "data": {
+                  "name": "string",
+                  "description": "string",
+                  "location": "string",
+                  "director": "string",
+                  "scale": 0,
+                }
+            }
         400:
-          description: department cannot be found.
+          description: Update department failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "The director staff does not exist.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Department does not exist.",
+              }
+            }
       security:
         - bearerAuth: [] 
           
@@ -5177,16 +5234,20 @@ paths:
       responses:
         200:
           description: Delete department successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete department successfully.",
+            }
         400:
           description: Delete department failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Department does not exist.",
+            }
       security:
         - bearerAuth: [] 
   /feature:
