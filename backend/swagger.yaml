@@ -2557,12 +2557,32 @@ paths:
               district: 
                 type: string
               province:
-                type: string 
+                type: string
+              storekeeper:
+                type: string
       responses:
         200:
           description: Create new warehouse successfully.
+          schema:
+            type: object
+            example:  {
+              "success": true,
+              "message": "Create new warehouse successfully.",
+            }
         400:
-          description: Create warehouse failed.
+          description: Error
+          schema:
+            type: object
+            example:  {
+              "error1": {
+                "success": false,
+                "message": "Supplied address does not exist.",
+              },
+              "error2": {
+                "success": false,
+                "message": "the warehouse's name is existed.",
+              }
+            }
       security:
         - bearerAuth: []
   /admin/warehouse/{warehouseId}:
@@ -2596,12 +2616,46 @@ paths:
               district: 
                 type: string
               province:
+                type: string
+              storekeeper:
                 type: string               
       responses:
         200:
           description: Update warehouse successfully.
+          schema:
+            type: object
+            example:  {
+              "success": true,
+              "message": "Update warehouse successfully",
+              "data": {
+                "name": "string",
+                "phone": "string",
+                "street": "string",
+                "ward": "string",
+                "district": "string",
+                "province": "string",
+                "lon": "number",
+                "lat": "number",
+              }
+            }
         400:
           description: Update warehouse failed.
+          schema:
+            type: object
+            example:  {
+              "error1": {
+                "success": false,
+                "message": "Supplied address does not exist.",
+              },
+              "error2": {
+                "success": false,
+                "message": "the warehouse's name is existed.",
+              },
+              "error3": {
+                "success": false,
+                "message": "New name is existed.",
+              },
+            }
       security:
         - bearerAuth: []
     delete:
@@ -2619,8 +2673,122 @@ paths:
       responses:
         200:
           description: Delete warehouse successfully.
+          schema:
+            type: object
+            example:  {
+              "success": true,
+              "message": "Delete warehouse successfully.",
+              "data": {
+                "_id": "id",
+                "name": "string",
+                "phone": "string",
+                "street": "string",
+                "ward": "string",
+                "district": "string",
+                "province": "string",
+                "lon": "number",
+                "lat": "number",
+              }
+            }
         400:
           description: Delete warehouse failed.
+          schema:
+            type: object
+            example:  {
+              "success": false,
+              "message": "Warehouse does not exist",
+            }
+      security:
+        - bearerAuth: []
+  /admin/warehouse/add-inventory/{warehouseId}:
+    put:
+      tags:
+        - "warehouse"
+      summary: add inventory product shipment to warehouse
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: warehouseId
+          type: string
+          required: true
+          description: Id of a warehouse
+        - in: body
+          name: warehouse
+          description: inventory product shipment.
+          schema:
+            type: object
+            properties:
+              productShipmentId:
+                type: string
+              turnover:
+                type: number
+      responses:
+        200:
+          description: Add  product shipment successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Add  product shipment successfully.",
+            }
+        400:
+          description: Add  product shipment failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "No information",
+            }
+      security:
+        - bearerAuth: []
+  /admin/warehouse/update-inventory/{warehouseId}:
+    put:
+      tags:
+        - "warehouse"
+      summary: change inventory status of warehouse
+      produces:
+        application/json
+      parameters:
+        - in: path
+          name: warehouseId
+          type: string
+          required: true
+          description: Id of a warehouse
+        - in: body
+          name: warehouse
+          description: inventory product shipment and status.
+          schema:
+            type: object
+            properties:
+              productShipmentId:
+                type: string
+              status:
+                type: string
+      responses:
+        200:
+          description: Update inventory status successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "${status} successfully",
+            }
+        400:
+          description: Update inventory status failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "No information.",
+              },
+              "error2": {
+                "success": false,
+                "message": "This product shipment can not be found in this warehouse.",
+              },
+              
+            }
       security:
         - bearerAuth: []
   /warehouse:
@@ -2657,17 +2825,45 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "phone": "string",    
-              "street": "string",   
-              "ward" : "string",
-              "district": "string",
-              "province": "string",
-              "lon": "string",
-              "lat": "string",       
+              "success": true,
+              "message": "Get warehouse successful.",
+              "data": {
+                "length": "number",
+                "warehouses": [
+                  {
+                    "_id": "id",
+                    "name": "string",
+                    "phone": "string",
+                    "street": "string",
+                    "ward": "string",
+                    "district": "string",
+                    "province": "string",
+                    "lon": "number",
+                    "lat": "number",
+                    "storekeeper": "id",
+                    "turnover": "number",
+                    "inventory_product_shipments": [
+                      {
+                        "shipment": "id",
+                        "turnover": "number",
+                        "status": "string",
+                        "_id": "id",
+                      },
+                    ],
+                  }
+                ]
+              }     
             }
         400:
-          description: warehouse is not found.  
+          description: No warehouse found
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "No warehouse found",
+            }
+      security:
+        - bearerAuth: []
   /warehouse/{warehouseId}:
     get:
       tags:
@@ -2687,17 +2883,210 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "phone": "string",    
-              "street": "string",   
-              "ward" : "string",
-              "district": "string",
-              "province": "string",
-              "lon": "string",
-              "lat": "string",       
-            }          
+              "success": true,
+              "message": "Get warehouse successful.",
+              "data": {
+                "_id": "id",
+                "name": "string",
+                "phone": "string",
+                "street": "string",
+                "ward": "string",
+                "district": "string",
+                "province": "string",
+                "lon": "number",
+                "lat": "number",
+                "storekeeper": "id",
+                "turnover": "number",
+                "inventory_product_shipments": [
+                  {
+                    "shipment": "id",
+                    "turnover": "number",
+                    "status": "string",
+                    "_id": "id",
+                  },
+                ],
+              }     
+            }
         400:
-          description: warehouse is not found.    
+          description: No warehouse found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "No warehouse found",
+            }
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - "warehouse"
+      summary: Update warehouse for storekeeper
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: warehouseId
+          type: string
+          required: true
+          description: Id of a warehouse
+        - in: body
+          name: warehouse
+          description: updated warehouse
+          schema:
+            type: object      
+            properties:
+              name: 
+                type: string
+              phone:
+                type: integer
+              street: 
+                type: string
+              ward: 
+                type: string
+              district: 
+                type: string
+              province: 
+                type: string
+              lon: 
+                type: string
+              lat: 
+                type: string
+              storekeeper:
+                type: string
+      responses:
+        200:
+          description: Update warehouse successfully.
+          schema:
+            type: object
+            example:  {
+              "success": true,
+              "message": "Update warehouse successfully",
+              "data": {
+                "name": "string",
+                "phone": "string",
+                "street": "string",
+                "ward": "string",
+                "district": "string",
+                "province": "string",
+                "lon": "number",
+                "lat": "number",
+              }
+            }
+        400:
+          description: Update warehouse failed.
+          schema:
+            type: object
+            example:  {
+              "error1": {
+                "success": false,
+                "message": "Supplied address does not exist.",
+              },
+              "error2": {
+                "success": false,
+                "message": "the warehouse's name is existed.",
+              },
+              "error3": {
+                "success": false,
+                "message": "New name is existed.",
+              },
+              "error4": {
+                "success": false,
+                "message": "You do not manage a warehouse",
+              },
+            }
+      security:
+        - bearerAuth: []
+  /warehouse/add-inventory/{warehouseId}:
+    put:
+      tags:
+        - "warehouse"
+      summary: add inventory product shipment to warehouse for storekeeper
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: warehouseId
+          type: string
+          required: true
+          description: Id of a warehouse
+        - in: body
+          name: warehouse
+          description: inventory product shipment.
+          schema:
+            type: object
+            properties:
+              productShipmentId:
+                type: string
+              turnover:
+                type: number
+      responses:
+        200:
+          description: Add  product shipment successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Add  product shipment successfully.",
+            }
+        400:
+          description: Add  product shipment failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "No information",
+            }
+      security:
+        - bearerAuth: []
+  /warehouse/update-inventory/{warehouseId}:
+    put:
+      tags:
+        - "warehouse"
+      summary: change inventory status of warehouse for storekeeper
+      produces:
+        application/json
+      parameters:
+        - in: path
+          name: warehouseId
+          type: string
+          required: true
+          description: Id of a warehouse
+        - in: body
+          name: warehouse
+          description: inventory product shipment and status.
+          schema:
+            type: object
+            properties:
+              productShipmentId:
+                type: string
+              status:
+                type: string
+      responses:
+        200:
+          description: Update inventory status successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "${status} successfully",
+            }
+        400:
+          description: Update inventory status failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "No information.",
+              },
+              "error2": {
+                "success": false,
+                "message": "This product shipment can not be found in this warehouse.",
+              },
+              
+            }
+      security:
+        - bearerAuth: []
   /participant:
      get:
       tags:
