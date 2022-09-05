@@ -9,6 +9,7 @@ export const createWarehouseValidate = data => {
     .isRequired(data.ward, 'ward')
     .isRequired(data.district, 'district')
     .isRequired(data.province, 'province')
+    .isRequired(data.storekeeper, 'storekeeper')
     
     return error.get()
 }
