@@ -18,8 +18,8 @@ featureRoute.get("/:id", async (req, res) => {
     if (!feature) return sendError(res, "Feature does not exist.");
 
     if (feature)
-      return sendSuccess(res, "get feature information successfully.", feature);
-    return sendError(res, "feature information is not found.");
+      return sendSuccess(res, "Get feature information successfully.", feature);
+    return sendError(res, "Feature information is not found.");
   } catch (error) {
     return sendServerError(res);
   }
@@ -50,12 +50,12 @@ featureRoute.get("/service/:serviceId", async (req, res) => {
         .limit(pageSize)
         .skip(pageSize * page);
       var length = await Feature.find({ _id: ids }).count();
-      return sendSuccess(res, "get feature information successfully.", {
+      return sendSuccess(res, "Get feature information successfully.", {
         length,
         feature,
       });
     }
-    return sendError(res, "feature information is not found.");
+    return sendError(res, "Feature information is not found.");
   } catch (error) {
     return sendServerError(res);
   }

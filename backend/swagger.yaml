@@ -5284,16 +5284,31 @@ paths:
           description: sort in order (name, -updatedAt)
       responses:
         200:
-          description: get feature information successfully.
+          description: Get feature information successfully.
           schema:
             type: object
             example: {
+              "success": true,
+              "message": "Get feature information successfully.",
+              "data": {
+                "length": "number",
+                "feature": [
+                  {
                   "name": "string",
                   "logo": "path",
                   "detail": "string",
+                  }
+                ]
+              }
             }
         400:
-          description: career information is not found.  
+          description: Feature information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Feature information is not found.",
+            }
   /feature/{featureId}:
     get:
       tags:
@@ -5309,16 +5324,26 @@ paths:
           description: Id of a feature 
       responses:
         200:
-          description: get feature successfully.
+          description: Get feature information successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "logo": "path",
-              "detail": "string",              
+              "success": true,
+              "message": "Get feature information successfully.",
+              "data": {
+                "name": "string",
+                "logo": "path",
+                "detail": "string",              
+              }
             }
         400:
-          description: feature is not found.
+          description: Feature does not exist.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Feature does not exist.",
+            }
   /feature/service/{serviceId}:
     get:
       tags:
@@ -5343,16 +5368,37 @@ paths:
           description: Id of a service 
       responses:
         200:
-          description: get feature successfully.
+          description: Get feature information successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "logo": "path",
-              "detail": "string",              
+              "success": true,
+              "message": "Get feature information successfully.",
+              "data": {
+                "length": "number",
+                "feature": [
+                  {
+                  "name": "string",
+                  "logo": "path",
+                  "detail": "string",
+                  }
+                ]
+              }
             }
         400:
-          description: feature is not found.
+          description: Feature information is not found.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Service does not exist.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Feature information is not found.",
+              }
+            }
   /admin/feature/{serviceId}:
     post:
       tags:
@@ -5400,16 +5446,21 @@ paths:
                   format: binary
       responses:
         200:
-          description: Create feature successfully.
+          description: Create new feature successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "logo": "path",
-              "detail": "string",
+              "success": true,
+              "message": "Create new feature successfully.",
             }
         400:
           description: Create feature failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Name already exists.",
+            }
       security:
         - bearerAuth: []
   /admin/feature/{featureId}:
@@ -5466,12 +5517,22 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "logo": "path",
-              "detail": "string",
+              "success": true,
+              "message": "Update feature successfully.",
+              "data": {
+                "name": "string",
+                "logo": "path",
+                "detail": "string",
+              }
             }
         400:
           description: Update feature failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Feature does not exist.",
+            }
       security:
         - bearerAuth: []
     delete:
@@ -5489,16 +5550,25 @@ paths:
       responses:
         200:
           description: Delete feature successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete feature successfully.",
+              "data": {
+                "name": "string",
+                "logo": "path",
+                "detail": "string",
+              }
+            }
         400:
-          description: Update feature failed.
+          description: Delete feature failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Feature does not exist.",
+            }
   /notification:
     get:
       tags:
