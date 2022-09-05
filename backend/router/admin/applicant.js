@@ -20,7 +20,7 @@ applicantAdminRoute.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const applicant = await Applicant.findById({ _id: id });
-    if (!applicant) return sendError(res, "Applicant not exists.");
+    if (!applicant) return sendError(res, "Applicant does not exist.");
     if (applicant)
       return sendSuccess(
         res,

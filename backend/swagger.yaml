@@ -5218,7 +5218,6 @@ paths:
             }
       security:
         - bearerAuth: [] 
-          
     delete:
       tags:
         - "department"
@@ -6680,16 +6679,23 @@ paths:
           schema:
             type: object
             example: {
-              "firstName": "string",
-              "lastName": "string",    
-              "phoneNumber": "string",   
-              "email" : "string",
-              "source": "string",
-              "message": "string",
-              "status": "string",    
+              "success": true,
+              "message": "Added applicant in career successfully.",
             }        
         400:
           description: Create applicant failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "send CV failed.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Confirmation cannot be sent to applicant email.",
+              }
+            }
   /admin/applicant:
     get:
       tags:
@@ -6732,20 +6738,32 @@ paths:
           description: filter by state
       responses:
         200:
-          description: get applicant successfully.
+          description: Get applicant information successfully.
           schema:
             type: object
             example: {
-              "firstName": "string",
-              "lastName": "string",    
-              "phoneNumber": "string",   
-              "email" : "string",
-              "source": "string",
-              "message": "string",
-              "status": "string",       
+              "success": true,
+              "message": "Get applicant information successfully.",
+              "data": [
+                {
+                "firstName": "string",
+                "lastName": "string",    
+                "phoneNumber": "string",   
+                "email" : "string",
+                "source": "string",
+                "message": "string",
+                "status": "string",       
+                }
+              ]
             }          
         400:
-          description: applicant is not found.  
+          description: Applicant information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Applicant information is not found.",
+            }
       security:
         - bearerAuth: []
   /admin/applicant/{applicantId}:
@@ -6763,20 +6781,30 @@ paths:
           description: Id of an applicant 
       responses:
         200:
-          description: get applicant successfully.
+          description: Get applicant information successfully.
           schema:
             type: object
             example: {
-              "firstName": "string",
-              "lastName": "string",    
-              "phoneNumber": "string",   
-              "email" : "string",
-              "source": "string",
-              "message": "string",
-              "status": "string",       
+              "success": true,
+              "message": "Get applicant information successfully.",
+              "data": {
+                "firstName": "string",
+                "lastName": "string",    
+                "phoneNumber": "string",   
+                "email" : "string",
+                "source": "string",
+                "message": "string",
+                "status": "string",       
+              }
             }          
         400:
-          description: applicant is not found.
+          description: Applicant does not exist.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Applicant does not exist.",
+            }
       security:
         - bearerAuth: []
     put:
@@ -6809,16 +6837,20 @@ paths:
           schema:
             type: object
             example: {
-              "firstName": "string",
-              "lastName": "string",    
-              "phoneNumber": "string",   
-              "email" : "string",
-              "source": "string",
-              "message": "string",
-              "status": "string",          
+              "success": true,
+              "message": "Update applicant successfully.",
+              "data": {
+                "status": "string",
+              }
             }      
         400:
           description: Update applicant failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Applicant does not exist.",
+            }
       security:
         - bearerAuth: []
     delete:
@@ -6836,8 +6868,29 @@ paths:
       responses:
         200:
           description: Delete applicant successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete applicant successfully.",
+              "data": {
+                "firstName": "string",
+                "lastName": "string",    
+                "phoneNumber": "string",   
+                "email" : "string",
+                "source": "string",
+                "message": "string",
+                "status": "string",       
+              }
+            }
         400:
           description: Delete applicant failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Applicant does not exist.",
+            }
       security:
         - bearerAuth: []
   /admin/staff:
