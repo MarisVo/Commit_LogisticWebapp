@@ -5684,9 +5684,13 @@ paths:
           description: limitation of notifications in response
       responses:
         200:
-          description: request successfully.
+          description: Request successfully.
           schema:
-            example: ["notification1","notification2",]
+            type: object
+            example: {
+              "success": true,
+              "message": "Request successfully.",
+            }
       security:
         - bearerAuth: []
     post:
@@ -5712,8 +5716,20 @@ paths:
       responses:
         200:
           description: send the notification successfully.
-        404:
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Send the notification successfully.",
+            }
+        401:
           description: receiver's ID didn't exist.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Receiver's ID didn't exist.",
+            }
       security:
         - bearerAuth: []
   
