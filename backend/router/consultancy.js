@@ -17,7 +17,7 @@ consultancyRoute.post('/',
         try{
             const {service, name, email, phone, district, province, ward, fulladdress, parcel, quantity} = req.body
             const isExistService = await DeliveryService.exists({ name: service })
-            if (!isExistService) return sendError(res, 'the service is not existed.')
+            if (!isExistService) return sendError(res, 'The service is not existed.')
 
             const optionsToCS = {
                 from: process.env.MAIL_HOST,

@@ -3082,20 +3082,36 @@ paths:
           description: sort by field, -updatedAt        
       responses:
         200:
-          description: get consultancy successfully.
+          description: Get consultancy information successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "email": "string",
-              "phone": "string",
-              "service" : "string",
-              "fulladdress" : "string",
-              "parcel": "string",
-              "quantity": number,    
+              "success": true,
+              "message": "Get consultancy information successfully.",
+              "data": {
+                "length": "number",
+                "consultancy": [
+                  {
+                  "name": "string",
+                  "email": "string",
+                  "phone": "string",
+                  "service" : "string",
+                  "fulladdress" : "string",
+                  "parcel": "string",
+                  "quantity": number,
+                  "solved_status": "boolean",
+                  }
+                ]
+              }
             }
         400:
-          description: consultancy is not found.  
+          description: Consultancy information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Consultancy information is not found.",
+            }
       security:
         - bearerAuth: []
   /admin/consultancy/{consultancyId}:
@@ -3113,20 +3129,31 @@ paths:
           description: Id of a consultancy 
       responses:
         200:
-          description: get consultancy successfully.
+          description: Get consultancy information successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "email": "string",
-              "phone": "string",
-              "service" : "string",
-              "fulladdress" : "string",
-              "parcel": "string",
-              "quantity": "string",    
+              "success": true,
+              "message": "Get consultancy information successfully.",
+              "data": {
+                "name": "string",
+                "email": "string",
+                "phone": "string",
+                "service" : "string",
+                "fulladdress" : "string",
+                "parcel": "string",
+                "quantity": "string",    
+                "solved_status": "boolean",
+              }
             }          
         400:
           description: consultancy is not found.    
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Consultancy information is not found.",
+            }
       security:
         - bearerAuth: []
     put:
@@ -3144,7 +3171,7 @@ paths:
           description: consultancy id
         - in: body
           name: consultancy
-          description: a existing consultancy.
+          description: an updated consultancy.
           schema:
             type: object
             properties:
@@ -3155,7 +3182,13 @@ paths:
               email:
                 type: string 
               phone: 
-                type: string              
+                type: string    
+              district:
+                type: string
+              province:
+                type: string
+              ward:
+                type: string          
               fulladdress:
                 type: string 
               parcel: 
@@ -3164,12 +3197,42 @@ paths:
                 type: number 
               solved_status:
                 type: boolean
-
       responses:
         200:
           description: Update consultancy successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Update consultancy successfully.",
+              "data": {
+                "name": "string",
+                "email": "string",
+                "phone": "string",
+                "service" : "string",
+                "district": "string",
+                "province": "string",
+                "ward": "string",
+                "fulladdress" : "string",
+                "parcel": "string",
+                "quantity": "string",    
+                "solved_status": "boolean",
+              }
+            }
         400:
           description: Update consultancy failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "This consultancy is not existed.",
+              }
+              "error2": {
+                "success": false,
+                "message": "The service is not existed.",
+              }
+            }
       security:
         - bearerAuth: []
     delete:
@@ -3187,8 +3250,20 @@ paths:
       responses:
         200:
           description: Delete consultancy successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete successfully.",
+            }
         400:
-          description: Update consultancy failed.
+          description: Delete consultancy failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Consultancy does not exist.",
+            }
       security:
         - bearerAuth: []
   /consultancy:
@@ -3208,22 +3283,48 @@ paths:
               service:
                 type: string
               name:
-                type: string               
+                type: string
               email:
                 type: string 
               phone: 
+                type: string    
+              district:
                 type: string
+              province:
+                type: string
+              ward:
+                type: string          
               fulladdress:
                 type: string 
               parcel: 
                 type: string
               quantity:
                 type: number 
+              solved_status:
+                type: boolean
       responses:
         200:
           description: Send consultancy successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Send email successfully.",
+            }
         400:
-          description: Create consultancy failed.   
+          description: Create consultancy failed. 
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Send email failed.",
+              }
+              "error2": {
+                "success": false,
+                "message": "The service is not existed.",
+              }
+            }
   /admin/warehouse:
     post:
       tags:
