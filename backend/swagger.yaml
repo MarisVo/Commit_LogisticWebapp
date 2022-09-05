@@ -6111,12 +6111,22 @@ paths:
           schema:
             type: object
             example: {
-              "uKG": "string",
-              "uM3": "string",
-              "uTON": "string",        
+              "success": true,
+              "message": "Get price information successfully.",
+              "data": {
+                "uKG": "string",
+                "uM3": "string",
+                "uTON": "string",        
+              }
             }
         400:
           description: price is not found.
+          schema: 
+            type: object
+            example: {
+              "success": false,
+              "message": "Price information not found.",
+            }
   /price/service/{serviceId}:
     get:
       tags:
@@ -6141,16 +6151,37 @@ paths:
           description: Id of a service 
       responses:
         200:
-          description: get price successfully.
+          description: Get price information successfully.
           schema:
             type: object
             example: {
-              "uKG": "string",
-              "uM3": "string",
-              "uTON": "string",       
+              "success": true,
+              "message": "Get price information successfully.",
+              "data": {
+                "length": "number",
+                "price": [
+                  {
+                  "uKG": "string",
+                  "uM3": "string",
+                  "uTON": "string",        
+                  }
+                ]
+              }
             }
         400:
           description: price is not found.
+          schema: 
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Service does not exist.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Price information not found.",
+              }
+            }
   /admin/price/create/{serviceId}:
     post:
       tags:
@@ -6224,16 +6255,21 @@ paths:
                       type: number
       responses:
         200:
-          description: Create price successfully.
+          description: Create price table successfully.
           schema:
             type: object
             example: {
-              "uKG": "string",
-              "uM3": "string",
-              "uTON": "string", 
+              "success": true,
+              "message": "Create price table successfully.",
             }
         400:
           description: Create price failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Request's body is incorrect.",
+            }
       security:
         - bearerAuth: []
   /admin/price/{priceId}:
@@ -6312,12 +6348,22 @@ paths:
           schema:
             type: object
             example: {
-              "uKG": "string",
-              "uM3": "string",
-              "uTON": "string", 
+              "success": true,
+              "message": "Update price successfully.",
+              "data": {
+                "uKG": "string",
+                "uM3": "string",
+                "uTON": "string", 
+              }
             }
         400:
           description: Update price failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Price does not exist.",
+            }
       security:
         - bearerAuth: []
     delete:
@@ -6335,16 +6381,25 @@ paths:
       responses:
         200:
           description: Delete price successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete price successfully.",
+              "data": {
+                "uKG": "string",
+                "uM3": "string",
+                "uTON": "string", 
+              }
+            }
         400:
           description: Delete price failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Price does not exist.",
+            }
       security:
         - bearerAuth: []
   /priceList:

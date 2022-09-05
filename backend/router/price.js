@@ -14,8 +14,8 @@ priceRoute.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const price = await Price.findById(id);
-    if (price) return sendSuccess(res, "get price successful.", price);
-    return sendError(res, "price information not found.");
+    if (price) return sendSuccess(res, "Get price information successfully.", price);
+    return sendError(res, "Price information not found.");
   } catch (error) {
     return sendServerError(res);
   }
