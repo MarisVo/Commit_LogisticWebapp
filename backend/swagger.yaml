@@ -6950,6 +6950,25 @@ paths:
       responses:
         200:
           description: request successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Get customers successfully",
+              "data": [
+                {
+                  "name": "string",
+                  "address": "tring",
+                  "description": "string",
+                  "customer_type": "string",
+                  "rank_passers": {
+                    "point": "number",
+                    "level": "string",
+                  },
+                  "companyTaxcode_business": "string",
+                }
+              ]
+            }
       security:
         - bearerAuth: []
   /admin/customer/{id}:
@@ -6990,6 +7009,26 @@ paths:
       responses:
         200:
           description: Update customer successfully.
+          schema:
+            type: object
+            example: {
+              "success":  true,
+              "message": "Customer updated successfully.",
+            }
+        400:
+          description: Update customer failed
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Customer does not exist.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Invalid customer type.",
+              }
+            }
       security:
         - bearerAuth: []
     delete:
@@ -7005,6 +7044,20 @@ paths:
       responses:
         200:
           description: Delete customer successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete customer user successfully.",
+            }
+        400:
+          description: Delete customer failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Customer does not exist.",
+            }
       security:
         - bearerAuth: []        
   /applicant/{careerId}:

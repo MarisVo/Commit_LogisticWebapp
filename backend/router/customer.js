@@ -36,7 +36,7 @@ customerRoute.get('/', async (req, res) => {
     }
     try {
         const result = await Customer.find(query).sort({name: sort})
-        sendSuccess(res, "Get customers successfully", result)
+        sendSuccess(res, "Get customers successfully.", result)
     }
     catch (err) {
         sendServerError(res);
