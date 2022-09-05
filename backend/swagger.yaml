@@ -6461,21 +6461,36 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "sub_detail": "string",    
-              "target": "string",   
-              "tip" : "string",
-              "quotes": ["quote1", "quote2"],
-              "logo": "path",
-              "banner": "path",
-              "features": ["feature1", "feature2"],    
-              "participants": ["participant1", "participant2"],   
-              "price": "string",  
-              "distances": ["distance1", "distance"],   
-              "price_files": ["path1", "path2"],       
+              "success": true,
+              "message": "Get service information successfully.",
+              "data": {
+                "length": "number",
+                "service": [
+                  {
+                  "name": "string",
+                  "sub_detail": "string",    
+                  "target": "string",   
+                  "tip" : "string",
+                  "quotes": ["quote1", "quote2"],
+                  "logo": "path",
+                  "banner": "path",
+                  "features": ["feature1", "feature2"],    
+                  "participants": ["participant1", "participant2"],   
+                  "price": "string",  
+                  "distances": ["distance1", "distance"],   
+                  "price_files": ["path1", "path2"],       
+                  }
+                ]
+              }
             }
         400:
-          description: service is not found.  
+          description: Service information is not found.
+          schema:
+            type: object
+            example: {
+              "service": false,
+              "message": "Service information is not found.",
+            }
   /service/{service}:
     get:
       tags:
@@ -6495,21 +6510,31 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "sub_detail": "string",    
-              "target": "string",   
-              "tip" : "string",
-              "quotes": ["quote1", "quote2"],
-              "logo": "path",
-              "banner": "path",
-              "features": ["feature1", "feature2"],    
-              "participants": ["participant1", "participant2"],     
-              "price": "string",  
-              "distances": ["distance1", "distance"],   
-              "price_files": ["path1", "path2"],          
+              "success": true,
+              "message": "Get service information successfully.",
+              "data": {
+                "name": "string",
+                "sub_detail": "string",    
+                "target": "string",   
+                "tip" : "string",
+                "quotes": ["quote1", "quote2"],
+                "logo": "path",
+                "banner": "path",
+                "features": ["feature1", "feature2"],    
+                "participants": ["participant1", "participant2"],     
+                "price": "string",  
+                "distances": ["distance1", "distance"],   
+                "price_files": ["path1", "path2"],          
+              }
             }          
         400:
-          description: service is not found.    
+          description: Service information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Service information is not found.",
+            }
   /admin/service:
     post:
       tags:
@@ -6540,21 +6565,31 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "sub_detail": "string",    
-              "target": "string",   
-              "tip" : "string",
-              "quotes": ["quote1", "quote2"],
-              "logo": "path",
-              "banner": "path",
-              "features": ["feature1", "feature2"],    
-              "participants": ["participant1", "participant2"],     
-              "price": "string",  
-              "distances": ["distance1", "distance"],   
-              "price_files": ["path1", "path2"],            
+              "success": true,
+              "message": "Create new service successfully.",
+              "data": {
+                "name": "string",
+                "sub_detail": "string",    
+                "target": "string",   
+                "tip" : "string",
+                "quotes": ["quote1", "quote2"],
+                "logo": "path",
+                "banner": "path",
+                "features": ["feature1", "feature2"],    
+                "participants": ["participant1", "participant2"],     
+                "price": "string",  
+                "distances": ["distance1", "distance"],   
+                "price_files": ["path1", "path2"],            
+              }
             }    
         400:
           description: Create service failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "This service is already existed.",
+            }
       security:
         - bearerAuth: []
   /admin/service/banner/{serviceId}:
@@ -6589,21 +6624,9 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "sub_detail": "string",    
-              "target": "string",   
-              "tip" : "string",
-              "quotes": ["quote1", "quote2"],
-              "logo": "path",
-              "banner": "path",
-              "features": ["feature1", "feature2"],    
-              "participants": ["participant1", "participant2"],     
-              "price": "string",  
-              "distances": ["distance1", "distance"],   
-              "price_files": ["path1", "path2"],            
+              "success": true,
+              "message": "Upload banner successfully.",
             }        
-        400:
-          description: Upload service banner failed.
       security:
         - bearerAuth: []
   /admin/service/logo/{serviceId}:
@@ -6638,21 +6661,9 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "sub_detail": "string",    
-              "target": "string",   
-              "tip" : "string",
-              "quotes": ["quote1", "quote2"],
-              "logo": "path",
-              "banner": "path",
-              "features": ["feature1", "feature2"],    
-              "participants": ["participant1", "participant2"],     
-              "price": "string",  
-              "distances": ["distance1", "distance"],   
-              "price_files": ["path1", "path2"],            
+              "success": true,
+              "message": "Upload logo successfully.",
             }        
-        400:
-          description: Upload service logo failed.
       security:
         - bearerAuth: []
   /admin/service/{serviceId}:
@@ -6690,21 +6701,23 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "sub_detail": "string",    
-              "target": "string",   
-              "tip" : "string",
-              "quotes": ["quote1", "quote2"],
-              "logo": "path",
-              "banner": "path",
-              "features": ["feature1", "feature2"],    
-              "participants": ["participant1", "participant2"],     
-              "price": "string",  
-              "distances": ["distance1", "distance"],   
-              "price_files": ["path1", "path2"],            
+              "success": true,
+              "message": "Update service successfully.",
+              "data": {
+                "name": "string",
+                "sub_detail": "string",    
+                "target": "string",   
+                "tip" : "string",   
+              }
             }      
         400:
           description: Update service failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Service does not exist.",
+            }
       security:
         - bearerAuth: []
     delete:
@@ -6722,8 +6735,20 @@ paths:
       responses:
         200:
           description: Delete service successfully.
+          schema: 
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete service successfully.",
+            }
         400:
           description: Delete service failed.
+          schema: 
+            type: object
+            example: {
+              "success": false,
+              "message": "Service does not exist.",
+            }
       security:
         - bearerAuth: []
 
