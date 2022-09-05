@@ -5,3 +5,4 @@ module.exports = {
     },
     assets: ['./src/assets/fonts']
     };
+//đang tính import font vào

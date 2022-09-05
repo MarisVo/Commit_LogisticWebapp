@@ -18,7 +18,7 @@ import axios from "axios";
 import {END_POINT} from "../../utils/constant";
 import IconAwesome from "react-native-vector-icons/FontAwesome";
 import IconAnt from "react-native-vector-icons/AntDesign";
-import {Select, CheckIcon, Radio, Stack} from "native-base";
+import {Select, CheckIcon, Radio, Stack, Progress } from "native-base";
 
 function Tracking({navigation}) {
   const [provinces, setProvinces] = useState([]);

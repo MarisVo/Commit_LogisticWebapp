@@ -1,15 +1,6 @@
-/**
- * @format
- */
-
-import {AppRegistry, Platform, AppState} from 'react-native';
-import React, { useRef, useState, useEffect } from "react";
-import App from './App';
-import {name as appName} from './app.json';
-
+import { Platform } from 'react-native';
 import PushNotification, {Importance} from 'react-native-push-notification';
 import PushNotificationIOS from "@react-native-community/push-notification-ios";
-import {showNotification} from "./src/notification/androidNotification"
 PushNotification.configure({
     // (optional) Called when Token is generated (iOS and Android)
     onRegister: function (token) {
@@ -73,19 +64,22 @@ PushNotification.configure({
     },
     (created) => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
   );
-// const MyHeadlessTask = async ()=>{
-//   setInterval(()=>{console.log('running')},1000)
-//   const socket = io(`http://localhost:5000`, { reconnection: true });
-//   console.log(`Connecting socket...`);
-//   socket.emit("add-session","62e659b016876b78f6fdb8f1")
-//   socket.on("receive", ({ message, title, link }) => {
-//     // console.log(message)
-//   //   openNotification({ message, title, link })
-//   showNotification(title,message)
-//     // setDotShow(true)
-//     // setRefreshNoti((pre)=>pre+1)
-//   });
-// }
-// AppRegistry.registerHeadlessTask('MyHeadlessTask', () => MyHeadlessTask);
+export const showNotification = (title,message)=>{   
+    PushNotification.localNotification({
+        channelId: "channel-id-1",
+        // showWhen: true, // (optional) default: true
+        // autoCancel: true, // (optional) default: true
+        // largeIconUrl: "https://www.example.tld/picture.jpg", // (optional) default: undefined
+        invokeApp: true,
+        // vibrate: true,
+        title,
+        message,
+        smallIcon: "ic_notification",
+        largeIcon: "ic_launcher",
+        showWhen:true,
+        when: new Date().getTime(),
+        // largeIconUrl:"https://cdn.pixabay.com/photo/2015/12/16/17/41/bell-1096280_1280.png",
+        // bigLargeIconUrl:"https://cdn.pixabay.com/photo/2015/12/16/17/41/bell-1096280_1280.png"
+    })
+}
 
-AppRegistry.registerComponent(appName, () => App);

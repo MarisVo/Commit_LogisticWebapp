@@ -17,9 +17,9 @@ function BillDetail({ onClose, dataForFetch }) {
   });
 
   return (
-    <div className="fixed inset-0 z-20 bg-white">
-      <div className="relative w-full ">
-        <div className="flex w-full bg-gray-300">
+    <div className="fixed inset-0 z-20 bg-white overflow-y-auto">
+      <div className=" w-full ">
+        <div className="sticky top-0 flex w-full bg-gray-300">
           <Button
             type="primary"
             size="large"

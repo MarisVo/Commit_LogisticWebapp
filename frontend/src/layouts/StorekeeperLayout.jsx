@@ -3,7 +3,7 @@ import { FaBars } from "react-icons/fa";
 import { MdOutlineInventory2 } from "react-icons/md";
 import { BiTransferAlt } from "react-icons/bi";
 import { Layout, Menu } from "antd";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link, Navigate, Outlet } from "react-router-dom";
 import logo from "../assets/icons/logo-J&T.svg";
 import AvatarStorekeeper from "../pages/Storekeeper/AvatarStorekeeper";
@@ -26,13 +26,21 @@ const items = [
 const StorekeeperLayout = () => {
   const [collapsed, setCollapsed] = useState(true);
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
-  const { logoutHandle, user } = useContext(MainContext);
+  const { logoutHandle, user, setMetadata } = useContext(MainContext);
 
   const hiddenSidebar = (e) => {
     if (!e.target.closest(".ant-menu") || e.target.closest("a")) {
       setIsSidebarVisible(false);
     }
   };
+  useEffect(() => {
+    setMetadata((prev) => {
+      return {
+        ...prev,
+        title: "Thủ kho | TKTL",
+      };
+    })
+  },[])
   if (user && user.role.staff_type === "storekeeper") {
     return (
       <>

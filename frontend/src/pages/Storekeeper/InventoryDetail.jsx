@@ -1,6 +1,6 @@
 import { Table, Input } from "antd";
 import { AiOutlinePlus } from "react-icons/ai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
 import axios from "axios";
 import { END_POINT } from "../../utils/constant";
@@ -8,6 +8,7 @@ import { END_POINT } from "../../utils/constant";
 function InventoryDetail() {
   const [data, setData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   const columns2 = [
     {
       title: "Tên sản phẩm",
@@ -88,7 +89,7 @@ function InventoryDetail() {
   const data2 = [
     {
       key: 1,
-      name:"quạt",
+      name: "quạt",
       cost: 200,
       time_in: "10:03",
       warehouse_to: "50 Thủ Đức",
@@ -96,7 +97,7 @@ function InventoryDetail() {
     },
     {
       key: 2,
-      name:"PC",
+      name: "PC",
       cost: 921,
       time_in: "08:03",
       warehouse_to: "50 Bình Thạnh",
@@ -104,21 +105,43 @@ function InventoryDetail() {
     },
   ];
   const fetchData = async () => {
+    setLoading(true);
     try {
-      const { data: response } = await axios.get(`${END_POINT}/department`);
-      setData(response.data)
-      console.log(response.data)
+      const { data: response } = await axios.get(
+        `${END_POINT}/warehouse/62e9d8b0c5e7cf9384ba18a4`
+      );
+      const dataModify = response.data.inventory_product_shipments
+        .filter((shipment) => shipment.status === "import")
+        .map((shipment) => ({ shipment }));
+      const shipmentLength = dataModify.length
+      for (const shipment in dataModify){
+        console.log(shipment)
+      }
+      console.log(dataModify);
+      // setData(response.data)
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
+  useEffect(()=>{
+    fetchData()
+  },[])
   return (
     <>
       <div className="text-2xl font-bold my-5">Chi nhánh 50 Tân Bình</div>
       <div className="flex justify-between mb-4">
-        <Input.Search className="max-w-xl lg:w-[400px] mx-auto" placeholder="Search" />
+        <Input.Search
+          className="max-w-xl lg:w-[400px] mx-auto"
+          placeholder="Search"
+        />
       </div>
-      <Table columns={columns2} dataSource={data2} pagination={true} scroll={{ x: 700 }} />
+      <Table
+        columns={columns2}
+        dataSource={data2}
+        pagination={true}
+        scroll={{ x: 700 }}
+      />
     </>
   );
 }
