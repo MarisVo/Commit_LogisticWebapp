@@ -5,7 +5,8 @@ const CarFleetSchema = new Schema(
     {
         name: {
             type: String,
-            required: true
+            required: true,
+            unique: true
         },
         director: {
             type: Schema.Types.ObjectId,
