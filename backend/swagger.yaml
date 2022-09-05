@@ -7107,8 +7107,20 @@ paths:
       responses:
         200:
           description: Get staff information successfully.
-        400:
-          description: Get staff information failed.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Get staffs information successfully",
+              "data": [
+                {
+                  "name": "Storekeeper",
+                  "staff_type": "storekeeper",
+                  "department": "string",
+                  "car_fleet": "string",
+                }
+              ]
+            }
       security:
         - bearerAuth: []
   /admin/staff/{staffId}:
@@ -7125,7 +7137,21 @@ paths:
           description: id of staff  
       responses:
         200:
-          description: delete staff successfully.
+          description: Delete staff user successfully.
+          schema: 
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete staff user successfully.",
+            }
+        400:
+          description: Delete staff user failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Staff does not exist.",
+            }
       security:
         - bearerAuth: []
     put:
@@ -7148,11 +7174,33 @@ paths:
                 type: string
               staff_type:
                 type: string
+              department:
+                type: string
+              car_fleet:
+                type: string
       responses:
         200:
           description: Update staff information successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Staff updated successfully.",
+            }
         400:
           description: Update staff information failed.
+          schema: 
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Staff does not exist.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Staff-type not found.",
+              }
+            }
       security:
         - bearerAuth: []
   /admin/receiver:
