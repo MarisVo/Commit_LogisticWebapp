@@ -8,40 +8,30 @@ import CarFleet from "../../model/CarFleet.js";
 import { carFleetValidate } from "../../validation/carFleet.js";
 import Car from "../../model/Car.js";
 import Bill from "../../model/Bill.js";
+import Staff from "../../model/Staff.js";
 
 const carFleetAdminRoute = express.Router();
 
 /**
- * @route POST /api/admin/carFleet/:carId
+ * @route POST /api/admin/carFleet/
  * @description register new carFleet
  * @access private
  */
-carFleetAdminRoute.post("/:carId", async (req, res) => {
+carFleetAdminRoute.post("/", async (req, res) => {
   const errors = carFleetValidate(req.body);
   if (errors) return sendError(res, errors);
 
   let { name, director } = req.body;
 
   try {
+    const isExist = await CarFleet.exists({ name });
+    if (isExist) {
+      return sendError(res, "Name already exists.");
+    }
     const carFleet = await CarFleet.create({
       name,
       director,
     });
-
-    const car = await Car.exists({
-      _id: req.params.carId,
-    });
-    if (car) {
-      await Car.updateOne(
-        {
-          _id: car._id,
-        },
-        {
-          $push: { car_fleet: carFleet },
-        }
-      );
-      return sendSuccess(res, "Added carFleet in car file successfully");
-    }
   } catch (error) {
     console.log(error);
     return sendServerError(res);
@@ -58,16 +48,14 @@ carFleetAdminRoute.put("/:id", async (req, res) => {
   const { id } = req.params;
   const errors = carFleetValidate(req.body);
   if (errors) return sendError(res, errors);
-  let { name, director } = req.body;
+  let { director } = req.body;
   try {
-    const carFleet = await CarFleet.findById(id);
+    const carFleet = await CarFleet.exists({ id });
     if (carFleet) {
       await CarFleet.findByIdAndUpdate(id, {
-        name: name,
         director: director,
       });
       return sendSuccess(res, "Update carFleet successfully.", {
-        name: name,
         director: director,
       });
     }
@@ -86,10 +74,10 @@ carFleetAdminRoute.put("/:id", async (req, res) => {
 carFleetAdminRoute.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const isExist = await carFleet.exists({ _id: id });
+    const isExist = await CarFleet.exists({ _id: id });
     if (!isExist) return sendError(res, "CarFleet does not exist.");
-    await Car.updateOne({ car_fleet: id }, { $pull: { car_fleet: id } });
-    const carFleet = await carFleet.findByIdAndRemove(id);
+    await Car.remove({ car_fleet: id });
+    const carFleet = await CarFleet.findByIdAndRemove(id);
     return sendSuccess(res, "Delete carFleet successfully.", carFleet);
   } catch (error) {
     console.log(error);
@@ -103,27 +91,24 @@ carFleetAdminRoute.delete("/:id", async (req, res) => {
  * @access public
  */
 
-carFleetAdminRoute.get("/car/:carFleetId", async (req, res) => {
-  const { plate } = req.query;
-  const { carFleetId } = req.params;
+carFleetAdminRoute.get("/car/:plate", async (req, res) => {
+  const { plate } = req.params;
   try {
-    const carFleet = await CarFleet.find({ _id: carFleetId });
-    if (!carFleet) return sendError(res, "carFleet does not exist.");
-    const car = await Car.find({ plate: plate, car_fleet: carFleet });
+    const car = await Car.findOne({ plate: plate });
     if (!car) return sendError(res, "car does not exist.");
-    const bill = await Bill.find({ car: car._id }).populate(
-      "product_shipments"
-    );
-    if (!bill) return sendError(res, "Bill does not exist.");
-    console.log(bill);
-    const turnover = bill.product_shipments.turnover;
+    const bill = await Bill.find({ car: car });
+    if (!bill.length) return sendError(res, "Bill does not exist.");
+    var turnover = 0;
+    if (bill[0].product_shipments.length) {
+      for (let i = 0; i < bill[0].product_shipments.length; i++) {
+        turnover += bill[0].product_shipments[i].turnover;
+      }
+    }
     if (turnover)
-      return sendSuccess(
-        res,
-        "get car turnover information successfully.",
+      return sendSuccess(res, "get car turnover information successfully.", {
+        turnover,
         car,
-        turnover
-      );
+      });
     return sendError(res, "car turnover information is not found.");
   } catch (error) {
     console.log(error);
@@ -132,20 +117,25 @@ carFleetAdminRoute.get("/car/:carFleetId", async (req, res) => {
 });
 
 /**
- * @route GET /api/admin/carFleet/:carFleetId
+ * @route GET /api/admin/carFleet/:name
  * @description get all cars in fleet turnover information
  * @access public
  */
-//paging
-carFleetAdminRoute.get("/:carFleetId", async (req, res) => {
-  const { carFleetId } = req.params;
+carFleetAdminRoute.get("/:name", async (req, res) => {
+  const { name } = req.params;
   try {
-    const carFleet = await CarFleet.find({ _id: carFleetId });
+    const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0;
+    const page = req.query.page ? parseInt(req.query.page) : 0;
+    const { sortBy } = req.query;
+    const carFleet = await CarFleet.findOne({ name: name }).populate("bills");
     if (!carFleet) return sendError(res, "carFleet does not exist.");
-    const cars = await Car.find({ car_fleet: carFleet });
-    console.log(cars);
+    const cars = await Car.find({ car_fleet: carFleet })
+      .limit(pageSize)
+      .skip(pageSize * page)
+      .sort(`${sortBy}`);
+    var length = await Car.find({ car_fleet: carFleet }).count();
     if (!cars) return sendError(res, "car does not exist.");
-    const bills = await Bill.find({ car: { $in: cars } });
+    const bills = carFleet.bills;
     if (!bills) return sendError(res, "Bill does not exist.");
     var turnover = 0;
     for (let j = 0; j < bills.length; j++) {
@@ -155,50 +145,18 @@ carFleetAdminRoute.get("/:carFleetId", async (req, res) => {
         }
       }
     }
-    if (turnover)
-      return sendSuccess(
-        res,
-        "get cars turnover information successfully.",
+    if (turnover) {
+      const name = carFleet.name;
+      const director = await Staff.findOne({_id: carFleet.director});
+      return sendSuccess(res, "get cars turnover information successfully.", {
+        name,
+        director,
+        length,
         turnover,
-        cars
-      );
-    return sendError(res, "cars turnover information is not found.");
-  } catch (error) {
-    console.log(error);
-    return sendServerError(res);
-  }
-});
-
-/**
- * @route PUT /api/admin/admin/carFleet/car/:carFleetid
- * @description update turnover of an existing car in carFleet
- * @access private
- */
-carFleetAdminRoute.put("/car/:carFleetId", async (req, res) => {
-  const { id } = req.params;
-  //const { carFLeetId } = req.params;
-  const { plate } = req.query;
-  // const errors = carFleetTurnoverValidate(req.body);
-  // if (errors) return sendError(res, errors);
-  let { turnover } = req.body;
-  try {
-    const carFleet = await CarFleet.find({ _id: id });
-    if (!carFleet) return sendError(res, "carFleet does not exist.");
-    const car = await Car.find({ plate: plate, car_fleet: carFleet });
-    if (!car) return sendError(res, "car does not exist.");
-    const bill = await Bill.find({ car: car });
-    if (!bill) return sendError(res, "Bill does not exist.");
-    //const carFleet = await carFleet.findById(id);
-    if (carFleet) {
-      await Bill.findByIdAndUpdate(bill._id, {
-        "product_shipments.turnover": turnover,
-      });
-      return sendSuccess(res, "Update car turnover successfully.", {
-        car,
-        turnover,
+        cars,
       });
     }
-    return sendError(res, "Car turnover does not exist.");
+    return sendError(res, "cars turnover information is not found.");
   } catch (error) {
     console.log(error);
     return sendServerError(res);
