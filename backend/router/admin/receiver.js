@@ -29,10 +29,11 @@ receiverAdminRoute.get('/', async (req, res) => {
     }
     try {
         const result = await Receiver.find(query).sort({ name : sort});
-        return sendSuccess(res, "ok", result);
+        if (result) return sendSuccess(res, "Get receivers successfully.", result);
+        return sendError(res, "No information found.")
     }
     catch (err) {
-        return sendServerError(res, err.message)
+        return sendServerError(res)
     }
 })
 
@@ -46,10 +47,10 @@ receiverAdminRoute.get('/', async (req, res) => {
 receiverAdminRoute.delete('/:id', async (req, res) => {
     let id = req.params.id;
     const isExist = await Receiver.exists({_id: id})
-    if (!isExist) {return sendError(res,'Receiver does not exist')}
+    if (!isExist) {return sendError(res,'Receiver does not exist.')}
     try {
         const result = await Receiver.deleteOne({_id: id})
-        return sendSuccess(res,"Receiver deleted successfully");
+        return sendSuccess(res,"Receiver deleted successfully.");
     }
     catch(error) {
         return sendServerError(res, error.message);
@@ -66,9 +67,9 @@ receiverAdminRoute.put('/:id', async (req, res) => {
     const {name, phone, identity} = req.body;            
     try {
         const isExist = await Receiver.exists({_id: id})
-        if (!isExist) {return sendError(res,'Receiver does not exist')}
+        if (!isExist) {return sendError(res,'Receiver does not exist.')}
         const result = await Receiver.findByIdAndUpdate(id, {name: name, phone: phone, identity: identity});
-        return sendSuccess(res,"Receiver updated successfully");
+        return sendSuccess(res,"Receiver updated successfully.");
     }
     catch (err) {
         if (err.codeName == "DuplicateKey") {

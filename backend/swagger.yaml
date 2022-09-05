@@ -6949,7 +6949,7 @@ paths:
           description: business, passers or intermediary
       responses:
         200:
-          description: request successfully.
+          description: Get customers successfully.
           schema:
             type: object
             example: {
@@ -6968,6 +6968,14 @@ paths:
                   "companyTaxcode_business": "string",
                 }
               ]
+            }
+        400:
+          description: Get customers failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "No information found.",
             }
       security:
         - bearerAuth: []
@@ -7474,16 +7482,28 @@ paths:
           description: sort receiver by order
       responses:
         200:
-          description: get receiver successfully.
+          description: Get receivers successfully.
           schema:
             type: object
-              example: {
-                "name": "string",
-                "phone": "string",
-                "identity": "string",
-              }
+            example: {
+              "success": true,
+              "message": "Get receivers successfully.",
+              "data": [
+                {
+                  "name": "string",
+                  "phone": "string",
+                  "identity": "string",
+                }
+              ]
+            }
         400:
-          description: Receiver not found.
+          description: Get receivers failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "No information found.",
+            }
       security:
         - bearerAuth: []
   /admin/receiver/{receiverId}:
@@ -7512,6 +7532,26 @@ paths:
       responses:
         200:
            description: Update receiver successfully. 
+           schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Receiver updated successfully.",
+            }
+        400:
+          description: Update receiver failed
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Receiver does not exist.",
+              }
+              "error2": {
+                "success": false,
+                "message": "identity value is existed.",
+              }
+            }
       security:
         - bearerAuth: []
     delete:
@@ -7527,7 +7567,21 @@ paths:
           description: id of receiver  
       responses:
         200:
-          description: delete receiver successfully.
+          description: Receiver deleted successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Receiver deleted successfully.",
+            }
+        400:
+          description: Receiver not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Receiver does not exist.",
+            }
       security:
         - bearerAuth: []
   /receiver/{orderId}:
@@ -7556,6 +7610,26 @@ paths:
       responses:
         200:
            description: Update receiver successfully. 
+           schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Receiver updated successfully.",
+            }
+        400:
+          description: Update receiver failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Order not found.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Cannot update receiver while order is completed.",
+              }
+            }
       security:
         - bearerAuth: []
 securityDefinitions:
