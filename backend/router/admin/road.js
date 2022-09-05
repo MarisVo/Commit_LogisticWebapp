@@ -39,7 +39,7 @@ roadAdminRoute.get("/", async (req, res) => {
             query.distance = distance;
         }
         
-        const length = await Road.count()
+        const length = await Road.find({ $and: [query, keywordList] }).count()
         const road = await Road.find({ $and: [query, keywordList] })
             .skip(pageSize * page)
             .limit(pageSize)
@@ -85,8 +85,8 @@ roadAdminRoute.post('/create', async (req, res) => {
     try {
         const { distance, origin, destination } = req.body
 
-        const isExistOrigin = await Warehouse.exists({ origin })
-        const isExistDestination = await Warehouse.exists({ destination })
+        const isExistOrigin = await Warehouse.exists({ _id: origin })
+        const isExistDestination = await Warehouse.exists({ _id: destination })
 
         if (!isExistOrigin)
             return sendError(res, 'Origin does not exist.')
@@ -116,6 +116,14 @@ roadAdminRoute.put('/:id', async (req, res) => {
         if (errors)
             return sendError(res, errors)
         
+        const isExistOrigin = await Warehouse.exists({_id: origin })        
+        if (!isExistOrigin)
+            return sendError(res, 'Origin does not exist.')
+
+        const isExistDestination = await Warehouse.exists({_id: destination })
+        if (!isExistDestination)
+            return sendError(res, 'Destination does not exist.')
+
         const isExistId = await Road.exists({ _id: id })
         if (!isExistId)
             return sendError(res, "This road is not existed.")
@@ -146,13 +154,8 @@ roadAdminRoute.delete('/:id', async (req, res) => {
         if (!isExit)
             return sendError(res, "Road not exists")
 
-        await Road.findByIdAndRemove(id)
-            .then(() => {
-                return sendSuccess(res, "Delete road successfully.")
-            })
-            .catch((err) => {
-                return sendError(res, err)
-            })
+        const data = await Road.findByIdAndRemove(id)
+        return sendSuccess(res, "Delete road successfully.", data)
     }
     catch (error) {
         console.log(error)

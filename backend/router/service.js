@@ -1,6 +1,8 @@
 import express from "express";
 import { sendError, sendServerError, sendSuccess } from "../helper/client.js";
 import DeliveryService from "../model/DeliveryService.js";
+import mongodb from 'mongodb';
+const ObjectID = mongodb.ObjectID
 
 const serviceRoute = express.Router();
 
@@ -31,7 +33,6 @@ serviceRoute.get("/", async (req, res) => {
     if (tip) {
       query.location = tip;
     }
-    const length = await DeliveryService.count();
     const service = await DeliveryService.find({ $and: [query, keywordCondition] })
       .limit(pageSize)
       .skip(pageSize * page)
@@ -39,6 +40,7 @@ serviceRoute.get("/", async (req, res) => {
       .populate("quotes")
       .populate("features")
       .populate("participants");
+    var length = await DeliveryService.find({ $and: [query, keywordCondition] }).count();
     if (service)
       return sendSuccess(res, "get service information successfully.", {length, service});
     return sendError(res, "Service information is not found.");
@@ -50,15 +52,22 @@ serviceRoute.get("/", async (req, res) => {
 
 /**
  * @route GET /api/service/:id
- * @description get a single service information
+ * @description get a single service information (get by id or name)
  * @access public
  */
 
 serviceRoute.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const service = await DeliveryService.findOne({ _id: id })
-    .populate("quotes", "features", "participants"); //?
+    var service = null;
+    if(ObjectID.isValid(id)){    
+      service = await DeliveryService.findOne({ _id: id })
+      .populate("quotes", "features", "participants"); 
+    } else {
+      service = await DeliveryService.findOne({ name: id })
+      .populate("quotes", "features", "participants"); 
+    }
+    
     if (!service) return sendError(res, "Service does not exist.");
     if (service)
       return sendSuccess(res, "get service information successfully.", service);

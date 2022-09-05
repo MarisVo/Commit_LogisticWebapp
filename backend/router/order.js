@@ -1,14 +1,16 @@
 import express from "express"
-import opencage from "opencage-api-client"
 import { sendError, sendServerError, sendSuccess } from "../helper/client.js"
 import { createOrderValidate } from "../validation/order.js"
-import { verifyToken, verifyCustomer} from '../middleware/index.js'
+import { createReceiverValidate } from "../validation/receiver.js"
+import { locateAddress } from "../service/location.js"
+import { verifyToken, verifyCustomer, verifyCustomerOrAdmin} from '../middleware/index.js'
 import { genarateOrderID } from "../service/order.js"
 import DeliveryService from '../model/DeliveryService.js'
 import Order from "../model/Order.js"
 import Product from "../model/Product.js"
 import Receiver from "../model/Receiver.js"
-const OPENCAGE_API_KEY='7f8d6f65dfd846748331d3c5e0a52070'
+import Customer from "../model/Customer.js"
+import User from "../model/User.js"
 
 const orderRoute = express.Router()
 
@@ -19,28 +21,41 @@ const orderRoute = express.Router()
  */
 orderRoute.post('/create',
     verifyToken,
-    verifyCustomer,
-    async (req, res) => {
-        const errors = createOrderValidate(req.body)
-        if (errors) return sendError(res, errors)
-        const { serviceName, receiver, origin, destination } = req.body
-        const {name, phone, identity} = receiver
+    verifyCustomerOrAdmin,
+    async (req, res) => {        
         try {
-            const customerId = req.user.role._id
+            const errors = createOrderValidate(req.body)
+            if (errors) return sendError(res, errors)
+            const {customerPhone, customerEmail, serviceName, receiver, origin, destination } = req.body
+            const {name, phone, identity} = receiver
+            const receiverError = createReceiverValidate(receiver)
+            if(receiverError) return sendError(res, receiverError)
+            const userId = req.user.role._id
+            var customerId = null   
+            //Check whether user is customer or admin         
+            const checkUser = await Customer.exists({_id: userId})
+            if (checkUser) { //If user is customer
+                customerId = userId
+            }            
+            else {            //If user is admin
+                const customer = await User.findOne({
+                    $or: [
+                        {phone: customerPhone},
+                        {email: customerEmail}
+                    ]
+                })
+                if (!customer) return sendError(res, 'customer not found')
+                customerId = customer.role._id
+            }
+            
             const service = await DeliveryService.findOne({name: serviceName })
             if (!service) return sendError(res, 'the service is not exist.')
-            var data = await opencage.geocode({q: `${origin}`, key: OPENCAGE_API_KEY})            
-            if (data.status.code == 200 && data.results.length > 0) {
-                if (! data.results[0].geometry) {
-                    return sendError(res, "origin is not found")
-                }                       
-            }
-            data = await opencage.geocode({q: `${destination}`, key: OPENCAGE_API_KEY})            
-            if (data.status.code == 200 && data.results.length > 0) {
-                if (! data.results[0].geometry) {
-                    return sendError(res, "destination is not found")
-                }                       
-            }
+            var data = await locateAddress(origin)                
+            if (! data) return sendError(res, 'origin is not exist.')
+            
+            data = await locateAddress(destination)                
+            if (! data) return sendError(res, 'destination is not exist.')
+            
             const orderId = await genarateOrderID()
             var _receiver = null
             _receiver = await Receiver.findOne({identity : identity})
@@ -48,7 +63,7 @@ orderRoute.post('/create',
                 _receiver = await Receiver.create({name, phone, identity})
             }          
             const order = await Order.create({ orderId, service, customer: customerId, receiver:_receiver, origin, destination})            
-            return sendSuccess(res, 'create new order successfully', order)
+            return sendSuccess(res, 'create new order successfully', {orderId : order.orderId})
         } catch (error) {
             console.log(error)
             return sendServerError(res)
@@ -68,9 +83,11 @@ orderRoute.get('/',
         try {            
             const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0
             const page = req.query.page ? parseInt(req.query.page) : 0
+            const {sortBy, status} = req.query            
+            var filterCondition = status ? {status: status} : {}       
             const customerId = req.user.role._id
-            const order = await Order.find({customer: customerId}).limit(pageSize).skip(pageSize*page).sort('-updatedAt')
-            const length = await Order.count({customer: customerId})
+            const order = await Order.find({ $and: [{customer: customerId}, filterCondition]}).skip(pageSize*page).limit(pageSize).sort(sortBy)
+            const length = await Order.find({ $and: [{customer: customerId}, filterCondition]}).count()
             return sendSuccess(res, 'get order successfully', {length, order})
         } catch (error) {
             console.log(error)
@@ -94,6 +111,61 @@ orderRoute.get('/:orderId',
             const order = await Order.find({orderId: orderId, customer: customerId})
             if (order)
                 return sendSuccess(res, 'get order successfully', order)
+            return sendError(res, 'no information')
+        } catch (error) {
+            console.log(error)
+            return sendServerError(res)
+        }
+    }
+)
+
+/**
+ * @route PUT /api/order/:orderId
+ * @description customer can update their order when order status is waiting 
+ * @access private
+ */
+orderRoute.put('/:orderId',
+    verifyToken,
+    verifyCustomerOrAdmin,
+    async (req, res) => {
+        try {            
+            const userId = req.user.role._id
+            const {orderId} = req.params
+            var customerId = null   
+            var isExistedOrder = null
+            //Check whether user is customer or admin         
+            const checkUser = await Customer.exists({_id: userId})
+            if (checkUser) { //If user is customer
+                customerId = userId
+                isExistedOrder = {orderId: orderId, customer: customerId}
+            }            
+            else {            //If user is admin                
+                isExistedOrder = {orderId: orderId}
+            }
+            const order = await Order.findOne(isExistedOrder)
+            if (!order) {
+                return sendError(res, "Order is not found.")
+            }
+            else if (order.status !== "waiting"){
+                return sendError(res, "Order can't be modified.")
+            }
+            const {origin, destination, serviceName} = req.body
+            var service = serviceName
+            if (service) {
+                service = await DeliveryService.findOne({name: serviceName })
+                if (!service) return sendError(res, 'the service is not exist.')
+            }
+            if(origin) {
+                const data = await locateAddress(origin)                
+                if (! data) return sendError(res, 'origin is not exist.')
+            }
+            if(destination){
+                const data = await locateAddress(destination)                
+                if (! data) return sendError(res, 'destination is not exist.')
+            }
+            const updatedOrder = await Order.findOneAndUpdate({orderId: orderId}, {origin, destination, service})
+            if (updatedOrder)
+                return sendSuccess(res, 'update order successfully', updatedOrder)
             return sendError(res, 'no information')
         } catch (error) {
             console.log(error)

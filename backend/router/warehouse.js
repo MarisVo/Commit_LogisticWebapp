@@ -50,7 +50,7 @@ warehouseRoute.get('/', verifyToken,
                 return sendServerError(res)
             }
         } else {
-            return sendError(res, "Access denied.")
+            return sendError(res, "Access denied.")        
         }
     }
 )
