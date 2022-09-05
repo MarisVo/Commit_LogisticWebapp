@@ -18,8 +18,8 @@ careerRoute.get("/:id", async (req, res) => {
     if (!career) return sendError(res, "Career does not exist.");
 
     if (career)
-      return sendSuccess(res, "get career information successfully.", career);
-    return sendError(res, "career information is not found.");
+      return sendSuccess(res, "Get career information successfully.", career);
+    return sendError(res, "Career information is not found.");
   } catch (error) {
     console.log(error);
     return sendServerError(res);

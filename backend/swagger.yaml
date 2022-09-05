@@ -4822,6 +4822,12 @@ paths:
           schema:
             type: object
             example: {
+              "success": true,
+              "message": "Get career information successfully.",
+              "data": {
+                "length": "number",
+                "career": [
+                  {    
                   "name": "string",
                   "type": "string",
                   "description": "string",
@@ -4829,10 +4835,19 @@ paths:
                   "state": "string",
                   "bonus": "string",
                   "deadline": "YYYY/MM/DD",
-                  "applicants": "object",
+                  "applicants": [],
+                  }                
+                ]
+              }
             }
         400:
-          description: career information is not found.        
+          description: career information is not found.    
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Career information is not found.",
+            }    
   /career/{careerId}:
     get:
       tags:
@@ -4852,20 +4867,27 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "type": "string",
-              "description": "string",
-              "location": "string",
-              "state": "string",
-              "bonus": "string",
-              "deadline": "YYYY/MM/DD",
-              "applicants": "object",
+              "success": true,
+              "message": "Get career information successfully.",
+              "data": {
+                "name": "string",
+                "type": "string",
+                "description": "string",
+                "location": "string",
+                "state": "string",
+                "bonus": "string",
+                "deadline": "YYYY/MM/DD",
+                "applicants": [],              
+              }
             }
         400:
           description: Career does not exist.
-        402:
-          description: career information is not found.
-    
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Career does not exist.",
+            }    
   /admin/career/{departmentId}:
     post:
         tags:
@@ -4905,24 +4927,16 @@ paths:
             schema:
               type: object
               example: {
-                  "name": "string",
-                  "type": "string",
-                  "description": "string",
-                  "location": "string",
-                  "state": "string",
-                  "bonus": "string",
-                  "deadline": "YYYY/MM/DD",
-                  "applicants": "object",
+                "success": true,
+                "message": "Added career in department file. Career registered successfully.",
               }
-          400:
-            description: Create career failed.  
         security:
           - bearerAuth: []
   /admin/career/{careerId}:
     put:
       tags:
         - "career"
-      summary: admin change career status
+      summary: admin update career
       produces:
         - application/json        
       consumes:
@@ -4957,9 +4971,21 @@ paths:
                 format: date
       responses:
         200:
-          description: change career status successfully.
+          description: Update career successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Update career successfully.",
+            }
         400:
-          description: career cannot be found. 
+          description: career cannot be found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Career does not exist.",
+            }
       security:
         - bearerAuth: []                          
     delete:
@@ -4977,16 +5003,20 @@ paths:
       responses:
         200:
           description: Delete career successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Delete career successfully.",
+            }
         400:
           description: Delete career failed.      
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Career does not exist.",
+            }
       security:
         - bearerAuth: [] 
   /department:
