@@ -1,9 +1,12 @@
-import express from "express"
+import express, { request } from "express"
 import Warehouse from "../../model/Warehouse.js"
+import Bill from "../../model/Bill.js"
 import { sendError, sendRequest, sendServerError, sendSuccess } from "../../helper/client.js"
 import ProductShipment from "../../model/ProductShipment.js"
 import {createWarehouseValidate} from "../../validation/warehouse.js"
 import opencage from "opencage-api-client"
+import {SHIPMENT_MANAGER} from "../../constant.js"
+import { calculateWarehouseTurnover } from "../../service/turnoverWarehouse.js"
 const OPENCAGE_API_KEY='7f8d6f65dfd846748331d3c5e0a52070'
 const warehouseAdminRoute = express.Router()
 
@@ -18,7 +21,7 @@ warehouseAdminRoute.post('/',
         if (errors)
             return sendError(res, errors)
 
-        const { name, phone, street, ward, district, province} = req.body
+        const { name, phone, street, ward, district, province, storekeeper} = req.body
         try {
             const isExist = await Warehouse.exists({ name })
             if (isExist) return sendError(res, 'the warehouse\'s name is existed.')
@@ -32,11 +35,11 @@ warehouseAdminRoute.post('/',
             }
             if(lon || lat) {
                 await Warehouse.create({
-                    name, phone, street, ward, district, province, lon, lat
+                    name, phone, street, ward, district, province, storekeeper , lon, lat
                 })
-                return sendSuccess(res, 'create new warehouse successfully.')
+                return sendSuccess(res, 'Create new warehouse successfully.')
             }
-            return sendError(res, 'supplied address does not exist.')
+            return sendError(res, 'Supplied address does not exist.')
         }
         catch (error) {
             console.log(error)
@@ -54,7 +57,7 @@ warehouseAdminRoute.put('/:id',
     async (req, res) => {
         try{
             const {id} = req.params
-            const {name, phone, street, ward, district, province} = req.body
+            const {name, phone, street, ward, district, province, storekeeper} = req.body
             const warehouse = await Warehouse.findById(id)
             if (warehouse){
                 var lat = 0, lon = 0
@@ -73,7 +76,7 @@ warehouseAdminRoute.put('/:id',
                         }
                     }
                     if(lon || lat) {
-                        await Warehouse.findByIdAndUpdate(id, {name, phone, street, ward, district, province, lon, lat})
+                        await Warehouse.findByIdAndUpdate(id, {name, phone, street, ward, district, province, lon, lat, storekeeper})
                         return sendSuccess(res, "Update warehouse successfully",{name, phone, street, ward, district, province, lon, lat})
                     } else return sendError(res, "supplied address does not exist.")
                     
@@ -86,7 +89,70 @@ warehouseAdminRoute.put('/:id',
         }             
     }
 )
+/**
+* @route PUT /api/admin/add-inventory/:warehouseId
+* @description add productshipment to a warehouse
+* @access private
+*/
+warehouseAdminRoute.put('/add-inventory/:warehouseId/', async (req, res) => {
+    try {
+        let warehouseId = req.params.warehouseId
+        let {productShipmentId} = req.body
+        const productShipment = await ProductShipment.findById(productShipmentId)
+        const warehouse = await Warehouse.findById(warehouseId)
+        if (!productShipment || !warehouse) return sendError(res, "No information")
+        const bills = await Bill.find()
+        for (let i = 0; i < bills.length; i++) {
+            for (let j = 0; j < bills[i].product_shipments.length; j++) {
+                if (bills[i].product_shipments[j].shipment == productShipmentId) {
+                    var turnover = bills[i].product_shipments[j].turnover;
+                    break;
+                }
+            }
+        }
+        let add = {shipment: productShipment, turnover: turnover}
+        const totalTurnover = warehouse.turnover + Number(turnover)
+        let inventory_product_shipments = [...warehouse.inventory_product_shipments, add]
+        await Warehouse.findByIdAndUpdate(warehouseId, {inventory_product_shipments: inventory_product_shipments, turnover: totalTurnover})
+        return sendSuccess(res, "Add product shipment successfully")
+    }
+    catch (error) {
+        console.log(error);
+        return sendServerError(res)
+    }
+})
+/**
+* @route PUT /api/admin/update-inventory/:warehouseId
+* @description export or import productshipment to a warehouse
+* @access private
+*/
+warehouseAdminRoute.put('/update-inventory/:warehouseId', async (req, res) => {
+    try {
+        const warehouseId = req.params.warehouseId
+        const {productShipmentId, status} = req.body
+        if (status != 'import' && status != 'export') return sendError(res, "Status must be 'import' or 'export'")
+        const warehouse = await Warehouse.findById(warehouseId)
+        const productShipment = await ProductShipment.findById(productShipmentId)
+        if (!productShipment || !warehouse) return sendError(res, "No information.")
+        for (let i = 0; i < warehouse.inventory_product_shipments.length; i++) {
+            if (warehouse.inventory_product_shipments[i].shipment == productShipmentId) {
+                if (warehouse.inventory_product_shipments[i].status == status) {
+                    return sendError(res, "Status already set")
+                }
+                warehouse.inventory_product_shipments[i].status = status
+                warehouse.turnover = warehouse.turnover + (status == 'import' ? +warehouse.inventory_product_shipments[i].turnover : -warehouse.inventory_product_shipments[i].turnover)
+                await Warehouse.findByIdAndUpdate(warehouseId, {inventory_product_shipments: warehouse.inventory_product_shipments, turnover: warehouse.turnover})
+                return sendSuccess(res, `${status} successfully`)
+            }
+        };
+        return sendError(res,"This product shipment can not be found in this warehouse.")    
 
+    }
+    catch (error) {
+        console.log(error);
+        return sendServerError(res)
+    }
+})
 /**
 * @route DELETE /api/admin/warehouse/:id
 * @description delete a existing warehouse
@@ -97,7 +163,7 @@ warehouseAdminRoute.delete('/:id',
         const {id} = req.params;    
         try {
             const isExist = await Warehouse.exists({_id: id});
-            if (!isExist) return sendError(res, "Warehouse not exist");
+            if (!isExist) return sendError(res, "Warehouse does not exist");
             
             const data = await Warehouse.findByIdAndRemove(id)
             return sendSuccess(res, "Delete warehouse successfully.", data)
@@ -107,5 +173,4 @@ warehouseAdminRoute.delete('/:id',
         }
     }
 )
-
 export default warehouseAdminRoute

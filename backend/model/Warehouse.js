@@ -35,6 +35,15 @@ const WarehouseSchema = new Schema(
         lat: {
             type: Number,
         },
+        storekeeper: {
+            type: Schema.Types.ObjectId,
+            ref: 'staffs',
+            required: true
+        },
+        turnover: {
+            type: Number,
+            default: 0,
+        },
         inventory_product_shipments: [
             {
                 shipment: {
