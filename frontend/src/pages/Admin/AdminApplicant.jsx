@@ -215,7 +215,7 @@ function AdminApplicant() {
         }
       );
 
-      setData(res.data.data);
+      setData(res.data.data.applicant);
       setLoading(false);
       setPagination({
         pageSize: params.pageSize,
