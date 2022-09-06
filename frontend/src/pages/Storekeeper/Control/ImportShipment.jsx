@@ -1,11 +1,32 @@
 import { useState, useEffect, useContext } from "react";
 import { Form, Input, Button } from "antd";
-
+import { MainContext } from "../../../context/MainContext";
+import axios from "axios";
+import { END_POINT } from "../../../utils/constant";
 const { Item } = Form;
-function ImportShipment({ onClose }) {
-  const [fornData, setFormData] = useState({});
-  const [loading,setLoading] = useState(false)
-  const acceptImport = () => {};
+
+function ImportShipment({ onClose, refetchData }) {
+  const { accessToken } = useContext(MainContext);
+  const [formData, setFormData] = useState({});
+  const [loading, setLoading] = useState(false);
+  console.log(formData)
+  const acceptImport = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.put(
+        `${END_POINT}/warehouse/add-inventory/62e9d8b0c5e7cf9384ba18a4`,
+        formData,
+        {
+          headers: { authorization: `Bearer ${accessToken}` },
+        }
+      );
+      setLoading(false);
+      refetchData()
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="fixed inset-0  bg-slate-600 bg-opacity-50 z-20 flex justify-center items-center">
       <div className="relative w-[700px] flex flex-col bg-white p-6 gap-y-3 animate-modal_in mx-4 rounded-xl overflow-auto">
@@ -44,17 +65,17 @@ function ImportShipment({ onClose }) {
             ]}
           >
             <Input
-              value={fornData.productShipmentId}
+              value={formData.productShipmentId}
               onChange={(e) =>
                 setFormData({
-                  ...fornData,
+                  ...formData,
                   productShipmentId: e.target.value,
                 })
               }
             />
           </Item>
           <Item
-            label="Danh thu"
+            label="Doanh thu"
             name="turnover"
             rules={[
               {
@@ -68,34 +89,33 @@ function ImportShipment({ onClose }) {
             ]}
           >
             <Input
-              value={fornData.productShipmentId}
-              type={Number}
+              value={formData.turnover}
               onChange={(e) =>
                 setFormData({
-                  ...fornData,
-                  productShipmentId: e.target.value,
+                  ...formData,
+                  turnover: +e.target.value,
                 })
               }
             />
           </Item>
           <div className="flex justify-end mt-2 text-sm gap-x-6">
-              <Button
-                size="large"
-                className="hover:bg-red-500 hover:border-red-700 hover:text-white rounded-lg"
-                onClick={onClose}
-              >
-                Hủy
-              </Button>
-              <Button
-                type="primary"
-                htmlType="submit"
-                size="large"
-                loading={loading}
-                className="rounded-lg"
-              >
-                Xác nhận
-              </Button>
-              </div>
+            <Button
+              size="large"
+              className="hover:bg-red-500 hover:border-red-700 hover:text-white rounded-lg"
+              onClick={onClose}
+            >
+              Hủy
+            </Button>
+            <Button
+              type="primary"
+              htmlType="submit"
+              size="large"
+              loading={loading}
+              className="rounded-lg"
+            >
+              Xác nhận
+            </Button>
+          </div>
         </Form>
       </div>
     </div>

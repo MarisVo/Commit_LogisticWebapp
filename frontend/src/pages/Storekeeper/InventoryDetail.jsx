@@ -28,7 +28,7 @@ function InventoryDetail() {
     },
     {
       title: "Tiền phải thu (VNĐ)",
-      dataIndex: "value",
+      dataIndex: "turnover",
       sorter: true,
     },
     {
@@ -100,7 +100,7 @@ function InventoryDetail() {
     },
   ];
   const getWarehouseInfo = async ()=>{
-    
+
   }
   const exportShipemt = async (record) => {
     try {
@@ -187,6 +187,7 @@ function InventoryDetail() {
         isAddVisible && 
         <ImportShipment
         onClose={()=>setIsAddVisible(false)}
+        refetchData={()=>fetchData()}
         />
       }
     </>
