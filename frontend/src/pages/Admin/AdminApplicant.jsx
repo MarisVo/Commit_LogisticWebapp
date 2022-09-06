@@ -142,7 +142,7 @@ function AdminApplicant() {
     // },
     {
       title: "Trạng thái",
-      dataIndex: "state",
+      dataIndex: "status",
       filters: [
         {
           text: "Đang đợi",
@@ -157,11 +157,11 @@ function AdminApplicant() {
           value: "rejected",
         },
       ],
-      onFilter: (value, record) => record.state === value,
-      render: (state) => (
+      onFilter: (value, record) => record.status === value,
+      render: (status) => (
         <>
-          {state === "approved" || state === "rejected" ? (
-            state === "approved" ? (
+          {status === "approved" || status === "rejected" ? (
+            status === "approved" ? (
               <div className="text-green-600 font-bold bg-green-200 text-center rounded-lg py-1">
                 Duyệt
               </div>
@@ -215,7 +215,7 @@ function AdminApplicant() {
         }
       );
 
-      setData(res.data.data);
+      setData(res.data.data.applicant);
       setLoading(false);
       setPagination({
         pageSize: params.pageSize,
