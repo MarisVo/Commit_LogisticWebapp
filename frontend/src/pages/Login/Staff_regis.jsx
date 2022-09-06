@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import * as axios from 'axios'
 import { useContext } from 'react';
 import { MainContext } from '../../context/MainContext';
+import { END_POINT } from '../../utils/constant';
 
 const RegisForm = styled.div`
 .Regis{
@@ -116,7 +117,7 @@ function Staff_Register() {
     try{
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:8000/api/admin/auth/register',
+        url: `${END_POINT}/admin/auth/register`,
         headers: { authorization: `Bearer ${accessToken}` },
         data: {
           name: name,

@@ -1,11 +1,8 @@
 import React, { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
-// import { MIEN_NAM } from '../../../../utils/constant';
-import { END_POINT } from './../../../../utils/constant';
-export default function MienNam({data,search,location}) {
-	
-	/* console.log("loca",location) */
+import { END_POINT } from '../../../../utils/constant';
+export default function Location({data,search,location}) {
 	
 	return (
 		<div className="px-[22px] md:px-[40px] py-[44px]">
@@ -13,10 +10,9 @@ export default function MienNam({data,search,location}) {
 				<div className="grid   grid-cols-2  lg:grid-cols-4  lg:gap-y-[30px]">
 					{
 					
-			
-					
+				
 				data.map((p) => (
-						<div className="flex items-center justify-center py-[16px] border-b-2 lg:py-0 lg:border-0 border-[#F2F2F2]" key={p._id}>
+						<div className="flex items-center justify-center py-[16px]  lg:py-0 " key={p._id}>
 							<a
 								className="text-lg font-normal text-[#232323]"
 							/* 	href={`${/api/p.file}`} */

@@ -12,13 +12,15 @@ export default function PagePdf() {
 
   return (
     <div className="justify-center items-center flex bg-slate-600 h-[100vh] w-[100vw] ">
-      <div className='w-[50%] h-[100vh]  '>
-        <img
-            className="object-contain w-[100%] h-[100%]"
+      <div className='w-[100%] h-[100vh] justify-center items-center flex  '>
+        <iframe
+            className="object-cover w-[100%] h-[100%]"
             src={`${END_POINT}/public${location.pathname}`}
            /*  src={`${END_POINT}/public/participant/boy.png`}  */
-            alt="#"
-            type="application/pdf"
+           /*  alt="#" */
+            type='application/pdf'
+            title='title'
+          
           />
 
       </div>

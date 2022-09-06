@@ -1,20 +1,15 @@
 import React, { useState } from 'react'
 import { Tabs } from 'antd';
-import MienNam from './Area/TieuChuan/MienNam';
-import MienNamNhanh from './Area/Nhanh/MienNam.nhanh';
-import MienNamSuper from './Area/Super/MienNam.super';
 import { END_POINT, MIEN_NAM } from '../../utils/constant';
 import { MIEN_NAM_NHANH } from '../../utils/constant';
 import { MIEN_NAM_SUPER } from '../../utils/constant';
 import { useContext, useEffect } from 'react';
 import { MainContext } from '../../context/MainContext';
 import axios from 'axios';
+import Location from './Area/TieuChuan/Location';
 
 const { TabPane } = Tabs;
 export default function BangGia() {
-    const [mienNam,setMienNam] = useState(MIEN_NAM);
-    const [mienNamNhanh,setNhanh] = useState(MIEN_NAM_NHANH);
-    const [mienNamSuper,setSuper] = useState(MIEN_NAM_SUPER);
     const {setMetadata} = useContext(MainContext);
      const [services,setServices]= useState([])
     const [key,setKey] = useState('');
@@ -88,7 +83,7 @@ export default function BangGia() {
                 </div> */}
                 {
                     services?.map((service)=>(
-                        <div className='mb-7'>
+                        <div className='mb-3'>
                         <h5 className="uppercase  text-center mb-4 text-[20px] text-[#F0B90B]" name={1}>
                             {service.sub_detail}
                         </h5>
@@ -96,7 +91,7 @@ export default function BangGia() {
                             <div className='rounded-[5px] bg-[#f2f2f2]'>
                                 <h2 className='text-center text-xl p-5 border-b-2 border-[#F0B90B] text-[#ffbb0f]'>KHU VỰC MIỀN NAM</h2>
                             </div>
-                            <MienNam data={service.price_files} search={search} />
+                            <Location data={service.price_files} search={search} />
                         </div>
                         </div>
                     ))

@@ -4,6 +4,7 @@ import { Form, Button, Input, message} from "antd";
 import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import * as axios from 'axios'
+import { END_POINT } from '../../utils/constant';
 
 const Register_OTP_Form = styled.div`
 .Register_OTP{
@@ -136,7 +137,7 @@ function Register_OTP() {
         console.log(user);
         const response = await axios({
             method: 'post',
-            url: 'http://localhost:8000/api/auth/update-otp',
+            url: `${END_POINT}/auth/update-otp`,
             data: {
                 userId: user.userId,
                 verify_op: user.verify_op
@@ -156,7 +157,7 @@ function Register_OTP() {
     try{
         const response = await axios({
             method: 'post',
-            url: 'http://localhost:8000/api/auth/verify-otp',
+            url: `${END_POINT}/auth/verify-otp`,
             data: {
                 userId: user.userId,
                 otp: OTP

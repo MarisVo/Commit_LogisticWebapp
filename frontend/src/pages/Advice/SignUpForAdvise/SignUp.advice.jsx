@@ -43,6 +43,7 @@ export default function SignUpForAdvice() {
   const [ward, setWard] = useState(null);
 
   const [service, setService] = useState(null);
+  const [services, setServices] = useState([]);
   const [fullName, setFullName] = useState(null);
   const [phone, setPhone] = useState(null);
   const [email, setEmail] = useState(null);
@@ -53,6 +54,17 @@ export default function SignUpForAdvice() {
 
   const [isValid, setIsValid] = useState(false);
 
+   useEffect(() => {
+       const getService = async()=>{
+          const res = await axios.get(`${END_POINT}/service`)
+          console.log(res)
+          const {data} =res.data
+          console.log(data.service)
+          setServices(data.service)
+        }
+      getService()
+    
+  }, []);
   // =================== TO EFFECT =======================//
   // get all provinces
   useEffect(() => {
@@ -129,6 +141,7 @@ export default function SignUpForAdvice() {
           quantity: prodQuantity
         }
       });
+      console.log(response)
       alert("đăng kí tư vấn thành công");
     } catch(error){
       console.log(error);
@@ -167,17 +180,20 @@ export default function SignUpForAdvice() {
               </div>
               <div className>
                 <div className="lg:gap-x-[20px] mb-4 lg:mb-0 mt-5">
-                  <div className="flex items-center mb-4">
-                    <input
-                      id="service-1"
-                      type="radio"
-                      value="express"
-                      name="services"
-                      onChange={(e) => setService(e.target.value)}
-                    />
-                    <label className="text-lg"> J&amp;T Express</label>
-                  </div>
-                  <div className="flex items-center mb-4 ">
+              {  services?.map(service1=>(
+                    <div className="flex items-center mb-4">
+                      <input
+            
+                        type="radio"
+                        value={service1.name}
+                        name="service"
+                        onChange={(e) => setService(e.target.value)}
+                      />
+                      <label className="text-lg"> {service1.name}</label>
+                    </div>
+
+                ))}
+                {/*   <div className="flex items-center mb-4 ">
                     <input
                       id="service-2"
                       type="radio"
@@ -196,7 +212,7 @@ export default function SignUpForAdvice() {
                       onChange={(e) => setService(e.target.value)}
                     />
                     <label className="text-lg"> J&amp;T Super</label>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
