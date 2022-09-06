@@ -5,7 +5,7 @@ import { BiTransferAlt } from "react-icons/bi";
 import { Layout, Menu } from "antd";
 import React, { useContext, useState, useEffect } from "react";
 import { Link, Navigate, Outlet } from "react-router-dom";
-import logo from "../assets/icons/logo-J&T.svg";
+import logo from "../assets/icons/logo-tkt.svg";
 import AvatarStorekeeper from "../pages/Storekeeper/AvatarStorekeeper";
 import SideBar from "../components/SideBar2";
 import { MainContext } from "../context/MainContext";

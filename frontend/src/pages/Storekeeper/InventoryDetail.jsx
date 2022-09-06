@@ -1,10 +1,11 @@
 import { Table, Input } from "antd";
-import { AiOutlinePlus } from "react-icons/ai";
+import { BiExport } from "react-icons/bi";
 import { useContext, useEffect, useState } from "react";
 import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
 import axios from "axios";
 import { END_POINT } from "../../utils/constant";
 import { MainContext } from "../../context/MainContext";
+import ImportShipment from "./Control/ImportShipment";
 
 function InventoryDetail() {
   const { accessToken } = useContext(MainContext);
@@ -33,7 +34,7 @@ function InventoryDetail() {
     {
       title: "Thời gian nhập kho",
       dataIndex: "createdAt",
-      render: (a) => a?.split("T")[0]
+      render: (a) => a?.split("T")[0],
     },
     // {
     //     title: 'Thời gian phát hàng',
@@ -60,12 +61,12 @@ function InventoryDetail() {
         <div className="flex flex-row gap-y-1 gap-x-3">
           <button
             className="flex items-baseline gap-x-1 hover:text-blue-600"
-            // onClick={() => handleClickEdit(record)}
+            onClick={() => exportShipemt(record)}
           >
-            <AiFillEdit className="translate-y-[1px]" />
-            Sửa
+            <BiExport className="translate-y-[1px]" />
+            Xuất kho
           </button>
-          <button
+          {/* <button
             className="flex items-baseline gap-x-1 hover:text-red-600"
             // onClick={() => {
             //   setIsDeleteVisible(true);
@@ -75,7 +76,7 @@ function InventoryDetail() {
           >
             <AiOutlineDelete className="translate-y-[1px]" />
             Xóa
-          </button>
+          </button> */}
         </div>
       ),
     },
@@ -98,6 +99,26 @@ function InventoryDetail() {
       warehouseCode_to: "MAXX",
     },
   ];
+  const getWarehouseInfo = async ()=>{
+    
+  }
+  const exportShipemt = async (record) => {
+    try {
+      await axios.put(
+        `${END_POINT}/warehouse/update-inventory/62e9d8b0c5e7cf9384ba18a4`,
+        {
+          productShipmentId: record.shipment,
+          status: "export",
+        },
+        {
+          headers: { authorization: `Bearer ${accessToken}` },
+        }
+      );
+      fetchData()
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -111,7 +132,7 @@ function InventoryDetail() {
       ]);
       const dummyData =
         warehouseRes.data.data.inventory_product_shipments.filter(
-          shipment => shipment.status === "import"
+          (shipment) => shipment.status === "import"
         );
       const finalData = await axios.all(
         dummyData.map(async (shipment) => {
@@ -124,41 +145,17 @@ function InventoryDetail() {
           const productName = productsRes.data.data.find((product) =>
             product.product_shipments.some((pro) => pro === shipment.shipment)
           );
+          const { _id, ...shipmentQuantity } = res.data.data;
           return {
             ...shipment,
-            unit:productName.unit,
+            unit: productName.unit,
             name: productName.name,
-            ...res.data.data,
+            ...shipmentQuantity,
           };
         })
       );
-      console.log(finalData)
-      // dummyData.map((shipment) => {
-      //   const getProductShipmentData = async () => {
-      //     try {
-      //       const res = await axios.get(
-      //         `${END_POINT}/admin/product-shipment/${shipment.shipment}`,
-      //         {
-      //           headers: { authorization: `Bearer ${accessToken}` },
-      //         }
-      //       );
-      // const productName = productsRes.data.data.find((product) =>
-      //   product.product_shipments.some(
-      //     (pro) => pro === shipment.shipment
-      //   )
-      // );
-      //       console.log("a")
-      // return {
-      //   ...shipment,
-      //   name: productName.name,
-      //   ...res.data.data,
-      // };
-      //     } catch (error) {
-      //       console.log(error);
-      //     }
-      //   };
-      // });
-      setData(finalData)
+      console.log(finalData);
+      setData(finalData);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -171,20 +168,27 @@ function InventoryDetail() {
     <>
       <div className="text-2xl font-bold my-5">Chi nhánh 50 Tân Bình</div>
       <div className="flex justify-end mb-4 lg:mr-5">
-      <button
+        <button
           className="px-5 py-2 border border-neutral-800 text-center hover:bg-slate-300"
           onClick={() => setIsAddVisible(true)}
         >
-          + Thêm mới
+          + Nhập kho
         </button>
       </div>
       <Table
+        rowKey={(record) => record._id}
         columns={columns2}
         dataSource={data}
         loading={loading}
         pagination={true}
         scroll={{ x: 700 }}
       />
+      {
+        isAddVisible && 
+        <ImportShipment
+        onClose={()=>setIsAddVisible(false)}
+        />
+      }
     </>
   );
 }
