@@ -67,7 +67,7 @@ applicantAdminRoute.get("/", async (req, res) => {
   try {
     const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0;
     const page = req.query.page ? parseInt(req.query.page) : 0;
-    const { keyword, sortBy, department, type, location, state } = req.query;
+    const { keyword, sortBy, department, type, location, status } = req.query;
     var keywordCondition = keyword
       ? {
           $or: [
@@ -87,7 +87,8 @@ applicantAdminRoute.get("/", async (req, res) => {
       var departmentQuery = {};
       departmentQuery.name = department;
       const departments = await Department.find(departmentQuery);
-      const idsDep = [];
+      var idsDep = [];
+      const idsMerg = [];
       for (let j = 0; j < departments.length; j++) {
         for (let i = 0; i < departments[j].careers.length; i++) {
           if (departments[j].careers.length) {
@@ -95,7 +96,7 @@ applicantAdminRoute.get("/", async (req, res) => {
           }
         }
       }
-      const careers = await Career.find({_id: idsDep});
+      const careers = await Career.find({ _id: idsDep });
       const idsComp = [];
       for (let j = 0; j < careers.length; j++) {
         for (let i = 0; i < careers[j].applicants.length; i++) {
@@ -105,19 +106,24 @@ applicantAdminRoute.get("/", async (req, res) => {
         }
       }
       if (ids.length) {
-        for (let i = 0; i < idsComp.length; i++){
-          if (!ids.every((value) => value === idsComp[i])) {
-            idsComp.splice(idsComp[i], 1);
+        for (let i = 0; i < idsComp.length; i++) {
+          for (let j = 0; j < ids.length; j++) {
+            if (ids[j].toString() == idsComp[i].toString()) {
+              idsMerg.push(ids[j]);
+            }
           }
         }
+        idsComp = idsMerg;
       }
       ids = idsComp;
     }
+
     if (type) {
       var careerQuery = {};
       careerQuery.type = type;
       const careers = await Career.find(careerQuery);
-      const idsComp = [];
+      var idsComp = [];
+      const idsMerg = [];
       for (let j = 0; j < careers.length; j++) {
         for (let i = 0; i < careers[j].applicants.length; i++) {
           if (careers[j].applicants.length) {
@@ -126,11 +132,14 @@ applicantAdminRoute.get("/", async (req, res) => {
         }
       }
       if (ids.length) {
-        for (let i = 0; i < idsComp.length; i++){
-          if (!ids.every((value) => value === idsComp[i])) {
-            idsComp.splice(idsComp[i], 1);
+        for (let i = 0; i < idsComp.length; i++) {
+          for (let j = 0; j < ids.length; j++) {
+            if (ids[j].toString() == idsComp[i].toString()) {
+              idsMerg.push(ids[j]);
+            }
           }
         }
+        idsComp = idsMerg;
       }
       ids = idsComp;
     }
@@ -138,7 +147,8 @@ applicantAdminRoute.get("/", async (req, res) => {
       var careerQuery = {};
       careerQuery.location = location;
       const careers = await Career.find(careerQuery);
-      const idsComp = [];
+      var idsComp = [];
+      const idsMerg = [];
       for (let j = 0; j < careers.length; j++) {
         for (let i = 0; i < careers[j].applicants.length; i++) {
           if (careers[j].applicants.length) {
@@ -147,49 +157,45 @@ applicantAdminRoute.get("/", async (req, res) => {
         }
       }
       if (ids.length) {
-        for (let i = 0; i < idsComp.length; i++){
-          if (!ids.every((value) => value === idsComp[i])) {
-            idsComp.splice(idsComp[i], 1);
+        for (let i = 0; i < idsComp.length; i++) {
+          for (let j = 0; j < ids.length; j++) {
+            if (ids[j].toString() == idsComp[i].toString()) {
+              idsMerg.push(ids[j]);
+            }
           }
         }
+        idsComp = idsMerg;
       }
       ids = idsComp;
     }
-    if (state) {
-      var careerQuery = {};
-      careerQuery.state = state;
-      const careers = await Career.find(careerQuery);
-      const idsComp = [];
-      for (let j = 0; j < careers.length; j++) {
-        for (let i = 0; i < careers[j].applicants.length; i++) {
-          if (careers[j].applicants.length) {
-            idsComp.push(careers[j].applicants[i]);
-          }
-        }
-      }
-      if (ids.length) {
-        for (let i = 0; i < idsComp.length; i++){
-          if (!ids.every((value) => value === idsComp[i])) {
-            idsComp.splice(idsComp[i], 1);
-          }
-        }
-      }
-      ids = idsComp;
+    if (status) {
+      query.status = status;
     }
     if (ids.length) {
-      console.log(ids);
       query._id = ids;
+    }
+    var length = await Applicant.find({
+      $and: [query, keywordCondition],
+    }).count();
+    var totalLength = await Applicant.find({}).count();
+    if (length == totalLength) {
+      if (department || type || location) {
+        query._id = [];
+        length = await Applicant.find({
+          $and: [query, keywordCondition],
+        }).count();
+      }
     }
     const applicant = await Applicant.find({ $and: [query, keywordCondition] })
       .limit(pageSize)
       .skip(pageSize * page)
       .sort(`${sortBy}`);
+    var length = await Applicant.find({ $and: [query, keywordCondition] }).count();
     if (applicant)
-      return sendSuccess(
-        res,
-        "Get applicant information successfully.",
-        applicant
-      );
+      return sendSuccess(res, "Get applicant information successfully.", {
+        length,
+        applicant,
+      });     
     return sendError(res, "Applicant information is not found.");
   } catch (error) {
     console.log(error);
@@ -208,7 +214,7 @@ applicantAdminRoute.delete("/:id", async (req, res) => {
     const isExist = await Applicant.exists({ _id: id });
     if (!isExist) return sendError(res, "Applicant does not exist.");
     await Career.updateOne({}, { $pull: { applicants: id } });
-    const applicant = await Applicant.findByIdAndRemove(id)
+    const applicant = await Applicant.findByIdAndRemove(id);
     return sendSuccess(res, "Delete applicant successfully.", applicant);
   } catch (error) {
     console.log(error);

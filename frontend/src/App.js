@@ -65,6 +65,7 @@ import {
   ChangePassword,
   AdminTurnover,
   ServiceAll,
+  AdminSchedule,
 
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -149,8 +150,8 @@ const App = () => {
                 <Route path="thu-kho" element={<LayerStorekeeper />}>
                   <Route index element={<Bills />} />
                   <Route path="van-don" element={<Bills />} />
-                  <Route path="hang-ton-kho" element={<Inventory />} />
-                  <Route path="hang-ton-kho/:id" element={<InventoryDetail />} />
+                  <Route path="hang-ton-kho" element={<InventoryDetail />} />
+                  {/* <Route path="hang-ton-kho/:id" element={<InventoryDetail />} /> */}
                   <Route path="thong-bao" element={<NotiStorekeeper />} />
                 </Route>
                 <Route path="quan-tri" element={<AdminPage />}>
@@ -174,6 +175,7 @@ const App = () => {
                   <Route path="them-nhan-vien" element={<StaffRegister />}></Route>
                   <Route path="phi-bao-tri" element={<AdminMaintenance />}></Route>
                   <Route path="hang_cam_gui" element={<AdminProhibitProduct />}> </Route>
+                  <Route path="lich_trinh" element={<AdminSchedule />}> </Route>
                 </Route>
               </Route>
             </Routes>

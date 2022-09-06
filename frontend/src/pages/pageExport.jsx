@@ -72,6 +72,8 @@ export {default as AdminMaintenance} from "./Admin/AdminMaintenance"
 export {default as AdminProhibitProduct} from "./Admin/AdminProhibitProduct"
 export {default as AdminBill} from "./Admin/AdminBill"
 export {default as AdminTurnover} from "./Admin/AdminTurnover"
+export {default as AdminSchedule} from "./Admin/AdminSchedule"
+
 
 
 

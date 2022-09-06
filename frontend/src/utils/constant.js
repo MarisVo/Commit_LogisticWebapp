@@ -3,6 +3,7 @@ export const SOCKET_URL = process.env.REACT_APP_SOCKET_URL
 export const MIEN_NAM = [
 	{
 		url: 'https://jtexpress.vn/storage/app/uploads/public/628/600/6f1/6286006f19306154492646.pdf',
+		// url: END_POINT + '/public/logo/7a7a2033033bec20d8ebea6cc6c0c3371656206064996.gif',
 		name: 'TP. Hồ Chí Minh',
 	},
 	{

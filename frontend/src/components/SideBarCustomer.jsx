@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaPen } from "react-icons/fa";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import {
@@ -9,7 +9,9 @@ import {
 } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { RiLockPasswordLine } from "react-icons/ri";
+import { MainContext } from "../context/MainContext";
 const SideBar = ({ open, handleOpen }) => {
+   const { user } = useContext(MainContext)
   return (
     <div>
       /* sm:hidden */
@@ -32,7 +34,7 @@ const SideBar = ({ open, handleOpen }) => {
              Chào mừng
             </div>
             <div className="text-xl text-center font-semibold text-[#00003B] ">
-              Nguyễn Văn Thật
+              {user.role.name}
             </div>
            
           </div>

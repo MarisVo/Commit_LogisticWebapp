@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Text, View, SafeAreaView, Image} from 'react-native';
 import Home from './home';
 import Setting from './setting';
@@ -12,11 +12,15 @@ import Warehouses from "./settingPage/Warehouses"
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Register from './register';
 import Login from './login';
-
+import SettingnNoti from './settingPage/SettingNoti';
 import ForgetPassword from './forgetPassword';
 import CreateOrder from './createOrder';
-import WatchListOrder from './watchListOrder';
 import Statistic from './statistic';
+import ListOrder from './listOrder';
+import watchListOrder from './watchListOrder';
+import { showNotification } from '../notification/androidNotification';
+import { io } from "socket.io-client";
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -57,20 +61,20 @@ const MyTabs = () => {
         }}
       />
       <Tab.Screen
-        name="Statistic"
-        component={Statistic}
+        name="WatchListOrder"
+        component={watchListOrder}
         options={{
-          tabBarLabel: "Statistic",
+          tabBarLabel: "WatchListOrder",
           tabBarIcon: ({ color, size }) => (
             <Icon name="gear" color={color} size={size} />
           ),
         }}
       />
       <Tab.Screen
-        name="WatchListOrder"
-        component={WatchListOrder}
+        name="Statistic"
+        component={Statistic}
         options={{
-          tabBarLabel: "WatchListOrder",
+          tabBarLabel: "Statistic",
           tabBarIcon: ({ color, size }) => (
             <Icon name="gear" color={color} size={size} />
           ),
@@ -81,6 +85,20 @@ const MyTabs = () => {
 };
 
 const RootComponent = () => {
+  useEffect(() => {
+    const socket = io(`http://localhost:5000`, { reconnection: true });
+    socket.emit("add-session","62e659b016876b78f6fdb8f1")
+    socket.on("receive", ({ message, title, link }) => {
+      // console.log(message)
+    //   openNotification({ message, title, link })
+    showNotification(title,message)
+    console.log("receive ")
+      // setDotShow(true)
+      // setRefreshNoti((pre)=>pre+1)
+    });
+    // console.log(socket);
+    return ()=>socket.disconnect()
+  }, []);
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -90,10 +108,12 @@ const RootComponent = () => {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
-        {/* <Stack.Screen name="CreateOrder" component={CreateOrder} /> */}
+        <Stack.Screen name="CreateOrder" component={CreateOrder} />
       {/*   <Stack.Screen name="Register" component={Register} /> */}
         <Stack.Screen name="Tracking" component={Tracking} />
         <Stack.Screen name="Warehouses" component={Warehouses} />
+        <Stack.Screen name="SettingNoti" component={SettingnNoti} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
