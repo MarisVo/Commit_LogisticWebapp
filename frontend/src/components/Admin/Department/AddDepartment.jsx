@@ -1,19 +1,18 @@
-import { useContext, useState, useEffect } from "react";
-import { Form, Input, Button, Select } from "antd";
-import { END_POINT } from "../../../utils/constant";
-import axios from "axios";
-import { MainContext } from "../../../context/MainContext";
-
+import { useContext, useState, useEffect } from 'react';
+import { Form, Input, Button, Select } from 'antd';
+import { END_POINT } from '../../../utils/constant';
+import axios from 'axios';
+import { MainContext } from '../../../context/MainContext';
 const { Option } = Select;
 const { Item } = Form;
 function AddNewDepartment({ onClose, refetchData }) {
   const { accessToken } = useContext(MainContext);
   const [data, setData] = useState({
-    name: "",
-    director: "",
-    description: "",
-    location: "",
-    scale: "",
+    name: '',
+    director: '',
+    description: '',
+    location: '',
+    scale: '',
   });
   const [staffList, setStaffList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -59,7 +58,7 @@ function AddNewDepartment({ onClose, refetchData }) {
               disabled={isDisable}
               className={
                 !isDisable &&
-                "hover:bg-red-500 hover:border-red-700 hover:text-white border-none"
+                'hover:bg-red-500 hover:border-red-700 hover:text-white border-none'
               }
               onClick={onClose}
             >
@@ -83,7 +82,7 @@ function AddNewDepartment({ onClose, refetchData }) {
               rules={[
                 {
                   required: true,
-                  message: "Vui lòng nhập tên phòng ban",
+                  message: 'Vui lòng nhập tên phòng ban',
                 },
               ]}
             >
@@ -103,7 +102,7 @@ function AddNewDepartment({ onClose, refetchData }) {
               rules={[
                 {
                   required: true,
-                  message: "Vui lòng chọn thông tin",
+                  message: 'Vui lòng chọn thông tin',
                 },
               ]}
             >
@@ -127,7 +126,7 @@ function AddNewDepartment({ onClose, refetchData }) {
               rules={[
                 {
                   required: true,
-                  message: "Vui lòng không bỏ trống",
+                  message: 'Vui lòng không bỏ trống',
                 },
               ]}
             >
@@ -147,7 +146,7 @@ function AddNewDepartment({ onClose, refetchData }) {
               rules={[
                 {
                   required: true,
-                  message: "Vui lòng nhập địa điểm",
+                  message: 'Vui lòng nhập địa điểm',
                 },
               ]}
             >
@@ -167,11 +166,11 @@ function AddNewDepartment({ onClose, refetchData }) {
               rules={[
                 {
                   required: true,
-                  message: "Vui lòng nhập số",
+                  message: 'Vui lòng nhập số',
                 },
                 {
                   pattern: new RegExp(/^[0-9]+$/),
-                  message: "Vui lòng chỉ nhập số",
+                  message: 'Vui lòng chỉ nhập số',
                 },
               ]}
             >
@@ -191,7 +190,7 @@ function AddNewDepartment({ onClose, refetchData }) {
                 disabled={isDisable}
                 className={
                   !isDisable &&
-                  "hover:bg-red-500 hover:border-red-700 hover:text-white rounded-lg"
+                  'hover:bg-red-500 hover:border-red-700 hover:text-white rounded-lg'
                 }
                 onClick={onClose}
               >
