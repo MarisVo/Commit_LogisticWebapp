@@ -1,13 +1,16 @@
 import { Table, Input } from "antd";
 import { AiOutlinePlus } from "react-icons/ai";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
 import axios from "axios";
 import { END_POINT } from "../../utils/constant";
+import { MainContext } from "../../context/MainContext";
 
 function InventoryDetail() {
+  const { accessToken } = useContext(MainContext);
   const [data, setData] = useState([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  // const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isAddVisible, setIsAddVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const columns2 = [
     {
@@ -15,35 +18,26 @@ function InventoryDetail() {
       dataIndex: "name",
     },
     {
-      title: "Tiền phải thu",
-      dataIndex: "cost",
+      title: "Số lượng",
+      dataIndex: "quantity",
+    },
+    {
+      title: "Đơn vị",
+      dataIndex: "unit",
+    },
+    {
+      title: "Tiền phải thu (VNĐ)",
+      dataIndex: "value",
       sorter: true,
     },
     {
-      title: "Thời gian hàng đến",
-      dataIndex: "time_in",
-      sorter: true,
+      title: "Thời gian nhập kho",
+      dataIndex: "createdAt",
+      render: (a) => a?.split("T")[0]
     },
     // {
     //     title: 'Thời gian phát hàng',
     //     dataIndex: 'fee',
-    // },
-    {
-      title: "Bưu cục hàng đến",
-      dataIndex: "warehouse_to",
-    },
-    {
-      title: "Mã Bưu cục hàng đến",
-      dataIndex: "warehouseCode_to",
-    },
-    // {
-    //     title: 'Trọng lượng tính cước',
-    //     dataIndex: 'weight_fee',
-    // },
-    // {
-    //     title: 'Thời gian quét mã gỡ gói',
-    //     dataIndex: 'seal-time',
-    //     key: 'seal-time',
     // },
     // {
     //     title: '',
@@ -107,38 +101,87 @@ function InventoryDetail() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const { data: response } = await axios.get(
-        `${END_POINT}/warehouse/62e9d8b0c5e7cf9384ba18a4`
+      const [warehouseRes, productsRes] = await axios.all([
+        axios.get(`${END_POINT}/warehouse/62e9d8b0c5e7cf9384ba18a4`, {
+          headers: { authorization: `Bearer ${accessToken}` },
+        }),
+        axios.get(`${END_POINT}/admin/product`, {
+          headers: { authorization: `Bearer ${accessToken}` },
+        }),
+      ]);
+      const dummyData =
+        warehouseRes.data.data.inventory_product_shipments.filter(
+          shipment => shipment.status === "import"
+        );
+      const finalData = await axios.all(
+        dummyData.map(async (shipment) => {
+          const res = await axios.get(
+            `${END_POINT}/admin/product-shipment/${shipment.shipment}`,
+            {
+              headers: { authorization: `Bearer ${accessToken}` },
+            }
+          );
+          const productName = productsRes.data.data.find((product) =>
+            product.product_shipments.some((pro) => pro === shipment.shipment)
+          );
+          return {
+            ...shipment,
+            unit:productName.unit,
+            name: productName.name,
+            ...res.data.data,
+          };
+        })
       );
-      const dataModify = response.data.inventory_product_shipments
-        .filter((shipment) => shipment.status === "import")
-        .map((shipment) => ({ shipment }));
-      const shipmentLength = dataModify.length
-      for (const shipment in dataModify){
-        console.log(shipment)
-      }
-      console.log(dataModify);
-      // setData(response.data)
+      console.log(finalData)
+      // dummyData.map((shipment) => {
+      //   const getProductShipmentData = async () => {
+      //     try {
+      //       const res = await axios.get(
+      //         `${END_POINT}/admin/product-shipment/${shipment.shipment}`,
+      //         {
+      //           headers: { authorization: `Bearer ${accessToken}` },
+      //         }
+      //       );
+      // const productName = productsRes.data.data.find((product) =>
+      //   product.product_shipments.some(
+      //     (pro) => pro === shipment.shipment
+      //   )
+      // );
+      //       console.log("a")
+      // return {
+      //   ...shipment,
+      //   name: productName.name,
+      //   ...res.data.data,
+      // };
+      //     } catch (error) {
+      //       console.log(error);
+      //     }
+      //   };
+      // });
+      setData(finalData)
       setLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
-  useEffect(()=>{
-    fetchData()
-  },[])
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <>
       <div className="text-2xl font-bold my-5">Chi nhánh 50 Tân Bình</div>
-      <div className="flex justify-between mb-4">
-        <Input.Search
-          className="max-w-xl lg:w-[400px] mx-auto"
-          placeholder="Search"
-        />
+      <div className="flex justify-end mb-4 lg:mr-5">
+      <button
+          className="px-5 py-2 border border-neutral-800 text-center hover:bg-slate-300"
+          onClick={() => setIsAddVisible(true)}
+        >
+          + Thêm mới
+        </button>
       </div>
       <Table
         columns={columns2}
-        dataSource={data2}
+        dataSource={data}
+        loading={loading}
         pagination={true}
         scroll={{ x: 700 }}
       />
