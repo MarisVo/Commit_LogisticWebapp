@@ -1,115 +1,135 @@
-import { SearchOutlined } from "@ant-design/icons";
-import { Button, Input, Space, Table, Modal } from "antd";
-import axios from "axios";
-import React, { useRef, useState } from "react";
-import { useEffect } from "react";
-import { AiOutlinePlus } from "react-icons/ai";
-import AdminEditPartner from "../../components/Admin/Partner/AdminEditPartner";
-import AdminNewPartner from "../../components/Admin/Partner/AdminNewPartner";
-import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
-import Search from "antd/lib/transfer/search";
-import { handleSearch } from "../../components/Admin/HandleSearch/HandleSearch";
+import { Input, Table } from 'antd';
+import axios from 'axios';
+import React, { useState, useContext } from 'react';
+import { MainContext } from '../../context/MainContext';
+import { useEffect } from 'react';
+import { AiOutlinePlus } from 'react-icons/ai';
+import AdminEditPartner from '../../components/Admin/Partner/AdminEditPartner';
+import AdminNewPartner from '../../components/Admin/Partner/AdminNewPartner';
+import ConfirmModal from '../../components/ConfirmModal';
+import { AiFillEdit, AiOutlineDelete } from 'react-icons/ai';
+import { END_POINT } from '../../utils/constant';
 export default function AdminPartner() {
-  const [dataPartner, setDataPartner] = useState([
-    {
-      id: "1",
-      name: "Nodea",
-      logo: "https://play-lh.googleusercontent.com/5qotPJfklVo9cNI6JLJivYm3OGYRIIgRSrlKMbWQAUuAl03WwWUQwurYz36yDQUUww",
-    },
-    {
-      id: "2",
-      name: "Danske",
-      logo: "https://danskebank.com/-/media/danske-bank-images/global/graphics/logo/danske-bank-logo-dark-bg.jpg?rev=db1d1203e2fb49a68beea65b43eeb689&hash=59231469392BF4421574B3E6D1402911",
-    },
-  ]);
-  const [dataRender, setDataRender] = useState([
-    {
-      id: "1",
-      name: "Nodea",
-      logo: "https://play-lh.googleusercontent.com/5qotPJfklVo9cNI6JLJivYm3OGYRIIgRSrlKMbWQAUuAl03WwWUQwurYz36yDQUUww",
-    },
-    {
-      id: "2",
-      name: "Danske",
-      logo: "https://danskebank.com/-/media/danske-bank-images/global/graphics/logo/danske-bank-logo-dark-bg.jpg?rev=db1d1203e2fb49a68beea65b43eeb689&hash=59231469392BF4421574B3E6D1402911",
-    },
-  ]);
-  //   state open edit commit modal
-  const [isModalVisibleEdit, setIsModalVisibleEdit] = useState(false);
-  //   state open add commit modal
-  const [isModalVisibleAdd, setIsModalVisibleAdd] = useState(false);
+  const [isAddVisible, setIsAddVisible] = useState(false);
+  const [isEditVisible, setIsEditVisible] = useState(false);
+  const [isDeleteVisible, setIsDeleteVisible] = useState(false);
+  const [IdCompare, setValueCompare] = useState('');
+  const [nameCompare, setNameCompare] = useState('');
+  const [dataForEdit, setDataForEdit] = useState({});
+  const { accessToken } = useContext(MainContext);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [isDisable, setIsDisable] = useState(false);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 1000,
+    total: 15,
+  });
+  const [params, setParams] = useState({
+    ...pagination,
+    page: pagination.current - 1,
+    keyword: null,
+    sortBy: null,
+  });
 
-  //   state for edit commit
-  const [editCommitInfor, setEditCommitInfor] = useState({});
-  const getInforPartner = async () => {
+  const fetchData = async () => {
     try {
-      const result = await axios({
-        url: "",
-        method: "get",
-        headers: "Bearer",
+      const { data: response } = await axios.get(`${END_POINT}/partner`, {
+        params: params,
       });
-      if (result.status === 200) {
-        setDataPartner(result.data);
-      }
+      setData(response.data.partners);
+      setLoading(false);
+      setPagination({
+        total: params?.total,
+        pageSize: params?.pageSize,
+        current: params?.page + 1,
+      });
     } catch (error) {
-      console.log(error.response);
+      console.error(error.message);
     }
   };
-  //   close edit modal
-  const onClose = () => {
-    setIsModalVisibleEdit(false);
-  };
-  //   close add modal
-  const onCloseAddModal = () => {
-    setIsModalVisibleAdd(false);
-  };
-
   useEffect(() => {
-    getInforPartner();
-  }, []);
+    fetchData(params);
+  }, [params]);
 
-  const deleteAPI = async (id) => {
+  const handleClickEdit = (record) => {
+    setIsEditVisible(true);
+    const [dataEdit] = data.filter((ele) => ele.name === record.name);
+    setDataForEdit(dataEdit);
+  };
+
+  const searchByKeyword = (value) => {
+    setParams({
+      ...params,
+      page: 0,
+      keyword: value,
+    });
+  };
+
+  const handleTableChange = (newPagination, filters, sorter) => {
+    const sort = sorter.order === 'descend' ? `-${sorter.field}` : sorter.field;
+    setParams({
+      ...params,
+      sortBy: sort,
+      ...newPagination,
+      page: newPagination.current - 1,
+    });
+  };
+
+  const acceptDelete = async () => {
+    setLoading(true);
+    setIsDisable(true);
     try {
-      const result = await axios({
-        url: `url${id}`,
-        method: "delete",
-      });
-      if (result.status === 200) {
-        alert("đã xóa thành công ");
+      const res = await axios.delete(
+        `${END_POINT}/admin/partner/${IdCompare}`,
+        {
+          headers: { authorization: `Bearer ${accessToken}` },
+        }
+      );
+      if (res.status === 200) {
+        alert('đã xóa thành công ');
       }
-    } catch (err) {
-      console.log(err.response);
+      setLoading(false);
+      fetchData({ ...pagination, page: pagination.current - 1 });
+      setIsDisable(false);
+      setIsDeleteVisible(false);
+    } catch (error) {
+      console.log(error);
     }
   };
+
   const columns = [
     {
-      title: "Logo",
-      dataIndex: "logo",
-      key: "logo",
-      width: "10%",
-      render: (e) => <img src={e} className="h-10 w-10" alt=""></img>,
-      // ...getColumnSearchProps("name"),
+      title: 'Logo',
+      dataIndex: 'logo',
+      key: 'logo',
+      width: '10%',
+      render: (e) => (
+        <img
+          src={`${END_POINT}/public/${e}`}
+          className="h-10 w-10"
+          alt=""
+        ></img>
+      ),
     },
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "heading",
-      // width: "20%",
-      sorter: (a, b) => a.name.length - b.name.length,
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
 
-      // ...getColumnSearchProps("name"),
+      sorter: (a, b) => a.name.length - b.name.length,
     },
     {
-      title: "Tao Tac",
-      dataIndex: "id",
-      width: "20%",
-      render: (a, e) => (
+      title: 'Thao Tac',
+      dataIndex: '_id',
+      width: '20%',
+      render: (a, record) => (
         <div className="flex flex-row justify-around gap-y-1 gap-x-3">
           <button
             className="flex items-baseline gap-x-1 hover:text-blue-600 "
             onClick={() => {
-              setIsModalVisibleEdit(!isModalVisibleEdit);
-              setEditCommitInfor(e);
+              handleClickEdit(record);
+              console.log(dataForEdit);
             }}
           >
             <AiFillEdit className="translate-y-[1px]" />
@@ -118,7 +138,9 @@ export default function AdminPartner() {
           <button
             className="flex items-baseline gap-x-1 hover:text-red-600"
             onClick={() => {
-              deleteAPI(a);
+              setIsDeleteVisible(true);
+              setValueCompare(record._id);
+              setNameCompare(record.name);
             }}
           >
             <AiOutlineDelete className="translate-y-[1px]" />
@@ -128,21 +150,13 @@ export default function AdminPartner() {
       ),
     },
   ];
+
   return (
     <>
       <div className="flex   justify-between mb-4 ">
-        {<AdminNewPartner isModalVisibleAdd={isModalVisibleAdd} onClose={onCloseAddModal}></AdminNewPartner>}
-        <AdminEditPartner
-          isModalVisibleEdit={isModalVisibleEdit}
-          infor={editCommitInfor}
-          setEditCommitInfor={setEditCommitInfor}
-          onClose={onClose}
-        ></AdminEditPartner>
-        <span className="text-2xl font-blod py-4 px-2">Partner</span>
+        <span className="text-2xl font-blod py-4 px-2 uppercase ">Partner</span>
         <Input.Search
-          onChange={(e) => {
-            handleSearch(dataPartner, e.target.value, setDataRender);
-          }}
+          onSearch={searchByKeyword}
           className="w-1/3 lg:w-[400px]"
           placeholder="Tìm dựa trên tên khách hàng"
         />
@@ -150,16 +164,43 @@ export default function AdminPartner() {
         <div className="relative">
           <button
             className=" justify-around flex items-center absolute right-10 w-32 border rounded-lg p-2 shadow-xl hover:bg-yellow-100"
-            onClick={() => {
-              setIsModalVisibleAdd(!isModalVisibleAdd);
-            }}
+            onClick={() => setIsAddVisible(true)}
           >
             <AiOutlinePlus className="" />
             Thêm mới
           </button>
         </div>
       </div>
-      <Table columns={columns} dataSource={dataRender} />
+      <Table
+        rowKey={(record) => record._id}
+        columns={columns}
+        dataSource={data}
+        pagination={pagination}
+        loading={loading}
+        onChange={handleTableChange}
+      />
+      {isAddVisible && (
+        <AdminNewPartner
+          onClose={() => setIsAddVisible(false)}
+          refetchData={() => fetchData(params)}
+        />
+      )}
+      {isEditVisible && (
+        <AdminEditPartner
+          onClose={() => setIsEditVisible(false)}
+          data={dataForEdit}
+          refetchData={() => fetchData(params)}
+        />
+      )}
+
+      <ConfirmModal //Modal delete department
+        isVisible={isDeleteVisible}
+        text={`xóa đối tác ${nameCompare}`}
+        onClose={() => setIsDeleteVisible(false)}
+        loading={loading}
+        disable={isDisable}
+        onOk={acceptDelete}
+      />
     </>
   );
 }
