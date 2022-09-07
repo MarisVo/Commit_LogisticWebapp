@@ -91,6 +91,7 @@ function AdminCar() {
   const [IdCompare, setValueCompare] = useState("");
   const [nameCompare, setNameCompare] = useState("");
   const [dataForEdit, setDataForEdit] = useState({});
+  const [searchTerm, setSearchTerm] = useState("");
 
   const fetchData = async (params = {}) => {
     setLoading(true);
@@ -131,24 +132,25 @@ function AdminCar() {
     setIsEditVisible(true);
     setDataForEdit(record);
   };
-  const searchByKeyword = async (value) => {
-    setLoading(true);
-    try {
-      const { data: response } = await axios.get(`${END_POINT}/car`, {
-        params: { keyword: value },
-        headers: { authorization: `Bearer ${accessToken}` },
-      });
-      setParams({
-        ...params,
-        page: 0,
-        keyword: value,
-      });
-      setData(response.data);
-      setLoading(false);
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
+  // const searchByKeyword = async (value) => {
+  //   setLoading(true);
+  //   try {
+  //     const { data: response } = await axios.get(`${END_POINT}/car`, {
+  //       params: { keyword: value },
+  //       headers: { authorization: `Bearer ${accessToken}` },
+  //     });
+  //     setParams({
+  //       ...params,
+  //       page: 0,
+  //       keyword: value,
+  //     });
+  //     setData(response.data);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.error(error.message);
+  //   }
+  // };
+
   const handleTableChange = (newPagination, filters, sorter) => {
     const sort = sorter.order === "descend" ? `-${sorter.field}` : sorter.field;
     fetchData({
@@ -165,7 +167,8 @@ function AdminCar() {
         <Input.Search
           className="w-1/3 lg:w-[400px]"
           placeholder="Nhập từ khóa"
-          onSearch={searchByKeyword}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          // onSearch={searchByKeyword}
         />
         <button
           className="px-5 py-2 border border-neutral-800 text-center hover:bg-slate-300"
@@ -177,7 +180,13 @@ function AdminCar() {
       <Table
         rowKey={(record) => record._id}
         columns={columns}
-        dataSource={data}
+        dataSource={data.filter(
+          (val) =>
+            val.car_type.includes(searchTerm) ||
+            val.plate.includes(searchTerm) ||
+            val.tonnage.toString().includes(searchTerm) ||
+            val.volumn.toString().includes(searchTerm)
+        )}
         pagination={pagination}
         loading={loading}
         onChange={handleTableChange}
