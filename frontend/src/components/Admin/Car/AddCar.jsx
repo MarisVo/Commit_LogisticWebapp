@@ -1,8 +1,10 @@
 import { useContext, useState } from "react";
-import { Form, Input, Button, Select } from "antd";
+import { Form, Input, Button, Select, DatePicker } from "antd";
 import { END_POINT } from "../../../utils/constant";
 import axios from "axios";
 import { MainContext } from "../../../context/MainContext";
+
+const car_fleet = ["63181f770e47f63f5761a35d"];
 
 const { Item } = Form;
 const { Option } = Select;
@@ -13,10 +15,14 @@ function AddNewCar({ onClose, refetchData }) {
     car_type: "",
     volumn: "",
     tonnage: "",
+    car_fleet: "",
+    seri: "",
+    expired: "",
   });
-  console.log(data);
+
   const [loading, setLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
+  //
   const acceptAddNewCar = async () => {
     setLoading(true);
     // setIsDisable(true);
@@ -28,15 +34,16 @@ function AddNewCar({ onClose, refetchData }) {
       setIsDisable(false);
       refetchData();
       onClose();
-    } catch {}
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const carType = (value) =>
-  {
+  const carType = (value) => {
     setData({
-        ...data,
-        car_type: value,
-      })
-  }
+      ...data,
+      car_type: value,
+    });
+  };
   return (
     <>
       <div className="fixed inset-0  bg-slate-600 bg-opacity-50 z-20 flex justify-center items-center">
@@ -79,6 +86,7 @@ function AddNewCar({ onClose, refetchData }) {
               ]}
             >
               <Input
+                type="text"
                 value={data.plate}
                 onChange={(e) =>
                   setData({
@@ -98,25 +106,20 @@ function AddNewCar({ onClose, refetchData }) {
                 },
               ]}
             >
-               
-              <Select 
-                placeholder="Chọn loại xe"
-                onChange={carType}
-              >
+              <Select allowClear showSearch onChange={carType}>
                 <Option value="8_ton">8_ton</Option>
-                <Option value="20_ton">20_ton</Option>                            
+                <Option value="20_ton">20_ton</Option>
               </Select>
-              
             </Item>
-            <Item 
-                label="Dung tích" 
-                name="volumn"
-                rules={[
-                    {
-                    required: true,
-                    message: "Vui lòng nhập dung tích",
-                    },
-                ]}
+            <Item
+              label="Dung tích"
+              name="volumn"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập dung tích",
+                },
+              ]}
             >
               <Input
                 type="number"
@@ -150,7 +153,71 @@ function AddNewCar({ onClose, refetchData }) {
                 }
               />
             </Item>
-           
+            <Item
+              label="Đội xe"
+              name="car_fleet"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng chọn đội xe",
+                },
+              ]}
+            >
+              <Select
+                allowClear
+                showSearch
+                onChange={(_, option) =>
+                  setData({ ...data, car_fleet: option?.value })
+                }
+              >
+                {car_fleet.map((car_fleet) => (
+                  <Option value={car_fleet} key={car_fleet}>
+                    {car_fleet}
+                  </Option>
+                ))}
+              </Select>
+            </Item>
+            <Item
+              label="Mã seri"
+              name="seri"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập mã seri",
+                },
+              ]}
+            >
+              <Input
+                type="text"
+                value={data.seri}
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    seri: e.target.value,
+                  })
+                }
+              />
+            </Item>
+            <Item
+              label="Thời gian hết hạn"
+              name="expired"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập thời gian hết hạn",
+                },
+              ]}
+            >
+              <DatePicker
+                onChange={(e, dateString) =>
+                  setData({
+                    ...data,
+                    expired: dateString,
+                  })
+                }
+              />
+            </Item>
+
             <div className="flex justify-end mt-2 text-sm gap-x-6">
               <Button
                 size="large"

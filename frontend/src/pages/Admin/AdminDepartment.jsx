@@ -13,7 +13,7 @@ function AdminDepartment() {
     {
       title: "Tên phòng ban",
       dataIndex: "name",
-      sorter: true
+      sorter: true,
     },
     // {
     //   title: "Trưởng ban",
@@ -142,9 +142,9 @@ function AdminDepartment() {
   const searchByKeyword = (value) => {
     setParams({
       ...params,
-      page:0,
-      keyword:value
-    })
+      page: 0,
+      keyword: value,
+    });
   };
   const handleTableChange = (newPagination, filters, sorter) => {
     const sort = sorter.order === "descend" ? `-${sorter.field}` : sorter.field;
@@ -182,14 +182,14 @@ function AdminDepartment() {
       {isAddVisible && (
         <AddDepartment
           onClose={() => setIsAddVisible(false)}
-          refetchData={()=>fetchData(params)}
+          refetchData={() => fetchData(params)}
         />
       )}
       {isEditVisible && (
         <EditDepartment
           onClose={() => setIsEditVisible(false)}
           data={dataForEdit}
-          refetchData={()=>fetchData(params)}
+          refetchData={() => fetchData(params)}
         />
       )}
       <ConfirmModal //Modal delete department
