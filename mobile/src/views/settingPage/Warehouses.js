@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import {
   Text,
   View,
@@ -13,10 +13,18 @@ import {
   FlatList,
   Platform,
   Alert,
+<<<<<<< HEAD
 } from "react-native";
 import axios from "axios";
 import {END_POINT} from "../../utils/constant";
 console.log("endpoint",END_POINT)
+=======
+  Linking,
+} from "react-native";
+import axios from "axios";
+import {END_POINT} from "../../utils/constant";
+console.log("endpoint", END_POINT);
+>>>>>>> c69209fc884e98c40476f8aeba617cce2f4e4b0a
 import {getDistrictsByProvinceCode, getProvinces} from "sub-vn";
 import IconAwesome from "react-native-vector-icons/FontAwesome";
 import IonIcon from "react-native-vector-icons/Ionicons";
@@ -145,6 +153,7 @@ function Warehouse({navigation}) {
       ...dataForSearch,
       district: districtSelected,
     });
+<<<<<<< HEAD
     setWarehouses([])
   };
   const handleSearch = () => {
@@ -182,7 +191,61 @@ function Warehouse({navigation}) {
       },
       {text: "OK", onPress: () => console.log("OK Pressed")},
     ]);
+=======
+    setWarehouses([]);
+>>>>>>> c69209fc884e98c40476f8aeba617cce2f4e4b0a
   };
+  const handleSearch = () => {
+    if (dataForSearch.province && dataForSearch.district) {
+      const province = dataForSearch.province
+        ?.replace("Thành phố ", "")
+        ?.replace("Tỉnh ", "");
+      const fetchData = async () => {
+        try {
+          const res = await axios.get(`${END_POINT}/warehouse`, {
+            params: {...dataForSearch, province},
+          });
+
+          setWarehouses(res.data.data.warehouses);
+        } catch (error) {
+          Alert.alert("Thông báo", `${error}`, [
+            {
+              text: "Cancel",
+              // onPress: () => console.log("Cancel Pressed"),
+              style: "cancel",
+            },
+            {
+              text: "OK",
+              //  onPress: () => console.log("OK Pressed")
+            },
+          ]);
+        }
+      };
+
+      // setWarehouses(data)
+      return fetchData();
+    }
+    console.log("1");
+    Alert.alert("Thông báo", "Mời chọn đủ thông tin", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      {text: "OK", onPress: () => console.log("OK Pressed")},
+    ]);
+  };
+  const openMap= async (lon,lat)=>{
+    const supported = await Linking.canOpenURL(`https://www.google.com/maps/dir/?api=1&destination=${lon},${lat}`)
+    if (supported) {
+      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+      // by some browser in the mobile
+      console.log("ok")
+      await Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${lon},${lat}`);
+    } else {
+      Alert.alert(`Don't know how to open this URL: https://www.google.com/maps/dir/?api=1&destination=${lon},${lat}`);
+    }
+  }
   return (
     <SafeAreaView style={{backgroundColor: "#FFD124", height: "100%"}}>
       <View
@@ -211,7 +274,7 @@ function Warehouse({navigation}) {
           </TouchableOpacity>
         </View>
         <Text style={{fontSize: 20, fontWeight: "bold"}}>
-          Danh sách bưu cục
+        Danh sách bưu cục
         </Text>
       </View>
       <View
@@ -297,6 +360,7 @@ function Warehouse({navigation}) {
               data={warehouses}
               showsVerticalScrollIndicator={false}
               renderItem={({item}) => (
+<<<<<<< HEAD
                 <View
                   style={{
                     height: 146,
@@ -355,11 +419,48 @@ function Warehouse({navigation}) {
                         alignItems: "center",
                       }}
                     >
+=======
+                <TouchableOpacity
+                activeOpacity={.7}
+                onPress={()=>openMap(item.lon,item.lat)}
+                >
+                  <View
+                    style={{
+                      height: 146,
+                      width: "100%",
+                      flexDirection: "row",
+                      marginVertical: 12,
+                      // marginHorizontal:10,
+                      borderRadius: 5,
+                      backgroundColor: "white",
+                      shadowColor: "#000000",
+                      shadowOffset: {
+                        width: 3,
+                        height: 3,
+                      },
+                      shadowRadius: 5,
+                      shadowOpacity: 1.0,
+                      elevation: 5,
+                    }}
+                  >
+                    <View
+                      style={{
+                        height: "100%",
+                        width: "4%",
+                        backgroundColor: "#FFD124",
+                        borderTopLeftRadius: 5,
+                        borderBottomLeftRadius: 5,
+                      }}
+                    ></View>
+                    <View style={{width: "95%"}}>
+>>>>>>> c69209fc884e98c40476f8aeba617cce2f4e4b0a
                       <View
                         style={{
                           flex: 1,
-                          width: "90%",
+                          justifyContent: "flex-end",
+                          alignContent: "center",
                           flexDirection: "row",
+<<<<<<< HEAD
                           paddingVertical: 10,
                         }}
                       >
@@ -368,37 +469,101 @@ function Warehouse({navigation}) {
                         </View>
                         <Text style={{width: "85%", fontSize: 16}}>
                           {item.street}
+=======
+                          marginRight: 24,
+                          backgroundColor: "white",
+                        }}
+                      >
+                        <View style={{justifyContent: "center"}}>
+                          <IconAwesome name="circle" color="#00FF57" />
+                        </View>
+                        <Text
+                          style={{
+                            textAlignVertical: "center",
+                            fontSize: 12,
+                            marginLeft: 6,
+                          }}
+                        >
+                          Đang mở cửa
+>>>>>>> c69209fc884e98c40476f8aeba617cce2f4e4b0a
                         </Text>
                       </View>
                       <View
                         style={{
+<<<<<<< HEAD
                           flex: 1,
                           width: "90%",
                           flexDirection: "row",
                           paddingVertical: 10,
+=======
+                          flex: 6,
+                          alignItems: "center",
+>>>>>>> c69209fc884e98c40476f8aeba617cce2f4e4b0a
                         }}
                       >
                         <View
                           style={{
+<<<<<<< HEAD
                             marginRight: 5,
                             minWidth: 20,
                             alignItems: "center",
                           }}
                         >
                           <IconAwesome name="phone" size={20} />
+=======
+                            flex: 1,
+                            width: "90%",
+                            flexDirection: "row",
+                            paddingVertical: 10,
+                          }}
+                        >
+                          <View style={{marginRight: 5, minWidth: 20}}>
+                            <IonIcon name="location-sharp" size={20} />
+                          </View>
+                          <Text style={{width: "85%", fontSize: 16}}>
+                            {item.street}
+                          </Text>
+>>>>>>> c69209fc884e98c40476f8aeba617cce2f4e4b0a
                         </View>
-                        <Text
+                        <View
                           style={{
+<<<<<<< HEAD
                             fontSize: 16,
                             width: "80%",
                           }}
                         >
                           {item.phone}
                         </Text>
+=======
+                            flex: 1,
+                            width: "90%",
+                            flexDirection: "row",
+                            paddingVertical: 10,
+                          }}
+                        >
+                          <View
+                            style={{
+                              marginRight: 5,
+                              minWidth: 20,
+                              alignItems: "center",
+                            }}
+                          >
+                            <IconAwesome name="phone" size={20} />
+                          </View>
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              width: "80%",
+                            }}
+                          >
+                            {item.phone}
+                          </Text>
+                        </View>
+>>>>>>> c69209fc884e98c40476f8aeba617cce2f4e4b0a
                       </View>
                     </View>
                   </View>
-                </View>
+                </TouchableOpacity>
               )}
             />
           ) : (
@@ -410,6 +575,10 @@ function Warehouse({navigation}) {
                 backgroundColor: "#FFD124",
                 justifyContent: "center",
               }}
+<<<<<<< HEAD
+=======
+              // onPress={handleSearch}
+>>>>>>> c69209fc884e98c40476f8aeba617cce2f4e4b0a
               onPress={handleSearch}
             >
               <Text style={{textAlign: "center", fontSize: 18, color: "white"}}>

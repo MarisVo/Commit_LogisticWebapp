@@ -16,12 +16,46 @@ import {
   Switch,
 } from "react-native";
 import IconAwesome from "react-native-vector-icons/FontAwesome";
+<<<<<<< HEAD
+=======
+import { io } from "socket.io-client";
+>>>>>>> c69209fc884e98c40476f8aeba617cce2f4e4b0a
 
 function SettingnNoti({navigation}) {
   const [isEnabled, setIsEnabled] = useState(false);
   const [isEnabledApp, setEnableApp] = useState(false);
   const [isEnabledMusic, setEnableMusic] = useState(false);
 //   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+<<<<<<< HEAD
+=======
+const openNotification = ({ message, title, link }) => {
+  Alert.alert("Thông báo", `${message}`, [
+    {
+      text: "Cancel",
+      // onPress: () => console.log("Cancel Pressed"),
+      style: "cancel",
+    },
+    {
+      text: "OK",
+      //  onPress: () => console.log("OK Pressed")
+    },
+  ]);
+};
+useEffect(() => {
+    const socket = io(`http://localhost:5000`, { reconnection: true });
+    console.log(`Connecting socket...`);
+    socket.emit("add-session","62e659b016876b78f6fdb8f1")
+    socket.on("receive", ({ message, title, link }) => {
+      // console.log(message)
+      openNotification({ message, title, link })
+      // setDotShow(true)
+      // setRefreshNoti((pre)=>pre+1)
+    });
+    // console.log(socket);
+    return ()=>socket.disconnect()
+  }, []);
+
+>>>>>>> c69209fc884e98c40476f8aeba617cce2f4e4b0a
   return (
     <SafeAreaView style={{backgroundColor: "#FFD124", height: "100%"}}>
       <View

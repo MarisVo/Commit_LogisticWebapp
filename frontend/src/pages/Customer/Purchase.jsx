@@ -40,7 +40,8 @@ const Purchase = () => {
   )
   const [params, setParams] = useState({
     ...pagination,
-    page: pagination.page - 1
+    page: pagination.page - 1,
+     sortBy:"-updatedAt"
   });
   const {accessToken} = useContext(MainContext)
   const handllePage = (newPagination)=>{
@@ -48,7 +49,7 @@ const Purchase = () => {
       setParams({
       ...params,
       ...newPagination,
-      page: newPagination - 1,
+      page: newPagination - 1
     });
     console.log(params)
     
@@ -88,7 +89,9 @@ const Purchase = () => {
     setKey(key);
     setParams({
       ...params,
-      status:key
+      status:key,
+       page: 0,
+      pageSize: 2,
     })
     navigate(`/khach-hang/dat-hang?status=${key}`);
   }
@@ -248,7 +251,7 @@ const Purchase = () => {
         } 
       </div>
           <div className="flex justify-center mt-2 mb-3 items-center">
-            <Pagination  defaultCurrent={pagination.current} onChange={handllePage} total={total} pageSize={pagination.pageSize}/>;
+            <Pagination  defaultCurrent={pagination.current} onChange={handllePage} total={total} pageSize={pagination.pageSize}/>
           </div>
     </div>
   );

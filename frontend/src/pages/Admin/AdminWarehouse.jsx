@@ -105,7 +105,9 @@ function AdminWarehouse() {
         try {
         const { data: response } = await axios.get(`${END_POINT}/warehouse`, {
             params: params,
-        });
+        }, {
+        headers: { authorization: `Bearer ${accessToken}` },
+      });
         setData(response.data.warehouses);
         setLoading(false);
         setPagination({
@@ -129,7 +131,9 @@ function AdminWarehouse() {
         try {
         await axios.delete(`${END_POINT}/admin/warehouse/${IdCompare}`, {
             headers: { authorization: `Bearer ${accessToken}` },
-        });
+        }, {
+        headers: { authorization: `Bearer ${accessToken}` },
+      });
         setLoading(false);
         fetchData();
         setIsDisable(false);
@@ -148,7 +152,9 @@ function AdminWarehouse() {
         try {
         const { data: response } = await axios.get(`${END_POINT}/warehouse`, {
             params: { district: district, province: province },
-        });
+        }, {
+        headers: { authorization: `Bearer ${accessToken}` },
+      });
         setData(response.data.warehouses);
         setLoading(false);
         } catch (error) {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Text, View, SafeAreaView, Image} from 'react-native';
 import Home from './home';
 import Setting from './setting';
@@ -15,10 +15,12 @@ import Login from './login';
 import SettingnNoti from './settingPage/SettingNoti';
 import ForgetPassword from './forgetPassword';
 import CreateOrder from './createOrder';
-
 import Statistic from './statistic';
 import ListOrder from './listOrder';
 import watchListOrder from './watchListOrder';
+import { showNotification } from '../notification/androidNotification';
+import { io } from "socket.io-client";
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -83,6 +85,20 @@ const MyTabs = () => {
 };
 
 const RootComponent = () => {
+  useEffect(() => {
+    const socket = io(`http://localhost:5000`, { reconnection: true });
+    socket.emit("add-session","62e659b016876b78f6fdb8f1")
+    socket.on("receive", ({ message, title, link }) => {
+      // console.log(message)
+    //   openNotification({ message, title, link })
+    showNotification(title,message)
+    console.log("receive ")
+      // setDotShow(true)
+      // setRefreshNoti((pre)=>pre+1)
+    });
+    // console.log(socket);
+    return ()=>socket.disconnect()
+  }, []);
   return (
     <NavigationContainer>
       <Stack.Navigator

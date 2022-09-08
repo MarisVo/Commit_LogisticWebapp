@@ -473,9 +473,9 @@ const Home = () => {
           đất nước, mang trong mình sứ mệnh vươn ra tầm cỡ thế giới
         </span>
       </div>
-      <div className="flex flex-col justify-center items-center m-6 text-red-500">
-        <img src="" alt="Hình chụp bưu cục tại 3 chí nhánh HCM HN Đà Nẵng! Không có thì bỏ" />
-      </div>
+     {/*  <div className="flex flex-col justify-center items-center m-6 text-red-500">
+        <img src="" alt="#" />
+      </div> */}
 
       {/* <Fade bottom duration={1500}>
         <div className="grid grid-cols-3 text-white text-center gap-y-12 mb-9">

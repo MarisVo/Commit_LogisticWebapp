@@ -36,7 +36,7 @@ export default function CreateOrder() {
     setMetadata((prev) => {
       return {
         ...prev,
-        title: "Tạo đơn h | TKTL",
+        title: "Tạo đơn hàng | TKTL",
       };
     });
      }, []);

@@ -71,6 +71,7 @@ import {
   ListOpportunities,
   DetailOpportunites,
 
+
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainProvider, { MainContext } from "./context/MainContext";
@@ -159,8 +160,8 @@ const App = () => {
                 <Route path="thu-kho" element={<LayerStorekeeper />}>
                   <Route index element={<Bills />} />
                   <Route path="van-don" element={<Bills />} />
-                  <Route path="hang-ton-kho" element={<Inventory />} />
-                  <Route path="hang-ton-kho/:id" element={<InventoryDetail />} />
+                  <Route path="hang-ton-kho" element={<InventoryDetail />} />
+                  {/* <Route path="hang-ton-kho/:id" element={<InventoryDetail />} /> */}
                   <Route path="thong-bao" element={<NotiStorekeeper />} />
                 </Route>
                 <Route path="quan-tri" element={<AdminPage />}>
