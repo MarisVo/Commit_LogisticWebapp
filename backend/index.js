@@ -81,7 +81,12 @@ app.use(session({
     resave: false
 }))
 app.use(express.json())
-app.use(cors())
+app.use(cors(
+    {
+        origin: process.env.DEV == 1 ? 'http://localhost:3000' : ['http://14.186.215.101', 'https://14.186.215.101'],
+        credentials: true
+    }
+))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
