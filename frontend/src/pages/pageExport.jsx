@@ -16,6 +16,8 @@ export { default as Contact } from "./Advice/Contact/Contact.advice";
 export { default as SignUpAdvice } from "./Advice/SignUpForAdvise/SignUp.advice";
 //----------------------------------------------//
 export { default as CareerOpportunities } from "./CareerOpportunities/CareerOpportunities.jsx";
+export { default as ListOpportunities } from "./CareerOpportunities/ListOpportunities.jsx";
+export { default as DetailOpportunites } from "./CareerOpportunities/DetailOpportunites.jsx";
 export { default as Life } from "./Life/Life.jsx";
 export { default as RecruitmentDetails } from "./RecruitmentDetails/RecruitmentDetails.jsx";
 // ----------------------------------------------//
@@ -36,6 +38,7 @@ export { default as NotiStorekeeper } from "./Storekeeper/Notification/NotiStore
 //----------------------------------------------//
 export { default as Purchase } from "./Customer/Purchase.jsx";
 export { default as PurchaseStage } from "./Customer/PurchaseStage.jsx";
+export { default as CreateOrder } from "./Customer/CreateOrder.jsx";
 export { default as ChangePassword } from "./Customer/ChangePassword.jsx";
 export { default as Profile } from "./Customer/Profile.jsx";
 export { default as NotificationCustomer } from "./Customer/NotificationCustomer.jsx";
@@ -50,6 +53,7 @@ export { default as ServiceAll } from "./Services/ServiceAll.jsx";
 export { default as FastService } from "./Services/FastService.jsx";
 export { default as SuperService } from "./Services/SuperService.jsx";
 export { default as FreshService } from "./Services/FreshService.jsx";
+export { default as PagePdf } from "./PagePdf";
 //---------------------------------------------//
 
 export { default as AdminPage } from "./Admin/AdminLayout/AdminPage.jsx";
@@ -72,6 +76,8 @@ export {default as AdminMaintenance} from "./Admin/AdminMaintenance"
 export {default as AdminProhibitProduct} from "./Admin/AdminProhibitProduct"
 export {default as AdminBill} from "./Admin/AdminBill"
 export {default as AdminTurnover} from "./Admin/AdminTurnover"
+export {default as AdminSchedule} from "./Admin/AdminSchedule"
+
 
 
 

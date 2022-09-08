@@ -201,6 +201,16 @@ export default function AdminPage() {
       <DesktopOutlined> </DesktopOutlined>
     ),
 
+    getItem(
+      <div>
+
+        <Link to="lich_trinh">Lịch trình</Link>
+
+      </div>,
+      "21",
+      <DesktopOutlined> </DesktopOutlined>
+    ),
+
     // getItem("User", "sub1", <UserOutlined />, [getItem("Tom", "3"), getItem("Bill", "4"), getItem("Alex", "5")]),
   ];
    if(user&&user.role.staff_type==="admin"){

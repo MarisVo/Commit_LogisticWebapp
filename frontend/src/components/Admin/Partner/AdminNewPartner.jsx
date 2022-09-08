@@ -86,7 +86,9 @@ export default function AdminNewPartner({ onClose, refetchData }) {
         method: 'post',
         url: `${END_POINT}/admin/partner`,
         data: submitFormData,
-        headers: { 'Content-Type': 'multipart/form-data' },
+        headers: { 'Content-Type': 'multipart/form-data',
+            authorization: `Bearer ${accessToken}`
+      },
       });
       if (response.status === 200) {
         alert('đã them thành công ');
@@ -133,7 +135,9 @@ export default function AdminNewPartner({ onClose, refetchData }) {
         method: 'post',
         url: `${END_POINT}/admin/partner`,
         data: submitFormData,
-        headers: { 'Content-Type': 'multipart/form-data' },
+      headers: { 'Content-Type': 'multipart/form-data',
+            authorization: `Bearer ${accessToken}`
+      },
       });
       if (response.status === 200) {
         alert('đã them thành công ');

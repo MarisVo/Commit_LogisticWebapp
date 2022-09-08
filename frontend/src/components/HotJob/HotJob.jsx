@@ -21,6 +21,7 @@ const HotJob = ({ setDetail }) => {
             console.log(res);
             if (res.status === 200) {
                 let item = res.data.data.career;
+                console.log(item)
                 if (item.length > 1) {
                     let newItem = item.sort((a, b) => a.applicants.length - b.applicants.length);
                     let items = []
@@ -28,16 +29,17 @@ const HotJob = ({ setDetail }) => {
                         items.push(newItem[i]);
                     }
                     setJob(items);
+                    console.log("item",items)
                 }
-                setJob(item)
-                // console.log(items);
+                /* setJob(item) */
+             /*    console.log("job",hotJob); */
+
             }
         }
         catch (error) {
             console.log(error);
         }
     }
-
     useEffect(() => {
         getDataFromApi()
     }, [])
@@ -55,20 +57,19 @@ const HotJob = ({ setDetail }) => {
                                 className="border-[1px] rounded-r-xl before:content-['']  p-[16px] mb-[16px] overflow-hidden bg-[#f2f2f2] lg:hover:scale-105 duration-300"
                             >
                                 <h4 className="text-[16px] sm:text-[18px] font-bold tracking-wider whitespace-nowrap text-ellipsis overflow-hidden cursor-pointer">
-                                    {job.name}
+                                    {job?.name}
                                 </h4>
                                 <p className="text-[16px] opacity-70 cursor-pointer truncate">
                                     <FontAwesomeIcon icon={faLocationDot} className=" pr-[16px]" />
-                                    {job.location}
+                                    {job?.location}
                                 </p>
                                 <div style={{ cursor: 'pointer' }}>
-                                    <span
-                                        className="text-[14px] text-[#e5a663] tracking-wider flex items-center gap-2 font-bold"
-                                        onClick={(e) => setDetail(e, job)}
-                                    >
-                                        <RightOutlined />
-                                        XEM CHI TIẾT
-                                    </span>
+                                     <Link
+                                       className="text-[14px] text-[#e5a663] tracking-wider flex items-center gap-2 font-bold"  
+                                       to={`${job?._id}`}
+                                                    >
+                                          XEM CHI TIẾT
+                                          </Link>
                                 </div>
                             </div>
                         );

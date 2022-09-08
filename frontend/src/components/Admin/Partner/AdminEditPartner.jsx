@@ -23,7 +23,9 @@ export default function AdminEditPartner({ onClose, data, refetchData }) {
         method: 'put',
         url: `${END_POINT}/admin/partner/${data._id}`,
         data: formEditData,
-        headers: { 'Content-Type': 'multipart/form-data' },
+        headers: { 'Content-Type': 'multipart/form-data',
+            authorization: `Bearer ${accessToken}`
+      },
       });
       if (response.status === 200) {
         alert('đã them thành công ');

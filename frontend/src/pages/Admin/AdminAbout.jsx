@@ -18,7 +18,7 @@ export default function AdminAbout() {
   const [description, setDes] = useState('');
   const [values, setValues] = useState('');
   const [vision, setVision] = useState('')
-  const [fileListLogo, setLogo] = useState({})
+  const [fileListLogo, setLogo] = useState('')
   const [fileListBanners, setBanners] = useState([])
   const [aboutState, setAboutState] = useState({
     // description: "string",
@@ -134,17 +134,17 @@ export default function AdminAbout() {
   }
 
   const handleSubmit = () => {
+    const items = {
+      description: description,
+      values: values,
+      vision: vision,
+    }
     if (checkBanners === false || checkLogo === false) {
-      alert("Vui lòng điền đầy đủ thông tin")
+      postApi(items)
+      alert("Cập nhật thành công")
     }
 
     else {
-      const items = {
-        description: description,
-        values: values,
-        vision: vision,
-      }
-
       let fileBanners = new FormData();
       fileListBanners.forEach(e => {
         fileBanners.append("banners", e)
@@ -163,78 +163,101 @@ export default function AdminAbout() {
   }
 
   return (
-    <Form
-      ref={form}
-      name="basic"
-      labelCol={{
-        span: 2,
-      }}
-      wrapperCol={{
-        span: 20,
-      }}
-      autoComplete="off"
-    >
-
-      <Form.Item label="id">
-        {aboutState&&(
-          <Input.TextArea value={aboutState._id} rows={4} disabled='true' />
-        )}
-      </Form.Item>
-
-      <Form.Item label="description">
-        <Input.TextArea value={description} rows={4} onChange={(e) => setDes(e.target.value)} />
-      </Form.Item>
-
-      <Form.Item label="vision">
-        <Input.TextArea value={vision} rows={4} onChange={(e) => setVision(e.target.value)} />
-      </Form.Item>
-
-      <Form.Item label="values">
-        <Input.TextArea value={values} rows={4} onChange={(e) => setValues(e.target.value)} />
-      </Form.Item>
-
-      <Form.Item label="Logo">
-        <input type='file' onChange={changeLogo} />
-        <div className="flex align-center" style={{ width: 100, height: 100, border: "1px solid #cccc", marginTop: 8, padding: 5 }}>
-          {fileListLogo && (
-            <img src={fileListLogo.preview} alt={fileListLogo.name} />
-          )}
-        </div>
-      </Form.Item>
-
-      <Form.Item label="Banners">
-        <input type="file" id="file-upload" multiple required onChange={changeBanners} />
-        {fileListBanners && (
-          <>
-            {fileListBanners.map((e, index) => (
-              <div className="peer hover:bg-gray-300 flex align-center" style={{ position: "relative", width: 100, height: 100, border: "1px solid #cccc", marginTop: 8, padding: 5 }}>
-                <div id={index} className="peer-hover:flex" style={{ position: 'absolute', right: 3, cursor: "pointer" }}>
-                  <DeleteOutlined className="hover:bg-gray-100" onClick={handleDel} />
-                </div>
-                <img src={e.preview} className="peer" />
-              </div>
-            ))}
-          </>
-        )}
-      </Form.Item>
-
-      <Form.Item
-        wrapperCol={{
-          offset: 10,
-          // span: 20,
+    <>
+      <h1 className="mb-[38px]" style={{ margin: "auto", fontSize: "25px", fontWeight: "600", }}>Về Chúng Tôi</h1>
+      <Form
+        style={{ margin: "auto" }}
+        ref={form}
+        name="basic"
+        labelCol={{
+          span: 3,
         }}
+        wrapperCol={{
+          span: 16,
+        }}
+        autoComplete="off"
       >
-        <Button
-          type="primary"
-          style={{
-            color: "",
+
+        <Form.Item className="p-[5px]" style={{ fontWeight: "bold", }} label="ID">
+          {aboutState && (
+            <Input.TextArea style={{ fontWeight: "500" }} value={aboutState._id} rows={2} disabled='true' />
+          )}
+        </Form.Item>
+
+        <Form.Item className="p-[5px]" style={{ fontWeight: "bold", }} label="Mô tả">
+          <Input.TextArea style={{ fontWeight: "500" }} value={description} rows={2} onChange={(e) => setDes(e.target.value)} />
+        </Form.Item>
+
+        <Form.Item className="p-[5px]" style={{ fontWeight: "bold", }} label="Tầm nhìn">
+          <Input.TextArea style={{ fontWeight: "500" }} value={vision} rows={2} onChange={(e) => setVision(e.target.value)} />
+        </Form.Item>
+
+        <Form.Item className="p-[5px]" style={{ fontWeight: "bold", }} label="Giá trị">
+          <Input.TextArea style={{ fontWeight: "500" }} value={values} rows={2} onChange={(e) => setValues(e.target.value)} />
+        </Form.Item>
+
+        <Form.Item className="p-[5px]" style={{ fontWeight: "bold", }} label="Logo">
+          <input type='file' onChange={changeLogo} />
+          <div className="flex align-center" style={{ width: 100, height: 100, border: "1px solid #cccc", marginTop: 8, padding: 5 }}>
+            {fileListLogo !== "" ? (
+              <img src={fileListLogo.preview} alt={fileListLogo.name} />
+            ) : (<><img src={`${END_POINT}/public/${aboutState.logo}`} alt={fileListLogo.name} /></>)}
+          </div>
+        </Form.Item>
+
+        <Form.Item className="p-[5px]" style={{ fontWeight: "bold", }} label="Banners">
+          <input type="file" id="file-upload" multiple required onChange={changeBanners} />
+          {fileListBanners.length > 0 ? (
+            <>
+              {fileListBanners.map((e, index) => (
+                <div className="peer hover:bg-gray-300 flex align-center" style={{ position: "relative", width: 100, height: 100, border: "1px solid #cccc", marginTop: 8, padding: 5 }}>
+                  <div id={index} className="peer-hover:flex" style={{ position: 'absolute', right: 3, cursor: "pointer" }}>
+                    <DeleteOutlined className="hover:bg-gray-100" onClick={handleDel} />
+                  </div>
+                  <img src={e.preview} className="peer" />
+                </div>
+              ))}
+            </>
+          ) : (
+            <>
+              {aboutState.banners && (
+                <>
+                  {aboutState.banners.map((e, index) => (
+                    <div className="peer hover:bg-gray-300 flex align-center" style={{ position: "relative", width: 100, height: 100, border: "1px solid #cccc", marginTop: 8, padding: 5 }}>
+                      <div id={index} className="peer-hover:flex" style={{ position: 'absolute', right: 3, cursor: "pointer" }}>
+                        <DeleteOutlined className="hover:bg-gray-100" onClick={handleDel} />
+                      </div>
+                      <img src={`${END_POINT}/public/${e}`} className="peer" alt={e} />
+                    </div>
+                  ))}
+                </>
+              )}
+            </>
+          )}
+        </Form.Item>
+
+        <Form.Item className="p-[5px]" style={{ fontWeight: "bold", }}
+          wrapperCol={{
+            offset: 10,
+            // span: 20,
           }}
-          htmlType="submit"
-          onClick={handleSubmit}
         >
-          Gửi
-        </Button>
-      </Form.Item>
-    </Form>
+          <Button
+            type="primary"
+            style={{
+              color: "",
+              padding: "16",
+              display: "flex",
+              alignItems: 'center',
+              fontWeight: "bold"
+            }}
+            htmlType="submit"
+            onClick={handleSubmit}
+          >
+            Gửi
+          </Button>
+        </Form.Item>
+      </Form>
+    </>
   );
 }

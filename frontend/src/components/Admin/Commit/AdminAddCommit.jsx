@@ -2,7 +2,8 @@ import { Button, Form, Input } from 'antd';
 import axios from 'axios';
 
 import { END_POINT } from '../../../utils/constant';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { MainContext } from '../../../context/MainContext';
 
 export default function AdminAddCommit({ onClose, refetchData }) {
   const [data, setData] = useState({
@@ -13,7 +14,7 @@ export default function AdminAddCommit({ onClose, refetchData }) {
 
   const [loading, setLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
-
+const {accessToken} = useContext(MainContext);
   const acceptAddNewDepartment = async () => {
     setLoading(true);
     const submitFormData = new FormData();
@@ -26,7 +27,9 @@ export default function AdminAddCommit({ onClose, refetchData }) {
         method: 'post',
         url: `${END_POINT}/admin/commitment`,
         data: submitFormData,
-        headers: { 'Content-Type': 'multipart/form-data' },
+        headers: { 'Content-Type': 'multipart/form-data',
+            authorization: `Bearer ${accessToken}`
+      },
       });
       if (response.status === 200) {
         alert('đã them thành công ');

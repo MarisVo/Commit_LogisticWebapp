@@ -169,7 +169,7 @@ productShipmentAdminRoute.post('/create/:product_id', async (req, res) => {
                 distance = temp
             }
             else
-                return sendServerError(res, "City names do not match")
+                return sendError(res, "City names do not match")
         }
         //count by calculateShipmentFee function and retunr value 
         //distance = distance, quantity = productQuantity, price = price, unit = productUnit
@@ -198,7 +198,7 @@ productShipmentAdminRoute.post('/create/:product_id', async (req, res) => {
                 { $push: { product_shipments: ps } }
               );
             if (!updateProduct)
-                return sendServerError(res, "Update failed")
+                return sendError(res, "Update failed")
             return sendSuccess(res, 'Set product shipment information successfully')
         }
         else
@@ -259,7 +259,7 @@ productShipmentAdminRoute.put('/:id', async (req, res) => {
                 distance = temp
             }
             else
-                return sendServerError(res, "City names do not match")
+                return sendError(res, "City names do not match")
         }
 
         //count by calculateShipmentFee function and retunr value 

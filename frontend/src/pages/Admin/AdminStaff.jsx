@@ -12,6 +12,7 @@ import { TOKEN } from "./adminToken";
 import axios from 'axios';
 import { MainContext } from '../../context/MainContext';
 
+
 export default function AdminStaff() {
   const [idItem,setId] = useState()
   const {accessToken} = useContext(MainContext)
@@ -28,9 +29,13 @@ export default function AdminStaff() {
 
   const getDataFromApi = async ()=>{
     try{
-      const res = await axios.get(`${END_POINT}/admin/staff`)
+      const res = await axios({
+        url:`${END_POINT}/admin/staff`,
+        method:"get",
+        headers: { authorization: `Bearer ${accessToken}` },
+      })
       setData(res.data.data)
-      console.log(res.data.data);
+      console.log(res);
     }
 
     catch(e){

@@ -110,10 +110,10 @@ const RecruitForm = ({ id }) => {
     };
 
     return (
-        <Formik className="p-[10px]">
+        <Formik className="pb-[5px]">
             {() => {
                 return (
-                    <div className="bg-[#fff] p-3 sm:p-7 lg:p-14 w-[90%] lg:w-auto rounded-lg absolute top-[50%] left-[50%]  translate-y-[-50%]  translate-x-[-50%] mt-[90px]">
+                    <div className="bg-[#fff] p-3 sm:p-7 lg:p-14 w-[90%]  lg:w-auto rounded-lg absolute top-[50%] left-[50%]  translate-y-[-50%]  translate-x-[-50%] mt-[30px]">
                         <h3 className="mb-2 text-3xl font-bold lg:mb-5">Đăng ký ứng tuyển</h3>
                         <Form onSubmit={handleSubmit} className="gap-4 lg:grid lg:grid-cols-2">
                             <FormGroup className="flex flex-col mb-0 lg:mb-3">

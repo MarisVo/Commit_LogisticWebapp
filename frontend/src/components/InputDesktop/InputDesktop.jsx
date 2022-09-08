@@ -3,22 +3,32 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { END_POINT } from '../../utils/constant';
 const InputDesktop = ({ onSearch, onChangeKey, onChangeLocation, onChangeType, onChangeState, onChangeDepartment }) => {
 
     const [department, setDepartment] = useState([])
 
     const getDepartment = async () => {
         const res = await axios({
-            url: 'http://localhost:8000/api/department',
+            url: `${END_POINT}/department`,
             method: "get",
         })
+        
         if (res.status === 200) {
             setDepartment(res.data.data.department);
         }
     }
+    const getA = async () => {
+        const rescareer = await axios({
+            url: `${END_POINT}/career`,
+            method: "get",
+        })
+        console.log("rescarweq",rescareer)
+    }
 
     useEffect(() => {
         getDepartment()
+        getA()
     }, [])
 
     const locationsWork = [
@@ -56,73 +66,8 @@ const InputDesktop = ({ onSearch, onChangeKey, onChangeLocation, onChangeType, o
             profession: 'Chăm sóc khách hàng',
             numberOfRecruitment: 0,
             type: 'văn phòng',
-        },
-        {
-            id: 4,
-            profession: 'Công nghệ thông tin',
-            numberOfRecruitment: 7,
-            type: 'văn phòng',
-        },
-        {
-            id: 5,
-            profession: 'Đào tạo',
-            numberOfRecruitment: 0,
-            type: 'văn phòng',
-        },
-        {
-            id: 6,
-            profession: 'Kế toán - Tài chính',
-            numberOfRecruitment: 4,
-            type: 'văn phòng',
-        },
-        {
-            id: 7,
-            profession: 'Kiểm toán & Kiểm soát nội bộ',
-            numberOfRecruitment: 1,
-            type: 'văn phòng',
-        },
-        {
-            id: 8,
-            profession: 'Kinh doanh',
-            numberOfRecruitment: 1,
-            type: 'kinh doanh',
-        },
-        {
-            id: 9,
-            profession: 'Nhân sự & Hành chính',
-            numberOfRecruitment: 1,
-            type: 'văn phòng',
-        },
-        {
-            id: 10,
-            profession: 'Quản lí chất lượng',
-            numberOfRecruitment: 3,
-            type: 'văn phòng',
-        },
-        {
-            id: 11,
-            profession: 'Thu mua',
-            numberOfRecruitment: 0,
-            type: 'kinh doanh',
-        },
-        {
-            id: 12,
-            profession: 'Trợ lí',
-            numberOfRecruitment: 1,
-            type: 'văn phòng',
-        },
-        {
-            id: 13,
-            profession: 'Trung tâm khai thác',
-            numberOfRecruitment: 0,
-            type: 'văn phòng',
-        },
-        {
-            id: 14,
-            profession: 'Vận hành',
-            numberOfRecruitment: 0,
-            type: 'văn phòng',
-        },
+        }
+       
     ];
 
     const positions = [
@@ -133,23 +78,7 @@ const InputDesktop = ({ onSearch, onChangeKey, onChangeLocation, onChangeType, o
         {
             id: 2,
             position: 'Chuyên viên',
-        },
-        {
-            id: 3,
-            position: 'Nhân viên',
-        },
-        {
-            id: 4,
-            position: 'Thực tập sinh',
-        },
-        {
-            id: 5,
-            position: 'Trưởng nhóm',
-        },
-        {
-            id: 6,
-            position: 'Trưởng phòng',
-        },
+        }
     ];
 
 

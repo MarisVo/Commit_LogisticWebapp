@@ -82,13 +82,12 @@ const NewJob = ({ setDetail }) => {
                                     {job?.location}
                                 </p>
                                 <div style={{ cursor: 'pointer' }}>
-                                    <span
-                                        className="text-[14px] text-[#e5a663] font-bold tracking-wider flex items-center gap-2 "
-                                        onClick={(e) => setDetail(e, job)}
-                                    >
-                                        <RightOutlined />
-                                        XEM CHI TIẾT
-                                    </span>
+                                   <Link
+                                       className="text-[14px] text-[#e5a663] tracking-wider flex items-center gap-2 font-bold"  
+                                       to={`${job._id}`}
+                                                    >
+                                          XEM CHI TIẾT
+                                          </Link>
                                 </div>
                             </div>
                         );

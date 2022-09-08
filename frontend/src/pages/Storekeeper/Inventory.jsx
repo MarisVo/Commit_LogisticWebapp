@@ -44,7 +44,7 @@ function Inventory() {
       title: "",
       dataIndex: "detail",
       key: "detail",
-      render: (a,{_id}) => (
+      render: (a, { _id }) => (
         <div
           // onClick={() => { setIsModalVisible(true) }}
           className="text-blue-700 cursor-pointer"
@@ -74,16 +74,19 @@ function Inventory() {
   ];
   const fetchData = async (params = {}) => {
     setLoading(true);
+    let inventory = [];
     try {
-      const { data: response } = await axios.get(`${END_POINT}/warehouse`, {
-        params: params,
-      });
-      const dataModify = response.data.warehouses.map((record) => ({
-        ...record,
-        // quantity: record?.inventory_product_shipments?.length,
-        quantity:11
-      }));
-      setData(dataModify);
+      const { data: response } = await axios.get(
+        `${END_POINT}/warehouse/62e9d8b0c5e7cf9384ba18a4`,
+        {
+          params: params,
+        }
+      );
+      const dataModify = response.data.warehouses.inventory_product_shipments
+        .filter((shipment) => shipment.status === "import")
+        .map((shipment) => ({ shipment }));
+        console.log(dataModify)
+      // setData(dataModify);
       setLoading(false);
       setPagination({
         total: params?.total,
@@ -95,10 +98,7 @@ function Inventory() {
     }
   };
   useEffect(() => {
-    fetchData({
-      ...pagination,
-      page: pagination.current - 1,
-    });
+    fetchData();
   }, []);
   const handleTableChange = (newPagination, filters, sorter) => {
     const sort = sorter.order === "descend" ? `-${sorter.field}` : sorter.field;
@@ -111,7 +111,10 @@ function Inventory() {
   return (
     <>
       <div className="flex justify-between mb-4">
-        <Input.Search className="max-w-xl lg:w-[400px] mx-auto" placeholder="Search" />
+        <Input.Search
+          className="max-w-xl lg:w-[400px] mx-auto"
+          placeholder="Search"
+        />
       </div>
       <Table
         rowKey={(record) => record._id}

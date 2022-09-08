@@ -14,6 +14,7 @@ import { MainContext } from '../../context/MainContext';
 import { END_POINT } from '../../utils/constant';
 
 export default function AdminCommitment() {
+
   const [isAddVisible, setIsAddVisible] = useState(false);
   const [isEditVisible, setIsEditVisible] = useState(false);
   const [isDeleteVisible, setIsDeleteVisible] = useState(false);
@@ -38,8 +39,14 @@ export default function AdminCommitment() {
 
   const fetchData = async () => {
     try {
-      const { data: response } = await axios.get(`${END_POINT}/commitment`, {
+    /*   const { data: response } = await axios.get(`${END_POINT}/commitment`, {
         params: params,
+      }); */
+       const { data: response } = await axios.get(`${END_POINT}/commitment`, {
+        params: params,
+      },
+      {
+          headers: { authorization: `Bearer ${accessToken}` },
       });
       console.log(response.data.commits);
       setData(response.data.commits);

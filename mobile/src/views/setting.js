@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-
+import { showNotification } from "../notification/androidNotification";
 const windowwidth = Dimensions.get("window").width;
 const windowheight = Dimensions.get("window").height;
 const Setting = ({navigation}) => {
@@ -55,7 +55,7 @@ const Setting = ({navigation}) => {
         </View>
         <TouchableOpacity
           style={{
-            height: "20%",
+            height: "10%",
             aspectRatio: 1.6,
             borderColor: "black",
             borderWidth: 2,
@@ -69,7 +69,7 @@ const Setting = ({navigation}) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={{
-            height: "20%",
+            height: "10%",
             aspectRatio: 1.6,
             borderColor: "black",
             borderWidth: 2,
@@ -81,6 +81,35 @@ const Setting = ({navigation}) => {
           }}>
           <Text style={{fontSize: 25}}>Warehouse</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            height: "10%",
+            aspectRatio: 1.6,
+            borderColor: "black",
+            borderWidth: 2,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          onPress={() => {
+            navigation.navigate("SettingNoti");
+          }}>
+          <Text style={{fontSize: 25}}>Notification</Text>
+        </TouchableOpacity>
+<<<<<<< HEAD
+=======
+        <TouchableOpacity
+          style={{
+            height: "10%",
+            aspectRatio: 1.6,
+            borderColor: "black",
+            borderWidth: 2,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          onPress={() => showNotification("hello","hi")}>
+          <Text style={{fontSize: 25}}>test</Text>
+        </TouchableOpacity>
+>>>>>>> c69209fc884e98c40476f8aeba617cce2f4e4b0a
       </View>
     </SafeAreaView>
   );

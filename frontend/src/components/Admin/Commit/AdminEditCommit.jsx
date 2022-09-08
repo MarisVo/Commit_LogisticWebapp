@@ -4,8 +4,11 @@ import axios from 'axios';
 import React from 'react';
 import { END_POINT } from '../../../utils/constant';
 import { useState } from 'react';
+import { useContext } from 'react';
+import { MainContext } from '../../../context/MainContext';
 
 export default function AdminEditCommit({ onClose, data, refetchData }) {
+   const { accessToken } = useContext(MainContext);
   const [dataEdit, setDataEdit] = useState(data);
   const [loading, setLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
@@ -22,7 +25,9 @@ export default function AdminEditCommit({ onClose, data, refetchData }) {
         method: 'put',
         url: `${END_POINT}/admin/commitment/${data._id}`,
         data: formEditData,
-        headers: { 'Content-Type': 'multipart/form-data' },
+           headers: { 'Content-Type': 'multipart/form-data',
+            authorization: `Bearer ${accessToken}`
+      },
       });
       if (response.status === 200) {
         alert('cập nhật thành công ');

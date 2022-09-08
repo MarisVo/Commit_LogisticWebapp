@@ -40,15 +40,22 @@ function AddNewBill({ isVisible, onClose, onOk, loading, disable }) {
                                 <Input />
                             </Item>
                             <Item label="Trạng thái">
-                                <Input />
+                               <select>
+                                <option value="processing">Đang tiến hành</option>
+                                <option value="waiting">Đang chờ</option>
+                                <option value="completed">Hoàn thành</option>
+                               </select>
                             </Item>
-                            <Item label="Lô hàng">
-                                <Input />
+                            <Item label="Xăng dự tính">
+                                <InputNumber />
+                            </Item>
+                            <Item label="Xăng thực tế">
+                                <InputNumber />
                             </Item>
                             {/* <Item label="Doanh số">
                                 <Input />
                             </Item> */}
-                            <Item label="Thiết bị">
+                            <Item label="ID Thiết bị">
                                 <Input />
                             </Item>
                             
