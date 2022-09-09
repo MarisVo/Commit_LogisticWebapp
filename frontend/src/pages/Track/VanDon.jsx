@@ -4,13 +4,15 @@ import axios from 'axios';
 import moment from 'moment';
 import { MainContext } from '../../context/MainContext';
 
+
+
 export default function VanDon() {
 	const {accessToken,order, setOrder} = useContext(MainContext);
 	const [billCode, setBillCode] = useState(order);
 	const [showResult, setShowResult] = useState(false);
 	const [data, setData] = useState(false); // list order
 	const [checkEmpty, setCheck] = useState(false);
-
+	const {setMetadata} = useContext(MainContext);
 
 	const check = ()=>{
 		if(billCode!==""&&billCode!==null){
@@ -20,7 +22,14 @@ export default function VanDon() {
 	useEffect(()=>{
 		setTimeout(check(),1000)
 	},[])
-
+	  useEffect(() => {
+        setMetadata((prev) => {
+          return {
+            ...prev,
+            title: "Vận đơn | TKTL",
+          };
+        });
+    },[])
 	const handleSubmit = async () => {
 		setOrder("")
 		if (!billCode) {

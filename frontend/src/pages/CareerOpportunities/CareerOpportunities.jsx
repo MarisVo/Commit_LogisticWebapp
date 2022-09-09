@@ -9,7 +9,7 @@ import NewJob from '../../components/NewJob/NewJob';
 import EmploymentInformation from '../../components/EmploymentInformation/EmploymentInformation';
 import RecruitmentBanner from '../../components/RecruitmentBanner/RecruitmentBanner';
 import LifeInJT from '../../components/LifeInJT/LifeInJT';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { RecruitmentDetails } from '../pageExport';
@@ -109,7 +109,7 @@ const CareerOpportunities = () => {
             setShowSearch(true)
             setShowAll(false)
             setShowDeatail(false)
-            console.log(newApi);
+       
         }
     }
 
@@ -135,7 +135,7 @@ const CareerOpportunities = () => {
 
     const handleClickDetail = (e, item) => {
         setDataDetail(item)
-        console.log(dataDetail);
+      /*   console.log(dataDetail); */
         setShowDeatail(true);
         setShowSearch(false)
     }
@@ -168,11 +168,11 @@ const CareerOpportunities = () => {
                                     <NewJob setDetail={handleClickDetail} />
                                 </div>
 
-                                <a className="text-[16px] text-[#e5a663] font-bold p-[6px] sm:p-[16px] mb-[40px] sm:mb-[48px] bg-[#f2f2f2] inline-block  rounded-lg"
-                                    onClick={handleClickAll}>
+                                <Link className="text-[16px] text-[#e5a663] font-bold p-[6px] sm:p-[16px] mb-[40px] sm:mb-[48px] bg-[#f2f2f2] inline-block  rounded-lg"
+                                    to="/danh-sach-tuyen-dung">
                                     <FontAwesomeIcon icon={faEye} className="pr-[8px]" />
                                     XEM TẤT CẢ VỊ TRÍ ỨNG TUYỂN
-                                </a>
+                                </Link>
                             </div>
                         )}
 
@@ -193,13 +193,14 @@ const CareerOpportunities = () => {
                                                     {job.location}
                                                 </p>
                                                 <div style={{ cursor: 'pointer' }}>
-                                                    <span
+                                                    <Link
                                                         className="text-[14px] text-[#e5a663] tracking-wider flex items-center gap-2 font-bold"
-                                                        onClick={(e) => handleClickDetail(e, job)}
+                                                
+                                                        to={`tuyen-dun12g/${job._id}`}
                                                     >
-                                                        <RightOutlined />
+                                                      
                                                         XEM CHI TIẾT
-                                                    </span>
+                                                    </Link>
                                                 </div>
                                             </div>
                                         ))}
@@ -225,13 +226,14 @@ const CareerOpportunities = () => {
                                                     {job.location}
                                                 </p>
                                                 <div style={{ cursor: 'pointer' }}>
-                                                    <span
+                                                    <Link
                                                         className="text-[14px] text-[#e5a663] tracking-wider flex items-center gap-2 font-bold"
-                                                        onClick={(e) => handleClickDetail(e, job)}
+                                                
+                                                        to={`tuyen-dun12g/${job._id}`}
                                                     >
-                                                        <RightOutlined />
+                                                      
                                                         XEM CHI TIẾT
-                                                    </span>
+                                                    </Link>
                                                 </div>
                                             </div>
                                         ))}
@@ -244,7 +246,7 @@ const CareerOpportunities = () => {
                             <RecruitmentDetails data={dataDetail} />
                         )}
 
-                        <EmploymentInformation />
+                       {/*  <EmploymentInformation /> */}
                     </div>
                     <RecruitmentBanner />
                     <LifeInJT />

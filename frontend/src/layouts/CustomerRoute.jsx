@@ -12,6 +12,7 @@ import {
 import { Link } from "react-router-dom";
 import { Menu } from 'antd';
 import { RiLockPasswordLine } from "react-icons/ri";
+import { BsHandbag } from "react-icons/bs";
 function getItem(label, key, icon, children) {
     return {
       key,
@@ -50,6 +51,13 @@ const items = [
       "4",
       <IoNotificationsOutline className="text-xl ml-[-26px] md:ml-[-16px] lg:ml-0"/>
     ),
+    getItem(
+      <div>
+        <Link to="/khach-hang/tao-don-hang"><div className="text-base font-medium">Tạo đơn hàng</div></Link>
+      </div>,
+      "5",
+      <BsHandbag className="text-xl ml-[-26px] md:ml-[-16px] lg:ml-0"/>
+    ),
 ];
 
 function CustomerRoute() {
@@ -74,11 +82,7 @@ function CustomerRoute() {
        window.removeEventListener("resize",getWidth)
      }
   },[width])
-  useEffect(()=>{
-    const res = ()=>{
 
-    }
-  },[])
 
   if (user && user.role.customer_type) {
     return <>
@@ -108,10 +112,10 @@ function CustomerRoute() {
                         <div className="text-center">Chào mừng</div>
                         <div className="md:text-xl sm:text-lg  text-center font-semibold text-[#00003B]">{user.role.name}</div>
                     </div>
-                    <Menu  theme="" mode="inline" defaultSelectedKeys={[""]} items={items} />
+                    <Menu  theme="" mode="inline" defaultSelectedKeys={["1"]} items={items} />
                 </div>
               </div>
-              <div className="col-span-9 sm:col-span-7 bg-[#f8faff] rounded-lg   shadow-xl mb-3">
+              <div className="col-span-9 sm:col-span-7 bg-[#f8faff] rounded-lg   ">
                <Outlet></Outlet>
               </div>
            </div>

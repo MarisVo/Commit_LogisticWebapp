@@ -1,136 +1,155 @@
-import { SearchOutlined } from "@ant-design/icons";
-import { Button, Input, Space, Table, Modal } from "antd";
-import axios from "axios";
-import React, { useRef, useState } from "react";
-import { useEffect } from "react";
-import { AiOutlinePlus } from "react-icons/ai";
-import AdminAddCommit from "../../components/Admin/Commit/AdminAddCommit";
-import AdminEditCommit from "../../components/Admin/Commit/AdminEditCommit";
-import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
-import { handleSearch } from "../../components/Admin/HandleSearch/HandleSearch";
+import { SearchOutlined } from '@ant-design/icons';
+import { Button, Input, Space, Table, Modal } from 'antd';
+import axios from 'axios';
+import React, { useRef, useState } from 'react';
+import { useEffect } from 'react';
+import { AiOutlinePlus } from 'react-icons/ai';
+import AdminAddCommit from '../../components/Admin/Commit/AdminAddCommit';
+import AdminEditCommit from '../../components/Admin/Commit/AdminEditCommit';
+import ConfirmModal from '../../components/ConfirmModal';
+import { AiFillEdit, AiOutlineDelete } from 'react-icons/ai';
+import { handleSearch } from '../../components/Admin/HandleSearch/HandleSearch';
+import { useContext } from 'react';
+import { MainContext } from '../../context/MainContext';
+import { END_POINT } from '../../utils/constant';
 
 export default function AdminCommitment() {
-  //state data commit
-  const [dataCommit, setDataCommit] = useState([
-    {
-      id: "1",
-      heading: "Nodea",
-      logo: "https://play-lh.googleusercontent.com/5qotPJfklVo9cNI6JLJivYm3OGYRIIgRSrlKMbWQAUuAl03WwWUQwurYz36yDQUUww",
-      detail: "store",
-    },
-    {
-      id: "2",
-      heading: "Danske",
-      logo: "https://danskebank.com/-/media/danske-bank-images/global/graphics/logo/danske-bank-logo-dark-bg.jpg?rev=db1d1203e2fb49a68beea65b43eeb689&hash=59231469392BF4421574B3E6D1402911",
-      detail: "Banking",
-    },
-  ]);
-  const [dataRender, setDataRender] = useState([
-    {
-      id: "1",
-      heading: "Nodea",
-      logo: "https://play-lh.googleusercontent.com/5qotPJfklVo9cNI6JLJivYm3OGYRIIgRSrlKMbWQAUuAl03WwWUQwurYz36yDQUUww",
-      detail: "store",
-    },
-    {
-      id: "2",
-      heading: "Danske",
-      logo: "https://danskebank.com/-/media/danske-bank-images/global/graphics/logo/danske-bank-logo-dark-bg.jpg?rev=db1d1203e2fb49a68beea65b43eeb689&hash=59231469392BF4421574B3E6D1402911",
-      detail: "Banking",
-    },
-  ]);
-  //   state open edit commit modal
-  const [isModalVisibleEdit, setIsModalVisibleEdit] = useState(false);
-  //   state open add commit modal
-  const [isModalVisibleAdd, setIsModalVisibleAdd] = useState(false);
-  // state search text
 
-  //   state for edit commit
-  const [editCommitInfor, setEditCommitInfor] = useState({
-    heading: "",
-    detail: "",
-    logo: "",
+  const [isAddVisible, setIsAddVisible] = useState(false);
+  const [isEditVisible, setIsEditVisible] = useState(false);
+  const [isDeleteVisible, setIsDeleteVisible] = useState(false);
+  const [IdCompare, setValueCompare] = useState('');
+  const [nameCompare, setNameCompare] = useState('');
+  const [dataForEdit, setDataForEdit] = useState({});
+  const { accessToken } = useContext(MainContext);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [isDisable, setIsDisable] = useState(false);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 1000,
+    total: 15,
+  });
+  const [params, setParams] = useState({
+    ...pagination,
+    page: pagination.current - 1,
+    keyword: null,
+    sortBy: null,
   });
 
-  const getInforCommitAPI = async () => {
+  const fetchData = async () => {
     try {
-      const result = await axios({
-        url: "",
-        method: "get",
-        headers: "Bearer",
+    /*   const { data: response } = await axios.get(`${END_POINT}/commitment`, {
+        params: params,
+      }); */
+       const { data: response } = await axios.get(`${END_POINT}/commitment`, {
+        params: params,
+      },
+      {
+          headers: { authorization: `Bearer ${accessToken}` },
       });
-      if (result.status === 200) {
-        setDataCommit(result.data);
-      }
+      console.log(response.data.commits);
+      setData(response.data.commits);
+      setLoading(false);
+      setPagination({
+        total: params?.total,
+        pageSize: params?.pageSize,
+        current: params?.page + 1,
+      });
     } catch (error) {
-      console.log(error.response);
+      console.error(error.message);
     }
   };
-  //   close edit modal
-  const onClose = () => {
-    setIsModalVisibleEdit(false);
-  };
-  //   close add modal
-  const onCloseAddModal = () => {
-    setIsModalVisibleAdd(false);
-  };
-  // onChange={(e) => handleChangeFile(e, setImg, setEditCommit, editCommit)}
-
-  //
   useEffect(() => {
-    getInforCommitAPI();
-  }, []);
+    fetchData(params);
+  }, [params]);
 
-  const deleteAPI = async (id) => {
+  const handleClickEdit = (record) => {
+    setIsEditVisible(true);
+    const [dataEdit] = data.filter((ele) => ele.heading === record.heading);
+    setDataForEdit(dataEdit);
+  };
+
+  const searchByKeyword = (value) => {
+    setParams({
+      ...params,
+      page: 0,
+      keyword: value,
+    });
+  };
+
+  const handleTableChange = (newPagination, filters, sorter) => {
+    const sort = sorter.order === 'descend' ? `-${sorter.field}` : sorter.field;
+    setParams({
+      ...params,
+      sortBy: sort,
+      ...newPagination,
+      page: newPagination.current - 1,
+    });
+  };
+
+  const acceptDelete = async () => {
+    setLoading(true);
+    setIsDisable(true);
     try {
-      const result = await axios({
-        url: `url${id}`,
-        method: "delete",
-      });
-      if (result.status === 200) {
-        alert("đã xóa thành công ");
+      const res = await axios.delete(
+        `${END_POINT}/admin/commitment/${IdCompare}`,
+        {
+          headers: { authorization: `Bearer ${accessToken}` },
+        }
+      );
+      if (res.status === 200) {
+        alert('đã xóa thành công ');
       }
-    } catch (err) {
-      console.log(err.response);
+      setLoading(false);
+      fetchData({ ...pagination, page: pagination.current - 1 });
+      setIsDisable(false);
+      setIsDeleteVisible(false);
+    } catch (error) {
+      console.log(error);
     }
   };
+
   const columns = [
     {
-      title: "Logo",
-      dataIndex: "logo",
-      key: "logo",
-      width: "10%",
-      render: (e) => <img src={e} className="h-10 w-10" alt=""></img>,
-      // ...getColumnSearchProps("name"),
+      title: 'Logo',
+      dataIndex: 'logo',
+      key: 'logo',
+      width: '10%',
+      render: (e) => (
+        <img
+          src={`${END_POINT}/public/${e}`}
+          className="h-10 w-10"
+          alt=""
+        ></img>
+      ),
     },
     {
-      title: "heading",
-      dataIndex: "heading",
-      key: "heading",
-      width: "20%",
+      title: 'heading',
+      dataIndex: 'heading',
+      key: 'heading',
+      width: '20%',
       sorter: (a, b) => a.heading.length - b.heading.length,
+    },
+    {
+      title: 'detail',
+      dataIndex: 'detail',
+      key: 'details',
 
-      //   ...getColumnSearchProps("heading"),
-    },
-    {
-      title: "detail",
-      dataIndex: "detail",
-      key: "details",
-      // ...getColumnSearchProps("details"),
       sorter: (a, b) => a.detail.length - b.detail.length,
-      //   sortDirections: ["descend", "ascend"],
     },
     {
-      title: "Tao Tac",
-      dataIndex: "id",
-      width: "20%",
-      render: (a, e) => (
+      title: 'Thao Tac',
+      dataIndex: '_id',
+      width: '20%',
+      render: (a, record) => (
         <div className="flex flex-row justify-around gap-y-1 gap-x-3">
           <button
             className="flex items-baseline gap-x-1 hover:text-blue-600 "
             onClick={() => {
-              setIsModalVisibleEdit(!isModalVisibleEdit);
-              setEditCommitInfor(e);
+              handleClickEdit(record);
+              // setIsModalVisibleEdit(!isModalVisibleEdit);
+              // setEditCommitInfor(e);
             }}
           >
             <AiFillEdit className="translate-y-[1px]" />
@@ -139,7 +158,9 @@ export default function AdminCommitment() {
           <button
             className="flex items-baseline gap-x-1 hover:text-red-600"
             onClick={() => {
-              deleteAPI(a);
+              setIsDeleteVisible(true);
+              setValueCompare(record._id);
+              setNameCompare(record.heading);
             }}
           >
             <AiOutlineDelete className="translate-y-[1px]" />
@@ -152,32 +173,51 @@ export default function AdminCommitment() {
   return (
     <>
       <div className="flex   justify-between mb-4">
-        {<AdminAddCommit isModalVisibleAdd={isModalVisibleAdd} onClose={onCloseAddModal}></AdminAddCommit>}
-        <AdminEditCommit
-          isModalVisibleEdit={isModalVisibleEdit}
-          infor={editCommitInfor}
-          setEditCommitInfor={setEditCommitInfor}
-          onClose={onClose}
-        ></AdminEditCommit>
-        <span className="text-3xl font-blod py-4 px-2">Commit</span>
+        <span className="text-3xl font-blod py-4 px-2 uppercase">Commit</span>
         <Input.Search
+          onSearch={searchByKeyword}
           className="w-1/3 lg:w-[400px]"
           placeholder="Search"
-          onChange={(e) => {
-            handleSearch(dataCommit, e.target.value, setDataRender);
-          }}
         />
         <div>
           <button
             className=" justify-around flex items-center absolute right-10 w-32 border rounded-lg p-2 shadow-xl hover:bg-yellow-100"
-            onClick={() => setIsModalVisibleAdd(!isModalVisibleAdd)}
+            onClick={() => setIsAddVisible(true)}
           >
             <AiOutlinePlus className="" />
             Thêm mới
           </button>
         </div>
       </div>
-      <Table columns={columns} dataSource={dataRender} />
+      <Table
+        rowKey={(record) => record._id}
+        columns={columns}
+        dataSource={data}
+        pagination={pagination}
+        loading={loading}
+        onChange={handleTableChange}
+      />
+      {isAddVisible && (
+        <AdminAddCommit
+          onClose={() => setIsAddVisible(false)}
+          refetchData={() => fetchData(params)}
+        />
+      )}
+      {isEditVisible && (
+        <AdminEditCommit
+          onClose={() => setIsEditVisible(false)}
+          data={dataForEdit}
+          refetchData={() => fetchData(params)}
+        />
+      )}
+      <ConfirmModal //Modal delete department
+        isVisible={isDeleteVisible}
+        text={`xóa cam kết ${nameCompare}`}
+        onClose={() => setIsDeleteVisible(false)}
+        loading={loading}
+        disable={isDisable}
+        onOk={acceptDelete}
+      />
     </>
   );
 }

@@ -65,6 +65,12 @@ import {
   ChangePassword,
   AdminTurnover,
   ServiceAll,
+  AdminSchedule,
+  CreateOrder,
+  PagePdf,
+  ListOpportunities,
+  DetailOpportunites,
+
 
 } from "./pages/pageExport";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -82,6 +88,7 @@ const App = () => {
           <div className="wrapper">
             <ScrollToTop />
             <Routes>
+              <Route path="/uploads/*" element={<PagePdf />}/>
               <Route path="/" element={<DefaultLayout />}>
                 <Route index element={<Home />}></Route>
                 <Route path="ve-chung-toi" element={<About />} />
@@ -96,15 +103,18 @@ const App = () => {
                 <Route path="tra-cuu/buu-cuc" element={<Track number="buu-cuc" />} />
                 <Route path="tra-cuu/bang-gia" element={<Track number="bang-gia" />} />
                 <Route path="tra-cuu/hang-cam-gui" element={<Track number="hang-cam-gui" />} />
+              
 
                 {/* ------------------------Tuyển dụng------------------- */}
+                  <Route path="danh-sach-tuyen-dung" element={<ListOpportunities />} />
+                  <Route path="tuyen-dung/:id" element={<DetailOpportunites />} />
                 <Route path="tuyen-dung" element={<CareerOpportunities />}>
                   <Route path="chi-tiet-viec-lam-noi-bat" element={<RecruitmentDetails />} />
                   <Route
                     path="chi-tiet-viec-lam-moi"
                     element={<RecruitmentDetails />}
                   />
-
+                
                 </Route>
                 <Route path="cuoc-song" element={<Life />} />
                 {/* ------------------------Dịch vụ---------------------- */}
@@ -120,6 +130,7 @@ const App = () => {
                   <Route path="khach-hang/dat-hang" element={<Purchase />} />
                   <Route path="khach-hang/thay-doi-mat-khau" element={<ChangePassword />} />
                   <Route path="khach-hang/dat-hang/:id" element={<PurchaseDetail />} />
+                  <Route path="khach-hang/tao-don-hang" element={<CreateOrder />} />
                   <Route path="khach-hang/dat-hang/don-hang/:id" element={<PurchaseStage />} />
                   <Route path="khach-hang/thong-bao/don-hang" element={<NotificationCustomer />} />
                 </Route>
@@ -149,8 +160,8 @@ const App = () => {
                 <Route path="thu-kho" element={<LayerStorekeeper />}>
                   <Route index element={<Bills />} />
                   <Route path="van-don" element={<Bills />} />
-                  <Route path="hang-ton-kho" element={<Inventory />} />
-                  <Route path="hang-ton-kho/:id" element={<InventoryDetail />} />
+                  <Route path="hang-ton-kho" element={<InventoryDetail />} />
+                  {/* <Route path="hang-ton-kho/:id" element={<InventoryDetail />} /> */}
                   <Route path="thong-bao" element={<NotiStorekeeper />} />
                 </Route>
                 <Route path="quan-tri" element={<AdminPage />}>
@@ -174,9 +185,10 @@ const App = () => {
                   <Route path="them-nhan-vien" element={<StaffRegister />}></Route>
                   <Route path="phi-bao-tri" element={<AdminMaintenance />}></Route>
                   <Route path="hang_cam_gui" element={<AdminProhibitProduct />}> </Route>
+                  <Route path="lich_trinh" element={<AdminSchedule />}> </Route>
                 </Route>
               </Route>
-            </Routes>
+            </Routes>     
           </div>
         </BrowserRouter>
       </Metadata>

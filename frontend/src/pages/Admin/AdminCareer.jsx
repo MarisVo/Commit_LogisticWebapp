@@ -181,10 +181,12 @@ function AdminCareer() {
   const acceptDelete = async () => {
     // setLoading(true);
     setIsDisable(true);
+    console.log(idCompare)
     try {
-      await axios.delete(`${END_POINT}/admin/career/${idCompare}`, {
+     const res= await axios.delete(`${END_POINT}/admin/career/${idCompare}`, {
         headers: { authorization: `Bearer ${accessToken}` },
       });
+      console.log(res)
       setLoading(false);
       // setIsDisable(false);
       fetchData({ ...pagination, page: pagination.current - 1 });

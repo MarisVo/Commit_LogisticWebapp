@@ -15,7 +15,7 @@ function EditApplicant({ onClose, onOk, data, refetchData }) {
     setLoading(true);
     // setIsDisable(true);
     try {
-      await axios.put(`${END_POINT}/admin/applicant/${data._id}`, {status:dataEdit.state}, {
+      await axios.put(`${END_POINT}/admin/applicant/${data._id}`, {status:dataEdit.status}, {
         headers: { authorization: `Bearer ${accessToken}` },
       });
       setLoading(false);
@@ -61,11 +61,11 @@ function EditApplicant({ onClose, onOk, data, refetchData }) {
           >
             <Item label="Trạng thái">
               <Select
-                value={dataEdit.state}
+                value={dataEdit.status}
                 onChange={(value) =>
                   setDataEdit({
                     ...dataEdit,
-                    state: value,
+                    status: value,
                   })
                 }
               >

@@ -42,6 +42,7 @@ function EditDepartment({ onClose, data, refetchData }) {
   useEffect(() => {
     getStaffList();
   }, []);
+
   return (
     <>
       <div className="fixed inset-0  bg-slate-600 bg-opacity-50 z-20 flex justify-center items-center">

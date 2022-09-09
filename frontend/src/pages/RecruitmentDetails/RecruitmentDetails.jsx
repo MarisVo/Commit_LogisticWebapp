@@ -17,6 +17,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const RecruitmentDetails = ({ data }) => {
   // console.log(data);
+  console.log("recruit",data)
   return (
     <>
       {data && (

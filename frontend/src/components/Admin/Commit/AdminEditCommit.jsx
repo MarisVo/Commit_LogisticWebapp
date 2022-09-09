@@ -1,152 +1,146 @@
-import { Button, Form, Input, Upload } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
-import axios from "axios";
-import React from "react";
+import { Button, Form, Input, Upload } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+import axios from 'axios';
+import React from 'react';
+import { END_POINT } from '../../../utils/constant';
+import { useState } from 'react';
+import { useContext } from 'react';
+import { MainContext } from '../../../context/MainContext';
 
-export default function AdminEditCommit(props) {
-  const { isModalVisibleEdit, onClose, infor, setEditCommitInfor } = props;
+export default function AdminEditCommit({ onClose, data, refetchData }) {
+   const { accessToken } = useContext(MainContext);
+  const [dataEdit, setDataEdit] = useState(data);
+  const [loading, setLoading] = useState(false);
+  const [isDisable, setIsDisable] = useState(false);
+  console.log(dataEdit);
+  const acceptEditDepartment = async () => {
+    setLoading(true);
+    let formEditData = new FormData();
+    formEditData.append('heading', dataEdit.heading);
+    formEditData.append('detail', dataEdit.detail);
+    formEditData.append('logo', dataEdit.logo);
 
-  const postNewCommitAPI = async (newData, id) => {
     try {
-      const result = await axios({
-        url: `url${id}`,
-        method: "post",
-        data: newData,
-        headers: "Bearer",
+      const response = await axios({
+        method: 'put',
+        url: `${END_POINT}/admin/commitment/${data._id}`,
+        data: formEditData,
+           headers: { 'Content-Type': 'multipart/form-data',
+            authorization: `Bearer ${accessToken}`
+      },
       });
-      if (result.status === 200) {
-        alert("cap nhập thành công");
-        onClose();
+      if (response.status === 200) {
+        alert('cập nhật thành công ');
       }
-    } catch (error) {}
-  };
-  const normFile = (e) => {
-    if (Array.isArray(e)) {
-      return e;
+      setLoading(false);
+
+      refetchData();
+      onClose();
+    } catch (error) {
+      console.log(error);
     }
-    // console.log("Upload event:", e?.fileList);
-    return e?.fileList;
-  };
-  const onFinish = (values) => {
-    // console.log("Success:", values);
-    setEditCommitInfor(() => {
-      if (values.logo) {
-        infor.logo = values.logo;
-      }
-      return { ...infor, heading: values.Heading, detail: values.Detail };
-    });
-    console.log(infor);
-    // send new commit to backend
-    postNewCommitAPI(infor, infor.id);
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    console.log('Failed:', errorInfo);
   };
   return (
     <>
-      {isModalVisibleEdit && (
-        <div className="fixed inset-0 bg-slate-600 bg-opacity-50 z-20 flex justify-center items-center ">
-          <div className="relative w-[700px] flex flex-col bg-white bg-opacity-100 p-6 rounded-xl gap-y-3 animate-modal_in">
-            <Form
-              name="basic"
-              labelCol={{
-                span: 4,
-              }}
+      <div className="fixed inset-0 bg-slate-600 bg-opacity-50 z-20 flex justify-center items-center ">
+        <div className="relative w-[700px] flex flex-col bg-white bg-opacity-100 p-6 rounded-xl gap-y-3 animate-modal_in">
+          <Form
+            name="basic"
+            labelCol={{
+              span: 4,
+            }}
+            wrapperCol={{
+              span: 16,
+            }}
+            onFinish={acceptEditDepartment}
+            initialValues={dataEdit}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+          >
+            <h1 className="uppercase"> Vui Lòng nhập chỉnh sửa commit </h1>
+
+            <Form.Item label="Heading" name="heading">
+              <Input value={dataEdit.heading} disabled />
+            </Form.Item>
+
+            <Form.Item
+              label="Detail"
+              name="detail"
+              rules={[
+                {
+                  required: true,
+                  message: 'Mời nhập chi tiết ',
+                },
+              ]}
+            >
+              <Input
+                value={dataEdit.detail}
+                onChange={(e) =>
+                  setDataEdit({
+                    ...dataEdit,
+                    detail: e.target.value,
+                  })
+                }
+              />
+            </Form.Item>
+
+            <Form.Item
+              name={'file'}
+              label={'file'}
+              rules={[
+                {
+                  required: true,
+                  message: 'upload hình mới',
+                },
+              ]}
+            >
+              <input
+                type="file"
+                name="file"
+                value={dataEdit.logo}
+                onChange={(e) => {
+                  setDataEdit({
+                    ...dataEdit,
+                    logo: e.target.files[0],
+                  });
+                }}
+              />
+            </Form.Item>
+
+            <Form.Item
               wrapperCol={{
+                offset: 13,
                 span: 16,
               }}
-              initialValues={{
-                remember: true,
-              }}
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
-              autoComplete="off"
             >
-              <h1 className="uppercase"> VUI LÒNG nhập chỉnh sửa commit </h1>
-              <Form.Item
-                label="Heading"
-                name="Heading"
-                rules={[
-                  {
-                    required: true,
-                    message: "Mời nhập tiêu đề",
-                  },
-                ]}
-                initialValue={infor.heading}
-                onChange={(e) =>
-                  setEditCommitInfor(() => {
-                    return { ...infor, heading: e.target.value };
-                  })
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={loading}
+                className="  bg-gradient-to-r from-orange-500 to-yellow-400 px-8 py-2 rounded-lg hover:opacity-80"
+              >
+                Submit
+              </Button>
+              <Button
+                onClick={onClose}
+                disabled={isDisable}
+                type="primary"
+                htmlType=""
+                className={
+                  !isDisable &&
+                  'bg-gradient-to-r from-red-600 to-red-500 px-4 py-2 rounded-lg hover:opacity-80'
                 }
               >
-                <Input />
-              </Form.Item>
-
-              <Form.Item
-                label="Detail"
-                name="Detail"
-                rules={[
-                  {
-                    required: true,
-                    message: "Mời nhập chi ",
-                  },
-                ]}
-                initialValue={infor.detail}
-                onChange={(e) =>
-                  setEditCommitInfor(() => {
-                    return { ...infor, detail: e.target.value };
-                  })
-                }
-              >
-                <Input />
-              </Form.Item>
-
-              <Form.Item name={"logo"} label={"logo"} valuePropName="fileList" getValueFromEvent={normFile}>
-                <Upload
-                  name={"logo"}
-                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                  listType="picture"
-                  defaultFileList={[
-                    {
-                      // uid: "-",
-                      name: "defaul-logo",
-                      // status: "done",
-                      // url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-                      thumbUrl: infor.logo,
-                    },
-                  ]}
-                >
-                  <Button icon={<UploadOutlined />}>Click to Upload ne logo</Button>
-                </Upload>
-              </Form.Item>
-
-              <Form.Item
-                wrapperCol={{
-                  offset: 13,
-                  span: 16,
-                }}
-              >
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="  bg-gradient-to-r from-orange-500 to-yellow-400 px-8 py-2 rounded-lg hover:opacity-80"
-                >
-                  Submit
-                </Button>
-                <Button
-                  onClick={onClose}
-                  type="primary"
-                  htmlType=""
-                  className=" bg-gradient-to-r from-red-600 to-red-500 px-4 py-2 rounded-lg hover:opacity-80"
-                >
-                  Hủy
-                </Button>
-              </Form.Item>
-            </Form>
-          </div>
+                Hủy
+              </Button>
+            </Form.Item>
+          </Form>
         </div>
-      )}
+      </div>
     </>
   );
 }
