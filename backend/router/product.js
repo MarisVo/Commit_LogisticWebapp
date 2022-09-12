@@ -30,7 +30,7 @@ productRoute.post('/:orderId',
                 if (errors) return sendError(res, errors)
                 const _product = await Product.create({name: product.name, quantity: product.quantity, unit: product.unit, order})
             }
-            return sendSuccess(res, "Add product to order successfully", products)
+            return sendSuccess(res, "Add product to order successfully.", products)
             
         } catch (error) {
             console.log(error)
@@ -41,7 +41,7 @@ productRoute.post('/:orderId',
 
 /**
  * @route GET api/product/:orderId
- * @description customer add product to their order
+ * @description customer get product from order
  * @access public
  */
 productRoute.get('/:orderId',
@@ -56,7 +56,7 @@ productRoute.get('/:orderId',
             
             const products = await Product.find({order})
 
-            return sendSuccess(res, "Get product successfully", products)
+            return sendSuccess(res, "Get products successfully.", products)
             
         } catch (error) {
             console.log(error)
@@ -78,16 +78,16 @@ productRoute.put('/:productId',
             const {productId} = req.params
             const product = await Product.findOne({_id: productId})
             if (!product)
-                return sendError(res, "Product not exists")
+                return sendError(res, "Product does not exist.")
             const order = await Order.findOne({_id: product.order})
             if (!order) 
                 return sendError(res, "Order for this product is not found.")
             if (order.status !== "waiting") 
-                return sendError(res, "Product can't be changed")
+                return sendError(res, "Product can't be changed.")
              
             const {name, quantity, unit} = req.body
             await Product.findByIdAndUpdate(productId, {name, quantity, unit})            
-            return sendSuccess(res, "Update product successfully")
+            return sendSuccess(res, "Update product successfully.")
         } catch (error) {
             console.log(error)
             return sendServerError(res)
@@ -109,15 +109,15 @@ productRoute.delete('/:productId',
             const {productId} = req.params
             const product = await Product.findOne({_id: productId})
             if (!product)
-                return sendError(res, "Product not exists")
+                return sendError(res, "Product does not exist.")
             const order = await Order.findOne({_id: product.order})
             if (!order) 
                 return sendError(res, "Order for this product is not found.")
             if (order.status !== "waiting") 
-                return sendError(res, "Product can't be changed")
+                return sendError(res, "Product can't be changed.")
                 
             await Product.findByIdAndRemove(productId)            
-            return sendSuccess(res, "Delete product successfully")
+            return sendSuccess(res, "Delete product successfully.")
         } catch (error) {
             console.log(error)
             return sendServerError(res)

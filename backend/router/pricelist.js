@@ -30,12 +30,12 @@ priceListRoute.get("/", async (req, res) => {
     }
     var length = files.length;
     if (length) {
-      return sendSuccess(res, "get pricelist information successfully.", {
+      return sendSuccess(res, "Get pricelist information successfully.", {
         length,
         files,
       });
     }
-    return sendError(res, "pricelist information is not found.");
+    return sendError(res, "Price list information is not found.");
   } catch (error) {
     return sendServerError(res);
   }

@@ -43,7 +43,7 @@ distanceAdminRoute.post("/create/:serviceId", async (req, res) => {
         { $push: { distances: distance } }
       );
     }
-    return sendSuccess(res, "create distance successfully.");
+    return sendSuccess(res, "Create distance successfully.");
   } catch (error) {
     return sendServerError(res);
   }
@@ -75,7 +75,7 @@ distanceAdminRoute.put("/:id", async (req, res) => {
         distance: dist,
       });
     }
-    return sendError(res, "distance does not exist.");
+    return sendError(res, "Distance does not exist.");
   } catch (error) {
     return sendServerError(res);
   }
@@ -90,7 +90,7 @@ distanceAdminRoute.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const isExist = await Distance.exists({ _id: id });
-    if (!isExist) return sendError(res, "distance does not exist.");
+    if (!isExist) return sendError(res, "Distance does not exist.");
     await DeliveryService.findOneAndUpdate({distances: id}, { $pull: { distances: id } });
     const distance = await Distance.findByIdAndRemove(id);
     return sendSuccess(res, "Delete distance successfully.", distance);

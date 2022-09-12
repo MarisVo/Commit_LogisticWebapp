@@ -96,7 +96,7 @@ contactMsgAdminRoute.delete('/:id',
         try {
             const {id} = req.params;    
             const isExist = await Message.exists({_id: id})
-            if (!isExist) return sendError(res, "Message not exists.")            
+            if (!isExist) return sendError(res, "Message does not exist.")            
             await Message.findByIdAndRemove(id)
             return sendSuccess(res, "Delete message successfully.") 
         } catch (error) {

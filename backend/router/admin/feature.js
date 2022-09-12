@@ -53,7 +53,7 @@ featureAdminRoute.post(
             $push: { features: feature },
           }
         );
-        return sendSuccess(res, "create new feature successfully.");
+        return sendSuccess(res, "Create new feature successfully.");
       }
     } catch (error) {
       if (req.files) req.files.map((file) => unlinkSync(file.path));

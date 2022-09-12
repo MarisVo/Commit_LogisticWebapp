@@ -41,7 +41,7 @@ priceListAdminRoute.post(
         "price_files.province": province
       })
       if (provinceExist) {
-        return sendError(res, 'the pricelist\'s province is already used.')  
+        return sendError(res, 'The pricelist\'s province is already used.')  
       }
       if (isExist) {
         await DeliveryService.updateOne(
@@ -52,10 +52,10 @@ priceListAdminRoute.post(
             $push: { price_files: { province, file } },
           }
         );
-        return sendSuccess(res, "upload pricelist file successfully");
+        return sendSuccess(res, "Upload pricelist file successfully.");
       
       }
-      return sendError(res, "Upload list failed");
+      return sendError(res, "Upload price list failed.");
     } catch (error) {
       if (req.file) unlinkSync(req.file.path);
       return sendServerError(res);
@@ -87,9 +87,9 @@ priceListAdminRoute.put(
             },
           }
         );
-        return sendSuccess(res, "Update pricelist file successfully");
+        return sendSuccess(res, "Update pricelist file successfully.");
       }
-      return sendError(res, "service does not exist.");
+      return sendError(res, "Service does not exist.");
     } catch (error) {
       return sendServerError(res);
     }
@@ -114,7 +114,7 @@ priceListAdminRoute.delete("/:serviceId", async (req, res) => {
       { _id: serviceId },
       { $pull: { price_files: { province: province } } }
     );
-    return sendSuccess(res, "Delete price list successfully");
+    return sendSuccess(res, "Delete price list successfully.");
   } catch (error) {
     return sendServerError(res, "Delete price list failed");
   }

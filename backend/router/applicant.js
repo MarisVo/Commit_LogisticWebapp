@@ -77,7 +77,7 @@ applicantRoute.post(
         }
       );
       if (career)
-        return sendSuccess(res, "Added applicant in career successfully");
+        return sendSuccess(res, "Added applicant in career successfully.");
     } catch (error) {
       console.log(error);
       return sendServerError(res);

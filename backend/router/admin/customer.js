@@ -15,16 +15,16 @@ const customerAdminRoute = express.Router();
 customerAdminRoute.put('/:id', async (req, res) => {
     let id = req.params.id;
     const isExist = await Customer.exists({_id: id})
-    if (!isExist) {return sendError(res,'Customer does not exist')}
+    if (!isExist) {return sendError(res,'Customer does not exist.')}
     const {name, address, description, customer_type, rank_passers, companyTaxcode_business, accepted_business} = req.body;
     // res.send(req.body)
-    if (customer_type == '') {return sendError(res,'Invalid customer_type')}
+    if (customer_type == '') {return sendError(res,'Invalid customer type.')}
     else if (customer_type && !(customer_type == CUSTOMER.BUSINESS || customer_type == CUSTOMER.PASSERS || customer_type == CUSTOMER.INTERMEDIARY)) {
-        return sendError(res,'Invalid customer_type')
+        return sendError(res,'Invalid customer type.')
     }
     try {
         await Customer.findByIdAndUpdate(id, {name: name, address: address, description: description, customer_type: customer_type, rank_passers: rank_passers, companyTaxcode_business: companyTaxcode_business, accepted_business: accepted_business})
-        return sendSuccess(res, 'Customer updated successfully')
+        return sendSuccess(res, 'Customer updated successfully.')
     }
     catch (err) {
         return sendServerError(res);
@@ -38,7 +38,7 @@ customerAdminRoute.put('/:id', async (req, res) => {
  customerAdminRoute.delete('/:id', async (req, res) => {
     let id = req.params.id;
     const isExist = await Customer.exists({_id: id})
-    if (!isExist) {return sendError(res,'Customer does not exist')}
+    if (!isExist) {return sendError(res,'Customer does not exist.')}
 
     try {
         await Customer.findByIdAndRemove(id)
