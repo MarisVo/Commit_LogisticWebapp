@@ -19,7 +19,7 @@ commitmentRoute.get('/',
             ]} : {}            
             const length = await Commitment.find(keywordCondition).count()
             const commits = await Commitment.find(keywordCondition).limit(limit).sort(`${sortBy}`)
-            if (commits) return sendSuccess(res, "Get commitment successful.", {length, commits})
+            if (commits) return sendSuccess(res, "Get commitment successfully.", {length, commits})
             return sendError(res, "Not information found.")
         } catch(error){
             console.log(error)

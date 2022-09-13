@@ -93,7 +93,7 @@ authRoute.post('/register', async (req, res) => {
             ]
         })
         if (isExist)
-            return sendError(res, 'user is exist')
+            return sendError(res, 'user already exists.')
 
         const otp = genarateOTP()
 

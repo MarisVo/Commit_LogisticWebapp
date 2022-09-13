@@ -27,9 +27,9 @@ notificationRoute.post("/", async (req, res) => {
       });
       const socket = io(process.env.SOCKET_SERVER, { reconnection: true });
       socket.emit(NOTIFY_EVENT.send, receiverId, { title, message, link });
-      return sendSuccess(res, "send the notification successfully.");
+      return sendSuccess(res, "Send the notification successfully.");
     }
-    return sendError(res, "receiver's ID didn't exist.", 404);
+    return sendError(res, "Receiver's ID didn't exist.", 404);
   } catch (error) {
     console.log(error.message);
     return sendServerError(res);
@@ -44,7 +44,7 @@ notificationRoute.get("/", async (req, res) => {
     const notifications = await Notification.find({ receiver: userId })
       .sort({ updatedAt: -1 })
       .limit(limit);
-    return sendSuccess(res, "request successfully.", notifications);
+    return sendSuccess(res, "Request successfully.", notifications);
   } catch (error) {
     return sendServerError(res);
   }

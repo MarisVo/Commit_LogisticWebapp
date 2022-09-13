@@ -19,10 +19,10 @@ departmentRoute.get("/:id", async (req, res) => {
     if (department)
       return sendSuccess(
         res,
-        "get department information successfully.",
+        "Get department information successfully.",
         department
       );
-    return sendError(res, "department information is not found.");
+    return sendError(res, "Department information is not found.");
   } catch (error) {
     return sendServerError(res);
   }

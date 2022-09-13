@@ -16,7 +16,7 @@ receiverRoute.put('/:id',
         const {name, phone, identity} = req.body
         const customerId = req.user.role._id
         const order = await Order.findOne({_id: id, customer: customerId})
-        if (!order) {return sendError(res, 'Order not found')}
+        if (!order) {return sendError(res, 'Order not found.')}
         
         if (order.status === ORDER_STATUS.waiting) {
             try {
@@ -28,7 +28,7 @@ receiverRoute.put('/:id',
                 return sendServerError(res);
             }
         } else {
-            return sendError(res, "Cannot update receiver while order is completed");
+            return sendError(res, "Cannot update receiver while order is completed.");
         }
     })
 export default receiverRoute;

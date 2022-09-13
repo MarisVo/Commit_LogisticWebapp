@@ -49,12 +49,12 @@ orderRoute.post('/create',
             }
             
             const service = await DeliveryService.findOne({name: serviceName })
-            if (!service) return sendError(res, 'the service is not exist.')
+            if (!service) return sendError(res, 'The service is not existing.')
             var data = await locateAddress(origin)                
-            if (! data) return sendError(res, 'origin is not exist.')
+            if (! data) return sendError(res, 'Origin is not existing.')
             
             data = await locateAddress(destination)                
-            if (! data) return sendError(res, 'destination is not exist.')
+            if (! data) return sendError(res, 'Destination is not existing.')
             
             const orderId = await genarateOrderID()
             var _receiver = null
@@ -63,7 +63,7 @@ orderRoute.post('/create',
                 _receiver = await Receiver.create({name, phone, identity})
             }          
             const order = await Order.create({ orderId, service, customer: customerId, receiver:_receiver, origin, destination})            
-            return sendSuccess(res, 'create new order successfully', {orderId : order.orderId})
+            return sendSuccess(res, 'Create new order successfully', {orderId : order.orderId})
         } catch (error) {
             console.log(error)
             return sendServerError(res)
@@ -153,20 +153,20 @@ orderRoute.put('/:orderId',
             var service = serviceName
             if (service) {
                 service = await DeliveryService.findOne({name: serviceName })
-                if (!service) return sendError(res, 'the service is not exist.')
+                if (!service) return sendError(res, 'The service is not existing.')
             }
             if(origin) {
                 const data = await locateAddress(origin)                
-                if (! data) return sendError(res, 'origin is not exist.')
+                if (! data) return sendError(res, 'Origin is not existing.')
             }
             if(destination){
                 const data = await locateAddress(destination)                
-                if (! data) return sendError(res, 'destination is not exist.')
+                if (! data) return sendError(res, 'Destination is not existing.')
             }
             const updatedOrder = await Order.findOneAndUpdate({orderId: orderId}, {origin, destination, service})
             if (updatedOrder)
-                return sendSuccess(res, 'update order successfully', updatedOrder)
-            return sendError(res, 'no information')
+                return sendSuccess(res, 'Update order successfully.', updatedOrder)
+            return sendError(res, 'No information.')
         } catch (error) {
             console.log(error)
             return sendServerError(res)
@@ -185,7 +185,7 @@ orderRoute.get('/tracking/:lstOrderId', async (req, res) => {
         const orders = await Order.find({
             orderId: { $in: lstOrderId }
         })
-        return sendSuccess(res, 'request successfully', { orders, success: orders.length, failure: lstOrderId.length - orders.length })
+        return sendSuccess(res, 'Request successfully.', { orders, success: orders.length, failure: lstOrderId.length - orders.length })
     } catch (error) {
         console.log(error)
         return sendServerError(res)

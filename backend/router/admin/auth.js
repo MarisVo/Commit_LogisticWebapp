@@ -29,7 +29,7 @@ authAdminRoute.post('/register',
                 ]
             })
             if (isExist)
-                return sendError(res, 'user is exist')
+                return sendError(res, 'user already exists.')
 
             const newStaff = await Staff.create({
                 name,

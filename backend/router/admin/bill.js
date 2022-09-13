@@ -152,13 +152,13 @@ billAdminRoute.post("/product_shipments/:billId", async (req, res) => {
         })
 
         if (!isExist) {
-            return sendError(res, 'bill not exists')
+            return sendError(res, 'Bill is not existed')
         }
         const shipmentExist = await ProductShipment.exists({
             _id: shipment
         })
         if (!shipmentExist) {
-            return sendError(res, 'the shipment is not exists.')
+            return sendError(res, 'The shipment is not existed.')
         }
 
         await Bill.updateOne(
@@ -169,7 +169,7 @@ billAdminRoute.post("/product_shipments/:billId", async (req, res) => {
                 $push: { product_shipments: { shipment, turnover } },
             }
         );
-        return sendSuccess(res, "upload bill successfully");
+        return sendSuccess(res, "Add product shipment successfully.");
 
     } catch (error) {
         return sendServerError(res);
@@ -187,7 +187,7 @@ billAdminRoute.delete('/:id', async (req, res) => {
     try {
         const isExit = await Bill.exists({ _id: id })
         if (!isExit)
-            return sendError(res, "Bill not exists")
+            return sendError(res, "Bill does not exist.")
 
         await CarFleet.updateMany({}, { $pull: { bills: id } });
 
@@ -226,7 +226,7 @@ billAdminRoute.put('/:id', async (req, res) => {
             service: service, road: road, car: car,
             driver: driver, status: status, actual_fuel: actual_fuel, theoretical_fuel: theoretical_fuel
         })
-        return sendSuccess(res, "Update bill successfully", { service, road, car, driver, status, actual_fuel, theoretical_fuel })
+        return sendSuccess(res, "Update bill successfully.", { service, road, car, driver, status, actual_fuel, theoretical_fuel })
 
     } catch (error) {
         console.log(error)

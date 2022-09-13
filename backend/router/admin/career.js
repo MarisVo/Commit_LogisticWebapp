@@ -44,12 +44,11 @@ careerAdminRoute.post("/:departmentId", async (req, res) => {
           $push: { careers: career },
         }
       );
-      return sendSuccess(res, "Added career in department file successfully");
+      return sendSuccess(res, "Added career in department file. Career registered successfully.");
     }
   } catch (error) {
     return sendServerError(res);
   }
-  return sendSuccess(res, "career registered successfully.");
 });
 
 /**
