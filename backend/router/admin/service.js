@@ -33,7 +33,7 @@ serviceAdminRoute.post("/", async (req, res) => {
       target,
       tip,
     });
-    return sendSuccess(res, "create new service successfully.", service);
+    return sendSuccess(res, "Create new service successfully.", service);
   } catch (error) {
     return sendServerError(res);
   }
@@ -56,7 +56,7 @@ serviceAdminRoute.post(
       if (isExist) {
         await DeliveryService.findOneAndUpdate({ _id: id }, { banner: file });
       } else await DeliveryService.create({ banner: file });
-      return sendSuccess(res, "upload banner successfully.");
+      return sendSuccess(res, "Upload banner successfully.");
     } catch (error) {
       if (req.file) unlinkSync(req.file.path);
       return sendServerError(res);
@@ -81,7 +81,7 @@ serviceAdminRoute.post(
       if (isExist) {
         await DeliveryService.findOneAndUpdate({ _id: id }, { logo: file });
       } else await DeliveryService.create({ logo: file });
-      return sendSuccess(res, "upload logo successfully.");
+      return sendSuccess(res, "Upload logo successfully.");
     } catch (error) {
       if (req.file) unlinkSync(req.file.path);
       return sendServerError(res);
@@ -98,7 +98,7 @@ serviceAdminRoute.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const isExist = await DeliveryService.exists({ _id: id });
-    if (!isExist) return sendError(res, "Service does not exist");
+    if (!isExist) return sendError(res, "Service does not exist.");
 
     const { name, sub_detail, target, tip } = req.body;
 
@@ -109,7 +109,7 @@ serviceAdminRoute.put("/:id", async (req, res) => {
       tip: tip,
     })
       .then(() => {
-        return sendSuccess(res, "Update service successfully", {
+        return sendSuccess(res, "Update service successfully.", {
           name: name,
           sub_detail: sub_detail,
           target: target,
@@ -133,7 +133,7 @@ serviceAdminRoute.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const isExist = await DeliveryService.exists({ _id: id });
-    if (!isExist) return sendError(res, "service does not exist.");
+    if (!isExist) return sendError(res, "Service does not exist.");
 
     const service = await DeliveryService.findByIdAndRemove(id)
     return sendSuccess(res, "Delete service successfully.", service);

@@ -46,8 +46,8 @@ consultancyAdminRoute.get('/', async (req, res) => {
             }
         ).count()
         if (consultancy)
-            return sendSuccess(res, 'get consultancy information successfully.', {length, consultancy})
-        return sendError(res, 'consultancy information is not found.')
+            return sendSuccess(res, 'Get consultancy information successfully.', {length, consultancy})
+        return sendError(res, 'Consultancy information is not found.')
     } catch (error) {
         console.log(error)
         return sendServerError(res)
@@ -64,8 +64,8 @@ consultancyAdminRoute.get('/:id', async (req, res) => {
         const {id} = req.params;
         const consultancy = await Consultancy.findById(id)
         if (consultancy)
-            return sendSuccess(res, 'get consultancy information successfully.', consultancy)
-        return sendError(res, 'consultancy information is not found.')
+            return sendSuccess(res, 'Get consultancy information successfully.', consultancy)
+        return sendError(res, 'Consultancy information is not found.')
     } catch (error) {
         console.log(error)
         return sendServerError(res)
@@ -87,10 +87,10 @@ consultancyAdminRoute.put('/:id',
 
             if(service){
                 const isExistService = await DeliveryService.exists({ name: service })
-                if (!isExistService) return sendError(res, 'the service is not existed.')    
+                if (!isExistService) return sendError(res, 'The service is not existed.')    
             }
             await Consultancy.findByIdAndUpdate(id,{$set: {service, name, email, phone,  district, province, ward, fulladdress, parcel, quantity, solved_status}})
-            return sendSuccess(res, "Update consultancy successfully",  {service, name, email, phone,  district, province, ward, fulladdress, parcel, quantity, solved_status})            
+            return sendSuccess(res, "Update consultancy successfully.",  {service, name, email, phone,  district, province, ward, fulladdress, parcel, quantity, solved_status})            
         } catch (error) {
             console.log(error)
             return sendServerError(res)
@@ -108,7 +108,7 @@ consultancyAdminRoute.delete('/:id',
         try {
             const {id} = req.params;    
             const isExist = await Consultancy.exists({_id: id})
-            if (!isExist) return sendError(res, "Consultancy not exists.")            
+            if (!isExist) return sendError(res, "Consultancy does not exist.")            
             await Consultancy.findByIdAndRemove(id)
             return sendSuccess(res, "Delete successfully.") 
         } catch (error) {

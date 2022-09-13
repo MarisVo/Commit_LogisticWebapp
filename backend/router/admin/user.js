@@ -16,7 +16,7 @@ userAdminRoute.delete('/:id', async (req, res) => {
     try {
         const isExit = await User.exists({ _id: id })
         if (!isExit)
-            return sendError(res, "User not exists")
+            return sendError(res, "User does not exist")
 
         const customerID = await User.findById(id, { role: true })
         const userRole = (customerID.role).toString()
@@ -56,7 +56,7 @@ userAdminRoute.put('/active/:id', async (req, res) => {
 
         const isExit = await User.exists({ _id: id })
         if (!isExit)
-            return sendError(res, "User not exists")
+            return sendError(res, "User does not exist")
 
         if (!isActive) return sendError(res, "Active is required")
 

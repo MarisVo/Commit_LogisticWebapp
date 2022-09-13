@@ -59,7 +59,7 @@ commitmentAdminRoute.put('/:id',
                 if (heading && heading !== commit.heading) {
                     const isExistHeading = await Commitment.exists({heading})
                     if (isExistHeading) return sendError(res, "New heading is existed.")
-                    updateInfo.heading = heading               
+                    // updateInfo.heading = heading               
                 }
                 await Commitment.findByIdAndUpdate(id, {heading: heading, logo:logo, detail: detail})
                 return sendSuccess(res, "Update commitment successfully.", {heading: heading, logo:logo, detail: detail})

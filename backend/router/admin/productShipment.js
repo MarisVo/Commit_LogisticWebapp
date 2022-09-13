@@ -66,8 +66,8 @@ productShipmentAdminRoute.get('/:id',
         try {
             const { id } = req.params
             const productShipments = await ProductShipment.findById(id)
-            if (productShipments) return sendSuccess(res, "Get product shipment successful.", productShipments)
-            return sendError(res, "Not information found.")
+            if (productShipments) return sendSuccess(res, "Get product shipment successfully.", productShipments)
+            return sendError(res, "No information found.")
         } catch (error) {
             console.log(error)
             return sendServerError(res)
@@ -131,7 +131,7 @@ productShipmentAdminRoute.post('/create/:product_id', async (req, res) => {
         //check productID
         const isExistProductID = await Product.exists({ _id: product_id })
         if (!isExistProductID)
-            return sendError(res, "Product id is not exists")
+            return sendError(res, "Product id is not existed")
 
         //get quantity of product
         const productid = await Product.findById({ _id: product_id })
@@ -169,7 +169,7 @@ productShipmentAdminRoute.post('/create/:product_id', async (req, res) => {
                 distance = temp
             }
             else
-                return sendError(res, "City names do not match")
+                return sendError(res, "City names do not match.")
         }
         //count by calculateShipmentFee function and retunr value 
         //distance = distance, quantity = productQuantity, price = price, unit = productUnit
@@ -199,7 +199,7 @@ productShipmentAdminRoute.post('/create/:product_id', async (req, res) => {
               );
             if (!updateProduct)
                 return sendError(res, "Update failed")
-            return sendSuccess(res, 'Set product shipment information successfully')
+            return sendSuccess(res, 'Set product shipment information successfully.')
         }
         else
             return sendError(res, "Product_shipment quantity over load current product quantity. Current product quantity: " + productQuantity)
@@ -285,7 +285,7 @@ productShipmentAdminRoute.put('/:id', async (req, res) => {
         //Compare
         if (productQuantity >= quantityPresent) {
             await ProductShipment.findByIdAndUpdate(id, { quantity, value })
-            return sendSuccess(res, 'Update product shipment information successfully')
+            return sendSuccess(res, 'Update product shipment information successfully.')
         }
         else
             return sendError(res, "Product_shipment quantity over load current product quantity")
@@ -306,7 +306,7 @@ productShipmentAdminRoute.delete('/:id', async (req, res) => {
     try {
         const isExit = await ProductShipment.exists({ _id: id })
         if (!isExit)
-            return sendError(res, "Product shipment not exists")
+            return sendError(res, "Product shipment does not exist.")
 
         //delete document "product_shipment" in "prouct" collection
         await Product.updateMany({}, { $pull: { product_shipments: id } });

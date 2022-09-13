@@ -33,7 +33,7 @@ userRoute.get('/',
             .skip(pageSize*page)
             .sort(`${sortBy}`)
 
-            if (listUser) return sendSuccess(res, "Get user successful.", {length, listUser})
+            if (listUser) return sendSuccess(res, "Get user successfully.", {length, listUser})
             return sendError(res, "Information not found.")
         } catch (error) {
             console.log(error)
@@ -52,8 +52,8 @@ userRoute.get('/:id',
             const { id } = req.params
             const user = await User.findById(id, {password: false})
 
-            if (user) return sendSuccess(res, "Get user successful.", user)
-            return sendError(res, "Not information found.")
+            if (user) return sendSuccess(res, "Get user successfully.", user)
+            return sendError(res, "No information found.")
         } catch (error) {
             console.log(error)
             return sendServerError(res)
@@ -81,7 +81,7 @@ userRoute.put('/customer/:id', async (req, res) => {
 
 
         await User.findByIdAndUpdate(id, { phone: phone, email: email, name: name })
-        return sendSuccess(res, "Update information account successfully", { phone, email, name })
+        return sendSuccess(res, "Update account information successfully.", { phone, email, name })
 
     } catch (error) {
         console.log(error)
@@ -105,10 +105,10 @@ userRoute.put('/staff/:id', async (req, res) => {
 
         const isExist = await User.exists({ email: email })
         if (isExist)
-            return sendError(res, "This email existed.")
+            return sendError(res, "This email is existed.")
 
         await User.findByIdAndUpdate(id, { phone: phone, email: email, name: name })
-        return sendSuccess(res, "Update information account successfully", { phone, email, name })
+        return sendSuccess(res, "Update account information successfully.", { phone, email, name })
 
     } catch (error) {
         console.log(error)

@@ -42,7 +42,7 @@ serviceRoute.get("/", async (req, res) => {
       .populate("participants");
     var length = await DeliveryService.find({ $and: [query, keywordCondition] }).count();
     if (service)
-      return sendSuccess(res, "get service information successfully.", {length, service});
+      return sendSuccess(res, "Get service information successfully.", {length, service});
     return sendError(res, "Service information is not found.");
   } catch (error) {
     return sendServerError(res);
@@ -70,7 +70,7 @@ serviceRoute.get("/:id", async (req, res) => {
     
     if (!service) return sendError(res, "Service does not exist.");
     if (service)
-      return sendSuccess(res, "get service information successfully.", service);
+      return sendSuccess(res, "Get service information successfully.", service);
     return sendError(res, "Service information is not found.");
   } catch (error) {
     return sendServerError(res);

@@ -65,8 +65,8 @@ roadAdminRoute.get('/:id',
         try {
             const { id } = req.params
             const roads = await Road.findById(id)
-            if (roads) return sendSuccess(res, "Get road successful.", roads)
-            return sendError(res, "Road not found.")
+            if (roads) return sendSuccess(res, "Get road information successfully.", roads)
+            return sendError(res, "Road information is not found.")
         } catch (error) {
             console.log(error)
             return sendServerError(res)
@@ -130,10 +130,10 @@ roadAdminRoute.put('/:id', async (req, res) => {
         
         const isExist = await Road.exists({ distance: distance, origin: origin, destination: destination })
         if (isExist)
-            return sendError(res, "This road is existed.")
+            return sendError(res, "This road is already existed.")
 
         await Road.findByIdAndUpdate(id, { origin: origin, destination: destination, distance: distance })
-        return sendSuccess(res, "Update road successfully", { origin, destination, distance })
+        return sendSuccess(res, "Update road successfully.", { origin, destination, distance })
 
     } catch (error) {
         console.log(error)
@@ -152,7 +152,7 @@ roadAdminRoute.delete('/:id', async (req, res) => {
     try {
         const isExit = await Road.exists({ _id: id })
         if (!isExit)
-            return sendError(res, "Road not exists")
+            return sendError(res, "Road does not exist")
 
         const data = await Road.findByIdAndRemove(id)
         return sendSuccess(res, "Delete road successfully.", data)

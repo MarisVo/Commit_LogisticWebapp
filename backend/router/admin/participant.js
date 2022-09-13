@@ -22,7 +22,7 @@ participantAdminRoute.post('/:serviceId',
         try {            
             const {serviceId} = req.params
             const isExistedService = await DeliveryService.exists({_id: serviceId})
-            if (!isExistedService) return sendError(res, "Service is not existed")
+            if (!isExistedService) return sendError(res, "Service is not existed.")
             const banner = handleFilePath(req.file) 
             const {name, description} = req.body;
             const participant = await Participant.create({name, banner, description});
@@ -62,7 +62,7 @@ participantAdminRoute.put('/:id',
                 await Participant.findByIdAndUpdate(id, {name, banner, description})
                 return sendSuccess(res, "Update participant successfully.",{name, banner, description})
             }        
-            return sendError(res, "participant not exists.")
+            return sendError(res, "Participant does not exist.")
 
         } catch (error) {
             console.log(error)
@@ -82,7 +82,7 @@ participantAdminRoute.delete('/:id',
         const {id} = req.params;    
         try {
             const isExist = await Participant.exists({_id: id})
-            if (!isExist) return sendError(res, "participant not exists.")
+            if (!isExist) return sendError(res, "Participant does not exist.")
             await DeliveryService.updateOne({},{ $pull: { participants: id}})
             const data = await Participant.findByIdAndRemove(id)
             return sendSuccess(res, "Delete participant successfully.",data)

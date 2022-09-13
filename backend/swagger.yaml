@@ -110,16 +110,25 @@ paths:
           schema:
             type: object
             example: {
-              "accessToken":"123456",
-              "user":{
-                "id":"userId",
-                "email":"email",
-                "phone":"phone",
-                "role":"role",
+              "success": true,
+              "message": "Verify token successfully.",
+              "data": {
+                "user": {
+                  "id": "_id",
+                  "email": "example@test.net",
+                  "phone": "12345678",
+                  "role":{},
+                }
               }
             }
         401:
           description: Unauthorized.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Unauthorized.",
+            }
   /auth/register:
     post:
       tags:
@@ -140,9 +149,11 @@ paths:
               type: string
             email:
               type: string
-            phone:
-              type: string
             password:
+              type: string
+            verify_password:
+              type: string
+            phone:
               type: string
             address:
               type: string
@@ -157,8 +168,20 @@ paths:
       responses:
         200:
           description: send otp code successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "send otp code successfully.",
+            }
         400:
           description: Send OTP failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "send OTP failed.",
+            }
   /auth/verify-otp:
     post:
       tags:
@@ -178,8 +201,20 @@ paths:
       responses:
         200:
           description: user registered successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "user registered successfully.",
+            }
         400:
           description: validate failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "validate failed.",
+            }
   /auth/update-otp:
     get:
       tags:
@@ -195,10 +230,28 @@ paths:
       responses:
         200:
           description: update otp successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "update otp successfully.",
+            }
         404:
           description: verify option is invalid.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "verify option is invalid.",
+            }
         400:
           description: Send OTP failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Send OTP failed.",
+            }
   /auth/login:
     post:
       tags:
@@ -228,19 +281,47 @@ paths:
           schema:
             type: object
             example: {
+              "success": true,
+              "message": "Login successfully.",
+              "data": {
               "accessToken":"string",
               "refreshToken":"string",
               "user": {
                 "id":"string",
                 "email":"string",
                 "phone":"string",
-                "role":{},
+                "role": {
+                  "_id": "_id",
+                  "name": "string",
+                  "address": "string",
+                  "description": string,
+                  "customer_type": "business",
+                  "rank_passers": {
+                    "point": number,
+                    "level": "string",
+                    "_id": "string",
+                  },
+                "companyTaxcode_business": "string",
+                },
               }
+              },
             }
         400:
           description: email/phone or password is wrong.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "email/phone or password is wrong.",
+            }
         403:
           description: your role is not valid. access denied.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "your role is not valid. access denied.",
+            }
   /auth/staff-login:
     post:
       tags:
@@ -270,19 +351,39 @@ paths:
           schema:
             type: object
             example: {
+              "success": true,
+              "message": "Login successfully.",
+              "data": {
               "accessToken":"string",
               "refreshToken":"string",
               "user": {
                 "id":"string",
                 "email":"string",
                 "phone":"string",
-                "role":{},
+                "role": {
+                  "_id": "_id",
+                  "name": "string",
+                  "staff_type": "string",
+                },
               }
+              },
             }
         400:
           description: email/phone or password is wrong.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "email/phone or password is wrong.",
+            }
         403:
           description: your role is not valid. access denied.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "your role is not valid. access denied.",
+            }
   /auth/forgot-pw:
     post:
       tags:
@@ -307,10 +408,28 @@ paths:
       responses:
         200:
           description: generate new password successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "generate new password successfully.",
+            }
         400:
           description: send new password failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "send new password failed.",
+            }
         404:
           description: email/phone doesn't exist.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "email/phone doesn't exist.",
+            }
   /auth/change-pw:
     put:
       tags:
@@ -337,8 +456,20 @@ paths:
       responses:
         200:
           description: change your password successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "change your password successfully.",
+            }
         400:
           description: current password isn't correct.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "current password isn't correct.",
+            }
       security:
         - bearerAuth: []
   /auth/logout:
@@ -360,8 +491,20 @@ paths:
       responses:
         200:
           description: log out successfully. see you soon.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "log out successfully. see you soon.",
+            }
         401:
           description: refresh token is invalid.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "refresh token is invalid.",
+            }
       security:
         - bearerAuth: []
   /admin/auth/register:
@@ -392,8 +535,20 @@ paths:
       responses:
         200:
           description: user registered successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "user registered successfully.",
+            }
         400:
-          description: user is exist
+          description: user already exists.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "user already exists.",
+            }
       security:
         - bearerAuth: []
   /about:
@@ -409,14 +564,24 @@ paths:
           schema:
             type: object
             example: {
-              "description": "string",
-              "vision": "string",
-              "values": "string",
-              "logo": "path",
-              "banners": ["path1", "path2"],
+              "success": true,
+              "message": "get about information successfully.",
+              "data": {
+                "description": "string",
+                "vision": "string",
+                "values": "string",
+                "logo": "path",
+                "banners": ["path1", "path2"],
+              },
             }
         400:
           description: about information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "about information is not found.",
+            }
   /admin/about/logo:
     post:
       tags:
@@ -433,6 +598,12 @@ paths:
       responses:
         200:
           description: upload logo successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "upload logo successfully.",
+            }
       security:
         - bearerAuth: []
   /admin/about/banners:
@@ -451,6 +622,12 @@ paths:
       responses:
         200:
           description: upload banners successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": " upload banners successfully.",
+            }
       security:
         - bearerAuth: []
   /admin/about:
@@ -476,6 +653,12 @@ paths:
       responses:
         200:
           description: set about-us information successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "set about-us information successfully.",
+            }
       security:
         - bearerAuth: []
   /contactUs:
@@ -491,17 +674,27 @@ paths:
           schema:
             type: object
             example: {
-              "address":"string",
-              "phone":"phone",
-              "email":"email",
-              "facebook":"url",
-              "instagram":"url",
-              "tiktok":"url",
-              "youtube":"url",
-              "hr_mailbox": "email",
+              "success": true,
+              "message": "set about-us information successfully.",
+              "data": {
+                "address":"string",
+                "phone":"phone",
+                "email":"email",
+                "facebook":"url",
+                "instagram":"url",
+                "tiktok":"url",
+                "youtube":"url",
+                "hr_mailbox": "email",
+              }
             }
         400:
           description: contact information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "contact information is not found.",
+            }
   /admin/contactUs:
     post:
       tags:
@@ -535,6 +728,12 @@ paths:
       responses:
         200:
           description: set contact-us information successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "set contact-us information successfully.",
+            }
       security:
         - bearerAuth: []
   /tracking/postage:
@@ -585,6 +784,12 @@ paths:
             }
         400:
           description: the service is not exist. / the service don't support this road.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "the service is not exist. / the service don't support this road.",
+            }
   /public/uploads/{dirName}/{fileName}:
     get:
       tags:
@@ -653,12 +858,28 @@ paths:
           schema:
             type: object
             example: {
-              "heading": "string",
-              "logo": "path",
-              "detail": "string",              
+              "success": true,
+              "message": "Get commitment successful.",
+              "data": {
+                "length": "number",
+                "commits": [
+                  {
+                    "_id": "630e17c7762611f726d07223",
+                    "heading": "string",
+                    "logo": "path",
+                    "detail": "string",
+                  },
+                ]
+              }             
             }
         400:
           description: commitment is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "commitment is not found.",
+            }
   /commitment/{commitmentId}:
     get:
       tags:
@@ -678,12 +899,23 @@ paths:
           schema:
             type: object
             example: {
-              "heading": "string",
-              "logo": "path",
-              "detail": "string",              
+              "success": true,
+              "message": "get commitment information successfully.",
+              "data": {
+                "_id": "id",
+                "heading": "string",
+                "logo": "path",
+                "detail": "string",
+              }              
             }
         400:
           description: commitment is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "commitment is not found.",
+            }
   /admin/commitment:
     post:
       tags:
@@ -712,12 +944,22 @@ paths:
           schema:
             type: object
             example: {
-              "heading": "string",
-              "logo": "path",
-              "detail": "string",
+              "success": true,
+              "message": "Create commitment successfully.",
+              "data": {
+                "heading": "string",
+                "logo": "path",
+                "detail": "string",
+              }
             }
         400:
           description: Create commitment failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Create commitment failed.",
+            }
       security:
         - bearerAuth: []
   /admin/commitment/{commitmentId}:
@@ -752,15 +994,24 @@ paths:
           schema:
             type: object
             example: {
-              "heading": "string",
-              "logo": "path",
-              "detail": "string",
+              "success": true,
+              "message": "Update commitment successfully.",
+              "data": {
+                "heading": "string",
+                "logo": "path",
+                "detail": "string",
+              }
             }
         400:
           description: Update commitment failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Update commitment failed.",
+            }
       security:
         - bearerAuth: []
-
     delete:
       tags:
         - "commitment"
@@ -776,16 +1027,20 @@ paths:
       responses:
         200:
           description: Delete commitment successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete commitment successfully.",
+            }
         400:
-          description: Update commitment failed.
+          description: Delete commitment failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Delete commitment failed.",
+            }
       security:
         - bearerAuth: []
   /partner:
@@ -818,11 +1073,28 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "logo": "path",
+              "success": true,
+              "message": "Get partner successful.",
+              "data": {
+                "length": "number",
+                "partners": [
+                  {
+                    "_id": "id",
+                    "name": "string",
+                    "logo": "path",
+                  },
+                  
+                ]
+              }
             }
         400:
           description: partner is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "partner is not found.",
+            }
   /partner/{partnerId}:
     get:
       tags:
@@ -842,11 +1114,22 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "logo": "path",
+              "success": true,
+              "message": "get partner successful.",
+              "data": {
+                "_id": "id",
+                "name": "string",
+                "logo": "path",
+              }
             }
         400:
           description: partnerId is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "partner is not found.",
+            }
   /admin/partner:
     post:
       tags:
@@ -857,7 +1140,7 @@ paths:
       parameters:
         - in: formData
           name: name
-          description: a new partner.
+          description: a new partner name.
           type: string
           required: true
         - in: formData
@@ -871,11 +1154,21 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "logo": "path",
+              "success": true,
+              "message": "Create partner successfully",
+              "data": {
+                "name": "string",
+                "logo": "path",
+              }
             }
         400:
           description: Create partner failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Create partner failed.",
+            }
       security:
         - bearerAuth: []
   /admin/partner/{partnerId}:
@@ -893,7 +1186,7 @@ paths:
           description: partner id
         - in: formData
           name: name
-          description: a new partner.
+          description: a new partner name.
           type: string
         - in: formData
           name: logo
@@ -905,14 +1198,23 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "logo": "path",
+              "success": true,
+              "message": "Update partner successfully",
+              "data": {
+                "name": "string",
+                "logo": "path",
+              }
             }
         400:
           description: Update partner failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Update partner failed.",
+            }
       security:
         - bearerAuth: []
-
     delete:
       tags:
         - "partner"
@@ -928,16 +1230,25 @@ paths:
       responses:
         200:
           description: Delete partner successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete partner successfully",
+              "data": {
+                "_id": "id",
+                "name": "string",
+                "logo": "path",
+              }
+            }
         400:
-          description: Update partner failed.
+          description: Delete partner failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Delete partner failed.",
+            }
       security:
         - bearerAuth: []
   /admin/message:
@@ -974,13 +1285,30 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "email": "string",
-              "phone": "string",    
-              "message": "string",          
-            }
+              "success": true,
+              "message": "get message information successfully.",
+              "data": {
+                "length": "number",
+                "messages": [
+                  {
+                    "_id": "id",
+                    "name": "string",
+                    "email": "string",
+                    "phone": "string",
+                    "message": "string",
+                    "status": "string",
+                  }
+                ]
+              }          
+            }          
         400:
-          description: commitment is not found.  
+          description: message information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "message information is not found.",
+            }
       security:
         - bearerAuth: []
   /admin/message/{messageId}:
@@ -1002,19 +1330,32 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "email": "string",
-              "phone": "string",    
-              "message": "string",          
+              "success": true,
+              "message": "get message information successfully.",
+              "data": {
+                "_id": "id",
+                "name": "string",
+                "email": "string",
+                "phone": "string",
+                "message": "string",
+                "status": "string",
+              }         
             }          
         400:
-          description: message is not found.    
+          description: message information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "message information is not found.",
+            }
+      security:
       security:
         - bearerAuth: []
     put:
       tags:
         - "message"
-      summary: "Update a existing message"
+      summary: "Update status of a existing message"
       consumes:
         - application/json
       parameters:
@@ -1026,23 +1367,32 @@ paths:
           description: message id
         - in: body
           name: message
-          description: a existing message.
+          description: a existing message's status.
           schema:
             type: object
             properties:
-              name:
+              status:
                 type: string
-              email:
-                type: string 
-              phone: 
-                type: string
-              message:
-                type: string 
       responses:
         200:
           description: Update message successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "get message information successfully.",
+              "data": {
+                "status": "string",
+              }         
+            }          
         400:
-          description: Update message failed.
+          description: This message is not existed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "This message is not existed.",     
+            }       
       security:
         - bearerAuth: []
     delete:
@@ -1060,8 +1410,20 @@ paths:
       responses:
         200:
           description: Delete message successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete message successfully.",
+            }                
         400:
-          description: Update message failed.
+          description: Message does not exist.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Message does not exist.",     
+            }
       security:
         - bearerAuth: []
   /message:
@@ -1090,9 +1452,21 @@ paths:
                 type: string 
       responses:
         200:
-          description: Send message successfully.
+          description: Send email successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Send email successfully.",  
+            }    
         400:
-          description: Create message failed.   
+          description: Send email failed.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Send email failed.",  
+            }    
   /user:
     get:
       tags:
@@ -1119,12 +1493,29 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "email": "string",
-              "phone": "string",
+              "success": true,
+              "message": "Get user successfully.",
+              "data": {
+                "length": "number",
+                "listUser": [
+                  {
+                    "_id": "id",
+                    "name": "string",
+                    "email": "string",
+                    "phone": "string",
+                    "isActive": "boolean",
+                  },
+                ]
+              }
             }
         400:
-          description: user is not found.
+          description: Information not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Information not found.",
+            }
   /user/{userId}:
     get:
       tags:
@@ -1144,13 +1535,24 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "email": "string",
-              "phone": "string",
+              "success": true,
+              "message": "Get user successfully.",
+              "data": {
+                "_id": "id",
+                "name": "string",
+                "email": "string",
+                "phone": "string",
+                "isActive": "boolean",
+              }
             }
         400:
-          description: UserId is not found.  
-        
+          description: No information found.
+          schema: 
+            type: object
+            example: {
+              "success": false,
+              "message": "No information found.",
+            }
   /user/staff/{userId}:
     put:
       tags:
@@ -1191,17 +1593,26 @@ paths:
                   type: string
       responses:
         200:
-          description: Update staff successfully.
+          description: Update account information successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "email": "string",
-              "phone": "string",
+              "success": true,
+              "message": "Update account information successfully.",
+              "data": {
+                "name": "string",
+                "email": "string",
+                "phone": "string",
+              }
             }
         400:
           description: Update staff failed.
-
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "This email is existed.",
+            }
   /user/customer/{userId}:
     put:
       tags:
@@ -1242,16 +1653,26 @@ paths:
                   type: string
       responses:
         200:
-          description: Update staff successfully.
+          description: Update account information successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "email": "string",
-              "phone": "string",
+              "success": true,
+              "message": "Update account information successfully.",
+              "data": {
+                "name": "string",
+                "email": "string",
+                "phone": "string",
+              }
             }
         400:
           description: Update staff failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "This email is existed.",
+            }
   /admin/user/active/{userId}:
     put:
       tags:
@@ -1276,7 +1697,6 @@ paths:
             properties:
               isActive:
                 type: string
-             
       requestBody:
         content: 
           multipart/form-data: 
@@ -1291,67 +1711,22 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "email": "string",
-              "phone": "string",
-              "isActive": "string",
+              "success": true,
+              "message": "Update active user successfully.",
+              "data": {
+                "isActive": "boolean",
+              },
             }
         400:
           description: Update active user failed.
-      security:
-        - bearerAuth: []
-  
-  /user/customer/{userId}:
-    put:
-      tags:
-        - "user"
-      summary: "Update a existing customer"
-      consumes:
-        - multipart/form-data
-      parameters:
-        - in: path
-          name: userId
-          schema: 
-            type: string
-          required: true
-          description: user id
-        - in: formData
-          name: customer
-          description: a existing customer.
-          schema:
-            type: object
-            required:
-              - name
-              - email
-              - phone
-            properties:
-              name:
-                type: string
-              email:
-                type: string
-              phone:
-                type: string
-      requestBody:
-        content: 
-          multipart/form-data: 
-            schema:            
-              type: object
-              properties:      
-                name:           
-                  type: string
-      responses:
-        200:
-          description: Update staff successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "email": "string",
-              "phone": "string",
+              "success": false,
+              "message": "User does not exist",
             }
-        400:
-          description: Update staff failed.
-
+      security:
+        - bearerAuth: []
   /admin/user/{userId}:  
     delete:
         tags:
@@ -1368,16 +1743,20 @@ paths:
         responses:
           200:
             description: Delete user successfully.
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    message:
-                      type: string
-                      description: Success message
+            schema:
+              type: object
+              example: {
+                "success": true,
+                "message": "Delete user successfully.",
+              }
           400:
-            description: Update user failed.  
+            description: User does not exist
+            schema:
+              type: object
+              example: {
+                "success": false,
+                "message": "User does not exist",
+              }
         security:
           - bearerAuth: []  
   /admin/car:
@@ -1410,16 +1789,35 @@ paths:
           schema:
             type: object
             example: {
-                "plate": "string",
-                "car_type": "string",
-                "volumn": "string",
-                "tonnage": "string",
+                "success": true,
+                "message": "Get car successfully.",
+                "data": {
+                  "length": "number",
+                  "listCar": [
+                    {
+                      "plate": "string",
+                      "car_type": "string",
+                      "volumn": "string",
+                      "tonnage": "string",
+                      "car_fleet": "string",
+                      "insurance": {
+                        "seri": "string",
+                        "expired": "date",  
+                      }
+                    },
+                  ],
+                },
             }
         400:
           description: car in not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Information not found.",
+            }
       security:
         - bearerAuth: []
-  
   /admin/car/{carId}:
     get:
       tags:
@@ -1439,19 +1837,34 @@ paths:
           schema:
             type: object
             example: {
-                "plate": "string",
-                "car_type": "string",
-                "volumn": "string",
-                "tonnage": "string",
+                "success": true,
+                "message": "Get car successfully.",
+                "data": {
+                  "plate": "string",
+                  "car_type": "string",
+                  "volumn": "string",
+                  "tonnage": "string",
+                  "car_fleet": "string",
+                   "insurance": {
+                     "seri": "string",
+                    "expired": "date",  
+                  }
+                },
             }
         400:
           description: CarId is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Information not found.",
+            }
       security:
         - bearerAuth: []
     put:
       tags:
         - "car"
-      summary: Admin update road 
+      summary: Admin update car 
       produces:
         - application/json
       consumes:
@@ -1498,13 +1911,30 @@ paths:
           schema:
             type: object
             example: {
-                "plate": "string",
-                "car_type": "string",
-                "volumn": "string",
-                "tonnage": "string",
+                "success": true,
+                "message": "Update car successfully.",
+                "data": {
+                  "plate": "string",
+                  "car_type": "string",
+                  "volumn": "string",
+                  "tonnage": "string",
+                  "car_fleet": "string",
+                },
             }
         400:
-          description: road cannot be found.
+          description: Update car failed
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "ID does not exists.",
+              },
+              "error2": {
+                "success": false,
+                "message": "This car fleet is not existed.",
+              },
+            }
       security:
         - bearerAuth: []
     delete:
@@ -1522,19 +1952,22 @@ paths:
       responses:
         200:
           description: Delete car successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete car successfully.",
+            }
         400:
           description: Delete car failed.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Car does not exist.",
+            }
       security:
         - bearerAuth: []
-
   /admin/car/create:
     post:
       tags:
@@ -1578,16 +2011,25 @@ paths:
           schema:
             type: object
             example: {
-                "plate": "string",
-                "car_type": "string",
-                "volumn": "string",
-                "tonnage": "string",
+                "success": true,
+                "message": "set car information successfully.",
             }
         400:
           description: Create car failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "This car plate is already existed.",
+              }
+              "error2": {
+                  "success": false,
+                  "message": "This car fleet is not existed.",
+                }
+            }
       security:
         - bearerAuth: []
-
   /prohibited-product:
     get:
       tags:
@@ -1614,12 +2056,27 @@ paths:
           schema:
             type: object
             example: {
-                "name": "string",
-                "detail": "string",
-                "image": "path",
+                "success": true,
+                "message": "Get prohobited product successfully.",
+                "data": {
+                  "length": "number",
+                  "list": [
+                    {
+                      "name": "string",
+                      "image": "path",
+                      "detail": "string",
+                    },
+                  ]
+                }
             }
         400:
-          description: Prohibited product in not found.    
+          description: Prohibited product in not found.   
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Information not found.",
+            }
   /prohibited-product/{id}:
     get:
       tags:
@@ -1639,12 +2096,22 @@ paths:
           schema:
             type: object
             example: {
-                "name": "string",
-                "detail": "string",
-                "image": "path",
+                "success": true,
+                "message": "Get information of prohibited product successfully.",
+                "data": {
+                  "name": "string",
+                  "detail": "string",
+                  "image": "path",
+                }  
             }
         400:
           description: Id is not found. 
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Information of prohibited product is not found.",
+            }
 
   /admin/prohibited-product/create:
     post:
@@ -1674,12 +2141,22 @@ paths:
           schema:
             type: object
             example: {
-                "name": "string",
-                "detail": "path",
-                "image": "string",
+                "success": true,
+                "message": "Create prohibied product successfully.",
+                "data": {
+                  "name": "string",
+                  "image": "string",
+                  "detail": "path",
+                },
             }
         400:
           description: Create prohibited product failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Name is already existed.",
+            }
       security:
         - bearerAuth: []
   /admin/prohibited-product/{id}:
@@ -1712,12 +2189,28 @@ paths:
           schema:
             type: object
             example: {
-                "name": "string",
-                "detail": "string",
-                "image": "path",
+                "success": true,
+                "message": "Update prohibited product successfully.",
+                "data": {
+                  "name": "string",
+                  "detail": "string",
+                  "image": "path",
+                },
             }
         400:
           description: Update prohibited product failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Name is existed.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Prohibited product not exists.",
+              }
+            }
       security:
         - bearerAuth: []
     delete:
@@ -1735,19 +2228,22 @@ paths:
       responses:
         200:
           description: Delete prohibited product successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete prohibited product successfully.",
+            }
         400:
           description: Update prohibited product failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Prohibited product not exists.",
+            }
       security:
         - bearerAuth: []
-  
   /admin/road:
     get:
       tags:
@@ -1790,15 +2286,29 @@ paths:
           schema:
             type: object
             example: {
-              "distance": "string",
-              "origin": "string",
-              "destination": "string",
+              "success": true,
+              "message": "Get road information successfully.",
+              "data": {
+                "length": "number",
+                "road": [
+                  {
+                    "origin": "string",
+                    "destination": "string",
+                    "distance": "string",
+                  },
+                ]
+              }
             }
         400:
-          description: road in not found.
+          description: Road information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Road information is not found.",
+            }
       security:
         - bearerAuth: []
-
   /admin/road/{roadId}:
     get:
       tags:
@@ -1818,12 +2328,22 @@ paths:
           schema:
             type: object
             example: {
-              "distance": "string",
-              "origin": "string",
-              "destination": "string",
+              "success": true,
+              "message": "Get road information successfully.",
+              "data": {
+                "origin": "string",
+                "destination": "string",
+                "distance": "string",
+              }
             }
         400:
-          description: RoadId is not found. 
+          description: Road information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Road information is not found.",
+            }
       security:
         - bearerAuth: []
     put:
@@ -1852,16 +2372,40 @@ paths:
                   type: string
       responses:
         200:
-          description: Update road  successfully.
+          description: Update road successfully
           schema:
             type: object
             example: {
-              "distance": "string",
-              "origin": "string",
-              "destination": "string",
+              "success": true,
+              "message": "Update road successfully.",
+              "data": {
+                "origin": "string",
+                "destination": "string",
+                "distance": "string",
+              },
             }
         400:
           description: road cannot be found.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Origin does not exist.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Destination does not exist.",
+              }
+              "error3": {
+                "success": false,
+                "message": "This road is not existed.",
+              }
+              "error4": {
+                "success": false,
+                "message": "This road is already existed.",
+              }
+            }
       security:
         - bearerAuth: []
     delete:
@@ -1879,19 +2423,27 @@ paths:
       responses:
         200:
           description: Delete road successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Delete road successfully.",
+              "data": {
+                "origin": "string",
+                "destination": "string",
+                "distance": "string",
+              }
+            }
         400:
           description: Delete road failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Road does not exist.",
+            }
       security:
           - bearerAuth: []
-
   /admin/road/create:
     post:
       tags:
@@ -1918,19 +2470,29 @@ paths:
                   type: string
       responses:
         200:
-          description: Create road successfully.
+          description: Set road information successfully.
           schema:
             type: object
             example: {
-              "distance": "string",
-              "origin": "string",
-              "destination": "string",
+              "success": true,
+              "message": "Set road information successfully.",
             }
         400:
-          description: Create road failed. 
+          description: Create road failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Origin does not exist.",
+              },
+              "error2": {
+                "success": false,
+                "message": "Destination does not exist.",
+              },
+            }
       security:
         - bearerAuth: []
-
   /admin/product-shipment:
     get:
       tags:
@@ -1969,14 +2531,29 @@ paths:
           schema:
             type: object
             example: {
-              "quantity": "string",
-              "product_id": "string",
+              "success": true,
+              "message": "Get product shipment information successfully",
+              "data": {
+                "length": "number",
+                "listProductShipment": [
+                  {
+                    "_id": "id",
+                    "quantity": "number",
+                    "value": "number",
+                  },
+                ]
+              }
             }
         400:
           description: product shipment in not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "No information found.",
+            }
       security:
         - bearerAuth: []
-
   /admin/product-shipment/{id}:
     get:
       tags:
@@ -1996,11 +2573,22 @@ paths:
           schema:
             type: object
             example: {
-              "quantity": "string",
-              "product_id": "string",
+              "success": true,
+              "message": "Get product shipment successfully.",
+              "data": {
+                "_id": "id",
+                "quantity": "number",
+                "value": "number",
+              }
             }
         400:
           description: product-shipmentID is not found. 
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "No information found.",
+            }
       security:
         - bearerAuth: []
     put:
@@ -2030,15 +2618,27 @@ paths:
                 type: string
       responses:
         200:
-          description: Update bill  successfully.
+          description: Update product shipment information successfully.
           schema:
             type: object
             example: {
-                "quantity": "string",
-                "product_id": "string",
+                "success": true,
+                "message": "Update product shipment information successfully.",
             }
         400:
-          description: product-shipment cannot found.
+          description: Update product shipment failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "City names do not match.",
+              },
+              "error2": {
+                "success": false,
+                "message": "Product_shipment quantity over load current product quantity.",
+              },
+            }
       security:
         - bearerAuth: []
     delete:
@@ -2056,16 +2656,20 @@ paths:
       responses:
         200:
           description: Delete product-shipment successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete product shipment successfully.",
+            }
         400:
           description: Delete product-shipment failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Product shipment does not exist.",
+            }
       security:
           - bearerAuth: []
 
@@ -2092,14 +2696,31 @@ paths:
                 type: number 
       responses:
         200:
-          description: Create product shipment successfully.
+          description: Set product shipment information successfully.
           schema:
             type: object
             example: {
-              "quantity": "string",
+              "success": true,
+              "message": "Set product shipment information successfully.",
             }
         400:
-          description: Create product shipment failed. 
+          description: Create product shipment failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Product id is not existed.",
+              }
+              "error2": {
+                "success": false,
+                "message": "City names do not match.",
+              }
+              "error3": {
+                "success": false,
+                "message": "Product_shipment quantity over load current product quantity.",
+              }
+            }
       security:
         - bearerAuth: []
 
@@ -2153,18 +2774,40 @@ paths:
           schema:
             type: object
             example: {
-              "service": "string",
-              "road": "string",
-              "car": "string",
-              "driver": "string",
-              "product_shipment": "string",
-              "status": "string",
+              "success": true,
+              "message": "Get bill information successfully.",
+              "data": {
+                "length": "number",
+                "bills": [
+                  {
+                    "_id": "id",
+                    "service": "string",
+                    "road": "string",
+                    "car": "string",
+                    "driver": "string",
+                    "product_shipments": [
+                      {
+                        "shipment": "string",
+                        "turnover": "number",
+                      },
+                    ],
+                    "status": "string",
+                    "actual_fuel": "number",
+                    "theoretical_fuel": "number",
+                  },
+                ]
+              }
             }
         400:
-          description: bill in not found.
+          description: Bill information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Bill information is not found.",
+            }
       security:
         - bearerAuth: []
-
   /admin/bill/{billId}:
     get:
       tags:
@@ -2184,15 +2827,33 @@ paths:
           schema:
             type: object
             example: {
-              "service": "string",
-              "road": "string",
-              "car": "string",
-              "driver": "string",
-              "product_shipment": "string",
-              "status": "string",
+              "success": true,
+              "message": "Get bill successfully.",
+              "data": {
+                "_id": "id",
+                "service": "string",
+                "road": "string",
+                "car": "string",
+                "driver": "string",
+                "product_shipments": [
+                  {
+                    "shipment": "id",
+                    "turnover": "number",
+                  },
+                ],
+                "status": "string",
+                "actual_fuel": "number",
+                "theoretical_fuel": "number",
+              }
             }
         400:
-          description: billId is not found. 
+          description: Bill information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Bill information is not found.",
+            }
       security:
         - bearerAuth: []
     put:
@@ -2234,15 +2895,26 @@ paths:
           schema:
             type: object
             example: {
-              "service": "string",
-              "road": "string",
-              "car": "string",
-              "driver": "string",
-              "product_shipment": "string",
-              "status": "string",
+              "success": true,
+              "message": "Update bill successfully.",
+              "data": {
+                "service": "string",
+                "road": "string",
+                "car": "string",
+                "driver": "string",
+                "status": "string",
+                "actual_fuel": "number",
+                "theoretical_fuel":"number",
+              },
             }
         400:
           description: bill cannot be found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "This bill is existed.",
+            }
       security:
         - bearerAuth: []
     delete:
@@ -2260,19 +2932,38 @@ paths:
       responses:
         200:
           description: Delete bill successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete product shipment successfully.",
+              "data": {
+                 "_id": "id",
+                "service": "string",
+                "road": "string",
+                "car": "string",
+                "driver": "string",
+                "product_shipments": [
+                  {
+                    "shipment": "id",
+                    "turnover": "number",
+                  },
+                ],
+                "status": "string",
+                "actual_fuel": "number",
+                "theoretical_fuel": "number",
+              },
+            }
         400:
           description: Delete bill failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Bill does not exist.",
+            }
       security:
           - bearerAuth: []
-
   /admin/bill/create:
     post:
       tags:
@@ -2304,23 +2995,23 @@ paths:
                 enum: ['waiting', 'accepted', 'processing', 'completed', 'refused']
       responses:
         200:
-          description: Create bill successfully.
+          description: Set bill information successfully.
           schema:
             type: object
             example: {
-              "service": "string",
-              "road": "string",
-              "car": "string",
-              "driver": "string",
-              "actual_fuel": "number",
-              "theoretical_fuel": "number",
-              "status": "string",
+              "success": true,
+              "message": "Set bill information successfully.",
             }
         400:
-          description: Create bill failed. 
+          description: Create bill failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Service/Road/Car/Car fleet/Driver does not exist.",
+            }
       security:
         - bearerAuth: []
-  
   /admin/bill/product_shipments/{billId}:
     post:
       tags:
@@ -2346,18 +3037,23 @@ paths:
                 type: number
       responses:
         200:
-          description: Update bill successfully.
+          description: Add product shipment successfully.
           schema:
             type: object
             example: {
-              "shipment": "string",
-              "turnover": "number",
+              "success": true,
+              "message": "Add product shipment successfully.",
             }
         400:
-          description: Update bill failed. 
+          description: Update bill failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "The shipment/Bill is not existed",
+            }
       security:
         - bearerAuth: []
-
   /admin/consultancy:
     get:
       tags:
@@ -2388,20 +3084,36 @@ paths:
           description: sort by field, -updatedAt        
       responses:
         200:
-          description: get consultancy successfully.
+          description: Get consultancy information successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "email": "string",
-              "phone": "string",
-              "service" : "string",
-              "fulladdress" : "string",
-              "parcel": "string",
-              "quantity": number,    
+              "success": true,
+              "message": "Get consultancy information successfully.",
+              "data": {
+                "length": "number",
+                "consultancy": [
+                  {
+                  "name": "string",
+                  "email": "string",
+                  "phone": "string",
+                  "service" : "string",
+                  "fulladdress" : "string",
+                  "parcel": "string",
+                  "quantity": number,
+                  "solved_status": "boolean",
+                  }
+                ]
+              }
             }
         400:
-          description: consultancy is not found.  
+          description: Consultancy information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Consultancy information is not found.",
+            }
       security:
         - bearerAuth: []
   /admin/consultancy/{consultancyId}:
@@ -2419,20 +3131,31 @@ paths:
           description: Id of a consultancy 
       responses:
         200:
-          description: get consultancy successfully.
+          description: Get consultancy information successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "email": "string",
-              "phone": "string",
-              "service" : "string",
-              "fulladdress" : "string",
-              "parcel": "string",
-              "quantity": "string",    
+              "success": true,
+              "message": "Get consultancy information successfully.",
+              "data": {
+                "name": "string",
+                "email": "string",
+                "phone": "string",
+                "service" : "string",
+                "fulladdress" : "string",
+                "parcel": "string",
+                "quantity": "string",    
+                "solved_status": "boolean",
+              }
             }          
         400:
           description: consultancy is not found.    
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Consultancy information is not found.",
+            }
       security:
         - bearerAuth: []
     put:
@@ -2450,7 +3173,7 @@ paths:
           description: consultancy id
         - in: body
           name: consultancy
-          description: a existing consultancy.
+          description: an updated consultancy.
           schema:
             type: object
             properties:
@@ -2461,7 +3184,13 @@ paths:
               email:
                 type: string 
               phone: 
-                type: string              
+                type: string    
+              district:
+                type: string
+              province:
+                type: string
+              ward:
+                type: string          
               fulladdress:
                 type: string 
               parcel: 
@@ -2470,12 +3199,42 @@ paths:
                 type: number 
               solved_status:
                 type: boolean
-
       responses:
         200:
           description: Update consultancy successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Update consultancy successfully.",
+              "data": {
+                "name": "string",
+                "email": "string",
+                "phone": "string",
+                "service" : "string",
+                "district": "string",
+                "province": "string",
+                "ward": "string",
+                "fulladdress" : "string",
+                "parcel": "string",
+                "quantity": "string",    
+                "solved_status": "boolean",
+              }
+            }
         400:
           description: Update consultancy failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "This consultancy is not existed.",
+              }
+              "error2": {
+                "success": false,
+                "message": "The service is not existed.",
+              }
+            }
       security:
         - bearerAuth: []
     delete:
@@ -2493,8 +3252,20 @@ paths:
       responses:
         200:
           description: Delete consultancy successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete successfully.",
+            }
         400:
-          description: Update consultancy failed.
+          description: Delete consultancy failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Consultancy does not exist.",
+            }
       security:
         - bearerAuth: []
   /consultancy:
@@ -2514,22 +3285,48 @@ paths:
               service:
                 type: string
               name:
-                type: string               
+                type: string
               email:
                 type: string 
               phone: 
+                type: string    
+              district:
                 type: string
+              province:
+                type: string
+              ward:
+                type: string          
               fulladdress:
                 type: string 
               parcel: 
                 type: string
               quantity:
                 type: number 
+              solved_status:
+                type: boolean
       responses:
         200:
           description: Send consultancy successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Send email successfully.",
+            }
         400:
-          description: Create consultancy failed.   
+          description: Create consultancy failed. 
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Send email failed.",
+              }
+              "error2": {
+                "success": false,
+                "message": "The service is not existed.",
+              }
+            }
   /admin/warehouse:
     post:
       tags:
@@ -3113,12 +3910,24 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "banner": "path",    
-              "description": "string", 
+              "success": true,
+              "message": "Get participant successfully.",
+              "data": [
+                {
+                  "name": "string",
+                  "banner": "path",    
+                  "description": "string",
+                },
+              ]
             }
         400:
           description: participant is not found. 
+          schema:
+            type: object 
+            example: {
+              "success": false,
+              "message": "No information found.",
+            }
   /participant/{participantId}:
     get:
       tags:
@@ -3138,12 +3947,22 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "banner": "path",    
-              "description": "string",     
-            }          
+              "success": true,
+              "message": "Get participant successfully.",
+              "data": {
+                "name": "string",
+                "banner": "path",    
+                "description": "string",
+              },
+            }
         400:
-          description: participant is not found. 
+          description: participant is not found.
+          schema:
+            type: object 
+            example: {
+              "success": false,
+              "message": "No information found.",
+            } 
   /participant/service/{serviceId}:
     get:
       tags:
@@ -3159,16 +3978,28 @@ paths:
           description: Id of a service 
       responses:
         200:
-          description: get participant successfully.
+          description: Get participant successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "banner": "path",    
-              "description": "string",     
+              "success": true,
+              "message": "Get participant successfully.",
+              "data": [
+                {
+                  "name": "string",
+                  "banner": "path",    
+                  "description": "string",     
+                },
+              ] 
             }          
         400:
           description: participant is not found.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Service is not existed",
+            }  
   /admin/participant/{serviceId}:
     post:
       tags:
@@ -3203,19 +4034,29 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "banner": "path",    
-              "description": "string",     
+              "success": true,
+              "message": "Create participant successfully.",
+              "data": {
+                "name": "string",
+                "banner": "path",    
+                "description": "string",       
+              },
             }        
         400:
           description: Create participant failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Service is not existed.",
+            }
       security:
         - bearerAuth: []
   /admin/participant/{participantId}:
     put:
       tags:
         - "participant"
-      summary: "Create a new participant"
+      summary: "Update an existing participant"
       consumes:
         - multipart/form-data
       parameters:
@@ -3238,16 +4079,32 @@ paths:
           type: file            
       responses:
         200:
-          description: Create participant successfully.
+          description: Update participant successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "banner": "path",    
-              "description": "string",     
+              "success": true,
+              "message": "Update participant successfully.",
+              "data": {
+                "name": "string",
+                "banner": "path",    
+                "description": "string",     
+              },
             }        
         400:
           description: Create participant failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "New name is existed",
+              },
+              "error2": {
+                "success": false,
+                "message": "Participant does not exist.",
+              },
+            }
       security:
         - bearerAuth: []
     delete:
@@ -3265,11 +4122,22 @@ paths:
       responses:
         200:
           description: Delete participant successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Deleted participant successfully.",
+            }
         400:
           description: Delete participant failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message" : "Participant does not exist.",
+            }
       security:
         - bearerAuth: []
-  
   /quote:
      get:
       tags:
@@ -3296,13 +4164,25 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "description": "string", 
-              "quote": "string",
-              "avatar": "path",
+              "success": true,
+              "message": "Get quote successfully.",
+              "data": [
+                {
+                  "name": "string",
+                  "description": "string", 
+                  "quote": "string",
+                  "avatar": "path",
+                },
+              ]
             }
         400:
           description: quote is not found. 
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "No information found.",
+            }
   /quote/{quoteId}:
     get:
       tags:
@@ -3318,17 +4198,27 @@ paths:
           description: Id of a quote 
       responses:
         200:
-          description: get quote successfully.
+          description: Get quote successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "description": "string", 
-              "quote": "string",
-              "avatar": "path",  
-            }          
+              "success": true,
+              "message": "Get quote successfully.",
+              "data":{
+                "name": "string",
+                "description": "string", 
+                "quote": "string",
+                "avatar": "path",
+              },
+            }
         400:
-          description: quote is not found. 
+          description: Quote is not found. 
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "No information found.",
+            }
   /quote/service/{serviceId}:
     get:
       tags:
@@ -3344,17 +4234,29 @@ paths:
           description: Id of a service 
       responses:
         200:
-          description: get quote successfully.
+          description: Get quote successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "description": "string", 
-              "quote": "string",
-              "avatar": "path",    
+              "success": true,
+              "message": "Get quote successfully.",
+              "data": [
+                {
+                "name": "string",
+                "description": "string", 
+                "quote": "string",
+                "avatar": "path",    
+                },
+              ]
             }          
         400:
           description: quote is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Service is not existed.",
+            }
   /admin/quote/{serviceId}:
     post:
       tags:
@@ -3394,20 +4296,36 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "description": "string", 
-              "quote": "string",
-              "avatar": "path",    
+              "success": true,
+              "message": "Created quote successfully.",
+              "data": {
+                "name": "string",
+                "description": "string", 
+                "quote": "string",
+                "avatar": "path",    
+              }
             }        
         400:
           description: Create quote failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Service is not existed.",
+              }
+              "error2": {
+                "success": false,
+                "message": "This person is existed !",
+              }
+            }
       security:
         - bearerAuth: []
   /admin/quote/{quoteId}:
     put:
       tags:
         - "quote"
-      summary: "Create a new quote"
+      summary: "Update an existing quote"
       consumes:
         - multipart/form-data
       parameters:
@@ -3434,17 +4352,27 @@ paths:
           type: file  
       responses:
         200:
-          description: Create quote successfully.
+          description: Update quote successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "description": "string", 
-              "quote": "string",
-              "avatar": "path",        
+              "success": true,
+              "message": "Update quote successfully.",
+              "data": {
+                "name": "string",
+                "description": "string", 
+                "quote": "string",
+                "avatar": "path",        
+              }
             }        
         400:
           description: Create quote failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Quote does not exist.",
+            }
       security:
         - bearerAuth: []
     delete:
@@ -3462,11 +4390,22 @@ paths:
       responses:
         200:
           description: Delete quote successfully.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Delete quote successfully.",
+            }
         400:
           description: Delete quote failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Quote does not exist.",
+            }
       security:
         - bearerAuth: []
-
   /order/create:
     post:
       tags:
@@ -3505,11 +4444,35 @@ paths:
       responses:
         200:
           description: Create new order successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Create new order successfully.",
+              "data": {
+                "orderId": "string",
+              }
+            }
         400:
           description: Create order failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "The service is not existing.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Origin is not existing.",
+              }
+              "error3": {
+                "success": false,
+                "message": "Destination is not existing.",
+              }
+            }
       security:
         - bearerAuth: []
-  
   /order:
     get: 
       tags:
@@ -3540,16 +4503,38 @@ paths:
           schema:
             type: object
             example: {
-              "orderId": "string",
-              "service": "string", 
-              "total_price": "string",   
-              "status": "string",
-              "origin": "string", 
-              "destination": "string",   
-              "receiver" : "string",
+              "success": true,
+              "message": "Get order information successfully.",
+              "data": {
+                "length": "number",
+                "orders": [
+                  {
+                    "orderId": "string",
+                    "service": "string",
+                    "customer": "string",
+                    "receiver" : "string",
+                    "total_price": "string",   
+                    "status": "string",
+                    "origin": "string", 
+                    "destination": "string",
+                    "feedback": [
+                      {
+                        "user": "string",
+                        "content": "string",
+                      }
+                    ]
+                  }
+                ]
+              }
             }          
         400:
-          description: order is not found.
+          description: Order information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Order information is not found.",
+            }
       security:
         - bearerAuth: []
   /order/{orderId}:    
@@ -3567,20 +4552,37 @@ paths:
           description: Id of a order 
       responses:
         200:
-          description: get order successfully.
+          description: get order information successfully.
           schema:
             type: object
             example: {
-              "orderId": "string",
-              "service": "string", 
-              "total_price": "string",   
-              "status": "string",
-              "origin": "string", 
-              "destination": "string",   
-              "receiver" : "string",
+              "success": true,
+              "message": "Get order information successfully.",
+              "data": {
+                "orderId": "string",
+                "service": "string",
+                "customer": "string",
+                "receiver" : "string",
+                "total_price": "string",   
+                "status": "string",
+                "origin": "string", 
+                "destination": "string",
+                "feedback": [
+                  {
+                    "user": "string",
+                    "content": "string",
+                  }
+                ]
+              }
             }          
         400:
           description: order is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Order information is not found.",
+            }
       security:
         - bearerAuth: []
     put: 
@@ -3609,9 +4611,47 @@ paths:
                 type: string  
       responses:
         200:
-          description: updated order successfully.            
+          description: updated order successfully. 
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Update order successfully.",
+              "data": {
+                "orderId": "string",
+                "service": "string",
+                "customer": "string",
+                "receiver" : "string",
+                "total_price": "string",   
+                "status": "string",
+                "origin": "string", 
+                "destination": "string",
+                "feedback": [
+                  {
+                    "user": "string",
+                    "content": "string",
+                  }
+                ]
+              }
+            }  
         400:
           description: order is not found.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Order is not found.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Order can't be modified.",
+              }
+              "error3": {
+                "success": false,
+                "message": "The service/Origin/Destination is not existing.",
+              }
+            }
       security:
         - bearerAuth: []
 
@@ -3657,16 +4697,38 @@ paths:
           schema:
             type: object
             example: {
-              "orderId": "string",
-              "service": "string", 
-              "total_price": "string",   
-              "status": "string",
-              "origin": "string", 
-              "destination": "string",   
-              "receiver" : "string",
+              "success": true,
+              "message": "Get order information successfully.",
+              "data": {
+                "length": "number",
+                "orders": [
+                  {
+                    "orderId": "string",
+                    "service": "string",
+                    "customer": "string",
+                    "receiver" : "string",
+                    "total_price": "string",   
+                    "status": "string",
+                    "origin": "string", 
+                    "destination": "string",
+                    "feedback": [
+                      {
+                        "user": "string",
+                        "content": "string",
+                      }
+                    ]
+                  }
+                ]
+              }
             }          
         400:
-          description: order is not found.
+          description: Order information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Order information is not found.",
+            }
       security:
         - bearerAuth: []
   /admin/order/{orderId}:
@@ -3692,15 +4754,37 @@ paths:
                 type: string
       responses:
         200:
-          description: update status successfully.
+          description: Update order information successfully.
           schema:
             type: object
             example: {
-              "orderId": "string",
-              "status": "string",              
+              "success": true,
+              "message": "Update order information successfully.",
+              "data": {
+                "orderId": "string",
+                "service": "string",
+                "customer": "string",
+                "receiver" : "string",
+                "total_price": "string",   
+                "status": "string",
+                "origin": "string", 
+                "destination": "string",
+                "feedback": [
+                  {
+                    "user": "string",
+                    "content": "string",
+                  }
+                ]
+              }
             }          
         400:
-          description: order is not found.
+          description: Order information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Order information is not found.",
+            }
       security:
         - bearerAuth: []
     delete:
@@ -3717,9 +4801,37 @@ paths:
           description: Id of an order         
       responses:
         200:
-          description: delete order successfully.                  
+          description: Delete order successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete order successfully.",
+              "data": {
+                "orderId": "string",
+                "service": "string",
+                "customer": "string",
+                "receiver" : "string",
+                "total_price": "string",   
+                "status": "string",
+                "origin": "string", 
+                "destination": "string",
+                "feedback": [
+                  {
+                    "user": "string",
+                    "content": "string",
+                  }
+                ]
+              }
+            }      
         400:
-          description: order is not found.
+          description: Order information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Order information is not found.",
+            }
       security:
         - bearerAuth: [] 
   /order/tracking/{lstOrderId}:
@@ -3741,11 +4853,14 @@ paths:
           schema:
             type: object
             example: {
-              "orders": ["order1", "order2"],
-              "success": 5,
-              "failure": 2,
+              "success": true,
+              "message": "Request successfully.",
+              "data": {
+                "orders": ["order1", "order2"],
+                "success": "number",
+                "failure": "number",
+              }
             }
-
   /product/{orderId}:
     post:
       tags:
@@ -3758,7 +4873,7 @@ paths:
           name: orderId
           type: string
           required: true
-          description: orderId of order
+          description: Id of order
         - in: body
           name: products
           description: array of products.
@@ -3777,12 +4892,36 @@ paths:
                     unit: 
                       type: string   
                       enum: ['m3', 'kg', 'ton']
-      
       responses:
         200:
           description: Add product(s) successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Add product to order successfully.",
+              "data": [
+                {
+                "name": "string",
+                "quantity": "number",
+                "unit": "string",
+                }
+              ]
+            }
         400:
           description: Add product(s) failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Order is not found.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Orders can't add more products.",
+              }
+            }
       security:
         - bearerAuth: []
     get:
@@ -3796,19 +4935,33 @@ paths:
           name: orderId
           type: string
           required: true
-          description: orderId of order         
+          description: Id of order         
       responses:
         200:
           description: Get product successfully.
           schema:
             type: object
             example: {
-                  "name": "string",
-                  "quantity": "string",
-                  "unit": "string",                 
+              "success": true,
+              "message": "Get products successfully.",
+              "data": [
+                {
+                "name": "string",
+                "quantity": "number",
+                "unit": "string",
+                "order": "string",
+                "product_shipments": [],
+                }
+              ]          
             }
         400:
           description: Get product failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Order is not found.",
+            }
       security:
         - bearerAuth: []
   /product/{productId}:
@@ -3840,8 +4993,30 @@ paths:
       responses:
         200:
           description: Update product successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Update product successfully.",
+            }
         400:
           description: Update product failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Product does not exist.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Order for this product is not found.",
+              }
+              "error3": {
+                "success": false,
+                "message": "Product can't be changed.",
+              }
+            }
       security:
         - bearerAuth: []
     delete:
@@ -3859,8 +5034,30 @@ paths:
       responses:
         200:
           description: Delete product successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete product successfully.",
+            }
         400:
           description: Delete product failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Product does not exist.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Order for this product is not found.",
+              }
+              "error3": {
+                "success": false,
+                "message": "Product can't be changed.",
+              }
+            }
       security:
         - bearerAuth: []
   /admin/product:
@@ -3897,12 +5094,18 @@ paths:
           schema:
             type: object
             example: {
-                  "name": "string",
-                  "quantity": integer,
-                  "unit": "string",                 
+              "success": true,
+              "message": "Get product successfully.",
+              "data": [
+                {
+                "name": "string",
+                "quantity": "number",
+                "unit": "string",
+                "order": "string",
+                "product_shipments": [],                  
+                }
+              ],          
             }
-        400:
-          description: Get product failed.
       security:
         - bearerAuth: []
   /admin/product/{orderId}:
@@ -3940,8 +5143,33 @@ paths:
       responses:
         200:
           description: Add product(s) successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Add product to order successfully.",
+              "data": [
+                {
+                "name": "string",
+                "quantity": "number",
+                "unit": "string",
+                }
+              ]
+            }
         400:
           description: Add product(s) failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Order is not found.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Orders can't add more products.",
+              }
+            }
       security:
         - bearerAuth: []
   /admin/product/{productId}:
@@ -3973,8 +5201,30 @@ paths:
       responses:
         200:
           description: Update product successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Update product successfully.",
+            }
         400:
           description: Update product failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Product does not exist.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Order for this product is not found.",
+              }
+              "error3": {
+                "success": false,
+                "message": "Product can't be changed.",
+              }
+            }
       security:
         - bearerAuth: []
     delete:
@@ -3992,11 +5242,32 @@ paths:
       responses:
         200:
           description: Delete product successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete product successfully.",
+            }
         400:
           description: Delete product failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Product does not exist.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Order for this product is not found.",
+              }
+              "error3": {
+                "success": false,
+                "message": "Product can't be changed.",
+              }
+            }
       security:
         - bearerAuth: []
-  
   /career:
     get:
       tags:
@@ -4043,6 +5314,12 @@ paths:
           schema:
             type: object
             example: {
+              "success": true,
+              "message": "Get career information successfully.",
+              "data": {
+                "length": "number",
+                "career": [
+                  {    
                   "name": "string",
                   "type": "string",
                   "description": "string",
@@ -4050,10 +5327,19 @@ paths:
                   "state": "string",
                   "bonus": "string",
                   "deadline": "YYYY/MM/DD",
-                  "applicants": "object",
+                  "applicants": [],
+                  }                
+                ]
+              }
             }
         400:
-          description: career information is not found.        
+          description: career information is not found.    
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Career information is not found.",
+            }    
   /career/{careerId}:
     get:
       tags:
@@ -4073,20 +5359,27 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "type": "string",
-              "description": "string",
-              "location": "string",
-              "state": "string",
-              "bonus": "string",
-              "deadline": "YYYY/MM/DD",
-              "applicants": "object",
+              "success": true,
+              "message": "Get career information successfully.",
+              "data": {
+                "name": "string",
+                "type": "string",
+                "description": "string",
+                "location": "string",
+                "state": "string",
+                "bonus": "string",
+                "deadline": "YYYY/MM/DD",
+                "applicants": [],              
+              }
             }
         400:
           description: Career does not exist.
-        402:
-          description: career information is not found.
-    
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Career does not exist.",
+            }    
   /admin/career/{departmentId}:
     post:
         tags:
@@ -4126,24 +5419,16 @@ paths:
             schema:
               type: object
               example: {
-                  "name": "string",
-                  "type": "string",
-                  "description": "string",
-                  "location": "string",
-                  "state": "string",
-                  "bonus": "string",
-                  "deadline": "YYYY/MM/DD",
-                  "applicants": "object",
+                "success": true,
+                "message": "Added career in department file. Career registered successfully.",
               }
-          400:
-            description: Create career failed.  
         security:
           - bearerAuth: []
   /admin/career/{careerId}:
     put:
       tags:
         - "career"
-      summary: admin change career status
+      summary: admin update career
       produces:
         - application/json        
       consumes:
@@ -4178,9 +5463,21 @@ paths:
                 format: date
       responses:
         200:
-          description: change career status successfully.
+          description: Update career successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Update career successfully.",
+            }
         400:
-          description: career cannot be found. 
+          description: career cannot be found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Career does not exist.",
+            }
       security:
         - bearerAuth: []                          
     delete:
@@ -4198,16 +5495,20 @@ paths:
       responses:
         200:
           description: Delete career successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Delete career successfully.",
+            }
         400:
           description: Delete career failed.      
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Career does not exist.",
+            }
       security:
         - bearerAuth: [] 
   /department:
@@ -4240,11 +5541,31 @@ paths:
           schema:
             type: object
             example: {
-              "description": "string",
+              "success": true,
+              "message": "Get department information successfully.",
+              "data": {
+                "length": "number",
+                "department": [
+                  {
+                    "_id": "id",
+                    "name": "string",
+                    "description": "string",
+                    "location": "string",
+                    "director": "string",
+                    "scale": 0,
+                    "careers": []
+                  }
+                ]
+              }
             }
         400:
           description: department information is not found.
-          
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Department information is not found.",
+            }
   /department/{departmentId}:
     get:
       tags:
@@ -4264,16 +5585,26 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "description": "string",
-              "location": "string",
-              "director": "string",
-              "scale": "string",
-              "careers": "career",
+              "success": true,
+              "message": "Get department information successfully.",
+              "data": {
+                "_id": "id",
+                "name": "string",
+                "description": "string",
+                "location": "string",
+                "director": "string",
+                "scale": 0,
+                "careers": [],
+              }
             }
         400:
           description: departmentId is not found.
-
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Department information is not found.",
+            }
   /admin/department:
     post:
       tags:
@@ -4298,19 +5629,21 @@ paths:
                 type: number
       responses:
         200:
-          description: Create department successfully.
+          description: Department registered successfully.
           schema:
             type: object
             example: {
-                "name": "string",
-                "description": "string",
-                "location": "string",
-                "director": "string",
-                "scale": "number",
-                "careers": "career",
+                "success": true,
+                "message": "Department registered successfully.",
             }
         400:
           description: Create department failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "The director staff does not exist.",
+            }
       security:
         - bearerAuth: [] 
   /admin/department/{departmentId}:
@@ -4347,12 +5680,36 @@ paths:
                 type: number
       responses:
         200:
-          description: change department update successfully.
+          description: Update department successfully.
+          schema:
+            type: object
+            example: {
+                "success": true,
+                "message": "Update department successfully.",
+                "data": {
+                  "name": "string",
+                  "description": "string",
+                  "location": "string",
+                  "director": "string",
+                  "scale": 0,
+                }
+            }
         400:
-          description: department cannot be found.
+          description: Update department failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "The director staff does not exist.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Department does not exist.",
+              }
+            }
       security:
         - bearerAuth: [] 
-          
     delete:
       tags:
         - "department"
@@ -4368,16 +5725,20 @@ paths:
       responses:
         200:
           description: Delete department successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete department successfully.",
+            }
         400:
           description: Delete department failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Department does not exist.",
+            }
       security:
         - bearerAuth: [] 
   /feature:
@@ -4415,16 +5776,31 @@ paths:
           description: sort in order (name, -updatedAt)
       responses:
         200:
-          description: get feature information successfully.
+          description: Get feature information successfully.
           schema:
             type: object
             example: {
+              "success": true,
+              "message": "Get feature information successfully.",
+              "data": {
+                "length": "number",
+                "feature": [
+                  {
                   "name": "string",
                   "logo": "path",
                   "detail": "string",
+                  }
+                ]
+              }
             }
         400:
-          description: career information is not found.  
+          description: Feature information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Feature information is not found.",
+            }
   /feature/{featureId}:
     get:
       tags:
@@ -4440,16 +5816,26 @@ paths:
           description: Id of a feature 
       responses:
         200:
-          description: get feature successfully.
+          description: Get feature information successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "logo": "path",
-              "detail": "string",              
+              "success": true,
+              "message": "Get feature information successfully.",
+              "data": {
+                "name": "string",
+                "logo": "path",
+                "detail": "string",              
+              }
             }
         400:
-          description: feature is not found.
+          description: Feature does not exist.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Feature does not exist.",
+            }
   /feature/service/{serviceId}:
     get:
       tags:
@@ -4474,16 +5860,37 @@ paths:
           description: Id of a service 
       responses:
         200:
-          description: get feature successfully.
+          description: Get feature information successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "logo": "path",
-              "detail": "string",              
+              "success": true,
+              "message": "Get feature information successfully.",
+              "data": {
+                "length": "number",
+                "feature": [
+                  {
+                  "name": "string",
+                  "logo": "path",
+                  "detail": "string",
+                  }
+                ]
+              }
             }
         400:
-          description: feature is not found.
+          description: Feature information is not found.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Service does not exist.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Feature information is not found.",
+              }
+            }
   /admin/feature/{serviceId}:
     post:
       tags:
@@ -4531,16 +5938,21 @@ paths:
                   format: binary
       responses:
         200:
-          description: Create feature successfully.
+          description: Create new feature successfully.
           schema:
             type: object
             example: {
-              "name": "string",
-              "logo": "path",
-              "detail": "string",
+              "success": true,
+              "message": "Create new feature successfully.",
             }
         400:
           description: Create feature failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Name already exists.",
+            }
       security:
         - bearerAuth: []
   /admin/feature/{featureId}:
@@ -4597,12 +6009,22 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "logo": "path",
-              "detail": "string",
+              "success": true,
+              "message": "Update feature successfully.",
+              "data": {
+                "name": "string",
+                "logo": "path",
+                "detail": "string",
+              }
             }
         400:
           description: Update feature failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Feature does not exist.",
+            }
       security:
         - bearerAuth: []
     delete:
@@ -4620,16 +6042,25 @@ paths:
       responses:
         200:
           description: Delete feature successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete feature successfully.",
+              "data": {
+                "name": "string",
+                "logo": "path",
+                "detail": "string",
+              }
+            }
         400:
-          description: Update feature failed.
+          description: Delete feature failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Feature does not exist.",
+            }
   /notification:
     get:
       tags:
@@ -4644,9 +6075,13 @@ paths:
           description: limitation of notifications in response
       responses:
         200:
-          description: request successfully.
+          description: Request successfully.
           schema:
-            example: ["notification1","notification2",]
+            type: object
+            example: {
+              "success": true,
+              "message": "Request successfully.",
+            }
       security:
         - bearerAuth: []
     post:
@@ -4672,8 +6107,20 @@ paths:
       responses:
         200:
           description: send the notification successfully.
-        404:
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Send the notification successfully.",
+            }
+        401:
           description: receiver's ID didn't exist.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Receiver's ID didn't exist.",
+            }
       security:
         - bearerAuth: []
   
@@ -4714,13 +6161,29 @@ paths:
           schema:
             type: object
             example: {
+              "success": true,
+              "message": "Get distance information successfully.",
+              "data": {
+                "length": "number",
+                "distance": [
+                  {
                   "fromProvince": "string",
                   "toProvince": "string",
                   "zonecode": "string",
                   "distance":  "number",
+                  }
+                ]
+              }
+                    
             }
         400:
-          description: distance information is not found.  
+          description: Dsistance information is not found.  
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Distance information is not found.",
+            }
   /distance/{distanceId}:
     get:
       tags:
@@ -4740,13 +6203,23 @@ paths:
           schema:
             type: object
             example: {
-              "fromProvince": "string",
-              "toProvince": "string",
-              "zonecode": "string",
-              "distance":  "number",            
+              "success": true,
+              "message": "Get distance information successfully.",
+              "data": {
+                "fromProvince": "string",
+                "toProvince": "string",
+                "zonecode": "string",
+                "distance":  "number",  
+              }
             }
         400:
-          description: distance is not found.
+          description: Distance information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Distance information is not found.",
+            }
     put:
       tags:
         - "distance"
@@ -4776,13 +6249,20 @@ paths:
           schema:
             type: object
             example: {
-              "fromProvince": "string",
-              "toProvince": "string",
-              "zonecode": "string",
-              "distance":  "number",
+              "success": true,
+              "message": "Update distance successfully.",
+              "data": {
+                "zonecode": "string", 
+              }
             }
         400:
           description: Update distance failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Distance does not exist.",
+            }
       security:
         - bearerAuth: []
   /distance/service/{serviceId}:
@@ -4825,13 +6305,35 @@ paths:
           schema:
             type: object
             example: {
-              "fromProvince": "string",
-              "toProvince": "string",
-              "zonecode": "string",
-              "distance":  "number",          
+              "success": true,
+              "message": "Get distance information successfully.",
+              "data": {
+                "length": "number",
+                "distance": [
+                  {
+                    "fromProvince": "string",
+                    "toProvince": "string",
+                    "zonecode": "string",
+                    "distance":  "number",     
+                  }
+                ]
+              }
+     
             }
         400:
-          description: distance is not found.
+          description: Distance information is not found.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Service does not exist.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Distance information is not found.",
+              }
+            }
   /admin/distance/create/{serviceId}:
     post:
       tags:
@@ -4873,13 +6375,17 @@ paths:
           schema:
             type: object
             example: {
-              "fromProvince": "string",
-              "toProvince": "string",
-              "zonecode": "string",
-              "distance":  "number",
+              "success": true,
+              "message": "Create distance successfully.",
             }
         400:
           description: Create distance failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Distance already exists.",
+            }
       security:
         - bearerAuth: []
   /admin/distance/{distanceId}:
@@ -4921,13 +6427,23 @@ paths:
           schema:
             type: object
             example: {
-              "fromProvince": "string",
-              "toProvince": "string",
-              "zonecode": "string",
-              "distance":  "number",
+              "success": true,
+              "message": "Update distance successfully.",
+              "data": {
+                "fromProvince": "string",
+                "toProvince": "string",
+                "zonecode": "string",
+                "distance":  "number",
+              }
             }
         400:
           description: Update distance failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Distance does not exist.",
+            }
       security:
         - bearerAuth: []
     delete:
@@ -4945,16 +6461,26 @@ paths:
       responses:
         200:
           description: Delete distance successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Delete distance successfully.",
+              "data": {
+                "fromProvince": "string",
+                "toProvince": "string",
+                "zonecode": "string",
+                "distance":  "number",
+              }
+            }
         400:
           description: Delete distance failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Distance does not exist.",
+            }
       security:
         - bearerAuth: []
   /price/{priceId}:
@@ -4976,12 +6502,22 @@ paths:
           schema:
             type: object
             example: {
-              "uKG": "string",
-              "uM3": "string",
-              "uTON": "string",        
+              "success": true,
+              "message": "Get price information successfully.",
+              "data": {
+                "uKG": "string",
+                "uM3": "string",
+                "uTON": "string",        
+              }
             }
         400:
           description: price is not found.
+          schema: 
+            type: object
+            example: {
+              "success": false,
+              "message": "Price information not found.",
+            }
   /price/service/{serviceId}:
     get:
       tags:
@@ -5006,16 +6542,37 @@ paths:
           description: Id of a service 
       responses:
         200:
-          description: get price successfully.
+          description: Get price information successfully.
           schema:
             type: object
             example: {
-              "uKG": "string",
-              "uM3": "string",
-              "uTON": "string",       
+              "success": true,
+              "message": "Get price information successfully.",
+              "data": {
+                "length": "number",
+                "price": [
+                  {
+                  "uKG": "string",
+                  "uM3": "string",
+                  "uTON": "string",        
+                  }
+                ]
+              }
             }
         400:
           description: price is not found.
+          schema: 
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Service does not exist.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Price information not found.",
+              }
+            }
   /admin/price/create/{serviceId}:
     post:
       tags:
@@ -5089,16 +6646,21 @@ paths:
                       type: number
       responses:
         200:
-          description: Create price successfully.
+          description: Create price table successfully.
           schema:
             type: object
             example: {
-              "uKG": "string",
-              "uM3": "string",
-              "uTON": "string", 
+              "success": true,
+              "message": "Create price table successfully.",
             }
         400:
           description: Create price failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Request's body is incorrect.",
+            }
       security:
         - bearerAuth: []
   /admin/price/{priceId}:
@@ -5177,12 +6739,22 @@ paths:
           schema:
             type: object
             example: {
-              "uKG": "string",
-              "uM3": "string",
-              "uTON": "string", 
+              "success": true,
+              "message": "Update price successfully.",
+              "data": {
+                "uKG": "string",
+                "uM3": "string",
+                "uTON": "string", 
+              }
             }
         400:
           description: Update price failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Price does not exist.",
+            }
       security:
         - bearerAuth: []
     delete:
@@ -5200,16 +6772,25 @@ paths:
       responses:
         200:
           description: Delete price successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete price successfully.",
+              "data": {
+                "uKG": "string",
+                "uM3": "string",
+                "uTON": "string", 
+              }
+            }
         400:
           description: Delete price failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Price does not exist.",
+            }
       security:
         - bearerAuth: []
   /priceList:
@@ -5236,15 +6817,30 @@ paths:
           description: Province of a priceList 
       responses:
         200:
-          description: get priceList successfully.
+          description: Get pricelist information successfully.
           schema:
             type: object
             example: {
-              "province": "string",
-              "file": "string",      
+              "success": true,
+              "message": "Get pricelist information successfully.",
+              "data": {
+                "length": "number",
+                "files": [
+                  {
+                    "province": "string",
+                    "file": "path",
+                  }
+                ]
+              },
             }
         400:
           description: priceList is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Price list information is not found.",
+            }
   /admin/priceList/{serviceId}:
     post:
       tags:
@@ -5285,11 +6881,23 @@ paths:
           schema:
             type: object
             example: {
-              "province": "string",
-              "file": "string",    
+              "success": true,
+              "message": "upload pricelist file successfully",
             }
         400:
           description: Create priceList failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "The pricelist's province is already used.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Upload price list failed.",
+              }
+            }
       security:
         - bearerAuth: []
     put:
@@ -5328,11 +6936,17 @@ paths:
           schema:
             type: object
             example: {
-              "province": "string",
-              "file": "string",    
+              "success": true,
+              "message": "Update pricelist file successfully.",
             }
         400:
           description: Update priceList failed.
+          schema: 
+            type: object
+            example: {
+              "success": false,
+              "message": "Service does not exist.",
+            }
       security:
         - bearerAuth: []
     delete:
@@ -5355,16 +6969,20 @@ paths:
       responses:
         200:
           description: Delete priceList successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete price list successfully.",
+            }
         400:
           description: Delete priceList failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Pricelist does not exist.",
+            }
       security:
         - bearerAuth: []
   /service:
@@ -5405,21 +7023,36 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "sub_detail": "string",    
-              "target": "string",   
-              "tip" : "string",
-              "quotes": ["quote1", "quote2"],
-              "logo": "path",
-              "banner": "path",
-              "features": ["feature1", "feature2"],    
-              "participants": ["participant1", "participant2"],   
-              "price": "string",  
-              "distances": ["distance1", "distance"],   
-              "price_files": ["path1", "path2"],       
+              "success": true,
+              "message": "Get service information successfully.",
+              "data": {
+                "length": "number",
+                "service": [
+                  {
+                  "name": "string",
+                  "sub_detail": "string",    
+                  "target": "string",   
+                  "tip" : "string",
+                  "quotes": ["quote1", "quote2"],
+                  "logo": "path",
+                  "banner": "path",
+                  "features": ["feature1", "feature2"],    
+                  "participants": ["participant1", "participant2"],   
+                  "price": "string",  
+                  "distances": ["distance1", "distance"],   
+                  "price_files": ["path1", "path2"],       
+                  }
+                ]
+              }
             }
         400:
-          description: service is not found.  
+          description: Service information is not found.
+          schema:
+            type: object
+            example: {
+              "service": false,
+              "message": "Service information is not found.",
+            }
   /service/{service}:
     get:
       tags:
@@ -5439,21 +7072,31 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "sub_detail": "string",    
-              "target": "string",   
-              "tip" : "string",
-              "quotes": ["quote1", "quote2"],
-              "logo": "path",
-              "banner": "path",
-              "features": ["feature1", "feature2"],    
-              "participants": ["participant1", "participant2"],     
-              "price": "string",  
-              "distances": ["distance1", "distance"],   
-              "price_files": ["path1", "path2"],          
+              "success": true,
+              "message": "Get service information successfully.",
+              "data": {
+                "name": "string",
+                "sub_detail": "string",    
+                "target": "string",   
+                "tip" : "string",
+                "quotes": ["quote1", "quote2"],
+                "logo": "path",
+                "banner": "path",
+                "features": ["feature1", "feature2"],    
+                "participants": ["participant1", "participant2"],     
+                "price": "string",  
+                "distances": ["distance1", "distance"],   
+                "price_files": ["path1", "path2"],          
+              }
             }          
         400:
-          description: service is not found.    
+          description: Service information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Service information is not found.",
+            }
   /admin/service:
     post:
       tags:
@@ -5484,21 +7127,31 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "sub_detail": "string",    
-              "target": "string",   
-              "tip" : "string",
-              "quotes": ["quote1", "quote2"],
-              "logo": "path",
-              "banner": "path",
-              "features": ["feature1", "feature2"],    
-              "participants": ["participant1", "participant2"],     
-              "price": "string",  
-              "distances": ["distance1", "distance"],   
-              "price_files": ["path1", "path2"],            
+              "success": true,
+              "message": "Create new service successfully.",
+              "data": {
+                "name": "string",
+                "sub_detail": "string",    
+                "target": "string",   
+                "tip" : "string",
+                "quotes": ["quote1", "quote2"],
+                "logo": "path",
+                "banner": "path",
+                "features": ["feature1", "feature2"],    
+                "participants": ["participant1", "participant2"],     
+                "price": "string",  
+                "distances": ["distance1", "distance"],   
+                "price_files": ["path1", "path2"],            
+              }
             }    
         400:
           description: Create service failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "This service is already existed.",
+            }
       security:
         - bearerAuth: []
   /admin/service/banner/{serviceId}:
@@ -5533,21 +7186,9 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "sub_detail": "string",    
-              "target": "string",   
-              "tip" : "string",
-              "quotes": ["quote1", "quote2"],
-              "logo": "path",
-              "banner": "path",
-              "features": ["feature1", "feature2"],    
-              "participants": ["participant1", "participant2"],     
-              "price": "string",  
-              "distances": ["distance1", "distance"],   
-              "price_files": ["path1", "path2"],            
+              "success": true,
+              "message": "Upload banner successfully.",
             }        
-        400:
-          description: Upload service banner failed.
       security:
         - bearerAuth: []
   /admin/service/logo/{serviceId}:
@@ -5582,21 +7223,9 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "sub_detail": "string",    
-              "target": "string",   
-              "tip" : "string",
-              "quotes": ["quote1", "quote2"],
-              "logo": "path",
-              "banner": "path",
-              "features": ["feature1", "feature2"],    
-              "participants": ["participant1", "participant2"],     
-              "price": "string",  
-              "distances": ["distance1", "distance"],   
-              "price_files": ["path1", "path2"],            
+              "success": true,
+              "message": "Upload logo successfully.",
             }        
-        400:
-          description: Upload service logo failed.
       security:
         - bearerAuth: []
   /admin/service/{serviceId}:
@@ -5634,21 +7263,23 @@ paths:
           schema:
             type: object
             example: {
-              "name": "string",
-              "sub_detail": "string",    
-              "target": "string",   
-              "tip" : "string",
-              "quotes": ["quote1", "quote2"],
-              "logo": "path",
-              "banner": "path",
-              "features": ["feature1", "feature2"],    
-              "participants": ["participant1", "participant2"],     
-              "price": "string",  
-              "distances": ["distance1", "distance"],   
-              "price_files": ["path1", "path2"],            
+              "success": true,
+              "message": "Update service successfully.",
+              "data": {
+                "name": "string",
+                "sub_detail": "string",    
+                "target": "string",   
+                "tip" : "string",   
+              }
             }      
         400:
           description: Update service failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Service does not exist.",
+            }
       security:
         - bearerAuth: []
     delete:
@@ -5666,8 +7297,20 @@ paths:
       responses:
         200:
           description: Delete service successfully.
+          schema: 
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete service successfully.",
+            }
         400:
           description: Delete service failed.
+          schema: 
+            type: object
+            example: {
+              "success": false,
+              "message": "Service does not exist.",
+            }
       security:
         - bearerAuth: []
 
@@ -5697,7 +7340,34 @@ paths:
           description: business, passers or intermediary
       responses:
         200:
-          description: request successfully.
+          description: Get customers successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Get customers successfully",
+              "data": [
+                {
+                  "name": "string",
+                  "address": "tring",
+                  "description": "string",
+                  "customer_type": "string",
+                  "rank_passers": {
+                    "point": "number",
+                    "level": "string",
+                  },
+                  "companyTaxcode_business": "string",
+                }
+              ]
+            }
+        400:
+          description: Get customers failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "No information found.",
+            }
       security:
         - bearerAuth: []
   /admin/customer/{id}:
@@ -5738,6 +7408,26 @@ paths:
       responses:
         200:
           description: Update customer successfully.
+          schema:
+            type: object
+            example: {
+              "success":  true,
+              "message": "Customer updated successfully.",
+            }
+        400:
+          description: Update customer failed
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Customer does not exist.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Invalid customer type.",
+              }
+            }
       security:
         - bearerAuth: []
     delete:
@@ -5753,6 +7443,20 @@ paths:
       responses:
         200:
           description: Delete customer successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete customer user successfully.",
+            }
+        400:
+          description: Delete customer failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Customer does not exist.",
+            }
       security:
         - bearerAuth: []        
   /applicant/{careerId}:
@@ -5810,16 +7514,23 @@ paths:
           schema:
             type: object
             example: {
-              "firstName": "string",
-              "lastName": "string",    
-              "phoneNumber": "string",   
-              "email" : "string",
-              "source": "string",
-              "message": "string",
-              "status": "string",    
+              "success": true,
+              "message": "Added applicant in career successfully.",
             }        
         400:
           description: Create applicant failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "send CV failed.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Confirmation cannot be sent to applicant email.",
+              }
+            }
   /admin/applicant:
     get:
       tags:
@@ -5862,20 +7573,32 @@ paths:
           description: filter by state
       responses:
         200:
-          description: get applicant successfully.
+          description: Get applicant information successfully.
           schema:
             type: object
             example: {
-              "firstName": "string",
-              "lastName": "string",    
-              "phoneNumber": "string",   
-              "email" : "string",
-              "source": "string",
-              "message": "string",
-              "status": "string",       
+              "success": true,
+              "message": "Get applicant information successfully.",
+              "data": [
+                {
+                "firstName": "string",
+                "lastName": "string",    
+                "phoneNumber": "string",   
+                "email" : "string",
+                "source": "string",
+                "message": "string",
+                "status": "string",       
+                }
+              ]
             }          
         400:
-          description: applicant is not found.  
+          description: Applicant information is not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Applicant information is not found.",
+            }
       security:
         - bearerAuth: []
   /admin/applicant/{applicantId}:
@@ -5893,20 +7616,30 @@ paths:
           description: Id of an applicant 
       responses:
         200:
-          description: get applicant successfully.
+          description: Get applicant information successfully.
           schema:
             type: object
             example: {
-              "firstName": "string",
-              "lastName": "string",    
-              "phoneNumber": "string",   
-              "email" : "string",
-              "source": "string",
-              "message": "string",
-              "status": "string",       
+              "success": true,
+              "message": "Get applicant information successfully.",
+              "data": {
+                "firstName": "string",
+                "lastName": "string",    
+                "phoneNumber": "string",   
+                "email" : "string",
+                "source": "string",
+                "message": "string",
+                "status": "string",       
+              }
             }          
         400:
-          description: applicant is not found.
+          description: Applicant does not exist.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Applicant does not exist.",
+            }
       security:
         - bearerAuth: []
     put:
@@ -5939,16 +7672,20 @@ paths:
           schema:
             type: object
             example: {
-              "firstName": "string",
-              "lastName": "string",    
-              "phoneNumber": "string",   
-              "email" : "string",
-              "source": "string",
-              "message": "string",
-              "status": "string",          
+              "success": true,
+              "message": "Update applicant successfully.",
+              "data": {
+                "status": "string",
+              }
             }      
         400:
           description: Update applicant failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Applicant does not exist.",
+            }
       security:
         - bearerAuth: []
     delete:
@@ -5966,8 +7703,29 @@ paths:
       responses:
         200:
           description: Delete applicant successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete applicant successfully.",
+              "data": {
+                "firstName": "string",
+                "lastName": "string",    
+                "phoneNumber": "string",   
+                "email" : "string",
+                "source": "string",
+                "message": "string",
+                "status": "string",       
+              }
+            }
         400:
           description: Delete applicant failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Applicant does not exist.",
+            }
       security:
         - bearerAuth: []
   /admin/staff:
@@ -5997,8 +7755,20 @@ paths:
       responses:
         200:
           description: Get staff information successfully.
-        400:
-          description: Get staff information failed.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Get staffs information successfully",
+              "data": [
+                {
+                  "name": "Storekeeper",
+                  "staff_type": "storekeeper",
+                  "department": "string",
+                  "car_fleet": "string",
+                }
+              ]
+            }
       security:
         - bearerAuth: []
   /admin/staff/{staffId}:
@@ -6015,7 +7785,21 @@ paths:
           description: id of staff  
       responses:
         200:
-          description: delete staff successfully.
+          description: Delete staff user successfully.
+          schema: 
+            type: object
+            example: {
+              "success": true,
+              "message": "Delete staff user successfully.",
+            }
+        400:
+          description: Delete staff user failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Staff does not exist.",
+            }
       security:
         - bearerAuth: []
     put:
@@ -6038,11 +7822,33 @@ paths:
                 type: string
               staff_type:
                 type: string
+              department:
+                type: string
+              car_fleet:
+                type: string
       responses:
         200:
           description: Update staff information successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Staff updated successfully.",
+            }
         400:
           description: Update staff information failed.
+          schema: 
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Staff does not exist.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Staff-type not found.",
+              }
+            }
       security:
         - bearerAuth: []
   /admin/carFleet:
@@ -6221,16 +8027,28 @@ paths:
           description: sort receiver by order
       responses:
         200:
-          description: get receiver successfully.
+          description: Get receivers successfully.
           schema:
             type: object
-              example: {
-                "name": "string",
-                "phone": "string",
-                "identity": "string",
-              }
+            example: {
+              "success": true,
+              "message": "Get receivers successfully.",
+              "data": [
+                {
+                  "name": "string",
+                  "phone": "string",
+                  "identity": "string",
+                }
+              ]
+            }
         400:
-          description: Receiver not found.
+          description: Get receivers failed.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "No information found.",
+            }
       security:
         - bearerAuth: []
   /admin/receiver/{receiverId}:
@@ -6259,6 +8077,26 @@ paths:
       responses:
         200:
            description: Update receiver successfully. 
+           schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Receiver updated successfully.",
+            }
+        400:
+          description: Update receiver failed
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Receiver does not exist.",
+              }
+              "error2": {
+                "success": false,
+                "message": "identity value is existed.",
+              }
+            }
       security:
         - bearerAuth: []
     delete:
@@ -6274,7 +8112,21 @@ paths:
           description: id of receiver  
       responses:
         200:
-          description: delete receiver successfully.
+          description: Receiver deleted successfully.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Receiver deleted successfully.",
+            }
+        400:
+          description: Receiver not found.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Receiver does not exist.",
+            }
       security:
         - bearerAuth: []
   /receiver/{orderId}:
@@ -6303,6 +8155,26 @@ paths:
       responses:
         200:
            description: Update receiver successfully. 
+           schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Receiver updated successfully.",
+            }
+        400:
+          description: Update receiver failed.
+          schema:
+            type: object
+            example: {
+              "error1": {
+                "success": false,
+                "message": "Order not found.",
+              }
+              "error2": {
+                "success": false,
+                "message": "Cannot update receiver while order is completed.",
+              }
+            }
       security:
         - bearerAuth: []
 securityDefinitions:

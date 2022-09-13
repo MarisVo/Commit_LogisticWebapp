@@ -35,7 +35,7 @@ priceAdminRoute.post("/create/:serviceId", async (req, res) => {
     );
   });
   if (!validateTypesOfData)
-    return sendError(res, "request's body is incorrect.");
+    return sendError(res, "Request's body is incorrect.");
 
   const { kg, ton, m3 } = req.body;
   const serviceId = req.params.serviceId;
@@ -54,7 +54,7 @@ priceAdminRoute.post("/create/:serviceId", async (req, res) => {
         { price: price._id }
       );
     }
-    return sendSuccess(res, "create price table successfully.");
+    return sendSuccess(res, "Create price table successfully.");
   } catch (error) {
 
     return sendServerError(res);
@@ -81,7 +81,7 @@ priceAdminRoute.put("/:id", async (req, res) => {
         m3: m3,
       });
     }
-    return sendError(res, "price does not exist.");
+    return sendError(res, "Price does not exist.");
   } catch (error) {
     return sendServerError(res);
   }
@@ -96,7 +96,7 @@ priceAdminRoute.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const isExist = await Price.exists({ _id: id });
-    if (!isExist) return sendError(res, "price does not exist.");
+    if (!isExist) return sendError(res, "Price does not exist.");
     await DeliveryService.findOneAndUpdate({ price: id }, { $unset: { price: id } });
     const price = await Price.findByIdAndRemove(id)
     return sendSuccess(res, "Delete price successfully.", price);
