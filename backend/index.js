@@ -83,7 +83,7 @@ app.use(session({
 app.use(express.json())
 app.use(cors(
     {
-        origin: process.env.DEV == 1 ? 'http://localhost:3000' : ['http://14.186.215.101', 'https://14.186.215.101'],
+        origin: process.env.DEV == 1 ? 'http://localhost:3000' : [`http://${process.env.HOST}`, `https://${process.env.HOST}`],
         credentials: true
     }
 ))
