@@ -6,7 +6,7 @@ import vietnam from "../../assets/images/vietnamwhite.png";
 function About() {
   const { setMetadata } = useContext(MainContext);
   const [data, setData] = useState({});
-  const [banners, setBanners] = useState([]);
+  const [banners, setBanners] = useState(["https://jtexpress.vn/storage/app/uploads/public/628/598/69c/62859869c9723182554168.jpg"]);
   useEffect(() => {
     setMetadata((prev) => {
       return {
@@ -32,17 +32,24 @@ function About() {
       <a href="">
         <img src={banners[0]} alt="banner" className="w-full h-[143px] lg:h-[550px] object-cover" />
       </a>
-      <div className="flex flex-col xl:flex-row justify-between  container mx-auto my-4 lg:mt-[-210px]">
+      <div className="flex flex-col xl:flex-row justify-between  container mx-auto my-4 lg:mt-[-240px]">
         <div>
           <span className="block text-2xl text-center font-black my-6 py-4 lg:text-6xl lg:text-left lg:text-primary ">
             J&T EXPRESS
           </span>
           <div className="text-justify w-full xl:w-[525px] border-4 border-border_color p-8 text-base rounded-2xl lg:bg-yellow-100 opacity-95">
-            <span className="whitespace-pre-line">{data.description}</span>
+            <span className="whitespace-pre-line">
+              {/* {data.description} */}
+              J&T Express là thương hiệu chuyển phát nhanh dựa trên sự phát triển của công nghệ và Internet. 
+              Chúng tôi sở hữu một mạng lưới rộng khắp nhằm hỗ trợ các hoạt động giao nhận hàng hóa nhanh chóng
+              không chỉ ở nội thành mà còn ở ngoại thành và các vùng xa của các tỉnh thành trong cả nước Việt Nam.
+              Đồng thời, hiện tại, J&T Express định hướng mở rộng phạm vi cung cấp các dịch vụ chuyển phát nhanh 
+              ra quốc tế.
+              </span>
             <div className="w-20 h-[2px] bg-[#f0b90c] mt-8"></div>
           </div>
         </div>
-        <div className="flex flex-col lg:flex-row items-center justify-around mt-16 gap-8 font-extrabold ">
+        <div className="flex flex-col lg:flex-row items-center justify-around mt-28 gap-8 font-extrabold ">
           <div className="flex flex-col items-center text-center px-3 gap-y-3 ">
             <img
               src="https://jtexpress.vn/themes/jtexpress/assets/images/1000xe.png"
@@ -75,19 +82,27 @@ function About() {
       </div>
 
       <div className="flex flex-col gap-y-6 container px-3 lg:px-0 mx-auto">
-        <div className="flex flex-col gap-y-6 xl:order-2">
-          <img
-            src="https://jtexpress.vn/themes/jtexpress/assets/images/dd-about-us.png"
-            className="w-[76px] h-[63px]"
-          />
-          <span className="text-2xl font-black uppercase">Tấm nhìn</span>
-          <span className="text-base">{data.vision}</span>
+        <div className="flex flex-col-reverse xl:flex-row items-start">
+        <div className="flex flex-col gap-y-6 xl:order-1 ml-52">
+          <img src="https://jtexpress.vn/themes/jtexpress/assets/images/dd-about-us.png" className="w-[76px] h-[63px]"/>
+          <span className="text-2xl font-black uppercase">Tầm nhìn</span>
+          <span className="text-base">
+            {/* {data.vision} */}
+              J&T Express là thương hiệu chuyển phát nhanh uy tín và bền vững tại Việt Nam.
+            </span>
           <div className="w-20 h-[2px] bg-[#F0B90B]"></div>
           <span className="text-2xl font-black uppercase">Giá trị cốt lõi</span>
-          <span className="text-base whitespace-pre-line ">{data.value}</span>
+          <span className="text-base whitespace-pre-line ">
+            {/* {data.value} */}
+              <b> Bổn phận, Chia sẻ, Trách nhiệm </b>
+                  là ba giá trị cơ bản của J&T Express nhằm mang đến chất lượng dịch vụ giao hàng tốt nhất cho khách hàng.<br/>
+                  Chúng tôi cam kết phục vụ một cách trung thực và có trách nhiệm đối với từng đơn hàng của khách hàng.
+            </span>
         </div>
-        <div className="lg:w-[525px] mx-auto xl:order-1">
+        {/* <div className="lg:w-[525px] mx-auto xl:order-1">
           <img src={data.logo} className=" w-full h-full  object-cover" />
+        </div> */}
+        <img src="https://jtexpress.vn/storage/app/uploads/public/626/a0a/d78/626a0ad786e44084325377.png" class="w-full xl:w-[420px] h-full object-cover" alt="J&T Express - Về chúng tôi" />
         </div>
       </div>
       <div className=" mx-auto my-10">
